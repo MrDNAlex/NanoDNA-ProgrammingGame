@@ -13,7 +13,7 @@ namespace FlexUI
         //Variables 
 
         //Reference to the UI elements Transform
-        RectTransform UI;
+        public RectTransform UI;
 
         //Reference to all the children Flexes 
         List<Flex> children = new List<Flex>();
@@ -48,6 +48,11 @@ namespace FlexUI
         [Header("Child Based Size Settings")]
         //A bool to see if it will use one of these values
         public bool useChildMulti;
+        //A Bool to see if we will use Child Multi on width
+        public bool useChildMultiW;
+        //A Bool to see if we use Child Multi on Height
+        public bool useChildMultiH;
+
         //A value that will determine the width of the Flex depending on number of children
         public float childMultiW;
         //A value that will determine the height of the Flex depending on number of children
@@ -233,12 +238,12 @@ namespace FlexUI
             else if (useChildMulti)
             {
                 //Apply child Multi Height
-                if (childMultiH != 0)
+                if (useChildMultiH && childMultiH != 0)
                 {
                     size = new Vector2(defaultWidthCalc(thisSize.x), children.Count * childMultiH);
                 }
                 //Apply child multi width
-                if (childMultiW != 0)
+                if (useChildMultiW && childMultiW != 0)
                 {
                     size = new Vector2(children.Count * childMultiW, defaultHeightCalc(thisSize.y));
                 }
@@ -507,9 +512,18 @@ namespace FlexUI
             square = true;
         }
 
+        public RectTransform getChild (int index)
+        {
+           return UI.GetChild(index).GetComponent<RectTransform>();
+
+        }
+
+
+
         //Get the reference to the childs rectTransform
         public static RectTransform getChildRect(RectTransform rect, int childNum)
         {
+            
             return rect.gameObject.transform.GetChild(childNum).GetComponent<RectTransform>();
         }
 
@@ -559,12 +573,32 @@ namespace FlexUI
         }
 
         //Set the value to multiply by the number of children
+        public void setChildMultiW (float WidthMulti)
+        {
+            useChildMulti = true;
+            useChildMultiW = true;
+            childMultiW = WidthMulti;
+           
+        }
+
+        public void setChildMultiH(float HeightMulti)
+        {
+            useChildMulti = true;
+            useChildMultiH = true;
+            childMultiH = HeightMulti;
+        }
+
+
+
+        /*
         public void setChildMulti(float WidthMulti, float HeightMulti)
         {
             useChildMulti = true;
             childMultiW = WidthMulti;
             childMultiH = HeightMulti;
         }
+        */
+
 
         //Use the default method of calculating the dimensions
         public void defaultMethod(Vector2 thisSize)
