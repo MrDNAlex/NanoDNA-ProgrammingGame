@@ -266,7 +266,7 @@ public class LevelScript : MonoBehaviour
 
     public void checkBackground(GameObject obj, float distance, GameObject hover)
     {
-        if (distance < 1)
+        if (distance < 0.9f)
         {
 
            

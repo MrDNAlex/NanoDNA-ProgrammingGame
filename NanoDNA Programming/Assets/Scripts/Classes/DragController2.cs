@@ -110,7 +110,7 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
             {
               
                 //Find a way to raycast 
-                if (distance < 1)
+                if (distance < 0.9f)
                 {
                     
                     Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>());
