@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
+using UnityEngine.Tilemaps;
 using FlexUI;
 using UnityEngine.UI;
 
@@ -32,13 +34,7 @@ public class LevelScript : MonoBehaviour
     [SerializeField] RectTransform btn3;
     [SerializeField] RectTransform btn4;
 
-
-
     [SerializeField] RectTransform gridView;
-
-
-
-
 
     [SerializeField] RectTransform constraints;
 
@@ -55,6 +51,18 @@ public class LevelScript : MonoBehaviour
 
     public RectTransform contentTrans;
 
+    [SerializeField] Texture camText;
+
+    [SerializeField] Camera Cam2;
+
+    [SerializeField] Tilemap tileMap;
+
+    [SerializeField] GameObject sphere;
+
+    Vector2 screenPos;
+    Vector2 viewSize;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +74,10 @@ public class LevelScript : MonoBehaviour
         btn4.GetComponent<Button>().onClick.AddListener(btn4Ac);
 
         contentTrans = content;
+
+        mapView.GetComponent<Button>().onClick.AddListener(sendRay);
+
+
     }
 
     // Update is called once per frame
@@ -92,6 +104,7 @@ public class LevelScript : MonoBehaviour
 
         Flex Reg2 = new Flex(reg2, 2f);
         Flex MapView = new Flex(mapView, 2f);
+        
 
         Flex Reg3 = new Flex(reg3, 1f);
         Flex Store = new Flex(store, 4f);
@@ -132,8 +145,6 @@ public class LevelScript : MonoBehaviour
         StoreHeader.addChild(BTN3);
         StoreHeader.addChild(BTN4);
 
-
-
         //Background.addChild(Reg3);
 
         //Add the programming blocks as children
@@ -148,6 +159,13 @@ public class LevelScript : MonoBehaviour
         //Content.setSelfHorizontalPadding(0, 0, 0.05f, 1);
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
+
+        setCamera(new Vector2(Screen.width, Screen.height));
+
+        Debug.Log(mapView.rect);
+
+        screenPos = new Vector2(mapView.rect.x, Screen.height);
+        viewSize = MapView.size;
 
     }
 
@@ -274,7 +292,78 @@ public class LevelScript : MonoBehaviour
 
         idk.AddComponent<DeleteIndentDrag>();
 
+    }
 
+    public void setCamera (Vector2 size)
+    {
+
+        camText.width = (int)size.x;
+        camText.height = (int)size.y;
+
+        orthoSizeCalc();
+
+    }
+
+    public void sendRay ()
+    {
+
+        
+     
+
+        Vector2 worldPoint;
+       
+
+        worldPoint = Cam2.ScreenToWorldPoint(BackCalcPos());
+
+        Image img;
+
+        
+
+
+
+        TileBase tile = tileMap.GetTile(tileMap.WorldToCell(worldPoint));
+
+
+        tileMap.SetTile(new Vector3Int(0, 0, 0), null);
+
+       
+        Debug.Log(tile);
+    }
+
+
+    public Vector2 BackCalcPos ()
+    {
+        Debug.Log("Mouse:" + Input.mousePosition);
+
+
+        Debug.Log("ScreenPos:" + screenPos);
+        Debug.Log("ScreenSize:" + viewSize);
+
+
+        Vector2 mouse = Input.mousePosition;
+
+        float x = mouse.x - Mathf.Abs(screenPos.x);
+        float y = mouse.y - Screen.height;
+
+        float normalX = x / viewSize.x;
+        float normalY = y / viewSize.y;
+
+        Debug.Log("x:" + x);
+        Debug.Log("y:" + y);
+        Debug.Log("Nx:" + normalX);
+        Debug.Log("Ny:" + normalY);
+
+        Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
+
+        return new Vector2(normalX * 1920, 1080 * (1 + normalY));
+
+    }
+
+    public void orthoSizeCalc ()
+    {
+        float orthoSize = (tileMap.cellBounds.yMax * tileMap.cellSize.y);
+
+        Cam2.orthographicSize = orthoSize;
 
 
     }

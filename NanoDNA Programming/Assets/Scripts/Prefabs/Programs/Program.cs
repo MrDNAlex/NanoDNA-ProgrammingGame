@@ -10,6 +10,7 @@ public class Program : MonoBehaviour
     public Flex program;
     public string cardType;
     public Transform progLine;
+    public int indent = 0;
 
 
     private void Awake()
