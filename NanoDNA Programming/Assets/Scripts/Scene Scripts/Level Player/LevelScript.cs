@@ -50,6 +50,7 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] GameObject Program;
 
+    [SerializeField] GameObject Variable;
     public string type;
 
     public RectTransform contentTrans;
@@ -162,7 +163,7 @@ public class LevelScript : MonoBehaviour
            // Debug.Log(idk.GetComponent<ProgramBlock>().Block);
 
             idk.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
-            idk.GetComponent<Button>().onClick.AddListener(delegate { setBackground(idk); });
+            //idk.GetComponent<Button>().onClick.AddListener(delegate { setBackground(idk); });
         }
 
     }
@@ -170,6 +171,22 @@ public class LevelScript : MonoBehaviour
     void addStore (Flex parent)
     {
 
+
+
+       for (int i = 0; i < 2; i++)
+        {
+          
+
+            GameObject idk = Instantiate(prefab2, parent.UI);
+
+            idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
+            //idk.GetComponent<StoreCard>().cardType = "mov";
+        }
+
+
+      
+
+        /*
         for (int i = 0; i < 2; i++)
         {
 
@@ -178,8 +195,9 @@ public class LevelScript : MonoBehaviour
                 //Debug.Log(parent.UI);
                 GameObject idk = Instantiate(prefab2, parent.UI);
 
-                idk.GetComponent<ProgramCard>().Card.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
+                idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
 
+                
                 if (i % 2 == 0)
                 {
                     //setType1();
@@ -191,6 +209,7 @@ public class LevelScript : MonoBehaviour
                     idk.GetComponent<ProgramCard>().onClick.AddListener(setType2);
                     idk.GetComponent<ProgramCard>().cardType = "while";
                 }
+                
             } else
             {
                 //Debug.Log(parent.UI);
@@ -199,21 +218,11 @@ public class LevelScript : MonoBehaviour
                 idk.GetComponent<MovCard>().Card.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
 
 
-               
-
-
             }
 
-
-
-            
-
         }
+*/
     }
-
-
-
-
 
     void btn1Ac ()
     {
@@ -235,98 +244,42 @@ public class LevelScript : MonoBehaviour
         gridView.GetComponent<Image>().color = Color.cyan;
     }
 
-    public void setType1 ()
+ 
+
+    public void addProgram (ProgramLine parent, string type)
     {
-        Debug.Log("setting type 1");
-        type = "if";
-    }
-    public void setType2()
-    {
-        Debug.Log("setting type 2");
-        type = "while";
-    }
 
-    public void setBackground (GameObject obj)
-    {
-        //Debug.Log(obj);
-        if (type == "if")
+        parent.deleteLine();
+        GameObject idk = null;
+
+        if (type == "mov")
         {
-            obj.GetComponent<Image>().color = Color.magenta;
-            type = "";
-        } else if (type == "while")
+            idk = Instantiate(Program, parent.ProgramObj.transform);
+            
+        } else if (type == "var")
         {
-            obj.GetComponent<Image>().color = Color.yellow;
-            type = "";
-
-        } else if (type == "mov")
-        {
-
-        }
-    }
-
-    public void checkBackground(GameObject obj, float distance, GameObject hover)
-    {
-        if (distance < 0.9f)
-        {
-
-           
-
-            if (type == "if")
-            {
-                obj.GetComponent<Image>().color = Color.magenta;
-                //type = "";
-               // hover = obj;
-               
-            }
-            else if (type == "while")
-            {
-                obj.GetComponent<Image>().color = Color.yellow;
-                //type = "";
-               // hover = obj;
-
-            } else if (type == "mov")
-            {
-                obj.GetComponent<Image>().color = Color.red;
-                //type = "";
-                //hover = obj;
-
-               // GameObject idk = Instantiate( Program, obj.transform.GetChild(1));
-
-                
-               
-
-
-
-
-
-
-
-
-            }
-        } else
-        {
-            obj.GetComponent<Image>().color = Color.blue;
-            type = "";
+            idk = Instantiate(Variable, parent.ProgramObj.transform);
            
         }
 
-      
-    }
+        parent.ProgramUI.addChild(idk.GetComponent<Program>().program);
 
-    public void setBackground2()
-    {
+        Destroy(idk.GetComponent<DragController2>());
 
-    }
-
-    public void addProgram (ProgramLine parent)
-    {
-        GameObject idk = Instantiate(Program, parent.ProgramObj.transform);
-
-        parent.ProgramUI.addChild(idk.GetComponent<Movement>().Program);
+        //idk.GetComponent<RectTransform>().position = Vector3.zero;
 
         parent.Line.setSize(parent.Line.size);
 
+        idk.GetComponent<Program>().progLine = parent.transform;
+
+        idk.AddComponent<DeleteIndentDrag>();
+
+
+
+
     }
+
+   
 
 
 

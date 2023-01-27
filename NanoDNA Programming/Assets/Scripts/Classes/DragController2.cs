@@ -1,13 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
 public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
 
-   // [SerializeField] RectTransform code;
+    int lastChildIndex;
+    Vector3 lastPos;
+    Transform lastParent;
+    Vector3 newPos;
+
+    GameObject hover = null;
+    string type;
+
+
+    // [SerializeField] RectTransform code;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,15 +30,6 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
         
     }
 
-    int lastChildIndex;
-    Vector3 lastPos;
-    Transform lastParent;
-    Vector3 newPos;
-
-    GameObject hover = null;
-    string type;
-
-
     public void OnPointerDown(PointerEventData eventData)
     {
 
@@ -40,14 +41,7 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
         //Camera.main.GetComponent<LevelScript>().type = transform.parent.GetComponent<ProgramCard>().cardType;
         //Debug.Log(Camera.main.GetComponent<LevelScript>().type);
 
-        if (transform.parent.GetSiblingIndex() == 0)
-        {
-            type = transform.parent.GetComponent<ProgramCard>().cardType;
-        } else
-        {
-            //Debug.Log("Hello");
-            type = transform.parent.GetComponent<MovCard>().cardType;
-        }
+        type = transform.GetComponent<Program>().cardType;
        
         Debug.Log(type);
 
@@ -63,6 +57,7 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
         //Debug.Log(content);
 
+        //IS this needed?
         for (int i = 0; i < content.childCount; i ++)
         {
             Transform child = content.GetChild(i);
@@ -70,26 +65,14 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
             //Set the type
             Camera.main.GetComponent<LevelScript>().type = type;
 
-
-
-
-            //Display Hover colour
-            Camera.main.GetComponent<LevelScript>().checkBackground(child.gameObject, distance, hover);
-            // Camera.main.GetComponent<LevelScript>().checkBackground(child.gameObject, distance);
-            
-            /*
-            if (distance < 1)
+            if (distance <= 0.9f)
             {
-                Debug.Log("Distance");
-                hover = child.gameObject;
-                //Camera.main.GetComponent<LevelScript>().type = type;
-                
+                child.GetComponent<Image>().color = Color.red;
             } else
             {
-                hover = null;
-                //make an erase command
+                child.GetComponent<Image>().color = Color.cyan;
             }
-            */
+
             
         }
 
@@ -112,8 +95,8 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
                 //Find a way to raycast 
                 if (distance < 0.9f)
                 {
-                    
-                    Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>());
+                   
+                    Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>(), type);
                 }
 
                 //child.GetComponent<ProgramLine>().ProgramObj = Instantiate(Camera.main.GetComponent<LevelScript>().)
@@ -125,17 +108,6 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
         //Set Position
         transform.position = lastPos;
-
-
-
-
-        if (hover != null)
-        {
-            Debug.Log("NotEmpty");
-            Camera.main.GetComponent<LevelScript>().setBackground(hover);
-        }
-
-
 
     }
 }

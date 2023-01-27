@@ -14,11 +14,14 @@ public class ProgramLine : MonoBehaviour
     public GameObject ProgramObj;
     public Flex ProgramUI;
 
+    Flex Program;
+
 
     public void Awake()
     {
         setUI();
         setNumber();
+        setButton();
     }
 
     // Start is called before the first frame update
@@ -38,7 +41,7 @@ public class ProgramLine : MonoBehaviour
         //Define all the Flex components
         Line = new Flex(background, 1);
         Flex LineNumber = new Flex(Line.getChild(0), 1);
-        Flex Program = new Flex(Line.getChild(1), 6);
+        Program = new Flex(Line.getChild(1), 6);
         Flex Drag = new Flex(Line.getChild(2), 1);
 
         //Add children
@@ -57,6 +60,29 @@ public class ProgramLine : MonoBehaviour
     {
         //Set the text to the correct number
         Line.getChild(0).GetComponent<Text>().text = Line.UI.GetSiblingIndex().ToString();
+    }
+
+    void setButton ()
+    {
+        Line.getChild(2).GetComponent<Button>().onClick.AddListener(deleteLine);
+    }
+
+    public void deleteLine ()
+    {
+
+        for (int i = 0; i < Program.UI.childCount; i ++)
+        {
+
+            Debug.Log(Program.UI.GetChild(0));
+            Destroy(Program.UI.GetChild(0).gameObject);
+        }
+
+        //Remove all Flex Children
+        Program.deleteAllChildren();
+
+        background.GetComponent<Image>().color = Color.cyan;
+
+        
     }
 
 

@@ -44,7 +44,7 @@ public class Movement : MonoBehaviour
 
         Program.setSpacingFlex(0.4f, 1);
 
-        Program.setAllPadSame(0.1f, 1);
+        Program.setAllPadSame(0.3f, 1);
 
     }
 

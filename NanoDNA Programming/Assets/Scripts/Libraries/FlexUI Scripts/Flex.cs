@@ -680,7 +680,11 @@ namespace FlexUI
             layoutGroupVert = vert;
         }
 
-
+        //Function that deletes all Flex Children under it
+        public void deleteAllChildren()
+        {
+            children = new List<Flex>();
+        }
 
 
 

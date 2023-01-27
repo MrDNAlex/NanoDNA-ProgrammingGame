@@ -1439,9 +1439,10 @@ MonoBehaviour:
   gridView: {fileID: 1716133955}
   constraints: {fileID: 1302882785}
   prefab: {fileID: 2175663195785219502, guid: 7392688f07cb58741a7456feffbc1d92, type: 3}
-  prefab2: {fileID: 7983582293240146951, guid: 0edf7b3bead564943bd0852cec8a11a1, type: 3}
+  prefab2: {fileID: 3237715990226463739, guid: 2ec48f8a8457a3e4f8d3fb730d1ee5a1, type: 3}
   Movement: {fileID: 7939411648419594016, guid: f76d30fdd52020744af9dc0009674f71, type: 3}
   Program: {fileID: 8138498152997489336, guid: a68c6192184df1a498034a9fbc166bd5, type: 3}
+  Variable: {fileID: 6849765539173945905, guid: e62678bfdf228354ea1aded334001160, type: 3}
   type: 
   contentTrans: {fileID: 0}
 --- !u!1 &1551240313
