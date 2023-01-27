@@ -1456,7 +1456,8 @@ GameObject:
   - component: {fileID: 6380200507187299437}
   - component: {fileID: 822691314091239528}
   - component: {fileID: 3497862695777829894}
-  - component: {fileID: 257082681060120868}
+  - component: {fileID: 9043278858698628732}
+  - component: {fileID: 7720614945227396249}
   m_Layer: 0
   m_Name: Movement
   m_TagString: Untagged
@@ -1551,7 +1552,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &257082681060120868
+--- !u!114 &9043278858698628732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1560,7 +1561,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8138498152997489336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aceb3407beef5f4baaee1aebe9ada2c, type: 3}
+  m_Script: {fileID: 11500000, guid: dcd3a5c75f51d974e8a8f78d409b226c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7720614945227396249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138498152997489336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cardType: mov

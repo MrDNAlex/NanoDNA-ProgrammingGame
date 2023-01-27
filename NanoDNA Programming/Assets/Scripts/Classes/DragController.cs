@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
+    //Object that will end up being dragged. 
     [SerializeField] Transform UIObject;
 
     int lastChildIndex;
@@ -25,6 +26,9 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
+
+        //Maybe add a timer for an animation? That will fix the glitchyness
+
         //Get the new Position
         newPos = new Vector3(newPos.x, newPos.y + eventData.delta.y, 0);
         UIObject.localPosition = newPos;
@@ -45,7 +49,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
                 float distance = Vector3.Distance(UIObject.localPosition, iChild.localPosition);
 
                 //Check if it's within distance threshold
-                if (distance <= 100)
+                if (distance <= 90)
                 {
                     //Switch positions
                     Vector3 iPos = iChild.position;

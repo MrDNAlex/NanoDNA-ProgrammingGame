@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
+using UnityEngine.Tilemaps;
 using FlexUI;
 using UnityEngine.UI;
 
@@ -32,13 +34,7 @@ public class LevelScript : MonoBehaviour
     [SerializeField] RectTransform btn3;
     [SerializeField] RectTransform btn4;
 
-
-
     [SerializeField] RectTransform gridView;
-
-
-
-
 
     [SerializeField] RectTransform constraints;
 
@@ -50,9 +46,22 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] GameObject Program;
 
+    [SerializeField] GameObject Variable;
     public string type;
 
     public RectTransform contentTrans;
+
+    [SerializeField] Texture camText;
+
+    [SerializeField] Camera Cam2;
+
+    [SerializeField] Tilemap tileMap;
+
+    [SerializeField] GameObject sphere;
+
+    Vector2 screenPos;
+    Vector2 viewSize;
+
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +74,10 @@ public class LevelScript : MonoBehaviour
         btn4.GetComponent<Button>().onClick.AddListener(btn4Ac);
 
         contentTrans = content;
+
+        mapView.GetComponent<Button>().onClick.AddListener(sendRay);
+
+
     }
 
     // Update is called once per frame
@@ -91,6 +104,7 @@ public class LevelScript : MonoBehaviour
 
         Flex Reg2 = new Flex(reg2, 2f);
         Flex MapView = new Flex(mapView, 2f);
+        
 
         Flex Reg3 = new Flex(reg3, 1f);
         Flex Store = new Flex(store, 4f);
@@ -131,8 +145,6 @@ public class LevelScript : MonoBehaviour
         StoreHeader.addChild(BTN3);
         StoreHeader.addChild(BTN4);
 
-
-
         //Background.addChild(Reg3);
 
         //Add the programming blocks as children
@@ -148,6 +160,13 @@ public class LevelScript : MonoBehaviour
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
+        setCamera(new Vector2(Screen.width, Screen.height));
+
+        Debug.Log(mapView.rect);
+
+        screenPos = new Vector2(mapView.rect.x, Screen.height);
+        viewSize = MapView.size;
+
     }
 
     void addChildren (Flex parent)
@@ -162,7 +181,7 @@ public class LevelScript : MonoBehaviour
            // Debug.Log(idk.GetComponent<ProgramBlock>().Block);
 
             idk.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
-            idk.GetComponent<Button>().onClick.AddListener(delegate { setBackground(idk); });
+            //idk.GetComponent<Button>().onClick.AddListener(delegate { setBackground(idk); });
         }
 
     }
@@ -170,6 +189,22 @@ public class LevelScript : MonoBehaviour
     void addStore (Flex parent)
     {
 
+
+
+       for (int i = 0; i < 2; i++)
+        {
+          
+
+            GameObject idk = Instantiate(prefab2, parent.UI);
+
+            idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
+            //idk.GetComponent<StoreCard>().cardType = "mov";
+        }
+
+
+      
+
+        /*
         for (int i = 0; i < 2; i++)
         {
 
@@ -178,8 +213,9 @@ public class LevelScript : MonoBehaviour
                 //Debug.Log(parent.UI);
                 GameObject idk = Instantiate(prefab2, parent.UI);
 
-                idk.GetComponent<ProgramCard>().Card.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
+                idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
 
+                
                 if (i % 2 == 0)
                 {
                     //setType1();
@@ -191,6 +227,7 @@ public class LevelScript : MonoBehaviour
                     idk.GetComponent<ProgramCard>().onClick.AddListener(setType2);
                     idk.GetComponent<ProgramCard>().cardType = "while";
                 }
+                
             } else
             {
                 //Debug.Log(parent.UI);
@@ -199,21 +236,11 @@ public class LevelScript : MonoBehaviour
                 idk.GetComponent<MovCard>().Card.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
 
 
-               
-
-
             }
 
-
-
-            
-
         }
+*/
     }
-
-
-
-
 
     void btn1Ac ()
     {
@@ -235,98 +262,113 @@ public class LevelScript : MonoBehaviour
         gridView.GetComponent<Image>().color = Color.cyan;
     }
 
-    public void setType1 ()
+ 
+
+    public void addProgram (ProgramLine parent, string type)
     {
-        Debug.Log("setting type 1");
-        type = "if";
-    }
-    public void setType2()
-    {
-        Debug.Log("setting type 2");
-        type = "while";
-    }
 
-    public void setBackground (GameObject obj)
-    {
-        //Debug.Log(obj);
-        if (type == "if")
+        parent.deleteLine();
+        GameObject idk = null;
+
+        if (type == "mov")
         {
-            obj.GetComponent<Image>().color = Color.magenta;
-            type = "";
-        } else if (type == "while")
+            idk = Instantiate(Program, parent.ProgramObj.transform);
+            
+        } else if (type == "var")
         {
-            obj.GetComponent<Image>().color = Color.yellow;
-            type = "";
-
-        } else if (type == "mov")
-        {
-
-        }
-    }
-
-    public void checkBackground(GameObject obj, float distance, GameObject hover)
-    {
-        if (distance < 0.9f)
-        {
-
-           
-
-            if (type == "if")
-            {
-                obj.GetComponent<Image>().color = Color.magenta;
-                //type = "";
-               // hover = obj;
-               
-            }
-            else if (type == "while")
-            {
-                obj.GetComponent<Image>().color = Color.yellow;
-                //type = "";
-               // hover = obj;
-
-            } else if (type == "mov")
-            {
-                obj.GetComponent<Image>().color = Color.red;
-                //type = "";
-                //hover = obj;
-
-               // GameObject idk = Instantiate( Program, obj.transform.GetChild(1));
-
-                
-               
-
-
-
-
-
-
-
-
-            }
-        } else
-        {
-            obj.GetComponent<Image>().color = Color.blue;
-            type = "";
+            idk = Instantiate(Variable, parent.ProgramObj.transform);
            
         }
 
-      
-    }
+        parent.ProgramUI.addChild(idk.GetComponent<Program>().program);
 
-    public void setBackground2()
-    {
+        Destroy(idk.GetComponent<DragController2>());
 
-    }
-
-    public void addProgram (ProgramLine parent)
-    {
-        GameObject idk = Instantiate(Program, parent.ProgramObj.transform);
-
-        parent.ProgramUI.addChild(idk.GetComponent<Movement>().Program);
+        //idk.GetComponent<RectTransform>().position = Vector3.zero;
 
         parent.Line.setSize(parent.Line.size);
 
+        idk.GetComponent<Program>().progLine = parent.transform;
+
+        idk.AddComponent<DeleteIndentDrag>();
+
     }
+
+    public void setCamera (Vector2 size)
+    {
+
+        camText.width = (int)size.x;
+        camText.height = (int)size.y;
+
+        orthoSizeCalc();
+
+    }
+
+    public void sendRay ()
+    {
+
+        
+     
+
+        Vector2 worldPoint;
+       
+
+        worldPoint = Cam2.ScreenToWorldPoint(BackCalcPos());
+
+        Image img;
+
+        
+
+
+
+        TileBase tile = tileMap.GetTile(tileMap.WorldToCell(worldPoint));
+
+
+        tileMap.SetTile(new Vector3Int(0, 0, 0), null);
+
+       
+        Debug.Log(tile);
+    }
+
+
+    public Vector2 BackCalcPos ()
+    {
+        Debug.Log("Mouse:" + Input.mousePosition);
+
+
+        Debug.Log("ScreenPos:" + screenPos);
+        Debug.Log("ScreenSize:" + viewSize);
+
+
+        Vector2 mouse = Input.mousePosition;
+
+        float x = mouse.x - Mathf.Abs(screenPos.x);
+        float y = mouse.y - Screen.height;
+
+        float normalX = x / viewSize.x;
+        float normalY = y / viewSize.y;
+
+        Debug.Log("x:" + x);
+        Debug.Log("y:" + y);
+        Debug.Log("Nx:" + normalX);
+        Debug.Log("Ny:" + normalY);
+
+        Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
+
+        return new Vector2(normalX * 1920, 1080 * (1 + normalY));
+
+    }
+
+    public void orthoSizeCalc ()
+    {
+        float orthoSize = (tileMap.cellBounds.yMax * tileMap.cellSize.y);
+
+        Cam2.orthographicSize = orthoSize;
+
+
+    }
+
+   
 
 
 
