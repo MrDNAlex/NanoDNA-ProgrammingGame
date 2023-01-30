@@ -11,13 +11,15 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform background;
 
+
+    /*
     [SerializeField] RectTransform reg1;
     [SerializeField] RectTransform header;
     [SerializeField] RectTransform list;
     [SerializeField] RectTransform sV;
    // [SerializeField] RectTransform sB;
     [SerializeField] RectTransform vP;
-   [SerializeField] RectTransform content;
+
 
     [SerializeField] RectTransform reg2;
     [SerializeField] RectTransform mapView;
@@ -29,14 +31,28 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform storeHeader;
 
+    
+
+    
+
+    [SerializeField] RectTransform constraints;
+    */
+
+    //New Serialize
     [SerializeField] RectTransform btn1;
     [SerializeField] RectTransform btn2;
     [SerializeField] RectTransform btn3;
     [SerializeField] RectTransform btn4;
 
+    [SerializeField] Button resize;
+
+    [SerializeField] RectTransform mapView;
+
+    [SerializeField] RectTransform content;
+
     [SerializeField] RectTransform gridView;
 
-    [SerializeField] RectTransform constraints;
+
 
     [SerializeField] GameObject prefab;
 
@@ -55,7 +71,12 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Camera Cam2;
 
-    [SerializeField] Tilemap tileMap;
+   
+
+    [SerializeField] Tilemap BackAndMap;
+    [SerializeField] Tilemap Void;
+
+
 
     [SerializeField] GameObject sphere;
 
@@ -77,6 +98,7 @@ public class LevelScript : MonoBehaviour
 
         mapView.GetComponent<Button>().onClick.AddListener(sendRay);
 
+        resize.onClick.AddListener(ResizeCam);
 
     }
 
@@ -92,32 +114,35 @@ public class LevelScript : MonoBehaviour
         //Create Flex Components
         //Create a new function in the FlexUI library that gets the reference to the rect transform of the Flex Parent and gets the child index from there. 
         //That way I can call Background.getChild(1);
+
+        //Later, split into multiple functions for better categorization.
+
         Flex Background = new Flex(background, 1);
 
-        Flex Reg1 = new Flex(reg1, 1);
-        Flex Header = new Flex(header, 1);
-        Flex List = new Flex(list, 10);
-        Flex SV = new Flex(sV, 1);
-        Flex VP = new Flex(vP, 10);
+        Flex Reg1 = new Flex(Background.getChild(0), 1);
+        Flex Header = new Flex(Reg1.getChild(0), 1);
+        Flex List = new Flex(Reg1.getChild(1), 10);
+        Flex SV = new Flex(List.getChild(0), 1);
+        Flex VP = new Flex(SV.getChild(0), 10);
        // Flex SB = new Flex(sB, 1);
-        Flex Content = new Flex(content, 1);
+        Flex Content = new Flex(VP.getChild(0), 1);
 
-        Flex Reg2 = new Flex(reg2, 2f);
-        Flex MapView = new Flex(mapView, 2f);
+        Flex Reg2 = new Flex(Background.getChild(1), 2f);
+        Flex MapView = new Flex(Reg2.getChild(0), 2f);
         
 
-        Flex Reg3 = new Flex(reg3, 1f);
-        Flex Store = new Flex(store, 4f);
+        Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
+        Flex Store = new Flex(Reg3.getChild(0), 4f);
 
-        Flex StoreHeader = new Flex(storeHeader, 1);
-        Flex BTN1 = new Flex(btn1, 1);
-        Flex BTN2 = new Flex(btn2, 1);
-        Flex BTN3 = new Flex(btn3, 1);
-        Flex BTN4 = new Flex(btn4, 1);
+        Flex StoreHeader = new Flex(Store.getChild(0), 1);
+        Flex BTN1 = new Flex(StoreHeader.getChild(0), 1);
+        Flex BTN2 = new Flex(StoreHeader.getChild(1), 1);
+        Flex BTN3 = new Flex(StoreHeader.getChild(2), 1);
+        Flex BTN4 = new Flex(StoreHeader.getChild(3), 1);
 
-        Flex GridView = new Flex(gridView, 5);
+        Flex GridView = new Flex(Store.getChild(1), 5);
 
-        Flex Constraints = new Flex(constraints, 1f);
+        Flex Constraints = new Flex(Reg3.getChild(1), 1f);
 
         //Add children
         List.addChild(SV);
@@ -294,15 +319,7 @@ public class LevelScript : MonoBehaviour
 
     }
 
-    public void setCamera (Vector2 size)
-    {
-
-        camText.width = (int)size.x;
-        camText.height = (int)size.y;
-
-        orthoSizeCalc();
-
-    }
+  
 
     public void sendRay ()
     {
@@ -321,23 +338,25 @@ public class LevelScript : MonoBehaviour
 
 
 
-        TileBase tile = tileMap.GetTile(tileMap.WorldToCell(worldPoint));
+        TileBase tile = BackAndMap.GetTile(BackAndMap.WorldToCell(worldPoint));
+  
+        
 
-
-        tileMap.SetTile(new Vector3Int(0, 0, 0), null);
+        BackAndMap.SetTile(new Vector3Int(0, 0, 0), null);
 
        
         Debug.Log(tile);
+        
     }
 
 
     public Vector2 BackCalcPos ()
     {
-        Debug.Log("Mouse:" + Input.mousePosition);
+        //Debug.Log("Mouse:" + Input.mousePosition);
 
 
-        Debug.Log("ScreenPos:" + screenPos);
-        Debug.Log("ScreenSize:" + viewSize);
+       // Debug.Log("ScreenPos:" + screenPos);
+       // Debug.Log("ScreenSize:" + viewSize);
 
 
         Vector2 mouse = Input.mousePosition;
@@ -348,33 +367,134 @@ public class LevelScript : MonoBehaviour
         float normalX = x / viewSize.x;
         float normalY = y / viewSize.y;
 
-        Debug.Log("x:" + x);
-        Debug.Log("y:" + y);
-        Debug.Log("Nx:" + normalX);
-        Debug.Log("Ny:" + normalY);
+       // Debug.Log("x:" + x);
+       // Debug.Log("y:" + y);
+       // Debug.Log("Nx:" + normalX);
+       // Debug.Log("Ny:" + normalY);
 
-        Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
+       // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
 
         return new Vector2(normalX * 1920, 1080 * (1 + normalY));
 
     }
 
-    public void orthoSizeCalc ()
+    public float orthoSizeCalc ()
     {
-        float orthoSize = (tileMap.cellBounds.yMax * tileMap.cellSize.y);
 
-        Cam2.orthographicSize = orthoSize;
+        //Fit vertically
+        float vertOrthoSize = (BackAndMap.cellBounds.yMax * BackAndMap.cellSize.y);
 
+        //Fit Horizontally
+        float horOrthoSize = (BackAndMap.cellBounds.xMax * BackAndMap.cellSize.x * (Screen.width/Screen.height) / 2);
+
+        if (vertOrthoSize >= horOrthoSize)
+        {
+            //Give Vert
+            return vertOrthoSize;
+        } else
+        {
+            //Give Hor
+            return horOrthoSize;
+        }
 
     }
 
-   
+
+    public void setCamera (Vector2 size)
+    {
+        //Calculate max boundaries for both hor and vert
+        //place the tile maps so that centers align
+        //Have the camera fit to the largest of both dimensions
+
+        //First calculate the absolute middle 
+
+        //Get the middle of the void and align it so that it's center block is at 0,0
+        //Get the middle of the background and make sure it's center 
 
 
+        cleanUpMap(BackAndMap);
+
+        camText.width = (int)size.x;
+        camText.height = (int)size.y;
+
+        Cam2.orthographicSize = orthoSizeCalc();
+
+        //Set Backgroud position
+        //Get center position
+        Vector3 pos = BackAndMap.CellToWorld(getCenter(BackAndMap));
+        //Invert center position 
+        pos = pos * -1;
+        //Leave z untouched
+        pos.z = BackAndMap.transform.position.z;
+        
+        //Set position.
+        BackAndMap.transform.SetPositionAndRotation(pos, new Quaternion(0, 0, 0, 0));
+      
+        //BackAndMap.WorldToCell()
+
+        //Later
+        //Add zoom
+        //Add scroll
+
+    }
+
+    Vector3Int getCenter (Tilemap map)
+    {
+        int maxX;
+        int maxY;
+        int minX;
+        int minY;
 
 
+        maxX = map.cellBounds.xMax;
+        maxY = map.cellBounds.yMax;
+        minX = map.cellBounds.xMin;
+        minY = map.cellBounds.yMin;
 
 
+        int centerX = (int)(minX + maxX) / 2;
+        int centerY = (int)(minY + maxY) / 2;
+
+        return new Vector3Int(centerX, centerY, 0);
+
+    }
+
+
+    public void cleanUpMap (Tilemap map)
+    {
+        int maxX;
+        int maxY;
+        int minX;
+        int minY;
+
+
+        maxX = map.cellBounds.xMax;
+        maxY = map.cellBounds.yMax;
+        minX = map.cellBounds.xMin;
+        minY = map.cellBounds.yMin;
+
+        for (int i = minX; i <= maxX; i ++)
+        {
+            for (int j = minY; j <= maxY; j++)
+            {
+
+               TileBase tile = map.GetTile(new Vector3Int(i, j, 0));
+
+                if (tile == null)
+                {
+                    Debug.Log("Hello");
+                    Destroy(tile);
+                }
+            }
+        }
+
+    }
+
+    public void ResizeCam ()
+    {
+        Cam2.orthographicSize = orthoSizeCalc();
+        Cam2.transform.position = Vector3.zero;
+    }
 
 
 }
