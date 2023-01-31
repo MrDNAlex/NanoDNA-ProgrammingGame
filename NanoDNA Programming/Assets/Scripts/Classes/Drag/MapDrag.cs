@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.Tilemaps;
 
 
 
-public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IScrollHandler
+public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
 
     [SerializeField] Camera Cam;
+    [SerializeField] Tilemap tileMap;
 
     Vector3 lastPos;
     Vector3 newPos;
@@ -18,14 +20,22 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     Vector3 OGPos;
 
+    float OrthoSize;
+
+    
     private void OnGUI()
     {
         
+       float ortho = Cam.orthographicSize - Input.mouseScrollDelta.y/3;
+
+        ortho = Mathf.Clamp(ortho, 1, 30);
+        
+
+        Cam.orthographicSize = ortho;
     }
-    private void OnMouseOver()
-    {
-        //Scroll wheel zoom
-    }
+    
+
+   
 
   
     
@@ -35,7 +45,8 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     {
         //OGPos = transform.position;
 
-
+        OrthoSize = Cam.orthographicSize;
+        
     }
 
     // Update is called once per frame
@@ -52,13 +63,21 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         newPos = Cam.transform.position;
 
+        Debug.Log(tileNumVert());
+        Debug.Log(tileNumHor());
+
 
     }
 
     public void OnDrag(PointerEventData eventData)
     {
 
-        newPos = new Vector3(newPos.x + (eventData.delta.x *-1)/Cam.orthographicSize, newPos.y + (eventData.delta.y*-1) / Cam.orthographicSize, 0);
+        float normalX = eventData.delta.x / GetComponent<RectTransform>().sizeDelta.x;
+
+        float normalY = eventData.delta.y / GetComponent<RectTransform>().sizeDelta.y;
+
+
+        newPos = new Vector3(newPos.x + (tileNumHor()*normalX*tileMap.cellSize.x * -1), newPos.y + ((tileNumVert() * normalY * tileMap.cellSize.y * -1)) , 0);
 
         Cam.transform.position = newPos;
 
@@ -145,23 +164,33 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     }
 
 
-    /*
-    public void BackCalc ()
+    
+    public Vector2 BackCalc (Vector2 input)
     {
-
-        Vector2 mouse = Input.mousePosition;
-
-        float x = mouse.x - Mathf.Abs(screenPos.x);
-        float y = mouse.y - Screen.height;
-
-        float normalX = x / viewSize.x;
-        float normalY = y / viewSize.y;
 
        
 
-        return new Vector2(normalX * 1920, 1080 * (1 + normalY));
+        float x = input.x;
+        float y = input.y;
+
+        float normalX = x / Screen.width;
+        float normalY = y / Screen.height;
+
+       
+
+        return new Vector2(normalX * this.GetComponent<RectTransform>().sizeDelta.x, this.GetComponent<RectTransform>().sizeDelta.y * (1 + normalY));
     }
-    */
+    
+
+    public float tileNumVert ()
+    {
+        return (Cam.orthographicSize * 2) / (tileMap.cellSize.y);
+    }
+
+    public float tileNumHor()
+    {
+        return (Cam.orthographicSize * 2) / (tileMap.cellSize.x * ((float)Screen.height / (float)Screen.width));
+    }
 
 
 }

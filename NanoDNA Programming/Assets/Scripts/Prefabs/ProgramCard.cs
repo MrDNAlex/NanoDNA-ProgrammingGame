@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using FlexUI;
 using UnityEngine.UI;
+
+/*
 public class ProgramCard : MonoBehaviour
 {
     [SerializeField] RectTransform card;
@@ -94,3 +96,4 @@ public class ProgramCard : MonoBehaviour
 
 
 }
+*/

@@ -9,18 +9,44 @@ public class Movement : MonoBehaviour
 
     public Flex Program;
 
-    public string cardType = "mov";
+    public string cardType = "move";
+
+    public ProgramAction action;
+
+    public string dir = "up";
+    public int value = 0;
 
     private void Awake()
     {
-        Debug.Log("Awake 1");
+        //Debug.Log("Awake 1");
         setUI();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        /*
+        createAction("up", 1);
+
+        transform.GetChild(1).GetComponent<Dropdown>().onValueChanged.AddListener(delegate
+        {
+            Debug.Log("Drop");
+            dir = transform.GetChild(1).GetComponent<Dropdown>().options[transform.GetChild(1).GetComponent<Dropdown>().value].ToString().ToLower();
+
+            createAction( dir, value);
+        });
+
+        transform.GetChild(2).GetComponent<InputField>().onValueChanged.AddListener(delegate
+        {
+            Debug.Log("Text");
+            //Surround with try?
+            value = int.Parse(transform.GetChild(1).GetComponent<InputField>().textComponent.text);
+
+            createAction(dir, value);
+        });
+        */
+
+
     }
 
     // Update is called once per frame
@@ -47,6 +73,16 @@ public class Movement : MonoBehaviour
         Program.setAllPadSame(0.3f, 1);
 
     }
+
+    public void createAction (string dir, int val)
+    {
+        Debug.Log("action");
+       action = new ProgramAction("move", dir, val);
+
+    }
+
+
+
 
 
 

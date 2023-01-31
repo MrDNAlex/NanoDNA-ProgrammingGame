@@ -1576,7 +1576,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardType: mov
+  cardType: move
+  progLine: {fileID: 0}
+  indent: 0
 --- !u!1 &8931726586915314693
 GameObject:
   m_ObjectHideFlags: 0

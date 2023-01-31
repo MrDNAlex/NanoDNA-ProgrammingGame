@@ -43,8 +43,6 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
         type = transform.GetComponent<Program>().cardType;
        
-        Debug.Log(type);
-
     }
 
     public void OnDrag(PointerEventData eventData)

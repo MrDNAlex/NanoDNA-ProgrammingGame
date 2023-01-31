@@ -1,9 +1,10 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D;
-using UnityEngine.Tilemaps;
 using FlexUI;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class LevelScript : MonoBehaviour
@@ -45,6 +46,7 @@ public class LevelScript : MonoBehaviour
     [SerializeField] RectTransform btn4;
 
     [SerializeField] Button resize;
+    [SerializeField] Button play;
 
     [SerializeField] RectTransform mapView;
 
@@ -75,14 +77,51 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Tilemap BackAndMap;
     [SerializeField] Tilemap Void;
+    [SerializeField] Tilemap CharAndInt;
+    [SerializeField] TileBase tile;
 
 
 
-    [SerializeField] GameObject sphere;
+    [SerializeField] GameObject character;
+
+   
+
 
     Vector2 screenPos;
     Vector2 viewSize;
 
+    Dictionary<TileBase, CharData> dic = new Dictionary<TileBase, CharData>();
+
+
+    private void Awake()
+    {
+
+        /*
+        IntProgram program = new IntProgram();
+
+
+        program.list.Add(new ProgramAction("move", "up", 1));
+        program.list.Add(new ProgramAction("move", "up", 1));
+        program.list.Add(new ProgramAction("move", "right", 1));
+        program.list.Add(new ProgramAction("move", "up", 1));
+
+        character.GetComponent<CharData>().program = program;
+
+        */
+        for (int i = 0; i < 10; i ++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                BackAndMap.SetTile(new Vector3Int(i, j, 0), tile);
+            }
+        }
+
+     
+
+
+
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -96,10 +135,8 @@ public class LevelScript : MonoBehaviour
 
         contentTrans = content;
 
-        mapView.GetComponent<Button>().onClick.AddListener(sendRay);
-
         resize.onClick.AddListener(ResizeCam);
-
+        play.onClick.AddListener(runProgram);
     }
 
     // Update is called once per frame
@@ -129,7 +166,12 @@ public class LevelScript : MonoBehaviour
 
         Flex Reg2 = new Flex(Background.getChild(1), 2f);
         Flex MapView = new Flex(Reg2.getChild(0), 2f);
-        
+
+        Flex Resize = new Flex(MapView.getChild(0), 1);
+        Flex Play = new Flex(MapView.getChild(1), 1);
+
+        Resize.setCustomSize(new Vector2(100, 100));
+        Play.setCustomSize(new Vector2(100, 100));
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
         Flex Store = new Flex(Reg3.getChild(0), 4f);
@@ -155,6 +197,9 @@ public class LevelScript : MonoBehaviour
 
         Reg2.addChild(MapView);
         Reg2.addChild(Reg3);
+
+        MapView.addChild(Resize);
+        MapView.addChild(Play);
 
         Reg3.addChild(Store);
         Reg3.addChild(Constraints);
@@ -186,8 +231,6 @@ public class LevelScript : MonoBehaviour
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
         setCamera(new Vector2(Screen.width, Screen.height));
-
-        Debug.Log(mapView.rect);
 
         screenPos = new Vector2(mapView.rect.x, Screen.height);
         viewSize = MapView.size;
@@ -226,8 +269,6 @@ public class LevelScript : MonoBehaviour
             //idk.GetComponent<StoreCard>().cardType = "mov";
         }
 
-
-      
 
         /*
         for (int i = 0; i < 2; i++)
@@ -295,7 +336,7 @@ public class LevelScript : MonoBehaviour
         parent.deleteLine();
         GameObject idk = null;
 
-        if (type == "mov")
+        if (type == "move")
         {
             idk = Instantiate(Program, parent.ProgramObj.transform);
             
@@ -320,7 +361,7 @@ public class LevelScript : MonoBehaviour
     }
 
   
-
+    /*
     public void sendRay ()
     {
 
@@ -338,15 +379,58 @@ public class LevelScript : MonoBehaviour
 
 
 
-        TileBase tile = BackAndMap.GetTile(BackAndMap.WorldToCell(worldPoint));
-  
-        
+        TileBase tile = CharAndInt.GetTile(CharAndInt.WorldToCell(worldPoint));
 
-        BackAndMap.SetTile(new Vector3Int(0, 0, 0), null);
+        if (dic[tile] != null)
+        {
+            for (int i = 0; i < dic[tile].program.list.Count; i++)
+            {
+                Debug.Log(dic[tile].program.list[i].dispAction());
 
-       
-        Debug.Log(tile);
-        
+                readAction(dic[tile].program.list[i]);
+            }
+        }
+
+    }
+    */
+
+    public void readAction (ProgramAction action)
+    {
+        switch (action.type)
+        {
+            case "move":
+
+                switch (action.dir)
+                {
+                    case "up":
+                      
+                        character.transform.position = character.transform.position + new Vector3(0, action.value, 0);
+
+                        break;
+                    case "left":
+                        character.transform.position = character.transform.position + new Vector3(-action.value, 0, 0);
+                        break;
+                    case "right":
+                      
+                        character.transform.position = character.transform.position + new Vector3(action.value, 0, 0);
+                        break;
+                    case "down":
+                        character.transform.position = character.transform.position + new Vector3(0, -action.value, 0);
+                        break;
+
+
+
+                }
+
+
+
+                break;
+
+
+        }
+
+
+
     }
 
 
@@ -381,18 +465,21 @@ public class LevelScript : MonoBehaviour
     public float orthoSizeCalc ()
     {
 
+      
         //Fit vertically
-        float vertOrthoSize = (BackAndMap.cellBounds.yMax * BackAndMap.cellSize.y);
+        float vertOrthoSize = ((BackAndMap.cellBounds.yMax - BackAndMap.cellBounds.yMin) / 2 * BackAndMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = (BackAndMap.cellBounds.xMax * BackAndMap.cellSize.x * (Screen.width/Screen.height) / 2);
+        float horOrthoSize = ((BackAndMap.cellBounds.xMax - BackAndMap.cellBounds.xMin)/2 * (BackAndMap.cellSize.x * ((float)Screen.height/(float)Screen.width)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
             //Give Vert
+           
             return vertOrthoSize;
         } else
         {
+           
             //Give Hor
             return horOrthoSize;
         }
@@ -473,6 +560,7 @@ public class LevelScript : MonoBehaviour
         minX = map.cellBounds.xMin;
         minY = map.cellBounds.yMin;
 
+        /*
         for (int i = minX; i <= maxX; i ++)
         {
             for (int j = minY; j <= maxY; j++)
@@ -487,6 +575,7 @@ public class LevelScript : MonoBehaviour
                 }
             }
         }
+        */
 
     }
 
@@ -496,5 +585,32 @@ public class LevelScript : MonoBehaviour
         Cam2.transform.position = Vector3.zero;
     }
 
+
+    public void runProgram ()
+    {
+
+        IntProgram program = new IntProgram();
+
+        //Compile program
+
+        for (int i = 0; i < content.childCount; i ++)
+        {
+            
+            if (content.GetChild(i).GetChild(1).childCount != 0)
+            {
+                program.list.Add(content.GetChild(i).GetChild(1).GetChild(0).GetComponent<Program>().action);
+            }
+
+        }
+
+        character.GetComponent<CharData>().program = program;
+
+        //Run Program
+        for (int i = 0; i < character.GetComponent<CharData>().program.list.Count; i ++)
+        {
+            readAction(character.GetComponent<CharData>().program.list[i]);
+        }
+
+    }
 
 }

@@ -13,6 +13,12 @@ public class Program : MonoBehaviour
     public int indent = 0;
 
 
+    public ProgramAction action;
+    public string dir;
+    public int value;
+
+
+
     private void Awake()
     {
         //Debug.Log("Awake 1");
@@ -37,7 +43,7 @@ public class Program : MonoBehaviour
     {
 
         //Check the type of card it will be
-        if (cardType == "mov")
+        if (cardType == "move")
         {
             //Flex Variable Init
             program = new Flex(transform.GetComponent<RectTransform>(), 2);
@@ -55,6 +61,10 @@ public class Program : MonoBehaviour
             program.setSpacingFlex(0.4f, 1);
 
             program.setAllPadSame(0.3f, 1);
+
+            setActionMovement();
+
+
         } else if (cardType == "var")
         {
             //Flex Variable Init
@@ -79,6 +89,38 @@ public class Program : MonoBehaviour
        
     }
 
+
+    public void setActionMovement ()
+    {
+        //createAction("up", 1);
+
+        transform.GetChild(1).GetComponent<Dropdown>().onValueChanged.AddListener(delegate
+        {
+           //Get Direction
+            dir = transform.GetChild(1).GetComponent<Dropdown>().options[transform.GetChild(1).GetComponent<Dropdown>().value].text.ToLower();
+
+            //Create Action
+            createAction(dir, value);
+        });
+
+        transform.GetChild(2).GetComponent<InputField>().onEndEdit.AddListener(delegate
+        {
+           //Get Value
+           value = int.Parse(transform.GetChild(2).GetComponent<InputField>().textComponent.text);
+
+            //Create Action
+            createAction(dir, value);
+        });
+
+
+    }
+
+    public void createAction(string dir, int val)
+    {
+       
+        action = new ProgramAction("move", dir, val);
+
+    }
 
 
 
