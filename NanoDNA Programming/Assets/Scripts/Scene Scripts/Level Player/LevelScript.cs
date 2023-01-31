@@ -96,18 +96,7 @@ public class LevelScript : MonoBehaviour
     private void Awake()
     {
 
-        /*
-        IntProgram program = new IntProgram();
-
-
-        program.list.Add(new ProgramAction("move", "up", 1));
-        program.list.Add(new ProgramAction("move", "up", 1));
-        program.list.Add(new ProgramAction("move", "right", 1));
-        program.list.Add(new ProgramAction("move", "up", 1));
-
-        character.GetComponent<CharData>().program = program;
-
-        */
+     
         for (int i = 0; i < 10; i ++)
         {
             for (int j = 0; j < 10; j++)
@@ -115,10 +104,6 @@ public class LevelScript : MonoBehaviour
                 BackAndMap.SetTile(new Vector3Int(i, j, 0), tile);
             }
         }
-
-     
-
-
 
 
     }
@@ -257,8 +242,6 @@ public class LevelScript : MonoBehaviour
     void addStore (Flex parent)
     {
 
-
-
        for (int i = 0; i < 2; i++)
         {
           
@@ -269,43 +252,6 @@ public class LevelScript : MonoBehaviour
             //idk.GetComponent<StoreCard>().cardType = "mov";
         }
 
-
-        /*
-        for (int i = 0; i < 2; i++)
-        {
-
-            if (i == 0)
-            {
-                //Debug.Log(parent.UI);
-                GameObject idk = Instantiate(prefab2, parent.UI);
-
-                idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
-
-                
-                if (i % 2 == 0)
-                {
-                    //setType1();
-                    idk.GetComponent<ProgramCard>().onClick.AddListener(setType1);
-                    idk.GetComponent<ProgramCard>().cardType = "if";
-                }
-                else
-                {
-                    idk.GetComponent<ProgramCard>().onClick.AddListener(setType2);
-                    idk.GetComponent<ProgramCard>().cardType = "while";
-                }
-                
-            } else
-            {
-                //Debug.Log(parent.UI);
-                GameObject idk = Instantiate(Movement, parent.UI);
-
-                idk.GetComponent<MovCard>().Card.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
-
-
-            }
-
-        }
-*/
     }
 
     void btn1Ac ()
@@ -346,15 +292,13 @@ public class LevelScript : MonoBehaviour
            
         }
 
-        parent.ProgramUI.addChild(idk.GetComponent<Program>().program);
+        parent.ProgramUI.addChild(idk.GetComponent<ProgramCard>().program);
 
         Destroy(idk.GetComponent<DragController2>());
 
-        //idk.GetComponent<RectTransform>().position = Vector3.zero;
-
         parent.Line.setSize(parent.Line.size);
 
-        idk.GetComponent<Program>().progLine = parent.transform;
+        idk.GetComponent<ProgramCard>().progLine = parent.transform;
 
         idk.AddComponent<DeleteIndentDrag>();
 
@@ -589,7 +533,7 @@ public class LevelScript : MonoBehaviour
     public void runProgram ()
     {
 
-        IntProgram program = new IntProgram();
+        Program program = new Program();
 
         //Compile program
 
@@ -598,7 +542,7 @@ public class LevelScript : MonoBehaviour
             
             if (content.GetChild(i).GetChild(1).childCount != 0)
             {
-                program.list.Add(content.GetChild(i).GetChild(1).GetChild(0).GetComponent<Program>().action);
+                program.list.Add(content.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
             }
 
         }

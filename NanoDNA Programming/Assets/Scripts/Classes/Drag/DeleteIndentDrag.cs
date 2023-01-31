@@ -66,13 +66,13 @@ public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
         {
 
             transform.position = OGPos;
-            transform.GetComponent<Program>().indent = 0;
+            transform.GetComponent<ProgramCard>().indent = 0;
 
 
         } else if (distance.x >= 2.2f)
         {
             //Delete the line
-            transform.GetComponent<Program>().progLine.GetComponent<ProgramLine>().deleteLine();
+            transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteLine();
             Debug.Log("Delete");
         }
         else if (distance.x < -1 && distance.x > -2)
@@ -80,14 +80,14 @@ public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
             //Set indent pos
             transform.position = OGPos + new Vector3(1, 0, 0);
             //Set indentation
-            transform.GetComponent<Program>().indent = 1;
+            transform.GetComponent<ProgramCard>().indent = 1;
         }
         else if (distance.x < -2 && distance.x > -3)
         {
             //Set indent pos
             transform.position = OGPos + new Vector3(2, 0, 0);
             //Set indentation
-            transform.GetComponent<Program>().indent = 2;
+            transform.GetComponent<ProgramCard>().indent = 2;
            
         }
         else if (distance.x < -3 && distance.x > -4)
@@ -95,7 +95,7 @@ public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
             //Set indent pos
             transform.position = OGPos + new Vector3(3, 0, 0);
             //Set indentation
-            transform.GetComponent<Program>().indent = 3;
+            transform.GetComponent<ProgramCard>().indent = 3;
             
         } else
         {

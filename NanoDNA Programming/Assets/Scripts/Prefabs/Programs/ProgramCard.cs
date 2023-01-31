@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
 
-public class Program : MonoBehaviour
+public class ProgramCard : MonoBehaviour
 {
 
     public Flex program;
     public string cardType;
     public Transform progLine;
     public int indent = 0;
-
 
     public ProgramAction action;
     public string dir;

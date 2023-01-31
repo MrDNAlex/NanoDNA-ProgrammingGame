@@ -41,7 +41,7 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
         //Camera.main.GetComponent<LevelScript>().type = transform.parent.GetComponent<ProgramCard>().cardType;
         //Debug.Log(Camera.main.GetComponent<LevelScript>().type);
 
-        type = transform.GetComponent<Program>().cardType;
+        type = transform.GetComponent<ProgramCard>().cardType;
        
     }
 
@@ -96,9 +96,6 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
                    
                     Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>(), type);
                 }
-
-                //child.GetComponent<ProgramLine>().ProgramObj = Instantiate(Camera.main.GetComponent<LevelScript>().)
-               
 
             }
 

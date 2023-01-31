@@ -3,17 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class IntProgram 
+public class Program 
 {
    
-
-
     public List<ProgramAction> list = new List<ProgramAction>();
-
-   
-
-
-
-
 
 }

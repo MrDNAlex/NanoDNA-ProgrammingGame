@@ -64,33 +64,26 @@ public class ProgramLine : MonoBehaviour
 
     void setButton ()
     {
+        //Set the garbage can button
         Line.getChild(2).GetComponent<Button>().onClick.AddListener(deleteLine);
     }
 
     public void deleteLine ()
     {
-
+        //Loop through all children to delete
         for (int i = 0; i < Program.UI.childCount; i ++)
         {
-
-            Debug.Log(Program.UI.GetChild(0));
             Destroy(Program.UI.GetChild(0).gameObject);
         }
 
         //Remove all Flex Children
         Program.deleteAllChildren();
 
+        //Reset color
         background.GetComponent<Image>().color = Color.cyan;
 
         
     }
-
-
-    //Add a function to slide to one side to delete the line
-
-
-
-
 
 
 

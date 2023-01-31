@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharData : MonoBehaviour
 {
 
-    public IntProgram program = new IntProgram();
+    public Program program = new Program();
 
   
 
