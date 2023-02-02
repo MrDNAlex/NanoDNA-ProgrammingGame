@@ -32,10 +32,6 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform storeHeader;
 
-    
-
-    
-
     [SerializeField] RectTransform constraints;
     */
 
@@ -54,8 +50,6 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform gridView;
 
-
-
     [SerializeField] GameObject prefab;
 
     [SerializeField] GameObject prefab2;
@@ -73,30 +67,30 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Camera Cam2;
 
-   
-
     [SerializeField] Tilemap BackAndMap;
     [SerializeField] Tilemap Void;
     [SerializeField] Tilemap CharAndInt;
     [SerializeField] TileBase tile;
 
-
-
-    [SerializeField] GameObject character;
-
-   
-
+    [SerializeField] public GameObject character;
 
     Vector2 screenPos;
     Vector2 viewSize;
 
     Dictionary<TileBase, CharData> dic = new Dictionary<TileBase, CharData>();
 
+    public Flex Background;
+
+
+    public GameObject selected;
+
+    Flex Content;
+
+    public ProgramSection progSec;
+
 
     private void Awake()
     {
-
-     
         for (int i = 0; i < 10; i ++)
         {
             for (int j = 0; j < 10; j++)
@@ -104,8 +98,6 @@ public class LevelScript : MonoBehaviour
                 BackAndMap.SetTile(new Vector3Int(i, j, 0), tile);
             }
         }
-
-
     }
 
     // Start is called before the first frame update
@@ -122,6 +114,9 @@ public class LevelScript : MonoBehaviour
 
         resize.onClick.AddListener(ResizeCam);
         play.onClick.AddListener(runProgram);
+
+        progSec = content.GetComponent<ProgramSection>();
+
     }
 
     // Update is called once per frame
@@ -139,7 +134,7 @@ public class LevelScript : MonoBehaviour
 
         //Later, split into multiple functions for better categorization.
 
-        Flex Background = new Flex(background, 1);
+        Background = new Flex(background, 1);
 
         Flex Reg1 = new Flex(Background.getChild(0), 1);
         Flex Header = new Flex(Reg1.getChild(0), 1);
@@ -147,7 +142,7 @@ public class LevelScript : MonoBehaviour
         Flex SV = new Flex(List.getChild(0), 1);
         Flex VP = new Flex(SV.getChild(0), 10);
        // Flex SB = new Flex(sB, 1);
-        Flex Content = new Flex(VP.getChild(0), 1);
+        Content = new Flex(VP.getChild(0), 1);
 
         Flex Reg2 = new Flex(Background.getChild(1), 2f);
         Flex MapView = new Flex(Reg2.getChild(0), 2f);
@@ -236,7 +231,6 @@ public class LevelScript : MonoBehaviour
             idk.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
             //idk.GetComponent<Button>().onClick.AddListener(delegate { setBackground(idk); });
         }
-
     }
 
     void addStore (Flex parent)
@@ -244,8 +238,6 @@ public class LevelScript : MonoBehaviour
 
        for (int i = 0; i < 2; i++)
         {
-          
-
             GameObject idk = Instantiate(prefab2, parent.UI);
 
             idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
@@ -361,22 +353,10 @@ public class LevelScript : MonoBehaviour
                     case "down":
                         character.transform.position = character.transform.position + new Vector3(0, -action.value, 0);
                         break;
-
-
-
                 }
-
-
-
                 break;
-
-
         }
-
-
-
     }
-
 
     public Vector2 BackCalcPos ()
     {
@@ -533,7 +513,7 @@ public class LevelScript : MonoBehaviour
     public void runProgram ()
     {
 
-        Program program = new Program();
+        Program program = new Program(false);
 
         //Compile program
 
@@ -549,6 +529,8 @@ public class LevelScript : MonoBehaviour
 
         character.GetComponent<CharData>().program = program;
 
+        //character.GetComponent<CharData>().displayProgram();
+
         //Run Program
         for (int i = 0; i < character.GetComponent<CharData>().program.list.Count; i ++)
         {
@@ -556,5 +538,146 @@ public class LevelScript : MonoBehaviour
         }
 
     }
+    /*
+    public void compileProgram ()
+    {
+        Program program = new Program();
+
+        //Compile program
+
+        for (int i = 0; i < content.childCount; i++)
+        {
+
+            if (content.GetChild(i).GetChild(1).childCount != 0)
+            {
+                program.list.Add(content.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
+            } else
+            {
+                program.list.Add(new ProgramAction("none", "up", 1));
+            }
+
+        }
+
+        character.GetComponent<CharData>().program = program;
+
+        //Debug.Log(character.GetComponent<CharData>().program.list.Count);
+    }
+
+
+    public void renderProgram(GameObject selected)
+    {
+
+        if (selected != null)
+        {
+
+            if (selected.GetComponent<CharData>() != null)
+            {
+                //Render the program
+
+
+                //
+                //Seperate this into 2 functions?
+                //
+
+               
+                foreach (Transform child in content)
+                {
+                    child.gameObject.SetActive(false);
+                    Destroy(child.gameObject);
+                }
+               
+                
+
+               // destroySubChildren(content.gameObject);
+
+                Flex flex = Flex.findChild(content.gameObject, Background);
+
+                flex.deleteAllChildren();
+
+                CharData data = selected.GetComponent<CharData>();
+
+                for (int i = 0; i < 20; i ++)
+                {
+                    //Instantiate Object
+                    GameObject line = Instantiate(prefab, content.transform);
+
+                    //Instantiate Program Card
+                    line.GetComponent<ProgramLine>().addProgram(data.program.list[i].type);
+
+                    if (line.GetComponent<ProgramLine>().ProgramObj.transform.childCount != 0)
+                    {
+                        //Set Info
+                        line.GetComponent<ProgramLine>().ProgramObj.transform.GetChild(0).GetComponent<ProgramCard>().setInfo(data.program.list[i]);
+                    }
+
+                    line.GetComponent<ProgramLine>().setNumber(i.ToString());
+
+                    flex.addChild(line.GetComponent<ProgramLine>().Line);
+
+                }
+
+                Content.setSize(Content.size);
+               
+            }
+            else
+            {
+              
+                Flex flex = Flex.findChild(content.gameObject, Background);
+
+                flex.deleteAllChildren();
+
+                destroySubChildren(content.gameObject);
+
+                //Spawn new list
+              
+
+            }
+        } else
+        {
+            
+            Flex flex = Flex.findChild(content.gameObject, Background);
+
+            flex.deleteAllChildren();
+
+            destroySubChildren(content.gameObject);
+            
+        }
+        
+
+
+        //Check if selected object has a script
+
+    }
+    */
+
+
+    public void destroySubChildren (GameObject Obj)
+    {
+        //Only deletes children under the one referenced
+        foreach (Transform child in Obj.transform)
+        {
+            if (child.childCount == 0)
+            {
+                //Safe to delete
+                Destroy(child.gameObject);
+            } else
+            {
+                //Delete chidlren first
+                destroySubChildren(child.gameObject);
+
+                Destroy(child.gameObject);
+            }
+
+        }
+
+    }
+
+   
+
+
+
+
+
+
 
 }

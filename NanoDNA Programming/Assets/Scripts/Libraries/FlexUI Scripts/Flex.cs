@@ -16,7 +16,7 @@ namespace FlexUI
         public RectTransform UI;
 
         //Reference to all the children Flexes 
-        List<Flex> children = new List<Flex>();
+        public List<Flex> children = new List<Flex>();
 
 
         [Header("Flex")]
@@ -87,9 +87,6 @@ namespace FlexUI
         //The size that a child flex will take if custom size toggle is on (WIP)
         public Vector2 customSize;
 
-
-
-
         //Constructor function
         public Flex(RectTransform UIItem, float flex)
         {
@@ -129,6 +126,8 @@ namespace FlexUI
             setVerticalPadding(0, 1, 0, 1);
             setSpacingFlex(0, 1);
 
+            FlexInfo info = UI.gameObject.AddComponent<FlexInfo>();
+            info.flex = this;
 
         }
 
@@ -687,12 +686,27 @@ namespace FlexUI
         }
 
 
+        public static Flex findChild (GameObject obj, Flex flex)
+        {
+            Flex result = null;
+            foreach (Flex child in flex.children)
+            {
+                if (result == null)
+                {
+                    if (child.UI.gameObject == obj)
+                    {
+                        result = child;
+                    }
+                    else
+                    {
+                        result = findChild(obj, child);
+                    }
+                }
+               
+            }
 
-
-
-
-
-
+            return result;
+        }
 
     }
 

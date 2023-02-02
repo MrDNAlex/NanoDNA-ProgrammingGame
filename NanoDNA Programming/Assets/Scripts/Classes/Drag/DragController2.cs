@@ -13,7 +13,7 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
     Transform lastParent;
     Vector3 newPos;
 
-    GameObject hover = null;
+   // GameObject hover = null;
     string type;
 
 
@@ -93,8 +93,10 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
                 //Find a way to raycast 
                 if (distance < 0.9f)
                 {
-                   
-                    Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>(), type);
+
+                    child.GetComponent<ProgramLine>().addProgram(type);
+
+                    //Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>(), type);
                 }
 
             }

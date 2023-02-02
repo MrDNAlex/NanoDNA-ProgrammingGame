@@ -59,6 +59,9 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
                     lastPos = iPos;
                     //transform.position = iPos;
 
+                    UIObject.GetComponent<ProgramLine>().setNumber();
+                    iChild.GetComponent<ProgramLine>().setNumber();
+
                 }
 
             }
@@ -70,6 +73,8 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     {
         //Set Position
         UIObject.position = lastPos;
+
+        
     }
 
 

@@ -8,11 +8,12 @@ using UnityEngine.Tilemaps;
 
 
 
-public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IScrollHandler
 {
 
     [SerializeField] Camera Cam;
     [SerializeField] Tilemap tileMap;
+    [SerializeField] GameObject content;
 
     Vector3 lastPos;
     Vector3 newPos;
@@ -22,17 +23,22 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     float OrthoSize;
 
-    private void OnGUI()
+    bool zoom;
+
+  
+
+    public void OnScroll(PointerEventData eventData)
     {
-        
-       float ortho = Cam.orthographicSize - Input.mouseScrollDelta.y/3;
+        float ortho = Cam.orthographicSize - Input.mouseScrollDelta.y / 2;
 
         ortho = Mathf.Clamp(ortho, 1, 30);
-        
+
+        //Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, ortho, Time.deltaTime);
 
         Cam.orthographicSize = ortho;
+
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,12 +56,39 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //Get last and current position
-        //lastPos = transform.position;
-        //newPos = transform.localPosition;
-
+       
         newPos = Cam.transform.position;
 
+        //Send raycast to collide with a character
+
+        RaycastHit rayHit;
+
+        Vector2 worldPos = Cam.ScreenToWorldPoint(BackCalcPos());
+
+        if (Physics.Raycast(new Vector3(worldPos.x, worldPos.y, 0), Vector3.forward, out rayHit, Mathf.Infinity))
+        {
+           
+
+            //Check if there is character data associated
+            if (rayHit.collider.GetComponent<CharData>() != null)
+            {
+                //content.GetComponent<ProgramSection>().character = rayHit.collider.gameObject;
+
+                ProgramSection sec = Camera.main.GetComponent<LevelScript>().progSec;
+
+               sec.renderProgram(rayHit.collider.gameObject);
+
+                sec.updateOGPos();
+
+
+            }
+            
+        } else
+        {
+            //Remove the script
+
+        }
+       
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -103,6 +136,35 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     public float tileNumHor()
     {
         return (Cam.orthographicSize * 2) / (tileMap.cellSize.x * ((float)Screen.height / (float)Screen.width));
+    }
+
+    public Vector2 BackCalcPos()
+    {
+        //Debug.Log("Mouse:" + Input.mousePosition);
+
+
+        // Debug.Log("ScreenPos:" + screenPos);
+        // Debug.Log("ScreenSize:" + viewSize);
+
+
+        Vector2 mouse = Input.mousePosition;
+
+        float x = mouse.x - Mathf.Abs(transform.GetComponent<RectTransform>().rect.x);
+        float y = mouse.y - Screen.height;
+
+        float normalX = x / transform.GetComponent<RectTransform>().sizeDelta.x;
+        float normalY = y / transform.GetComponent<RectTransform>().sizeDelta.y;
+
+      
+        // Debug.Log("x:" + x);
+        // Debug.Log("y:" + y);
+        // Debug.Log("Nx:" + normalX);
+        // Debug.Log("Ny:" + normalY);
+
+        // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
+
+        return new Vector2(normalX * 1920, 1080 * (1 + normalY));
+
     }
 
 

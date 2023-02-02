@@ -16,8 +16,6 @@ public class ProgramCard : MonoBehaviour
     public string dir;
     public int value;
 
-
-
     private void Awake()
     {
         //Debug.Log("Awake 1");
@@ -28,7 +26,9 @@ public class ProgramCard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+       // Debug.Log("Start");
+      //  Debug.Log(action.dispAction());
+         
     }
 
     // Update is called once per frame
@@ -91,37 +91,86 @@ public class ProgramCard : MonoBehaviour
 
     public void setActionMovement ()
     {
-        //createAction("up", 1);
+        action = createAction(dir, value);
 
         transform.GetChild(1).GetComponent<Dropdown>().onValueChanged.AddListener(delegate
         {
+            
            //Get Direction
             dir = transform.GetChild(1).GetComponent<Dropdown>().options[transform.GetChild(1).GetComponent<Dropdown>().value].text.ToLower();
 
             //Create Action
-            createAction(dir, value);
+            action = createAction(dir, value);
+
         });
 
         transform.GetChild(2).GetComponent<InputField>().onEndEdit.AddListener(delegate
         {
+
+           
            //Get Value
            value = int.Parse(transform.GetChild(2).GetComponent<InputField>().textComponent.text);
 
             //Create Action
-            createAction(dir, value);
+            action = createAction(dir, value);
+
         });
 
 
     }
 
-    public void createAction(string dir, int val)
+    public ProgramAction createAction(string dir, int val)
     {
        
-        action = new ProgramAction("move", dir, val);
+        return new ProgramAction("move", dir, val);
 
     }
 
+    public void setInfo (ProgramAction action)
+    {
+        switch (action.type)
+        {
+            case "move":
 
+                cardType = action.type;
+                value = action.value;
+                dir = action.dir;
+
+                if (action.dir == "up")
+                {
+                    transform.GetChild(1).GetComponent<Dropdown>().value = 0;
+                } else if (action.dir == "down")
+                {
+                    transform.GetChild(1).GetComponent<Dropdown>().value = 1;
+                }
+                else if (action.dir == "left")
+                {
+                    transform.GetChild(1).GetComponent<Dropdown>().value = 2;
+                }
+                else if (action.dir == "right")
+                {
+                    transform.GetChild(1).GetComponent<Dropdown>().value = 3;
+                }
+
+                
+                transform.GetChild(2).GetComponent<InputField>().text = "" + action.value;
+
+                this.action = createAction(action.dir, action.value);
+
+                break;
+            case "var":
+
+                break;
+
+            default:
+
+                break;
+
+        }
+
+    }
+
+    
 
 
 }

@@ -105,4 +105,11 @@ public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
         }
 
     }
+
+    public void updateOGPos ()
+    {
+       // Debug.Log("hi");
+        OGPos = transform.position;
+
+    }
 }
