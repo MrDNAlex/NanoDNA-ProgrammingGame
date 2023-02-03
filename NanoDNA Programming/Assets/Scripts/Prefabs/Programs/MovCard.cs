@@ -8,7 +8,7 @@ public class MovCard : MonoBehaviour
 {
     public Flex Card;
 
-    public string cardType = "mov";
+    public string cardType = "move";
 
     public void Awake()
     {

@@ -16,7 +16,7 @@ namespace FlexUI
         public RectTransform UI;
 
         //Reference to all the children Flexes 
-        List<Flex> children = new List<Flex>();
+        public List<Flex> children = new List<Flex>();
 
 
         [Header("Flex")]
@@ -68,6 +68,12 @@ namespace FlexUI
         public bool dontModify;
         // WIP, will allow you to input a custom size as a child
         public bool customDim;
+        //Allow custom size for width
+        public bool customDimW;
+        //Allow custom size for height
+        public bool customDimH;
+
+
 
 
 
@@ -86,9 +92,6 @@ namespace FlexUI
         [Header("Override Size")]
         //The size that a child flex will take if custom size toggle is on (WIP)
         public Vector2 customSize;
-
-
-
 
         //Constructor function
         public Flex(RectTransform UIItem, float flex)
@@ -129,6 +132,8 @@ namespace FlexUI
             setVerticalPadding(0, 1, 0, 1);
             setSpacingFlex(0, 1);
 
+            FlexInfo info = UI.gameObject.AddComponent<FlexInfo>();
+            info.flex = this;
 
         }
 
@@ -220,6 +225,37 @@ namespace FlexUI
             //Check if it will have a custom dimension
             else if (customDim)
             {
+
+                if (customDimH && customDimW)
+                {
+                    //Use the Custom Size
+                   
+                    size = customSize;
+                } else if (customDimH)
+                {
+                    //Use height
+                  
+                    defaultMethod(thisSize);
+                    size.y = customSize.y;
+
+                  
+                }
+                else if (customDimW)
+                {
+                   
+                    //Use width
+                    defaultMethod(thisSize);
+                    size.x = customSize.x;
+
+                } else
+                {
+                  
+                    //Use the regular sizing method
+                    defaultMethod(thisSize);
+                }
+
+
+                /*
                 //Make sure the dimensions are real
                 if (customSize.magnitude > 0)
                 {
@@ -232,6 +268,7 @@ namespace FlexUI
                     //Use the regular sizing method
                     defaultMethod(thisSize);
                 }
+                */
 
             }
             //Check if it will have a size dependent on the number of children.
@@ -430,6 +467,8 @@ namespace FlexUI
                     {
                         //Add a polynomial with the minimum dimension
                         eqY.addPolynomial(Mathf.Min(size.y, size.x), 0); //wVal
+
+                       // Debug.Log("Square");
                     }
                     else
                     {
@@ -480,6 +519,8 @@ namespace FlexUI
                     {
                        //Add polynomial with minimum dimension 
                         eqX.addPolynomial(Mathf.Min(size.y, size.x), 0); //hval
+
+                       // Debug.Log("Square");
                     }
                     else
                     {
@@ -495,7 +536,7 @@ namespace FlexUI
             }
 
             //Return the calulated value
-            return eqX.solveSingleEQ(size.x, name);
+            return eqX.solveSingleEQ(size.x);
         }
 
         //Next week or if we get to use this create a system that allows you to make a blueprint or prefab type thing and then you can input a list of rectTransforms to instance which things will be affected
@@ -517,8 +558,6 @@ namespace FlexUI
            return UI.GetChild(index).GetComponent<RectTransform>();
 
         }
-
-
 
         //Get the reference to the childs rectTransform
         public static RectTransform getChildRect(RectTransform rect, int childNum)
@@ -569,7 +608,28 @@ namespace FlexUI
         public void setCustomSize(Vector2 size)
         {
             customDim = true;
-            customSize = size;
+
+            if (size.x == 0)
+            {
+              
+                customDimH = true;
+                customDimW = false;
+                customSize = size;
+            } else if (size.y == 0)
+            {
+              
+                customDimH = false;
+                customDimW = true;
+                customSize = size;
+            } else
+            {
+               
+                customDimH = true;
+                customDimW = true;
+                customSize = size;
+            }
+
+           
         }
 
         //Set the value to multiply by the number of children
@@ -687,12 +747,27 @@ namespace FlexUI
         }
 
 
+        public static Flex findChild (GameObject obj, Flex flex)
+        {
+            Flex result = null;
+            foreach (Flex child in flex.children)
+            {
+                if (result == null)
+                {
+                    if (child.UI.gameObject == obj)
+                    {
+                        result = child;
+                    }
+                    else
+                    {
+                        result = findChild(obj, child);
+                    }
+                }
+               
+            }
 
-
-
-
-
-
+            return result;
+        }
 
     }
 

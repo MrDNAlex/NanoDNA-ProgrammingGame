@@ -76,7 +76,7 @@ public class StoreCard : MonoBehaviour
         }
 
         Program.transform.SetSiblingIndex(0);
-        cardFlex.addChild(Program.GetComponent<Program>().program);
+        cardFlex.addChild(Program.GetComponent<ProgramCard>().program);
 
 
     }
