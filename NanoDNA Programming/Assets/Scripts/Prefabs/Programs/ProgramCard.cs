@@ -13,8 +13,8 @@ public class ProgramCard : MonoBehaviour
     public int indent = 0;
 
     public ProgramAction action;
-    public string dir;
-    public int value;
+    string dir = "up";
+    public int value = 0;
 
     private void Awake()
     {
@@ -91,6 +91,8 @@ public class ProgramCard : MonoBehaviour
 
     public void setActionMovement ()
     {
+        Debug.Log(dir);
+        Debug.Log(value);
         action = createAction(dir, value);
 
         transform.GetChild(1).GetComponent<Dropdown>().onValueChanged.AddListener(delegate

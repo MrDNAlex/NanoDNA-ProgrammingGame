@@ -130,7 +130,7 @@ public class ProgramSection : MonoBehaviour
             {
                
                 program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
-
+                Debug.Log(getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
               
             }
             else
