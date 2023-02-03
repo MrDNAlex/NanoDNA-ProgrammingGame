@@ -112,8 +112,8 @@ public class LevelScript : MonoBehaviour
 
         contentTrans = content;
 
-        resize.onClick.AddListener(ResizeCam);
-        play.onClick.AddListener(runProgram);
+        //resize.onClick.AddListener(ResizeCam);
+        //play.onClick.AddListener(runProgram);
 
         progSec = content.GetComponent<ProgramSection>();
 
@@ -138,20 +138,33 @@ public class LevelScript : MonoBehaviour
 
         Flex Reg1 = new Flex(Background.getChild(0), 1);
         Flex Header = new Flex(Reg1.getChild(0), 1);
-        Flex List = new Flex(Reg1.getChild(1), 10);
+        Flex List = new Flex(Reg1.getChild(1), 8);
         Flex SV = new Flex(List.getChild(0), 1);
         Flex VP = new Flex(SV.getChild(0), 10);
        // Flex SB = new Flex(sB, 1);
         Content = new Flex(VP.getChild(0), 1);
 
+        Flex Controls = new Flex(Header.getChild(0), 1.5f);
+
+        Flex Undo = new Flex(Controls.getChild(0), 1);
+        Flex InteracName = new Flex(Controls.getChild(1), 4);
+        Flex Save = new Flex(Controls.getChild(2), 1);
+
+       // Undo.setSquare();
+      //  Save.setSquare();
+
+        Flex Scripts = new Flex(Header.getChild(1), 1);
+
         Flex Reg2 = new Flex(Background.getChild(1), 2f);
         Flex MapView = new Flex(Reg2.getChild(0), 2f);
 
-        Flex Resize = new Flex(MapView.getChild(0), 1);
-        Flex Play = new Flex(MapView.getChild(1), 1);
+        Flex Zoom = new Flex(MapView.getChild(0), 4);
+        Flex Resize = new Flex(MapView.getChild(1), 1);
+        Flex Play = new Flex(MapView.getChild(2), 1);
 
-        Resize.setCustomSize(new Vector2(100, 100));
-        Play.setCustomSize(new Vector2(100, 100));
+        Zoom.setCustomSize(new Vector2(0, 40));
+        Resize.setCustomSize(new Vector2(0, 40));
+        Play.setCustomSize(new Vector2(0, 40));
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
         Flex Store = new Flex(Reg3.getChild(0), 4f);
@@ -167,6 +180,15 @@ public class LevelScript : MonoBehaviour
         Flex Constraints = new Flex(Reg3.getChild(1), 1f);
 
         //Add children
+
+        Header.addChild(Controls);
+        Header.addChild(Scripts);
+
+        Controls.addChild(InteracName);
+        Controls.addChild(Undo);
+        Controls.addChild(Save);
+
+
         List.addChild(SV);
         SV.addChild(VP);
        // SV.addChild(SB);
@@ -178,6 +200,7 @@ public class LevelScript : MonoBehaviour
         Reg2.addChild(MapView);
         Reg2.addChild(Reg3);
 
+        MapView.addChild(Zoom);
         MapView.addChild(Resize);
         MapView.addChild(Play);
 
@@ -196,6 +219,11 @@ public class LevelScript : MonoBehaviour
         StoreHeader.addChild(BTN4);
 
         //Background.addChild(Reg3);
+
+        MapView.setSpacingFlex(0.2f, 1);
+
+        Controls.setSpacingFlex(0.5f, 1);
+        Controls.setAllPadSame(0.1f, 1);
 
         //Add the programming blocks as children
         addChildren(Content);
@@ -266,8 +294,6 @@ public class LevelScript : MonoBehaviour
         gridView.GetComponent<Image>().color = Color.cyan;
     }
 
- 
-
     public void addProgram (ProgramLine parent, string type)
     {
 
@@ -330,33 +356,7 @@ public class LevelScript : MonoBehaviour
     }
     */
 
-    public void readAction (ProgramAction action)
-    {
-        switch (action.type)
-        {
-            case "move":
-
-                switch (action.dir)
-                {
-                    case "up":
-                      
-                        character.transform.position = character.transform.position + new Vector3(0, action.value, 0);
-
-                        break;
-                    case "left":
-                        character.transform.position = character.transform.position + new Vector3(-action.value, 0, 0);
-                        break;
-                    case "right":
-                      
-                        character.transform.position = character.transform.position + new Vector3(action.value, 0, 0);
-                        break;
-                    case "down":
-                        character.transform.position = character.transform.position + new Vector3(0, -action.value, 0);
-                        break;
-                }
-                break;
-        }
-    }
+   
 
     public Vector2 BackCalcPos ()
     {
@@ -382,7 +382,7 @@ public class LevelScript : MonoBehaviour
 
        // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
 
-        return new Vector2(normalX * 1920, 1080 * (1 + normalY));
+        return new Vector2(normalX * Screen.width, Screen.height * (1 + normalY));
 
     }
 
@@ -502,154 +502,6 @@ public class LevelScript : MonoBehaviour
         */
 
     }
-
-    public void ResizeCam ()
-    {
-        Cam2.orthographicSize = orthoSizeCalc();
-        Cam2.transform.position = Vector3.zero;
-    }
-
-
-    public void runProgram ()
-    {
-
-        Program program = new Program(false);
-
-        //Compile program
-
-        for (int i = 0; i < content.childCount; i ++)
-        {
-            
-            if (content.GetChild(i).GetChild(1).childCount != 0)
-            {
-                program.list.Add(content.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
-            }
-
-        }
-
-        character.GetComponent<CharData>().program = program;
-
-        //character.GetComponent<CharData>().displayProgram();
-
-        //Run Program
-        for (int i = 0; i < character.GetComponent<CharData>().program.list.Count; i ++)
-        {
-            readAction(character.GetComponent<CharData>().program.list[i]);
-        }
-
-    }
-    /*
-    public void compileProgram ()
-    {
-        Program program = new Program();
-
-        //Compile program
-
-        for (int i = 0; i < content.childCount; i++)
-        {
-
-            if (content.GetChild(i).GetChild(1).childCount != 0)
-            {
-                program.list.Add(content.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
-            } else
-            {
-                program.list.Add(new ProgramAction("none", "up", 1));
-            }
-
-        }
-
-        character.GetComponent<CharData>().program = program;
-
-        //Debug.Log(character.GetComponent<CharData>().program.list.Count);
-    }
-
-
-    public void renderProgram(GameObject selected)
-    {
-
-        if (selected != null)
-        {
-
-            if (selected.GetComponent<CharData>() != null)
-            {
-                //Render the program
-
-
-                //
-                //Seperate this into 2 functions?
-                //
-
-               
-                foreach (Transform child in content)
-                {
-                    child.gameObject.SetActive(false);
-                    Destroy(child.gameObject);
-                }
-               
-                
-
-               // destroySubChildren(content.gameObject);
-
-                Flex flex = Flex.findChild(content.gameObject, Background);
-
-                flex.deleteAllChildren();
-
-                CharData data = selected.GetComponent<CharData>();
-
-                for (int i = 0; i < 20; i ++)
-                {
-                    //Instantiate Object
-                    GameObject line = Instantiate(prefab, content.transform);
-
-                    //Instantiate Program Card
-                    line.GetComponent<ProgramLine>().addProgram(data.program.list[i].type);
-
-                    if (line.GetComponent<ProgramLine>().ProgramObj.transform.childCount != 0)
-                    {
-                        //Set Info
-                        line.GetComponent<ProgramLine>().ProgramObj.transform.GetChild(0).GetComponent<ProgramCard>().setInfo(data.program.list[i]);
-                    }
-
-                    line.GetComponent<ProgramLine>().setNumber(i.ToString());
-
-                    flex.addChild(line.GetComponent<ProgramLine>().Line);
-
-                }
-
-                Content.setSize(Content.size);
-               
-            }
-            else
-            {
-              
-                Flex flex = Flex.findChild(content.gameObject, Background);
-
-                flex.deleteAllChildren();
-
-                destroySubChildren(content.gameObject);
-
-                //Spawn new list
-              
-
-            }
-        } else
-        {
-            
-            Flex flex = Flex.findChild(content.gameObject, Background);
-
-            flex.deleteAllChildren();
-
-            destroySubChildren(content.gameObject);
-            
-        }
-        
-
-
-        //Check if selected object has a script
-
-    }
-    */
-
 
     public void destroySubChildren (GameObject Obj)
     {

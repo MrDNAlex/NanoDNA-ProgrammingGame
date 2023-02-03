@@ -129,6 +129,8 @@ public class ProgramLine : MonoBehaviour
             idk.GetComponent<ProgramCard>().progLine = transform;
 
             idk.AddComponent<DeleteIndentDrag>();
+
+            Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
         }
 
     }
@@ -164,8 +166,6 @@ public class ProgramLine : MonoBehaviour
             //Set size of the component
             Line.setSize(Line.size);
 
-
-            Debug.Log(action.dispAction());
             //Set Info
             program.GetComponent<ProgramCard>().setInfo(action);
 

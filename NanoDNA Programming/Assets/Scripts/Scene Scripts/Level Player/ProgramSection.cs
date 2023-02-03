@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using FlexUI;
 using UnityEngine.Tilemaps;
 
@@ -13,12 +14,25 @@ public class ProgramSection : MonoBehaviour
     public int maxLineNum = 20;
    
     [SerializeField] GameObject progLine;
+    [SerializeField] Button playBtn;
+    [SerializeField] GameObject charHolder;
+    [SerializeField] Text nameHeader;
+    [SerializeField] Button saveBtn;
+    [SerializeField] Button undoBtn;
+
+    public bool undo;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         level = Camera.main.GetComponent<LevelScript>();
         character = level.character;
+
+        playBtn.onClick.AddListener(playProgram);
+        saveBtn.onClick.AddListener(compileProgram);
+        undoBtn.onClick.AddListener(undoProgram);
+
 
     }
 
@@ -29,41 +43,82 @@ public class ProgramSection : MonoBehaviour
     }
 
 
-    /*
-    public void runProgram()
+    
+    public void playProgram ()
     {
+        compileProgram();
 
-        Program program = new Program();
-
-        //Compile program
-
-        for (int i = 0; i < transform.childCount; i++)
+        foreach (Transform child in charHolder.transform)
         {
 
-            if (transform.GetChild(i).GetChild(1).childCount != 0)
+            Program program = new Program(false);
+
+
+            for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i ++)
             {
-                program.list.Add(transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
+                decompose(child.GetComponent<CharData>().program.list[i], program);
             }
 
+
+
+            //Later add a thing that deconstructs the program into more basic parts
+            /*
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).GetChild(1).childCount != 0)
+                {
+                    program.list.Add(transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
+                }
+            }
+            */
+
+            // character.GetComponent<CharData>().program = program;
+
+            StartCoroutine(runProgram(child.gameObject ,program));
+
         }
 
-        character.GetComponent<CharData>().program = program;
+        //Compile program
+        
 
-        //Run Program
-        for (int i = 0; i < character.GetComponent<CharData>().program.list.Count; i++)
-        {
-            readAction(character.GetComponent<CharData>().program.list[i]);
-        }
+        //Program that will be run
+       // Program program = character.GetComponent<CharData>().program;
+
 
     }
-    */
 
+    public void readAction(GameObject character, ProgramAction action)
+    {
+        switch (action.type)
+        {
+            case "move":
+                switch (action.dir)
+                {
+                    case "up":
+                        character.transform.position = character.transform.position + new Vector3(0, action.value, 0);
+                        break;
+                    case "left":
+                        character.transform.position = character.transform.position + new Vector3(-action.value, 0, 0);
+                        break;
+                    case "right":
 
-
+                        character.transform.position = character.transform.position + new Vector3(action.value, 0, 0);
+                        break;
+                    case "down":
+                        character.transform.position = character.transform.position + new Vector3(0, -action.value, 0);
+                        break;
+                }
+                break;
+        }
+    }
 
     public void compileProgram()
     {
-       
+
+        Debug.Log("Compile");
+
+        character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
+
         Program program = new Program(false);
 
         //Compile program
@@ -95,9 +150,11 @@ public class ProgramSection : MonoBehaviour
 
   public void renderProgram(GameObject selected)
     {
-        compileProgram();
+        //compileProgram();
 
         character = selected;
+
+        nameHeader.text = character.GetComponent<CharData>().name;
 
         if (selected != null)
         {
@@ -230,6 +287,45 @@ public class ProgramSection : MonoBehaviour
 
 
       
+    }
+
+    public IEnumerator runProgram (GameObject character, Program program)
+    {
+        for (int i = 0; i < program.list.Count; i++)
+        {
+             readAction(character, program.list[i]);
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    public void decompose (ProgramAction action, Program program)
+    {
+        switch (action.type)
+        {
+            case "move":
+
+                for (int i = 0; i < action.value; i ++)
+                {
+                    program.list.Add(new ProgramAction(action.type, action.dir, 1));
+
+                }
+
+                break;
+
+        }
+
+    }
+
+    public void undoProgram ()
+    {
+        undo = true;
+        character.GetComponent<CharData>().program = character.GetComponent<CharData>().undoState();
+
+        //Re render program
+        renderProgram(character);
+
+        undo = false;
+
     }
 
 }

@@ -102,17 +102,34 @@ public class ProgramCard : MonoBehaviour
             //Create Action
             action = createAction(dir, value);
 
+
+            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false)
+            {
+                Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
+            } 
+            
+
         });
 
         transform.GetChild(2).GetComponent<InputField>().onEndEdit.AddListener(delegate
         {
 
-           
-           //Get Value
-           value = int.Parse(transform.GetChild(2).GetComponent<InputField>().textComponent.text);
+           if (transform.GetChild(2).GetComponent<InputField>().textComponent.text != null)
+            {
+                //Get Value
+                value = int.Parse(transform.GetChild(2).GetComponent<InputField>().textComponent.text);
+            } else
+            {
+                value = 0;
+            }
 
             //Create Action
             action = createAction(dir, value);
+
+            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false)
+            {
+                Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
+            }
 
         });
 

@@ -10,10 +10,12 @@ using UnityEngine.Tilemaps;
 
 public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IScrollHandler
 {
-
     [SerializeField] Camera Cam;
     [SerializeField] Tilemap tileMap;
     [SerializeField] GameObject content;
+    [SerializeField] Slider zoomSlide;
+    [SerializeField] Button resize;
+    [SerializeField] Tilemap BackAndMap;
 
     Vector3 lastPos;
     Vector3 newPos;
@@ -21,21 +23,16 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     Vector3 OGPos;
 
-    float OrthoSize;
+    float orthoSize;
 
-    bool zoom;
+    float maxOrthoSize;
+    float minOrthoSize;
 
-  
 
     public void OnScroll(PointerEventData eventData)
     {
-        float ortho = Cam.orthographicSize - Input.mouseScrollDelta.y / 2;
-
-        ortho = Mathf.Clamp(ortho, 1, 30);
-
-        //Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, ortho, Time.deltaTime);
-
-        Cam.orthographicSize = ortho;
+       
+        StartCoroutine(smoothZoom());
 
     }
 
@@ -44,7 +41,20 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     {
         //OGPos = transform.position;
 
-        OrthoSize = Cam.orthographicSize;
+        orthoSize = Cam.orthographicSize;
+
+        maxOrthoSize = Camera.main.GetComponent<LevelScript>().orthoSizeCalc()*2;
+        minOrthoSize = maxOrthoSize / 8;
+
+        zoomSlide.value = 0.5f;
+
+        resize.onClick.AddListener(ResizeCam);
+
+        zoomSlide.onValueChanged.AddListener(delegate
+        {
+            Cam.orthographicSize = zoomCalc(zoomSlide.value);
+        });
+
         
     }
 
@@ -76,7 +86,11 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
                 ProgramSection sec = Camera.main.GetComponent<LevelScript>().progSec;
 
-               sec.renderProgram(rayHit.collider.gameObject);
+                
+
+               // sec.compileProgram();
+
+                sec.renderProgram(rayHit.collider.gameObject);
 
                 sec.updateOGPos();
 
@@ -163,7 +177,84 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
 
-        return new Vector2(normalX * 1920, 1080 * (1 + normalY));
+        return new Vector2(normalX * Screen.width, Screen.height * (1 + normalY));
+
+    }
+
+    public float zoomCalc (float value)
+    {
+     
+
+        float slope = (minOrthoSize - maxOrthoSize) / (1);
+
+        float intercept = maxOrthoSize;
+
+        //y = mx + b equation
+        return slope * value + intercept;
+
+    }
+
+    public float sliderValCalc (float ortho)
+    {
+        float slope = (minOrthoSize - maxOrthoSize) / (1);
+
+        float intercept = maxOrthoSize;
+
+        return (ortho - intercept) / slope;
+    }
+
+    public IEnumerator smoothZoom ()
+    {
+        //Sinusoidal movement could be cool
+        
+        float slope = (Cam.orthographicSize - (Cam.orthographicSize + Input.mouseScrollDelta.y)) / (50);
+
+        float intercept = Cam.orthographicSize;
+
+        for (int i = 0; i < 50; i ++)
+        {
+            orthoSize = slope * i + intercept;
+
+            orthoSize = Mathf.Clamp(orthoSize, minOrthoSize, maxOrthoSize);
+
+            Cam.orthographicSize = orthoSize;
+
+            zoomSlide.value = sliderValCalc(orthoSize);
+
+            yield return new WaitForSeconds(0.00005f);
+
+        }
+
+    }
+
+    public void ResizeCam()
+    {
+        Cam.orthographicSize = orthoSizeCalc();
+        Cam.transform.position = Vector3.zero;
+    }
+
+    public float orthoSizeCalc()
+    {
+
+
+        //Fit vertically
+        float vertOrthoSize = ((BackAndMap.cellBounds.yMax - BackAndMap.cellBounds.yMin) / 2 * BackAndMap.cellSize.y);
+
+        //Fit Horizontally
+        float horOrthoSize = ((BackAndMap.cellBounds.xMax - BackAndMap.cellBounds.xMin) / 2 * (BackAndMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
+
+        if (vertOrthoSize >= horOrthoSize)
+        {
+            zoomSlide.value = sliderValCalc(vertOrthoSize);
+            //Give Vert
+            return vertOrthoSize;
+        }
+        else
+        {
+            zoomSlide.value = sliderValCalc(horOrthoSize);
+            //Give Hor
+            return horOrthoSize;
+        }
 
     }
 

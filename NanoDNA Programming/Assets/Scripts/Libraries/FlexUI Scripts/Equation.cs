@@ -126,7 +126,7 @@ namespace FlexUI
         //Add extra variables such as initial guess and stuff
         //Switch this to list of floats and also list of equations
 
-        public float solveSingleEQ(float ans, string debugname = "")
+        public float solveSingleEQ(float ans, bool debug = false)
         {
             //Replace this with a matrix solver?
 
@@ -164,9 +164,22 @@ namespace FlexUI
                     //Debug.Log("Case 1");
 
                     //Use Newton Raphson method to solve. (Replace with a more efficient method later)
+                   
+                   
+
 
                     //Set the new equation 
                     newEQ.setEquation(cleanPoly);
+
+                    if (debug)
+                    {
+                        Debug.Log("Inside EQ");
+                        newEQ.displayAllPoly();
+                        Debug.Log("Clean");
+                        newEQ.displayCleanPoly();
+                    }
+
+
                     //Add the negative of the answer to say make the entire equation to 0
                     newEQ.addPolynomial(new FlexPolynomial(-ans, 0, var));
                     newEQ.polyClean();
