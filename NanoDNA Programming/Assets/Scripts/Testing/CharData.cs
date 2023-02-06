@@ -17,9 +17,15 @@ public class CharData : MonoBehaviour
     //Past / Undo states
     public List<Program> programStates = new List<Program>();
 
+    //Eventually replace this with vector2int, referring to tile it would be on, it would then have to align itself to said tile
+    public Vector3 initPos;
+
+
     public void Start()
     {
         programStates.Add(program);
+
+        initPos = transform.position;
     }
 
     public ProgramAction getAction (int index)
@@ -87,6 +93,15 @@ public class CharData : MonoBehaviour
 
         return newState;
 
+    }
+
+    //Create a function that adds a new program action, it then calls to update program length
+
+    public void addAction (ProgramAction action)
+    {
+        program.list.Add(action);
+
+        program.updateLength();
     }
 
 

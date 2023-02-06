@@ -7,6 +7,7 @@ public class Program
 {
    
     public List<ProgramAction> list = new List<ProgramAction>();
+    public int progLength;
 
     public Program (bool fillEmpty)
     {
@@ -22,6 +23,40 @@ public class Program
        
       
 
+    }
+
+    public void updateLength ()
+    {
+        progLength = 0;
+
+        //Loop through all and check if viable lines are there
+        foreach (ProgramAction action in list)
+        {
+            if (viableActionType(action))
+            {
+                progLength += 1;
+            } 
+        }
+    }
+
+    //Put this in a different script later
+    public bool viableActionType (ProgramAction action)
+    {
+        switch (action.type)
+        {
+            case "move":
+
+                return true;
+                break;
+
+            default:
+                return false;
+                break;
+
+
+
+
+        }
     }
 
    

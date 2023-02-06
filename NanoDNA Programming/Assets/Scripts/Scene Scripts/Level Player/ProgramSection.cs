@@ -14,13 +14,14 @@ public class ProgramSection : MonoBehaviour
     public int maxLineNum = 20;
    
     [SerializeField] GameObject progLine;
-    [SerializeField] Button playBtn;
+    [SerializeField] Button testBtn;
     [SerializeField] GameObject charHolder;
     [SerializeField] Text nameHeader;
     [SerializeField] Button saveBtn;
     [SerializeField] Button undoBtn;
 
     public bool undo;
+    bool testRunning;
     
 
     // Start is called before the first frame update
@@ -29,10 +30,11 @@ public class ProgramSection : MonoBehaviour
         level = Camera.main.GetComponent<LevelScript>();
         character = level.character;
 
-        playBtn.onClick.AddListener(playProgram);
+        testBtn.onClick.AddListener(testProgram);
         saveBtn.onClick.AddListener(compileProgram);
         undoBtn.onClick.AddListener(undoProgram);
 
+        testRunning = false;
 
     }
 
@@ -42,48 +44,47 @@ public class ProgramSection : MonoBehaviour
         
     }
 
-
-    
-    public void playProgram ()
+    public void testProgram ()
     {
-        compileProgram();
-
-        foreach (Transform child in charHolder.transform)
+        if (testRunning)
         {
 
-            Program program = new Program(false);
+            //Stop all coroutines
+            StopAllCoroutines();
 
-
-            for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i ++)
+            //Set all characters to initial position
+            foreach (Transform child in charHolder.transform)
             {
-                decompose(child.GetComponent<CharData>().program.list[i], program);
+                child.position = child.GetComponent<CharData>().initPos;
             }
 
+            testRunning = false;
 
+        } else
+        {
+            compileProgram();
 
-            //Later add a thing that deconstructs the program into more basic parts
-            /*
-            for (int i = 0; i < transform.childCount; i++)
+            foreach (Transform child in charHolder.transform)
             {
-                if (transform.GetChild(i).GetChild(1).childCount != 0)
+
+                Program program = new Program(false);
+
+
+                //Decompose the program into more basic parts
+                for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
                 {
-                    program.list.Add(transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
+                    decompose(child.GetComponent<CharData>().program.list[i], program);
                 }
+
+                StartCoroutine(runProgram(child.gameObject, program));
+
             }
-            */
 
-            // character.GetComponent<CharData>().program = program;
+            testRunning = true;
 
-            StartCoroutine(runProgram(child.gameObject ,program));
+            testBtn.transform.GetChild(0).GetComponent<Text>().text = "Reset";
 
         }
-
-        //Compile program
-        
-
-        //Program that will be run
-       // Program program = character.GetComponent<CharData>().program;
-
 
     }
 
@@ -101,7 +102,6 @@ public class ProgramSection : MonoBehaviour
                         character.transform.position = character.transform.position + new Vector3(-action.value, 0, 0);
                         break;
                     case "right":
-
                         character.transform.position = character.transform.position + new Vector3(action.value, 0, 0);
                         break;
                     case "down":
@@ -115,9 +115,9 @@ public class ProgramSection : MonoBehaviour
     public void compileProgram()
     {
 
-        Debug.Log("Compile");
+       // Debug.Log("Compile");
 
-        character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
+       character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
 
         Program program = new Program(false);
 
@@ -128,21 +128,17 @@ public class ProgramSection : MonoBehaviour
 
             if (transform.GetChild(i).GetChild(1).childCount != 0)
             {
-               
                 program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
-
-              
             }
-            else
-            {
-                program.list.Add(new ProgramAction("none", "up", 0));
-            }
-
         }
+
+        program.updateLength();
 
         character.GetComponent<CharData>().program = program;
 
-        //Debug.Log("Compile Done");
+        level.updateLineUsed(charHolder);
+
+       //Debug.Log("Compile Done");
 
     }
 
@@ -150,7 +146,7 @@ public class ProgramSection : MonoBehaviour
 
   public void renderProgram(GameObject selected)
     {
-        //compileProgram();
+        compileProgram();
 
         character = selected;
 
@@ -181,11 +177,7 @@ public class ProgramSection : MonoBehaviour
                     flex2.deleteAllChildren();
 
                     //Instantiate new Object
-                    if (getProgramLineComp(i) != null)
-                    {
-                        
-                        getProgramLineComp(i).reAddProgram(data.getAction(i));
-                    }
+                    getProgramLineComp(i).reAddProgram(data.getAction(i));
                 }
 
             }
@@ -326,6 +318,24 @@ public class ProgramSection : MonoBehaviour
 
         undo = false;
 
+    }
+
+    public void runFinalProgram ()
+    {
+            compileProgram();
+
+            foreach (Transform child in charHolder.transform)
+            {
+                Program program = new Program(false);
+
+                //Decompose the program into more basic parts
+                for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
+                {
+                    decompose(child.GetComponent<CharData>().program.list[i], program);
+                }
+
+                StartCoroutine(runProgram(child.gameObject, program));
+            }
     }
 
 }

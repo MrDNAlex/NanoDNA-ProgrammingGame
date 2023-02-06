@@ -35,20 +35,27 @@ public class LevelScript : MonoBehaviour
     [SerializeField] RectTransform constraints;
     */
 
+    [Header("Rect Transforms")]
+
     //New Serialize
     [SerializeField] RectTransform btn1;
     [SerializeField] RectTransform btn2;
     [SerializeField] RectTransform btn3;
     [SerializeField] RectTransform btn4;
 
-    [SerializeField] Button resize;
-    [SerializeField] Button play;
-
     [SerializeField] RectTransform mapView;
 
     [SerializeField] RectTransform content;
 
     [SerializeField] RectTransform gridView;
+
+    [SerializeField] RectTransform store;
+
+    [SerializeField] Button resize;
+    [SerializeField] Button play;
+
+
+    [Header("Game Objects")]
 
     [SerializeField] GameObject prefab;
 
@@ -67,12 +74,23 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Camera Cam2;
 
+    [Header("Tilemaps")]
+
     [SerializeField] Tilemap BackAndMap;
     [SerializeField] Tilemap Void;
     [SerializeField] Tilemap CharAndInt;
     [SerializeField] TileBase tile;
 
     [SerializeField] public GameObject character;
+
+    [Header("Requirement Section")]
+
+    [SerializeField] Text collectedItems;
+
+    [SerializeField] Text linesUsed;
+
+    [SerializeField] Button complete;
+
 
     Vector2 screenPos;
     Vector2 viewSize;
@@ -87,6 +105,9 @@ public class LevelScript : MonoBehaviour
     Flex Content;
 
     public ProgramSection progSec;
+
+    int maxLines = 5;
+    int usedLines = 0;
 
 
     private void Awake()
@@ -105,10 +126,7 @@ public class LevelScript : MonoBehaviour
     {
         setUI();
 
-        btn1.GetComponent<Button>().onClick.AddListener(btn1Ac);
-        btn2.GetComponent<Button>().onClick.AddListener(btn2Ac);
-        btn3.GetComponent<Button>().onClick.AddListener(btn3Ac);
-        btn4.GetComponent<Button>().onClick.AddListener(btn4Ac);
+       
 
         contentTrans = content;
 
@@ -116,6 +134,11 @@ public class LevelScript : MonoBehaviour
         //play.onClick.AddListener(runProgram);
 
         progSec = content.GetComponent<ProgramSection>();
+
+
+        initText();
+
+        complete.onClick.AddListener(completeLevel);
 
     }
 
@@ -158,15 +181,16 @@ public class LevelScript : MonoBehaviour
         Flex Reg2 = new Flex(Background.getChild(1), 2f);
         Flex MapView = new Flex(Reg2.getChild(0), 2f);
 
-        Flex Zoom = new Flex(MapView.getChild(0), 4);
+        Flex Zoom = new Flex(MapView.getChild(0), 6);
         Flex Resize = new Flex(MapView.getChild(1), 1);
         Flex Play = new Flex(MapView.getChild(2), 1);
 
-        Zoom.setCustomSize(new Vector2(0, 40));
-        Resize.setCustomSize(new Vector2(0, 40));
-        Play.setCustomSize(new Vector2(0, 40));
+        Zoom.setCustomSize(new Vector2(80, 0));
+        Resize.setCustomSize(new Vector2(80, 0));
+        Play.setCustomSize(new Vector2(80, 0));
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
+        /*
         Flex Store = new Flex(Reg3.getChild(0), 4f);
 
         Flex StoreHeader = new Flex(Store.getChild(0), 1);
@@ -176,8 +200,14 @@ public class LevelScript : MonoBehaviour
         Flex BTN4 = new Flex(StoreHeader.getChild(3), 1);
 
         Flex GridView = new Flex(Store.getChild(1), 5);
+        */
 
         Flex Constraints = new Flex(Reg3.getChild(1), 1f);
+
+        Flex CollectedItems = new Flex(Constraints.getChild(0), 1);
+        Flex LinesUsed = new Flex(Constraints.getChild(1), 1);
+        Flex CompleteLevel = new Flex(Constraints.getChild(2), 1);
+
 
         //Add children
 
@@ -204,19 +234,11 @@ public class LevelScript : MonoBehaviour
         MapView.addChild(Resize);
         MapView.addChild(Play);
 
-        Reg3.addChild(Store);
+        Reg3.addChild(store.GetComponent<StoreScript>().Store);
         Reg3.addChild(Constraints);
 
         Background.addChild(Reg1);
         Background.addChild(Reg2);
-
-        Store.addChild(StoreHeader);
-        Store.addChild(GridView);
-
-        StoreHeader.addChild(BTN1);
-        StoreHeader.addChild(BTN2);
-        StoreHeader.addChild(BTN3);
-        StoreHeader.addChild(BTN4);
 
         //Background.addChild(Reg3);
 
@@ -225,16 +247,23 @@ public class LevelScript : MonoBehaviour
         Controls.setSpacingFlex(0.5f, 1);
         Controls.setAllPadSame(0.1f, 1);
 
+        Constraints.addChild(CollectedItems);
+        Constraints.addChild(LinesUsed);
+        Constraints.addChild(CompleteLevel);
+
         //Add the programming blocks as children
         addChildren(Content);
-        addStore(GridView);
+
+
+
+
+        //addStore(GridView);
 
         //Constraints and Abilities 
 
         Content.setChildMultiH(150);
-        //Content.useChildMulti = true;
 
-        //Content.setSelfHorizontalPadding(0, 0, 0.05f, 1);
+        Constraints.setAllPadSame(0.1f, 1);
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
@@ -261,18 +290,7 @@ public class LevelScript : MonoBehaviour
         }
     }
 
-    void addStore (Flex parent)
-    {
-
-       for (int i = 0; i < 2; i++)
-        {
-            GameObject idk = Instantiate(prefab2, parent.UI);
-
-            idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
-            //idk.GetComponent<StoreCard>().cardType = "mov";
-        }
-
-    }
+   
 
     void btn1Ac ()
     {
@@ -321,42 +339,6 @@ public class LevelScript : MonoBehaviour
         idk.AddComponent<DeleteIndentDrag>();
 
     }
-
-  
-    /*
-    public void sendRay ()
-    {
-
-        
-     
-
-        Vector2 worldPoint;
-       
-
-        worldPoint = Cam2.ScreenToWorldPoint(BackCalcPos());
-
-        Image img;
-
-        
-
-
-
-        TileBase tile = CharAndInt.GetTile(CharAndInt.WorldToCell(worldPoint));
-
-        if (dic[tile] != null)
-        {
-            for (int i = 0; i < dic[tile].program.list.Count; i++)
-            {
-                Debug.Log(dic[tile].program.list[i].dispAction());
-
-                readAction(dic[tile].program.list[i]);
-            }
-        }
-
-    }
-    */
-
-   
 
     public Vector2 BackCalcPos ()
     {
@@ -470,7 +452,6 @@ public class LevelScript : MonoBehaviour
 
     }
 
-
     public void cleanUpMap (Tilemap map)
     {
         int maxX;
@@ -519,8 +500,65 @@ public class LevelScript : MonoBehaviour
 
                 Destroy(child.gameObject);
             }
+        }
+    }
+
+    public void initText ()
+    {
+        collectedItems.text = "0/3 Collected";
+
+        linesUsed.text = "0/3 Used";
+    }
+
+    public void updateLineUsed (GameObject holder)
+    {
+        //Check all programs, count number of lines, write it down
+
+       usedLines = 0;
+        foreach (Transform child in holder.transform)
+        {
+            Program prog = child.GetComponent<CharData>().program;
+
+            usedLines += prog.progLength;
 
         }
+
+        linesUsed.text = usedLines + "/" + maxLines + " Used";
+
+    }
+
+    public void completeLevel ()
+    {
+        //Check if max line num is exceeded
+
+        if (usedLines > maxLines)
+        {
+            //send error message
+            Debug.Log("Your program is too long!");
+
+        } else
+        {
+            //Run final program
+
+            Debug.Log("Running final Program");
+
+            progSec.runFinalProgram();
+
+
+
+
+
+
+            //Give out score if successful
+
+        }
+
+
+        //If not start running the program
+
+
+
+
 
     }
 

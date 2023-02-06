@@ -28,11 +28,14 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     float maxOrthoSize;
     float minOrthoSize;
 
+   
+
+
 
     public void OnScroll(PointerEventData eventData)
     {
        
-        StartCoroutine(smoothZoom());
+        StartCoroutine(smoothZoomMouse());
 
     }
 
@@ -55,7 +58,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             Cam.orthographicSize = zoomCalc(zoomSlide.value);
         });
 
-        
     }
 
     // Update is called once per frame
@@ -84,43 +86,29 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             {
                 //content.GetComponent<ProgramSection>().character = rayHit.collider.gameObject;
 
+                // sec.compileProgram();
                 ProgramSection sec = Camera.main.GetComponent<LevelScript>().progSec;
-
-                
-
-               // sec.compileProgram();
 
                 sec.renderProgram(rayHit.collider.gameObject);
 
-                sec.updateOGPos();
-
+               // sec.updateOGPos();
 
             }
             
         } else
         {
             //Remove the script
-
         }
-       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
 
         float normalX = eventData.delta.x / GetComponent<RectTransform>().sizeDelta.x;
-
         float normalY = eventData.delta.y / GetComponent<RectTransform>().sizeDelta.y;
 
-
         newPos = new Vector3(newPos.x + (tileNumHor()*normalX*tileMap.cellSize.x * -1), newPos.y + ((tileNumVert() * normalY * tileMap.cellSize.y * -1)) , 0);
-
         Cam.transform.position = newPos;
-
-        //Handle pinch zoom here
-
-
-        //Detect Scroll Wheel or 2 thumb 
 
     }
 
@@ -184,7 +172,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     public float zoomCalc (float value)
     {
      
-
         float slope = (minOrthoSize - maxOrthoSize) / (1);
 
         float intercept = maxOrthoSize;
@@ -203,7 +190,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         return (ortho - intercept) / slope;
     }
 
-    public IEnumerator smoothZoom ()
+    public IEnumerator smoothZoomMouse ()
     {
         //Sinusoidal movement could be cool
         

@@ -1579,6 +1579,13 @@ MonoBehaviour:
   cardType: move
   progLine: {fileID: 0}
   indent: 0
+  action:
+    type: 
+    value: 0
+    dir: 
+  dir: up
+  value: 0
+  storeTag: movement
 --- !u!1 &8931726586915314693
 GameObject:
   m_ObjectHideFlags: 0

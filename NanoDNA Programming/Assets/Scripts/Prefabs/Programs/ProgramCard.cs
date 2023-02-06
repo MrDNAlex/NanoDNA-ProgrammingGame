@@ -13,13 +13,28 @@ public class ProgramCard : MonoBehaviour
     public int indent = 0;
 
     public ProgramAction action;
-    public string dir;
-    public int value;
+    public string dir = "up";
+    public int value = 0;
+
+    public string storeTag;
+    bool setInf = false; 
+
+
 
     private void Awake()
     {
         //Debug.Log("Awake 1");
         setUI();
+
+        if (dir == null)
+        {
+            dir = "up";
+        }
+        if (value == null)
+        {
+            value = 0;
+        }
+
     }
 
 
@@ -36,7 +51,6 @@ public class ProgramCard : MonoBehaviour
     {
         
     }
-
 
     public void setUI()
     {
@@ -102,11 +116,12 @@ public class ProgramCard : MonoBehaviour
             //Create Action
             action = createAction(dir, value);
 
-
-            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false)
+            
+            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && setInf == false)
             {
                 Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
             } 
+            
             
 
         });
@@ -126,10 +141,12 @@ public class ProgramCard : MonoBehaviour
             //Create Action
             action = createAction(dir, value);
 
-            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false)
+            
+            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && setInf == false)
             {
                 Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
             }
+            
 
         });
 
@@ -138,13 +155,12 @@ public class ProgramCard : MonoBehaviour
 
     public ProgramAction createAction(string dir, int val)
     {
-       
         return new ProgramAction("move", dir, val);
-
     }
 
     public void setInfo (ProgramAction action)
     {
+        setInf = true;
         switch (action.type)
         {
             case "move":
@@ -174,6 +190,8 @@ public class ProgramCard : MonoBehaviour
 
                 this.action = createAction(action.dir, action.value);
 
+                
+
                 break;
             case "var":
 
@@ -185,9 +203,8 @@ public class ProgramCard : MonoBehaviour
 
         }
 
+        setInf = false;
+
     }
-
-    
-
 
 }

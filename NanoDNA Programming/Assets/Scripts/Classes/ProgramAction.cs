@@ -9,7 +9,6 @@ public class ProgramAction
     //Maybe have a dictionary that stores all the information based off titles, then the program checks the type and grabs all the info it needs?
 
    public string type;
-
     public int value;
     public string dir;
 

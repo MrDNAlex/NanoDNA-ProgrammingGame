@@ -147,6 +147,9 @@ public class ProgramLine : MonoBehaviour
         } else if (action.type == "var")
         {
             program = Instantiate(prefab2, ProgramObj.transform);
+        } else
+        {
+           // Debug.Log("Error");
         }
 
         if (program != null)
