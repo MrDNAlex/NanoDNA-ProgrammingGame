@@ -1576,16 +1576,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storeTag: 0
   cardType: move
+  cardName: Move
+  movementName: 1
+  mathName: 0
+  logicName: 0
+  variableName: 0
   progLine: {fileID: 0}
   indent: 0
   action:
-    type: 
+    type: move
     value: 0
-    dir: 
+    dir: up
   dir: up
   value: 0
-  storeTag: movement
+  setInf: 0
 --- !u!1 &8931726586915314693
 GameObject:
   m_ObjectHideFlags: 0

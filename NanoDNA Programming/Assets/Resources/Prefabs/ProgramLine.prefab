@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 2175663195785219503}
-  prefab1: {fileID: 8138498152997489336, guid: a68c6192184df1a498034a9fbc166bd5, type: 3}
+  prefab1: {fileID: 8138498152997489336, guid: c83d178a7f3a7794eaef8f278893c5ea, type: 3}
   prefab2: {fileID: 6849765539173945905, guid: e62678bfdf228354ea1aded334001160, type: 3}
   ProgramObj: {fileID: 0}
 --- !u!1 &2175663195905682200

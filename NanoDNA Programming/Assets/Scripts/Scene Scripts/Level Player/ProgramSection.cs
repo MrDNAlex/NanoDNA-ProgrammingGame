@@ -60,6 +60,8 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = false;
 
+            testBtn.transform.GetChild(0).GetComponent<Text>().text = "Test";
+
         } else
         {
             compileProgram();

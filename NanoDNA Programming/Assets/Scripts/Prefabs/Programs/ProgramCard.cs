@@ -3,28 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
+using DNAStruct;
 
 public class ProgramCard : MonoBehaviour
 {
 
+    public StoreTag storeTag;
+    //public string storeTag;
+    public string cardType; //eventually replace this with the storeTag I think
+    public string cardName;
+
+    public MovementCardNames movementName;
+    public MathCardNames mathName;
+    public LogicCardNames logicName;
+    public VariableCardNames variableName;
+
+    //public CardInfo info;
+
     public Flex program;
-    public string cardType;
     public Transform progLine;
     public int indent = 0;
 
+    //Action Stuff
     public ProgramAction action;
     public string dir = "up";
     public int value = 0;
 
-    public string storeTag;
-    bool setInf = false; 
+    public bool setInf = false;
 
+    ProgramCardFunctionality functionality;
 
 
     private void Awake()
     {
-        //Debug.Log("Awake 1");
-        setUI();
+
+        functionality = new ProgramCardFunctionality();
+
+        setFunctionality();
 
         if (dir == null)
         {
@@ -35,15 +50,15 @@ public class ProgramCard : MonoBehaviour
             value = 0;
         }
 
+        
+
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-       // Debug.Log("Start");
-      //  Debug.Log(action.dispAction());
-         
+      
     }
 
     // Update is called once per frame
@@ -52,53 +67,16 @@ public class ProgramCard : MonoBehaviour
         
     }
 
-    public void setUI()
+    public void setFunctionality()
     {
+        //Set the UI
+        program = functionality.setUI(setCardInfo());
 
-        //Check the type of card it will be
-        if (cardType == "move")
-        {
-            //Flex Variable Init
-            program = new Flex(transform.GetComponent<RectTransform>(), 2);
+        functionality.setAction(setCardInfo());
 
-            Flex Move = new Flex(program.getChild(0), 1f);
-            Flex Direction = new Flex(program.getChild(1), 1);
-            Flex Value = new Flex(program.getChild(2), 1);
-
-
-            //Set Flex Parameters
-            program.addChild(Move);
-            program.addChild(Direction);
-            program.addChild(Value);
-
-            program.setSpacingFlex(0.4f, 1);
-
-            program.setAllPadSame(0.3f, 1);
-
-            setActionMovement();
-
-
-        } else if (cardType == "var")
-        {
-            //Flex Variable Init
-            program = new Flex(transform.GetComponent<RectTransform>(), 2);
-
-            Flex Var = new Flex(program.getChild(0), 2);
-            Flex VarName = new Flex(program.getChild(1), 1);
-            Flex Sign = new Flex(program.getChild(2), 1);
-            Flex Val = new Flex(program.getChild(3), 1);
-
-
-            //Set Flex Parameters
-            program.addChild(Var);
-            program.addChild(VarName);
-            program.addChild(Sign);
-            program.addChild(Val);
-
-            program.setSpacingFlex(1, 1);
-
-            program.setAllPadSame(0.2f, 1);
-        }
+        //Set the Functionality
+        
+           // setActionMovement();
        
     }
 
@@ -122,8 +100,6 @@ public class ProgramCard : MonoBehaviour
                 Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
             } 
             
-            
-
         });
 
         transform.GetChild(2).GetComponent<InputField>().onEndEdit.AddListener(delegate
@@ -147,10 +123,7 @@ public class ProgramCard : MonoBehaviour
                 Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
             }
             
-
         });
-
-
     }
 
     public ProgramAction createAction(string dir, int val)
@@ -160,50 +133,52 @@ public class ProgramCard : MonoBehaviour
 
     public void setInfo (ProgramAction action)
     {
+        //Maybe switch these with a CardInfo type structure, same with the action
+
+        //The action type will have a reference to a function for it's handle so that when the program is being read it doens't need to go around and search for said function, it just instantly runs it, associated with it will be the types and values it needs!
+
+        //Make sure it won't compile
         setInf = true;
-        switch (action.type)
-        {
-            case "move":
 
-                cardType = action.type;
-                value = action.value;
-                dir = action.dir;
+        //Set info
+        cardType = action.type;
+        value = action.value;
+        dir = action.dir;
 
-                if (action.dir == "up")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 0;
-                } else if (action.dir == "down")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 1;
-                }
-                else if (action.dir == "left")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 2;
-                }
-                else if (action.dir == "right")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 3;
-                }
+        this.action = createAction(action.dir, action.value);
 
-                
-                transform.GetChild(2).GetComponent<InputField>().text = "" + action.value;
+        //Actually paste info on the UI
+        functionality.setInfo(setCardInfo());
 
-                this.action = createAction(action.dir, action.value);
-
-                
-
-                break;
-            case "var":
-
-                break;
-
-            default:
-
-                break;
-
-        }
-
+        //Make sure it won't compile
         setInf = false;
+
+    }
+
+    public CardInfo setCardInfo ()
+    {
+        CardInfo info = new CardInfo();
+
+        info.storeTag = storeTag;
+
+        info.movementName = movementName;
+        info.mathName = mathName;
+        info.logicName = logicName;
+        info.variableName = variableName;
+
+
+       // info.storeTag = storeTag;
+        //info.cardName = cardName;
+        info.cardType = cardType;
+
+        info.flex = program;
+        info.rectTrans = transform.GetComponent<RectTransform>();
+        info.transform = transform;
+        info.action = action;
+
+        info.programCard = this;
+
+        return info;
 
     }
 

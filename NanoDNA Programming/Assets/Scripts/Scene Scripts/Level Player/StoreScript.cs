@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using FlexUI;
 using UnityEngine.UI;
+using System.IO;
+using DNAStruct;
+
 
 public class StoreScript : MonoBehaviour
 {
@@ -11,6 +14,10 @@ public class StoreScript : MonoBehaviour
 
     [SerializeField] GameObject storeSection;
 
+    [SerializeField] GameObject storeCard;
+
+
+    Flex GridView; 
 
     private void Awake()
     {
@@ -20,7 +27,7 @@ public class StoreScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(renderStore(StoreTag.Movement));
     }
 
     // Update is called once per frame
@@ -42,7 +49,7 @@ public class StoreScript : MonoBehaviour
 
         Flex Content = new Flex(VP.getChild(0), 1);
 
-        Flex GridView = new Flex(Store.getChild(1), 5);
+        GridView = new Flex(Store.getChild(1), 5);
 
         Store.addChild(StoreHeader);
         Store.addChild(GridView);
@@ -58,60 +65,123 @@ public class StoreScript : MonoBehaviour
       //  StoreHeader.addChild(BTN3);
       //  StoreHeader.addChild(BTN4);
 
+        /*
         for (int i = 0; i < storeNum; i ++)
         {
           
             Content.addChild(storeSecBtn(i));
         }
+        */
 
-    }
-
-    void addStore(Flex parent)
-    {
-
-        for (int i = 0; i < 2; i++)
+        foreach (StoreTag tag in System.Enum.GetValues(typeof(StoreTag)))
         {
-           // GameObject idk = Instantiate(prefab2, parent.UI);
 
-           // idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
-            //idk.GetComponent<StoreCard>().cardType = "mov";
+            Content.addChild(storeSecBtn(tag));
+
         }
 
+        
+
+
     }
 
-
-   public Flex storeSecBtn (int index)
+   public Flex storeSecBtn (StoreTag tag)
     {
 
         GameObject btn = Instantiate(storeSection, Store.getChild(0).GetChild(0).GetChild(0).transform);
 
         Flex section = new Flex(btn.GetComponent<RectTransform>(), 1);
 
-        switch (index)
+        switch (tag)
         {
 
-            case 1:
+            case StoreTag.Movement:
                 //Set button info and set it's store tag
                 btn.transform.GetChild(0).GetComponent<Text>().text = "Movement";
+                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Movement;
+               
                 break;
-            case 2:
+            case StoreTag.Math:
                 btn.transform.GetChild(0).GetComponent<Text>().text = "Math";
+                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Math;
+              
                 break;
-            case 3:
+            case StoreTag.Logic:
                 btn.transform.GetChild(0).GetComponent<Text>().text = "Logic";
+                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Logic;
+              
                 break;
-            case 4:
-                btn.transform.GetChild(0).GetComponent<Text>().text = "Variables";
+            case StoreTag.Variable:
+                btn.transform.GetChild(0).GetComponent<Text>().text = "Variable";
+                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Variable;
+               
                 break;
 
 
         }
 
+        btn.transform.GetComponent<StoreBtn>().onclick.AddListener(delegate
+        {
+            StartCoroutine(renderStore(btn.transform.GetComponent<StoreBtn>().storeTag));
+            //Use a function that passes the tag and renders all the children of that tag
+        });
+
         return section;
     }
 
+    public IEnumerator renderStore (StoreTag tag)
+    {
+        //Delete all current children (Flex and real)
+        destroyChildren(GridView.UI.gameObject);
 
+        GridView.deleteAllChildren();
 
+        //Add the children and size them
+        //Instantiate storeCard
+        Object[] storeItems = Resources.LoadAll(folderPaths(tag));
+
+        foreach (Object obj in storeItems)
+        {
+            GameObject card = Instantiate(storeCard, GridView.UI.transform);
+
+            card.GetComponent<StoreCard>().setStoreCard(obj as GameObject);
+
+            card.GetComponent<StoreCard>().cardFlex.setSize(GridView.UI.GetComponent<GridLayoutGroup>().cellSize);
+            yield return null;
+        }
+    }
+
+    public void destroyChildren(GameObject Obj)
+    {
+        //Only deletes children under the one referenced
+        foreach (Transform child in Obj.transform)
+        {
+            //Safe to delete
+            Destroy(child.gameObject);
+        }
+    }
+
+    public string folderPaths (StoreTag tag)
+    {
+        switch (tag)
+        {
+            case StoreTag.Movement:
+                return "Prefabs/Programs/Movement";
+            case StoreTag.Math:
+                return "Prefabs/Programs/Math";
+               
+            case StoreTag.Logic:
+                return "Prefabs/Programs/Logic";
+                
+            case StoreTag.Variable:
+                return "Prefabs/Programs/Variable";
+               
+            default:
+                return "";
+            
+        }
+
+    }
 
     //Instantiate multiple button design with titles associated to the tag
 

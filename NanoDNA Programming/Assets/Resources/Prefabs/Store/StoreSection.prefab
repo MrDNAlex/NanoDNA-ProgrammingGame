@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8633377389113039821}
   - component: {fileID: 7226962150149780050}
   - component: {fileID: 2039693221860730074}
+  - component: {fileID: 2447103922229498445}
   m_Layer: 0
   m_Name: StoreSection
   m_TagString: Untagged
@@ -122,6 +123,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2447103922229498445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330988772233574108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eadeb44308387446a844ba9ef56302a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &949200075056415717
 GameObject:
   m_ObjectHideFlags: 0

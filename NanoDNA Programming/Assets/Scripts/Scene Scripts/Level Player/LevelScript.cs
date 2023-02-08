@@ -514,6 +514,9 @@ public class LevelScript : MonoBehaviour
     {
         //Check all programs, count number of lines, write it down
 
+
+        //Design something that doesn't use the holder, maybe get access 
+
        usedLines = 0;
         foreach (Transform child in holder.transform)
         {
@@ -543,11 +546,6 @@ public class LevelScript : MonoBehaviour
             Debug.Log("Running final Program");
 
             progSec.runFinalProgram();
-
-
-
-
-
 
             //Give out score if successful
 

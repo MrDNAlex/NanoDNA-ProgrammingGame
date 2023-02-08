@@ -73,7 +73,10 @@ public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
         {
             //Delete the line
             transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteLine();
-            Debug.Log("Delete");
+
+            
+
+            //Debug.Log("Delete");
         }
         else if (distance.x < -1 && distance.x > -2)
         {

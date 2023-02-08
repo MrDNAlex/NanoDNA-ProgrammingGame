@@ -47,12 +47,9 @@ public class StoreCard : MonoBehaviour
         //Set up UI 
         cardFlex = new Flex(card, 1);
 
-        AddChild();
-       
+        Flex Name = new Flex(cardFlex.getChild(0), 1);
 
-
-        Flex Name = new Flex(cardFlex.getChild(1), 1);
-
+        //Add children
         cardFlex.addChild(Name);
 
         cardFlex.setSpacingFlex(0.3f, 1);
@@ -81,7 +78,19 @@ public class StoreCard : MonoBehaviour
 
     }
 
+    public void setStoreCard (GameObject prog)
+    {
+        //Instantiate Object
+        Program = Instantiate(prog, card.transform);
 
+        //Make it the first Child
+        Program.transform.SetSiblingIndex(0);
 
+        //Add the child 
+        cardFlex.addChild(Program.GetComponent<ProgramCard>().program);
+
+        //Set name
+        cardFlex.getChild(1).GetComponent<Text>().text = cardFlex.getChild(0).GetComponent<ProgramCard>().cardName;
+    }
 
 }
