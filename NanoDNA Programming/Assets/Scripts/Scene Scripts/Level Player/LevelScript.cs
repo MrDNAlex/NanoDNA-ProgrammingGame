@@ -6,9 +6,12 @@ using FlexUI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using DNASaveSystem;
 
 public class LevelScript : MonoBehaviour
 {
+
+    public string levelPath;
 
     [SerializeField] RectTransform background;
 
@@ -76,9 +79,12 @@ public class LevelScript : MonoBehaviour
 
     [Header("Tilemaps")]
 
-    [SerializeField] Tilemap BackAndMap;
-    [SerializeField] Tilemap Void;
-    [SerializeField] Tilemap CharAndInt;
+    [SerializeField] Tilemap voidMap;
+    [SerializeField] Tilemap backgroundMap;
+    [SerializeField] Tilemap obstacleMap;
+    [SerializeField] Tilemap decorationMap;
+
+
     [SerializeField] TileBase tile;
 
     [SerializeField] public GameObject character;
@@ -112,21 +118,27 @@ public class LevelScript : MonoBehaviour
 
     private void Awake()
     {
+
+        loadLevel();
+        /*
         for (int i = 0; i < 10; i ++)
         {
             for (int j = 0; j < 10; j++)
             {
-                BackAndMap.SetTile(new Vector3Int(i, j, 0), tile);
+                backgroundMap.SetTile(new Vector3Int(i, j, 0), tile);
             }
         }
+        */
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        setUI();
+        
 
        
+
+        setUI();
 
         contentTrans = content;
 
@@ -267,8 +279,6 @@ public class LevelScript : MonoBehaviour
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
-        setCamera(new Vector2(Screen.width, Screen.height));
-
         screenPos = new Vector2(mapView.rect.x, Screen.height);
         viewSize = MapView.size;
 
@@ -288,28 +298,6 @@ public class LevelScript : MonoBehaviour
             idk.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
             //idk.GetComponent<Button>().onClick.AddListener(delegate { setBackground(idk); });
         }
-    }
-
-   
-
-    void btn1Ac ()
-    {
-        gridView.GetComponent<Image>().color = Color.red;
-    }
-
-    void btn2Ac()
-    {
-        gridView.GetComponent<Image>().color = Color.blue;
-    }
-
-    void btn3Ac()
-    {
-        gridView.GetComponent<Image>().color = Color.magenta;
-    }
-
-    void btn4Ac()
-    {
-        gridView.GetComponent<Image>().color = Color.cyan;
     }
 
     public void addProgram (ProgramLine parent, string type)
@@ -344,10 +332,8 @@ public class LevelScript : MonoBehaviour
     {
         //Debug.Log("Mouse:" + Input.mousePosition);
 
-
        // Debug.Log("ScreenPos:" + screenPos);
        // Debug.Log("ScreenSize:" + viewSize);
-
 
         Vector2 mouse = Input.mousePosition;
 
@@ -365,18 +351,16 @@ public class LevelScript : MonoBehaviour
        // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
 
         return new Vector2(normalX * Screen.width, Screen.height * (1 + normalY));
-
     }
 
-    public float orthoSizeCalc ()
+    public float orthoSizeCalc (LevelInfo info)
     {
-
-      
+       
         //Fit vertically
-        float vertOrthoSize = ((BackAndMap.cellBounds.yMax - BackAndMap.cellBounds.yMin) / 2 * BackAndMap.cellSize.y);
+        float vertOrthoSize = ((float)((info.yMax - info.yMin)+1) / 2 * backgroundMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((BackAndMap.cellBounds.xMax - BackAndMap.cellBounds.xMin)/2 * (BackAndMap.cellSize.x * ((float)Screen.height/(float)Screen.width)));
+        float horOrthoSize = ((float)((info.xMax - info.yMin)+1) /2 * (backgroundMap.cellSize.x * ((float)Screen.height/(float)Screen.width)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
@@ -392,8 +376,13 @@ public class LevelScript : MonoBehaviour
 
     }
 
+    public float getOrthoSize ()
+    {
+        return Cam2.orthographicSize;
+    }
 
-    public void setCamera (Vector2 size)
+
+    public void setCamera (LevelInfo info)
     {
         //Calculate max boundaries for both hor and vert
         //place the tile maps so that centers align
@@ -404,51 +393,43 @@ public class LevelScript : MonoBehaviour
         //Get the middle of the void and align it so that it's center block is at 0,0
         //Get the middle of the background and make sure it's center 
 
+        //Set the Camera Texture size
+        camText.width = (int)Screen.width;
+        camText.height = (int)Screen.height;
 
-        cleanUpMap(BackAndMap);
+        //Clean up the tile
+        cleanUpMap(backgroundMap);
 
-        camText.width = (int)size.x;
-        camText.height = (int)size.y;
-
-        Cam2.orthographicSize = orthoSizeCalc();
+        //Set the Orthographic size
+        Cam2.orthographicSize = orthoSizeCalc(info);
 
         //Set Backgroud position
         //Get center position
-        Vector3 pos = BackAndMap.CellToWorld(getCenter(BackAndMap));
+        Vector3 pos = (voidMap.CellToWorld(getCenter(info, true)) + voidMap.CellToWorld(getCenter(info, false)))/2;
+
         //Invert center position 
         pos = pos * -1;
+
         //Leave z untouched
-        pos.z = BackAndMap.transform.position.z;
-        
+        pos.z = voidMap.transform.position.z;
+
         //Set position.
-        BackAndMap.transform.SetPositionAndRotation(pos, new Quaternion(0, 0, 0, 0));
+        voidMap.transform.SetPositionAndRotation(pos, new Quaternion(0, 0, 0, 0));
       
-        //BackAndMap.WorldToCell()
-
-        //Later
-        //Add zoom
-        //Add scroll
-
     }
 
-    Vector3Int getCenter (Tilemap map)
+    Vector3Int getCenter (LevelInfo info, bool floor)
     {
-        int maxX;
-        int maxY;
-        int minX;
-        int minY;
+        float centerX = ((float)(info.xMin + info.xMax + 1) / 2);
+        float centerY = ((float)(info.yMin + info.yMax + 1) / 2);
 
-
-        maxX = map.cellBounds.xMax;
-        maxY = map.cellBounds.yMax;
-        minX = map.cellBounds.xMin;
-        minY = map.cellBounds.yMin;
-
-
-        int centerX = (int)(minX + maxX) / 2;
-        int centerY = (int)(minY + maxY) / 2;
-
-        return new Vector3Int(centerX, centerY, 0);
+        if (floor)
+        {
+            return new Vector3Int(Mathf.FloorToInt(centerX), Mathf.FloorToInt(centerY), 0);
+        } else
+        {
+            return new Vector3Int(Mathf.CeilToInt(centerX), Mathf.CeilToInt(centerY), 0);
+        }
 
     }
 
@@ -464,23 +445,6 @@ public class LevelScript : MonoBehaviour
         maxY = map.cellBounds.yMax;
         minX = map.cellBounds.xMin;
         minY = map.cellBounds.yMin;
-
-        /*
-        for (int i = minX; i <= maxX; i ++)
-        {
-            for (int j = minY; j <= maxY; j++)
-            {
-
-               TileBase tile = map.GetTile(new Vector3Int(i, j, 0));
-
-                if (tile == null)
-                {
-                    Debug.Log("Hello");
-                    Destroy(tile);
-                }
-            }
-        }
-        */
 
     }
 
@@ -505,6 +469,10 @@ public class LevelScript : MonoBehaviour
 
     public void initText ()
     {
+
+        Dictionary<string, Vector2> idk = new Dictionary<string, Vector2>();
+
+
         collectedItems.text = "0/3 Collected";
 
         linesUsed.text = "0/3 Used";
@@ -551,13 +519,41 @@ public class LevelScript : MonoBehaviour
 
         }
 
-
         //If not start running the program
 
+    }
+
+    public void loadLevel ()
+    {
+        //Load Info
+        LevelInfo info = SaveManager.loadSaveFromPath(levelPath);
+
+        //Set Void Tiles
+        setTileMap(voidMap, info.voidTiles);
+
+        //Set Background Tiles
+        setTileMap(backgroundMap, info.backgroundTiles);
+
+        //Set Obstacles Tiles
+        setTileMap(obstacleMap, info.obstacleTiles);
+
+        //Set Decoration Tiles
+        setTileMap(decorationMap, info.decorationTiles);
 
 
+        setCamera(info);
+    }
 
+    public void setTileMap (Tilemap map, List<TileInfo> tileList)
+    {
+        foreach (TileInfo info in tileList)
+        {
 
+           // Debug.Log(info.tile);
+
+            map.SetTile(new Vector3Int(info.position.x, info.position.y, 0), info.tile);
+           
+        }
     }
 
    

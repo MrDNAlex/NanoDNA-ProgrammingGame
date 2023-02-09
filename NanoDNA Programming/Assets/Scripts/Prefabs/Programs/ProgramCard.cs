@@ -10,7 +10,7 @@ public class ProgramCard : MonoBehaviour
 
     public StoreTag storeTag;
     //public string storeTag;
-    public string cardType; //eventually replace this with the storeTag I think
+   // public string cardType; //eventually replace this with the storeTag I think
     public string cardName;
 
     public MovementCardNames movementName;
@@ -80,7 +80,7 @@ public class ProgramCard : MonoBehaviour
        
     }
 
-
+    /*
     public void setActionMovement ()
     {
         action = createAction(dir, value);
@@ -125,10 +125,18 @@ public class ProgramCard : MonoBehaviour
             
         });
     }
+    */
 
-    public ProgramAction createAction(string dir, int val)
+    public ProgramAction createAction(string dir, int val, Direction direc)
     {
-        return new ProgramAction("move", dir, val);
+        //  dir, val
+
+        MoveData data = new MoveData();
+
+        data.dir = direc;
+        data.value = val;
+
+        return new ProgramAction(ActionType.Movement, MovementActionName.Move, MathActionName.None, LogicActionName.None, VariableActionName.None, data);
     }
 
     public void setInfo (ProgramAction action)
@@ -141,11 +149,14 @@ public class ProgramCard : MonoBehaviour
         setInf = true;
 
         //Set info
-        cardType = action.type;
+       // cardType = action.type;
         value = action.value;
         dir = action.dir;
 
-        this.action = createAction(action.dir, action.value);
+       
+        storeTag = convertToStoreTag(action.actionType);
+
+        this.action = action;
 
         //Actually paste info on the UI
         functionality.setInfo(setCardInfo());
@@ -169,7 +180,7 @@ public class ProgramCard : MonoBehaviour
 
        // info.storeTag = storeTag;
         //info.cardName = cardName;
-        info.cardType = cardType;
+       // info.cardType = cardType;
 
         info.flex = program;
         info.rectTrans = transform.GetComponent<RectTransform>();
@@ -181,5 +192,31 @@ public class ProgramCard : MonoBehaviour
         return info;
 
     }
+
+
+    public StoreTag convertToStoreTag (ActionType action)
+    {
+        switch (action)
+        {
+            case ActionType.Movement:
+                return StoreTag.Movement;
+            case ActionType.Math:
+                return StoreTag.Math;
+            case ActionType.Logic:
+                return StoreTag.Logic;
+            case ActionType.Variable:
+                return StoreTag.Variable;
+
+            default:
+                return StoreTag.Movement;
+        }
+
+
+
+    }
+
+
+
+
 
 }

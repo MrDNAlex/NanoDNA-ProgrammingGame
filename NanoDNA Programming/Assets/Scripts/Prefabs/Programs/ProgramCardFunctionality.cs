@@ -228,5 +228,35 @@ public class ProgramCardFunctionality
     }
 
 
+    //
+    //Create Action
+    //
+
+
+    public ProgramAction createAction (CardInfo info)
+    {
+        
+        switch (info.storeTag)
+        {
+            case StoreTag.Movement:
+                return createMovementAction(info);
+
+
+        }
+
+    }
+
+    public ProgramAction createMovementAction (CardInfo info)
+    {
+        switch (info.movementName)
+        {
+            case MovementCardNames.Move:
+                return;
+
+        }
+
+    }
+
+
 
 }

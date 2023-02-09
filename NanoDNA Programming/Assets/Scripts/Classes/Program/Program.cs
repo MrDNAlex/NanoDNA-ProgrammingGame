@@ -17,7 +17,7 @@ public class Program
         {
             for (int i = 0; i < 20; i++)
             {
-                list.Add(ProgramAction.empty());
+               // list.Add(ProgramAction.empty());
             }
         }
        

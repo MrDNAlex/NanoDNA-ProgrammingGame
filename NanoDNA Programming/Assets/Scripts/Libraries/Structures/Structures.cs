@@ -60,7 +60,59 @@ namespace DNAStruct
 
     }
 
+    //
+    //Program Action stuff
+    //
+    public enum ActionType
+    {
+        
+        Movement,
+        Math,
+        Logic,
+        Variable
+    }
 
+    public enum MovementActionName
+    {
+        None,
+        Move,
+
+    }
+
+    public enum MathActionName
+    {
+        None,
+    }
+
+    public enum LogicActionName
+    {
+        None,
+    }
+
+    public enum VariableActionName
+    {
+        None,
+        Variable,
+
+    }
+
+    public enum Direction
+    {
+        Up, 
+        Left,
+        Right, 
+        Down
+    }
+
+    //
+    //Action Data structs
+    //
+
+    public struct MoveData
+    {
+        public Direction dir;
+        public int value;
+    }
 
 
 

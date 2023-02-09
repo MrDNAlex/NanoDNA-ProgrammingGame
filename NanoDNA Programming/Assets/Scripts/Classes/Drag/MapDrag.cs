@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+using DNASaveSystem;
 
 
 
@@ -29,9 +30,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     float minOrthoSize;
 
    
-
-
-
     public void OnScroll(PointerEventData eventData)
     {
        
@@ -46,7 +44,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         orthoSize = Cam.orthographicSize;
 
-        maxOrthoSize = Camera.main.GetComponent<LevelScript>().orthoSizeCalc()*2;
+        maxOrthoSize = Camera.main.GetComponent<LevelScript>().getOrthoSize()*2;
         minOrthoSize = maxOrthoSize / 8;
 
         zoomSlide.value = 0.5f;
@@ -216,19 +214,21 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     public void ResizeCam()
     {
-        Cam.orthographicSize = orthoSizeCalc();
+
+        LevelInfo info = SaveManager.loadSaveFromPath(Camera.main.GetComponent<LevelScript>().levelPath);
+
+        Cam.orthographicSize = orthoSizeCalc(info);
         Cam.transform.position = Vector3.zero;
     }
 
-    public float orthoSizeCalc()
+    public float orthoSizeCalc(LevelInfo info)
     {
 
-
         //Fit vertically
-        float vertOrthoSize = ((BackAndMap.cellBounds.yMax - BackAndMap.cellBounds.yMin) / 2 * BackAndMap.cellSize.y);
+        float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * BackAndMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((BackAndMap.cellBounds.xMax - BackAndMap.cellBounds.xMin) / 2 * (BackAndMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
+        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (BackAndMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
