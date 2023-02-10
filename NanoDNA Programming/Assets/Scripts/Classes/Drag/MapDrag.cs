@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 using DNASaveSystem;
-
-
+using UnityEngine.Rendering;
 
 public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IScrollHandler
 {
@@ -56,11 +55,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             Cam.orthographicSize = zoomCalc(zoomSlide.value);
         });
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+       
 
     }
 
@@ -215,7 +210,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     public void ResizeCam()
     {
 
-        LevelInfo info = SaveManager.loadSaveFromPath(Camera.main.GetComponent<LevelScript>().levelPath);
+        LevelInfo info = SaveManager.deepLoad("test");
 
         Cam.orthographicSize = orthoSizeCalc(info);
         Cam.transform.position = Vector3.zero;

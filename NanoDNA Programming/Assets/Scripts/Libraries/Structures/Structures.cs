@@ -9,14 +9,14 @@ namespace DNAStruct
 
     public struct CardInfo
     {
-        public StoreTag storeTag;
+        public ActionType actionType;
         public string cardType; //eventually replace this with the storeTag I think
         public string cardName;
 
-        public MovementCardNames movementName;
-        public MathCardNames mathName;
-        public LogicCardNames logicName;
-        public VariableCardNames variableName;
+        public MovementActionNames movementName;
+        public MathActionNames mathName;
+        public LogicActionNames logicName;
+        public VariableActionNames variableName;
 
         //Program Related Stuff
         public Flex flex;
@@ -27,69 +27,35 @@ namespace DNAStruct
 
     }
 
-    public enum StoreTag
-    {
-        
-        Movement,
-        Math,
-        Logic, 
-        Variable
-    }
-
-    public enum MovementCardNames
-    {
-        None,
-        Move, 
-
-    }
-
-    public enum MathCardNames
-    {
-        None,
-    }
-
-    public enum LogicCardNames
-    {
-        None,
-    }
-
-    public enum VariableCardNames
-    {
-        None,
-        Variable, 
-
-    }
-
     //
     //Program Action stuff
     //
     public enum ActionType
     {
-        
         Movement,
         Math,
         Logic,
         Variable
     }
 
-    public enum MovementActionName
+    public enum MovementActionNames
     {
         None,
         Move,
 
     }
 
-    public enum MathActionName
+    public enum MathActionNames
     {
         None,
     }
 
-    public enum LogicActionName
+    public enum LogicActionNames
     {
         None,
     }
 
-    public enum VariableActionName
+    public enum VariableActionNames
     {
         None,
         Variable,
@@ -115,8 +81,4 @@ namespace DNAStruct
     }
 
 
-
-
 }
-
-

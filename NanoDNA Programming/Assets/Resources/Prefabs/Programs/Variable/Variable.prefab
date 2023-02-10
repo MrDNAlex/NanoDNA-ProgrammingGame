@@ -373,8 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  storeTag: 3
-  cardType: var
+  actionType: 3
   cardName: Variable
   movementName: 0
   mathName: 0
@@ -386,8 +385,14 @@ MonoBehaviour:
     type: 
     value: 0
     dir: 
+    actionType: 0
+    movementName: 0
+    mathName: 0
+    logicName: 0
+    variableName: 0
   dir: up
   value: 0
+  setInf: 0
 --- !u!1 &7771231246973281111
 GameObject:
   m_ObjectHideFlags: 0

@@ -15758,11 +15758,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level:
-    levelName: TestLevel
+    levelName: test
     xMax: 0
     xMin: 0
     yMax: 0
     yMin: 0
+    ledger: []
     voidTiles: []
     backgroundTiles: []
     decorationTiles: []
@@ -15771,6 +15772,7 @@ MonoBehaviour:
   backgroundMap: {fileID: 578606342}
   decorationMap: {fileID: 2099089613}
   obstaclesMap: {fileID: 1528609294}
+  ledger: {fileID: 11400000, guid: e4aa60f931b4f50408e352c9727dc1ec, type: 2}
 --- !u!1 &2099089610
 GameObject:
   m_ObjectHideFlags: 0

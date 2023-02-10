@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 [System.Serializable]
 public class CharData : MonoBehaviour
 {
+    //
+    //Maybe increase efficiency using this https://blog.unity.com/technology/how-on-demand-rendering-can-improve-mobile-performance
+    //
+
 
     //Maybe add a system that checks if it's compiling for the right character?
 
@@ -26,20 +31,18 @@ public class CharData : MonoBehaviour
         programStates.Add(program);
 
         initPos = transform.position;
+
+        OnDemandRendering.renderFrameInterval = 12;
     }
 
     public ProgramAction getAction (int index)
     {
         if ((program.list.Count - 1) < index)
         {
-
             //Doesn't exist
-           
             return ProgramAction.empty();
         } else
         {
-            
-           
             //Does exist
             return program.list[index];
         }
@@ -47,12 +50,11 @@ public class CharData : MonoBehaviour
 
     public void displayProgram ()
     {
+       // Debug.Log(program.list.Count);
+
         for (int i = 0; i < program.list.Count; i++)
         {
-            if (program.list[i].type == "move")
-            {
-                Debug.Log(program.list[i].dispAction());
-            }
+            Debug.Log(program.list[i].dispAction());
         }
     }
 

@@ -5,6 +5,7 @@ using FlexUI;
 using UnityEngine.UI;
 using System.IO;
 using DNAStruct;
+using UnityEngine.Rendering;
 
 
 public class StoreScript : MonoBehaviour
@@ -27,18 +28,12 @@ public class StoreScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(renderStore(StoreTag.Movement));
-    }
+        StartCoroutine(renderStore(ActionType.Movement));
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        OnDemandRendering.renderFrameInterval = 12;
     }
-
 
     //Buttons get a 200 pixel multi
-
     public void setUI ()
     {
         Store = new Flex(transform.GetComponent<RectTransform>(), 4f);
@@ -60,32 +55,14 @@ public class StoreScript : MonoBehaviour
 
         Content.setChildMultiW(230);
 
-      //  StoreHeader.addChild(BTN1);
-      //  StoreHeader.addChild(BTN2);
-      //  StoreHeader.addChild(BTN3);
-      //  StoreHeader.addChild(BTN4);
-
-        /*
-        for (int i = 0; i < storeNum; i ++)
+        foreach (ActionType tag in System.Enum.GetValues(typeof(ActionType)))
         {
-          
-            Content.addChild(storeSecBtn(i));
-        }
-        */
-
-        foreach (StoreTag tag in System.Enum.GetValues(typeof(StoreTag)))
-        {
-
             Content.addChild(storeSecBtn(tag));
-
         }
-
-        
-
 
     }
 
-   public Flex storeSecBtn (StoreTag tag)
+   public Flex storeSecBtn (ActionType tag)
     {
 
         GameObject btn = Instantiate(storeSection, Store.getChild(0).GetChild(0).GetChild(0).transform);
@@ -95,41 +72,42 @@ public class StoreScript : MonoBehaviour
         switch (tag)
         {
 
-            case StoreTag.Movement:
+            case ActionType.Movement:
                 //Set button info and set it's store tag
                 btn.transform.GetChild(0).GetComponent<Text>().text = "Movement";
-                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Movement;
+                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Movement;
                
                 break;
-            case StoreTag.Math:
+            case ActionType.Math:
                 btn.transform.GetChild(0).GetComponent<Text>().text = "Math";
-                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Math;
+                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Math;
               
                 break;
-            case StoreTag.Logic:
+            case ActionType.Logic:
                 btn.transform.GetChild(0).GetComponent<Text>().text = "Logic";
-                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Logic;
+                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Logic;
               
                 break;
-            case StoreTag.Variable:
+            case ActionType.Variable:
                 btn.transform.GetChild(0).GetComponent<Text>().text = "Variable";
-                btn.transform.GetComponent<StoreBtn>().storeTag = StoreTag.Variable;
+                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Variable;
                
                 break;
-
-
+            default:
+                section.flex = 0.01f;
+                break;
         }
 
         btn.transform.GetComponent<StoreBtn>().onclick.AddListener(delegate
         {
-            StartCoroutine(renderStore(btn.transform.GetComponent<StoreBtn>().storeTag));
+            StartCoroutine(renderStore(btn.transform.GetComponent<StoreBtn>().actionType));
             //Use a function that passes the tag and renders all the children of that tag
         });
 
         return section;
     }
 
-    public IEnumerator renderStore (StoreTag tag)
+    public IEnumerator renderStore (ActionType tag)
     {
         //Delete all current children (Flex and real)
         destroyChildren(GridView.UI.gameObject);
@@ -161,19 +139,19 @@ public class StoreScript : MonoBehaviour
         }
     }
 
-    public string folderPaths (StoreTag tag)
+    public string folderPaths (ActionType tag)
     {
         switch (tag)
         {
-            case StoreTag.Movement:
+            case ActionType.Movement:
                 return "Prefabs/Programs/Movement";
-            case StoreTag.Math:
+            case ActionType.Math:
                 return "Prefabs/Programs/Math";
                
-            case StoreTag.Logic:
+            case ActionType.Logic:
                 return "Prefabs/Programs/Logic";
                 
-            case StoreTag.Variable:
+            case ActionType.Variable:
                 return "Prefabs/Programs/Variable";
                
             default:
@@ -184,8 +162,5 @@ public class StoreScript : MonoBehaviour
     }
 
     //Instantiate multiple button design with titles associated to the tag
-
-
-
 
 }

@@ -2401,6 +2401,7 @@ GameObject:
   - component: {fileID: 1176585892}
   - component: {fileID: 1176585894}
   - component: {fileID: 1176585893}
+  - component: {fileID: 1176585895}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Untagged
@@ -2511,6 +2512,22 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!19719996 &1176585895
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176585891}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
 --- !u!1 &1221393415
 GameObject:
   m_ObjectHideFlags: 0
@@ -3100,12 +3117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa61befe053d31459fa1cfe2c4fe9c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ledger: {fileID: 11400000, guid: e4aa60f931b4f50408e352c9727dc1ec, type: 2}
   levelPath: Assets/Resources/Levels/Testing/TestLevel.dna
   background: {fileID: 1892444735}
-  btn1: {fileID: 0}
-  btn2: {fileID: 0}
-  btn3: {fileID: 0}
-  btn4: {fileID: 0}
   mapView: {fileID: 474066903}
   content: {fileID: 473550888}
   gridView: {fileID: 1716133955}
@@ -3114,10 +3128,7 @@ MonoBehaviour:
   play: {fileID: 1112603187}
   prefab: {fileID: 2175663195785219502, guid: 7392688f07cb58741a7456feffbc1d92, type: 3}
   prefab2: {fileID: 3237715990226463739, guid: 2ec48f8a8457a3e4f8d3fb730d1ee5a1, type: 3}
-  Movement: {fileID: 7939411648419594016, guid: f76d30fdd52020744af9dc0009674f71, type: 3}
-  Program: {fileID: 8138498152997489336, guid: a68c6192184df1a498034a9fbc166bd5, type: 3}
   Variable: {fileID: 6849765539173945905, guid: e62678bfdf228354ea1aded334001160, type: 3}
-  type: 
   contentTrans: {fileID: 0}
   camText: {fileID: 8400000, guid: a0d7f9c589a91da42b8681a6864e7d44, type: 2}
   Cam2: {fileID: 1442243283}
@@ -3130,6 +3141,7 @@ MonoBehaviour:
   collectedItems: {fileID: 547606987}
   linesUsed: {fileID: 825228220}
   complete: {fileID: 296300435}
+  name: {fileID: 50809219}
   selected: {fileID: 0}
   progSec: {fileID: 0}
 --- !u!1 &1551240313

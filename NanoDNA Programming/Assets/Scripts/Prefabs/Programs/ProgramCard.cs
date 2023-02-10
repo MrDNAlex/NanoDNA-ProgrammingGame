@@ -4,21 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
 using DNAStruct;
+using UnityEngine.Rendering;
 
 public class ProgramCard : MonoBehaviour
 {
 
-    public StoreTag storeTag;
-    //public string storeTag;
-   // public string cardType; //eventually replace this with the storeTag I think
+    public ActionType actionType;
     public string cardName;
 
-    public MovementCardNames movementName;
-    public MathCardNames mathName;
-    public LogicCardNames logicName;
-    public VariableCardNames variableName;
-
-    //public CardInfo info;
+    public MovementActionNames movementName;
+    public MathActionNames mathName;
+    public LogicActionNames logicName;
+    public VariableActionNames variableName;
 
     public Flex program;
     public Transform progLine;
@@ -26,45 +23,25 @@ public class ProgramCard : MonoBehaviour
 
     //Action Stuff
     public ProgramAction action;
-    public string dir = "up";
-    public int value = 0;
 
     public bool setInf = false;
 
     ProgramCardFunctionality functionality;
 
+    public MoveData moveData;
+
 
     private void Awake()
     {
-
         functionality = new ProgramCardFunctionality();
-
         setFunctionality();
-
-        if (dir == null)
-        {
-            dir = "up";
-        }
-        if (value == null)
-        {
-            value = 0;
-        }
-
-        
-
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-      
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        OnDemandRendering.renderFrameInterval = 12;
     }
 
     public void setFunctionality()
@@ -74,88 +51,17 @@ public class ProgramCard : MonoBehaviour
 
         functionality.setAction(setCardInfo());
 
-        //Set the Functionality
-        
-           // setActionMovement();
-       
-    }
-
-    /*
-    public void setActionMovement ()
-    {
-        action = createAction(dir, value);
-
-        transform.GetChild(1).GetComponent<Dropdown>().onValueChanged.AddListener(delegate
-        {
-            
-           //Get Direction
-            dir = transform.GetChild(1).GetComponent<Dropdown>().options[transform.GetChild(1).GetComponent<Dropdown>().value].text.ToLower();
-
-            //Create Action
-            action = createAction(dir, value);
-
-            
-            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && setInf == false)
-            {
-                Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
-            } 
-            
-        });
-
-        transform.GetChild(2).GetComponent<InputField>().onEndEdit.AddListener(delegate
-        {
-
-           if (transform.GetChild(2).GetComponent<InputField>().textComponent.text != null)
-            {
-                //Get Value
-                value = int.Parse(transform.GetChild(2).GetComponent<InputField>().textComponent.text);
-            } else
-            {
-                value = 0;
-            }
-
-            //Create Action
-            action = createAction(dir, value);
-
-            
-            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && setInf == false)
-            {
-                Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
-            }
-            
-        });
-    }
-    */
-
-    public ProgramAction createAction(string dir, int val, Direction direc)
-    {
-        //  dir, val
-
-        MoveData data = new MoveData();
-
-        data.dir = direc;
-        data.value = val;
-
-        return new ProgramAction(ActionType.Movement, MovementActionName.Move, MathActionName.None, LogicActionName.None, VariableActionName.None, data);
     }
 
     public void setInfo (ProgramAction action)
     {
-        //Maybe switch these with a CardInfo type structure, same with the action
-
         //The action type will have a reference to a function for it's handle so that when the program is being read it doens't need to go around and search for said function, it just instantly runs it, associated with it will be the types and values it needs!
 
         //Make sure it won't compile
         setInf = true;
 
-        //Set info
-       // cardType = action.type;
-        value = action.value;
-        dir = action.dir;
-
-       
-        storeTag = convertToStoreTag(action.actionType);
-
+      
+        this.actionType = action.actionType;
         this.action = action;
 
         //Actually paste info on the UI
@@ -163,25 +69,21 @@ public class ProgramCard : MonoBehaviour
 
         //Make sure it won't compile
         setInf = false;
-
     }
 
     public CardInfo setCardInfo ()
     {
         CardInfo info = new CardInfo();
 
-        info.storeTag = storeTag;
+        info.actionType = actionType;
 
         info.movementName = movementName;
         info.mathName = mathName;
         info.logicName = logicName;
         info.variableName = variableName;
 
-
-       // info.storeTag = storeTag;
-        //info.cardName = cardName;
-       // info.cardType = cardType;
-
+        info.cardName = cardName;
+      
         info.flex = program;
         info.rectTrans = transform.GetComponent<RectTransform>();
         info.transform = transform;
@@ -192,31 +94,5 @@ public class ProgramCard : MonoBehaviour
         return info;
 
     }
-
-
-    public StoreTag convertToStoreTag (ActionType action)
-    {
-        switch (action)
-        {
-            case ActionType.Movement:
-                return StoreTag.Movement;
-            case ActionType.Math:
-                return StoreTag.Math;
-            case ActionType.Logic:
-                return StoreTag.Logic;
-            case ActionType.Variable:
-                return StoreTag.Variable;
-
-            default:
-                return StoreTag.Movement;
-        }
-
-
-
-    }
-
-
-
-
 
 }

@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
 using UnityEngine.Tilemaps;
+using DNAStruct;
+using UnityEngine.Rendering;
 
 public class ProgramSection : MonoBehaviour
 {
+
+    public Flex flex;
 
     public LevelScript level;
 
@@ -22,7 +26,11 @@ public class ProgramSection : MonoBehaviour
 
     public bool undo;
     bool testRunning;
-    
+
+    private void Awake()
+    {
+        flex = setUI();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -36,13 +44,37 @@ public class ProgramSection : MonoBehaviour
 
         testRunning = false;
 
+        OnDemandRendering.renderFrameInterval = 12;
+
     }
 
-    // Update is called once per frame
-    void Update()
+  
+    public Flex setUI ()
     {
-        
+        Flex Content = new Flex(GetComponent<RectTransform>(), 1);
+
+        Content.setChildMultiH(150);
+
+        //Add all the programLine Children
+
+        addChildren(Content);
+
+        return Content;
     }
+
+    void addChildren(Flex parent)
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            GameObject programLine = Instantiate(progLine, parent.UI);
+
+            parent.addChild(programLine.GetComponent<ProgramLine>().Line);
+
+            programLine.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
+
+        }
+    }
+
 
     public void testProgram ()
     {
@@ -71,7 +103,6 @@ public class ProgramSection : MonoBehaviour
 
                 Program program = new Program(false);
 
-
                 //Decompose the program into more basic parts
                 for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
                 {
@@ -85,39 +116,57 @@ public class ProgramSection : MonoBehaviour
             testRunning = true;
 
             testBtn.transform.GetChild(0).GetComponent<Text>().text = "Reset";
-
         }
-
     }
 
     public void readAction(GameObject character, ProgramAction action)
     {
-        switch (action.type)
+        switch (action.actionType)
         {
-            case "move":
-                switch (action.dir)
+            case ActionType.Movement:
+
+                switch (action.movementName)
                 {
-                    case "up":
-                        character.transform.position = character.transform.position + new Vector3(0, action.value, 0);
-                        break;
-                    case "left":
-                        character.transform.position = character.transform.position + new Vector3(-action.value, 0, 0);
-                        break;
-                    case "right":
-                        character.transform.position = character.transform.position + new Vector3(action.value, 0, 0);
-                        break;
-                    case "down":
-                        character.transform.position = character.transform.position + new Vector3(0, -action.value, 0);
+                    case MovementActionNames.Move:
+
+                        character.transform.position = character.transform.position + actionToMovement(action);
                         break;
                 }
+
                 break;
+            case ActionType.Math:
+
+                break;
+            case ActionType.Logic:
+
+                break;
+            case ActionType.Variable:
+
+                break;
+        }
+    }
+
+    public Vector3 actionToMovement (ProgramAction action)
+    {
+        switch (action.moveData.dir)
+        {
+            case Direction.Up:
+                return new Vector3(0, action.moveData.value, 0);
+            case Direction.Down:
+                return new Vector3(0, -action.moveData.value, 0);
+            case Direction.Left:
+                return new Vector3(-action.moveData.value, 0, 0);
+            case Direction.Right:
+                return new Vector3(action.moveData.value, 0, 0);
+            default:
+                return new Vector3(0, action.moveData.value, 0);
         }
     }
 
     public void compileProgram()
     {
 
-       // Debug.Log("Compile");
+        //Debug.Log("Compile");
 
        character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
 
@@ -127,9 +176,9 @@ public class ProgramSection : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
         {
-
             if (transform.GetChild(i).GetChild(1).childCount != 0)
             {
+               // Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
                 program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
             }
         }
@@ -144,8 +193,6 @@ public class ProgramSection : MonoBehaviour
 
     }
 
-  
-
   public void renderProgram(GameObject selected)
     {
         compileProgram();
@@ -153,17 +200,13 @@ public class ProgramSection : MonoBehaviour
         character = selected;
 
         nameHeader.text = character.GetComponent<CharData>().name;
-
         if (selected != null)
         {
-
             if (selected.GetComponent<CharData>() != null)
             {
-
                 CharData data = selected.GetComponent<CharData>();
 
                 //Delete program Child
-
                 for (int i = 0; i < transform.childCount; i ++)
                 {
                     GameObject programHolder = getProgramHolderRef(i);
@@ -181,23 +224,8 @@ public class ProgramSection : MonoBehaviour
                     //Instantiate new Object
                     getProgramLineComp(i).reAddProgram(data.getAction(i));
                 }
-
-            }
-            else
-            {
-               
-
             }
         }
-        else
-        {
-            
-          
-        }
-
-     
-        //Check if selected object has a script
-
     }
 
     public void deleteProgram ()
@@ -219,9 +247,7 @@ public class ProgramSection : MonoBehaviour
             {
                 program.GetComponent<DeleteIndentDrag>().updateOGPos();
             }
-            
         }
-
     }
 
     public GameObject getProgramRef (int childIndex)
@@ -270,7 +296,6 @@ public class ProgramSection : MonoBehaviour
 
     public ProgramLine getProgramLineComp(int index)
     {
-
         if (getProgramLine(index).GetComponent<ProgramLine>() != null)
         {
             return getProgramLine(index).GetComponent<ProgramLine>();
@@ -279,8 +304,6 @@ public class ProgramSection : MonoBehaviour
             return null;
         }
 
-
-      
     }
 
     public IEnumerator runProgram (GameObject character, Program program)
@@ -294,15 +317,39 @@ public class ProgramSection : MonoBehaviour
 
     public void decompose (ProgramAction action, Program program)
     {
-        switch (action.type)
+        //Make this more Complex probably
+
+        //Maybe we make a custom Structure that takes in the action 
+
+        switch (action.actionType)
         {
-            case "move":
+            case ActionType.Movement:
 
-                for (int i = 0; i < action.value; i ++)
+                switch (action.movementName)
                 {
-                    program.list.Add(new ProgramAction(action.type, action.dir, 1));
+                    case MovementActionNames.Move:
 
+                        for (int i = 0; i < action.moveData.value; i ++)
+                        {
+                            ProgramAction newAction = new ProgramAction();
+
+                            newAction.movementName = MovementActionNames.Move;
+
+                            newAction.moveData.value = 1;
+                            newAction.moveData.dir = action.moveData.dir;
+
+                            program.list.Add(newAction);
+                        }
+                        break;
                 }
+                break;
+            case ActionType.Math:
+
+                break;
+            case ActionType.Logic:
+
+                break;
+            case ActionType.Variable:
 
                 break;
 
@@ -313,6 +360,7 @@ public class ProgramSection : MonoBehaviour
     public void undoProgram ()
     {
         undo = true;
+
         character.GetComponent<CharData>().program = character.GetComponent<CharData>().undoState();
 
         //Re render program

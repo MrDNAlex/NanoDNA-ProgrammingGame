@@ -8,28 +8,45 @@ public class ProgramAction
 {
     //Maybe have a dictionary that stores all the information based off titles, then the program checks the type and grabs all the info it needs?
 
-    public string type;
-    public int value;
-    public string dir;
+    //public string type;
+    //public int value;
+    //public string dir;
 
     public ActionType actionType;
 
-    public MovementActionName movementName;
-    public MathActionName mathName;
-    public LogicActionName logicName;
-    public VariableActionName variableName;
+    public MovementActionNames movementName;
+    public MathActionNames mathName;
+    public LogicActionNames logicName;
+    public VariableActionNames variableName;
 
-    public object data;
+    //Maybe have a data type for all ActionTypes
+
+    public MoveData moveData;
 
 
-    public ProgramAction(ActionType actionType, MovementActionName moveName, MathActionName mathName, LogicActionName logicName, VariableActionName varName, object data)
+    //Make a Unique Constructore for each? or maybe I stuff the data into the CardInfo?
+    public ProgramAction (CardInfo info, MoveData data)
     {
-        this.actionType = actionType;
-        this.movementName = moveName;
-        this.mathName = mathName;
-        this.logicName = logicName;
-        this.variableName = varName;
-        this.data = data;
+        this.actionType = info.actionType;
+        this.movementName = info.movementName;
+        this.mathName = info.mathName;
+        this.logicName = info.logicName;
+        this.variableName = info.variableName;
+
+        this.moveData = data;
+
+    }
+
+    public ProgramAction ()
+    {
+        //Creates an Empty Program
+        this.actionType = ActionType.Movement;
+        this.movementName = MovementActionNames.None;
+        this.mathName = MathActionNames.None;
+        this.logicName = LogicActionNames.None;
+        this.variableName = VariableActionNames.None;
+        this.moveData = new MoveData();
+
     }
 
     /*
@@ -43,15 +60,17 @@ public class ProgramAction
 
     public string dispAction ()
     {
-        return type + " " + dir + " " + value;
+        return actionType + " " + movementName;
     }
 
-    /*
+    
     public static ProgramAction empty()
     {
         return new ProgramAction();
     }
-    */
+
+    
+    
 
 
 

@@ -17,7 +17,11 @@ public class LevelMaker : MonoBehaviour
     [SerializeField] Tilemap decorationMap;
     [SerializeField] Tilemap obstaclesMap;
 
+    [Header("Ledger")]
+    [SerializeField] TileLedger ledger;
+
    
+    //Ok so we need to find a way to save a ledger of block types.
 
   
 
@@ -30,23 +34,15 @@ public class LevelMaker : MonoBehaviour
 
         SaveManager.saveLevel(level.levelName, level);
 
+        SaveManager.deepSave(level.levelName, level);
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (Input.GetKey(KeyCode.Space))
-        {
-
-           
-
-
-
-            
-        }
-        */
+       
 
 
 

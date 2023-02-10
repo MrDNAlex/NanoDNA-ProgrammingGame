@@ -17,20 +17,21 @@ public class ProgramCardFunctionality
     {
 
         //Go to the function storing the flex for 
-        switch (info.storeTag)
+        switch (info.actionType)
         {
-            case StoreTag.Movement:
+            case ActionType.Movement:
                 return setUIMovement(info);
-            case StoreTag.Math:
-                return setUIMovement(info);
-              
-            case StoreTag.Logic:
+            case ActionType.Math:
                 return setUIMovement(info);
               
-            case StoreTag.Variable:
+            case ActionType.Logic:
+                return setUIMovement(info);
+              
+            case ActionType.Variable:
                 return setUIVariables(info);
                
             default:
+                Debug.Log("Here");
                 return setUIMovement(info);
         }
     }
@@ -39,7 +40,7 @@ public class ProgramCardFunctionality
     {
         switch (info.movementName)
         {
-            case MovementCardNames.Move:
+            case MovementActionNames.Move:
 
                 //Flex Variable Init
                 Program = new Flex(info.rectTrans, 2);
@@ -65,7 +66,7 @@ public class ProgramCardFunctionality
     {
         switch (info.variableName)
         {
-            case VariableCardNames.Variable:
+            case VariableActionNames.Variable:
 
                 //Flex Variable Init
                 Program = new Flex(info.rectTrans, 2);
@@ -98,19 +99,20 @@ public class ProgramCardFunctionality
     public void setInfo (CardInfo info)
     {
        
-        switch (info.storeTag)
+        switch (info.actionType)
         {
-            case StoreTag.Movement:
+            case ActionType.Movement:
                
                 setInfoMovement(info);
                 break;
-            case StoreTag.Math:
+            case ActionType.Math:
                 break;
-            case StoreTag.Logic:
+            case ActionType.Logic:
                 break;
-            case StoreTag.Variable:
+            case ActionType.Variable:
                 break;
             default:
+                Debug.Log("Here");
                 break;
         }
         
@@ -120,25 +122,25 @@ public class ProgramCardFunctionality
     {
         switch (info.movementName)
         {
-            case MovementCardNames.Move:
+            case MovementActionNames.Move:
 
-                switch (info.action.dir)
+                switch (info.action.moveData.dir)
                 {
-                    case "up":
+                    case Direction.Up:
                         info.rectTrans.GetChild(1).GetComponent<Dropdown>().value = 0;
                         break;
-                    case "down":
+                    case Direction.Down:
                         info.rectTrans.GetChild(1).GetComponent<Dropdown>().value = 1;
                         break;
-                    case "left":
+                    case Direction.Left:
                         info.rectTrans.GetChild(1).GetComponent<Dropdown>().value = 2;
                         break;
-                    case "right":
+                    case Direction.Right:
                         info.rectTrans.GetChild(1).GetComponent<Dropdown>().value = 3;
                         break;
                 }
 
-                info.rectTrans.GetChild(2).GetComponent<InputField>().text = "" + info.action.value;
+                info.rectTrans.GetChild(2).GetComponent<InputField>().text = "" + info.action.moveData.value;
                 break; 
         }
     }
@@ -150,20 +152,20 @@ public class ProgramCardFunctionality
 
     public void setAction (CardInfo info)
     {
-      
-        switch (info.storeTag)
+        switch (info.actionType)
         {
-            case StoreTag.Movement:
+            case ActionType.Movement:
               
                 setActionMovement(info);
                 break;
-            case StoreTag.Math:
+            case ActionType.Math:
                 break;
-            case StoreTag.Logic:
+            case ActionType.Logic:
                 break;
-            case StoreTag.Variable:
+            case ActionType.Variable:
                 break;
             default:
+                Debug.Log("Here");
                 break;
         }
 
@@ -174,18 +176,21 @@ public class ProgramCardFunctionality
       
         switch (info.movementName)
         {
-            case MovementCardNames.Move:
+            case MovementActionNames.Move:
 
-                //action = createAction(dir, value);
+                info.programCard.action = createAction(info);
 
                 info.transform.GetChild(1).GetComponent<Dropdown>().onValueChanged.AddListener(delegate
                 {
-
+                   
                     //Get Direction
-                    info.programCard.dir = info.transform.GetChild(1).GetComponent<Dropdown>().options[info.transform.GetChild(1).GetComponent<Dropdown>().value].text.ToLower();
+                    info.action.moveData.dir = getDirec(info.transform.GetChild(1).GetComponent<Dropdown>().options[info.transform.GetChild(1).GetComponent<Dropdown>().value].text.ToLower());
 
-                    //Create Action
-                    info.programCard.action = info.programCard.createAction(info.programCard.dir, info.programCard.value);
+                    //Set Data
+                    info.programCard.moveData = info.action.moveData;
+                    
+                    //Create and set the Action
+                    info.programCard.action = createAction(info);
 
 
                     if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && info.programCard.setInf == false)
@@ -197,50 +202,53 @@ public class ProgramCardFunctionality
 
                 info.transform.GetChild(2).GetComponent<InputField>().onEndEdit.AddListener(delegate
                 {
+                   
 
                     if (info.transform.GetChild(2).GetComponent<InputField>().textComponent.text != null)
                     {
                         //Get Value
-                        info.programCard.value = int.Parse(info.transform.GetChild(2).GetComponent<InputField>().textComponent.text);
+
+                        info.action.moveData.value = int.Parse(info.transform.GetChild(2).GetComponent<InputField>().textComponent.text);
                     }
                     else
                     {
-                        info.programCard.value = 0;
+                        info.action.moveData.value = 0;
                     }
 
+                    info.programCard.moveData = info.action.moveData;
+                   
+
                     //Create Action
-                    info.programCard.action = info.programCard.createAction(info.programCard.dir, info.programCard.value);
+                    info.programCard.action = createAction(info);
 
-
+                    //Create Action
+                  
                     if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && info.programCard.setInf == false)
                     {
                         Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
                     }
 
-
                 });
 
-
-
                 break;
-
         }
     }
-
 
     //
     //Create Action
     //
 
-
     public ProgramAction createAction (CardInfo info)
     {
         
-        switch (info.storeTag)
+        switch (info.actionType)
         {
-            case StoreTag.Movement:
+            case ActionType.Movement:
                 return createMovementAction(info);
 
+            default:
+                Debug.Log("Here");
+                return null;
 
         }
 
@@ -250,13 +258,42 @@ public class ProgramCardFunctionality
     {
         switch (info.movementName)
         {
-            case MovementCardNames.Move:
-                return;
-
+            case MovementActionNames.Move:
+                //This may go wrong
+                return new ProgramAction(info, info.programCard.moveData);
+                //Return new Program Action
+            default:
+                Debug.Log("Here");
+                return null;
         }
 
     }
 
+
+    //
+    //Converters
+    //
+
+    public Direction getDirec (string dir)
+    {
+        switch (dir)
+        {
+            case "up":
+                return Direction.Up;
+                
+            case "left":
+                return Direction.Left;
+              
+            case "right":
+                return Direction.Right;
+              
+            case "down":
+                return Direction.Down;
+            default:
+                return Direction.Up;
+              
+        }
+    }
 
 
 }

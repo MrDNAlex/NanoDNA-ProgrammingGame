@@ -7,22 +7,15 @@ using UnityEngine.Tilemaps;
 public class TileInfo 
 {
     //Work with this for now, if RAM usage and storage become a problem later we can find a way to compress it, foxus on MVP 
-    public TileBase tile;
+    public string id;
     public Vector2Int position;
 
-
-    public TileInfo (TileBase tile, Vector2Int pos)
+    public TileInfo (string id, Vector2Int pos)
     {
-        this.tile = tile;
+        this.id = id;
         this.position = pos;
 
-
-       // Debug.Log("New Tile of Type: " + tile + " Saved at position " + pos);
-
+     
     }
-
-
-
-
 
 }

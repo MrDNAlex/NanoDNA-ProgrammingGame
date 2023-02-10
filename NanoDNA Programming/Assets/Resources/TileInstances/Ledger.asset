@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42bb359be3563e04592e2694d11877bc, type: 3}
+  m_Name: Ledger
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 11400000, guid: 5868350ab90dfa34091a73beb070bc08, type: 2}
+  - {fileID: 11400000, guid: 7e6a90446ce661b4497f87d1b5a8c982, type: 2}
+  - {fileID: 11400000, guid: 097ae9341dda6b84891b2a85b697b518, type: 2}
+  - {fileID: 11400000, guid: dac7ff999e00d3449a5fbfcd767503a1, type: 2}
+  - {fileID: 11400000, guid: e831fe27958391a409a6bc838cf1e4db, type: 2}
+  - {fileID: 11400000, guid: 3fdb4b27db78c92488e0d4e6bee16741, type: 2}
+  - {fileID: 11400000, guid: cc661a100013f5941bf43768fae7d649, type: 2}
+  - {fileID: 11400000, guid: 1c01534cf4c235147b30d9c10e5c01d6, type: 2}
+  validate: 0

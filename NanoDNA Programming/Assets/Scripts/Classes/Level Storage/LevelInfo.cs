@@ -17,14 +17,14 @@ public class LevelInfo
     public int yMin;
 
     //Some sort of dictionary system
+    public List<TileInstance> ledger = new List<TileInstance>();
+
+    //public Dictionary<string, TileInstance> ledger = new Dictionary<string, TileInstance>();
 
     public List<TileInfo> voidTiles = new List<TileInfo>();
     public List<TileInfo> backgroundTiles = new List<TileInfo>();
     public List<TileInfo> decorationTiles = new List<TileInfo>();
     public List<TileInfo> obstacleTiles = new List<TileInfo>();
-
- 
-
 
 
     public LevelInfo ()
@@ -51,7 +51,7 @@ public class LevelInfo
         //Get true boundaries
         getTrueCellBoundaries(backgroundTiles);
 
-
+        
     }
 
     public void createArrayInfo (Tilemap map, List<TileInfo> info)
@@ -67,7 +67,9 @@ public class LevelInfo
 
                 if (tile != null)
                 {
-                   info.Add(new TileInfo(tile, new Vector2Int(xIndex, yIndex)));
+                  
+
+                    info.Add(new TileInfo(tile.name, new Vector2Int(xIndex, yIndex)));
                 }
                 else
                 {

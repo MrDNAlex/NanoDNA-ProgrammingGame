@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DNAStruct;
 
 [System.Serializable]
 public class Program 
@@ -17,12 +18,11 @@ public class Program
         {
             for (int i = 0; i < 20; i++)
             {
-               // list.Add(ProgramAction.empty());
+               
+                list.Add(ProgramAction.empty());
             }
         }
        
-      
-
     }
 
     public void updateLength ()
@@ -42,20 +42,45 @@ public class Program
     //Put this in a different script later
     public bool viableActionType (ProgramAction action)
     {
-        switch (action.type)
+        switch (action.actionType)
         {
-            case "move":
+            case ActionType.Movement:
 
-                return true;
-                break;
+                switch (action.movementName)
+                {
+                    case MovementActionNames.None:
+                        return false;
+                    default:
+                        return true;
+                }
+            case ActionType.Math:
+                switch (action.mathName)
+                {
+                    case MathActionNames.None:
+                        return false;
+                    default:
+                        return true;
+                }
+            case ActionType.Logic:
+                switch (action.logicName)
+                {
+                    case LogicActionNames.None:
 
+                        return false;
+                    default:
+                        return true;
+                }
+            case ActionType.Variable:
+                switch (action.variableName)
+                {
+                    case VariableActionNames.None:
+                        return false;
+                    default:
+                        return true;
+                }
             default:
                 return false;
-                break;
-
-
-
-
+              
         }
     }
 
