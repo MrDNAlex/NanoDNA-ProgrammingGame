@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using DNASaveSystem;
+using DNAStruct;
 
 public class LevelMaker : MonoBehaviour
 {
 
     [Header("Level Data")]
     public LevelInfo level = new LevelInfo();
+
+    
 
 
     [Header("Saving Utility")]
@@ -20,6 +23,12 @@ public class LevelMaker : MonoBehaviour
     [Header("Ledger")]
     [SerializeField] TileLedger ledger;
 
+    [SerializeField] GameObject charHolder;
+
+
+
+   
+
    
     //Ok so we need to find a way to save a ledger of block types.
 
@@ -28,11 +37,20 @@ public class LevelMaker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
 
-        level.createLevelInfo(voidMap, backgroundMap, decorationMap, obstaclesMap);
+        LevelMakerInfo info = new LevelMakerInfo();
 
-        SaveManager.saveLevel(level.levelName, level);
+        info.voidMap = voidMap;
+        info.backgroundMap = backgroundMap;
+        info.decorationMap = decorationMap;
+        info.obstacleMap = obstaclesMap;
+        info.charHolder = charHolder;
+
+
+
+        level.createLevelInfo(info);
+
+       // SaveManager.saveLevel(level.levelName, level);
 
         SaveManager.deepSave(level.levelName, level);
 

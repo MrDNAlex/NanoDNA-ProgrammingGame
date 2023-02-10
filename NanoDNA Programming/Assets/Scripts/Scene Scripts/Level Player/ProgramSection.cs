@@ -23,6 +23,7 @@ public class ProgramSection : MonoBehaviour
     [SerializeField] Text nameHeader;
     [SerializeField] Button saveBtn;
     [SerializeField] Button undoBtn;
+    [SerializeField] Tilemap obstacles;
 
     public bool undo;
     bool testRunning;
@@ -87,7 +88,7 @@ public class ProgramSection : MonoBehaviour
             //Set all characters to initial position
             foreach (Transform child in charHolder.transform)
             {
-                child.position = child.GetComponent<CharData>().initPos;
+                child.localPosition = child.GetComponent<CharData>().initPos;
             }
 
             testRunning = false;
@@ -129,7 +130,19 @@ public class ProgramSection : MonoBehaviour
                 {
                     case MovementActionNames.Move:
 
-                        character.transform.position = character.transform.position + actionToMovement(action);
+                        //Calculate next position
+                        Vector3 nextPos = character.transform.position + actionToMovement(action);
+
+                        //Check if the tile in that position exists
+                        if (obstacles.GetTile(obstacles.WorldToCell(nextPos)) == null)
+                        {
+                            Debug.Log("Clear");
+                            character.transform.position = nextPos;
+                        } else
+                        {
+                            Debug.Log("Not Clear");
+                        }
+
                         break;
                 }
 

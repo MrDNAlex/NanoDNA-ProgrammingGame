@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using DNAStruct;
 
 
 [System.Serializable]
 //For something to be saved it must be public 
 public class LevelInfo 
 {
-   
+   [Header("Edit")]
     public string levelName;
 
+    public int maxLine;
+
+    [Header("Automatic")]
     public int xMax;
     public int xMin;
     public int yMax;
     public int yMin;
 
     //Some sort of dictionary system
-    public List<TileInstance> ledger = new List<TileInstance>();
+    //public List<TileInstance> ledger = new List<TileInstance>();
+
+    public List<CharacterInfo> charInfo = new List<CharacterInfo>();
 
     //public Dictionary<string, TileInstance> ledger = new Dictionary<string, TileInstance>();
 
@@ -26,7 +32,6 @@ public class LevelInfo
     public List<TileInfo> decorationTiles = new List<TileInfo>();
     public List<TileInfo> obstacleTiles = new List<TileInfo>();
 
-
     public LevelInfo ()
     {
         //Do Nothing
@@ -34,19 +39,22 @@ public class LevelInfo
     }
 
     //Add an array or list for characters and interactables
-    public void createLevelInfo (Tilemap voidMap, Tilemap backgroundMap, Tilemap obstacleMap, Tilemap decorationMap)
+    public void createLevelInfo (LevelMakerInfo info)
     {
         //Save Void Tiles
-        createArrayInfo(voidMap, voidTiles);
+        createArrayInfo(info.voidMap, voidTiles);
 
         //Save Background Tiles
-        createArrayInfo(backgroundMap, backgroundTiles);
+        createArrayInfo(info.backgroundMap, backgroundTiles);
 
         //Save Obstacle Tiles
-        createArrayInfo(obstacleMap, obstacleTiles);
+        createArrayInfo(info.obstacleMap, obstacleTiles);
 
         //Save Decoration Tiles
-        createArrayInfo(decorationMap, decorationTiles);
+        createArrayInfo(info.decorationMap, decorationTiles);
+
+        //Save Character Info
+        createCharArrayInfo(info.charHolder);
 
         //Get true boundaries
         getTrueCellBoundaries(backgroundTiles);
@@ -79,6 +87,17 @@ public class LevelInfo
         }
 
         //Debug.Log("Complete");
+
+    }
+
+    public void createCharArrayInfo (GameObject charHolder)
+    {
+        foreach (Transform child in charHolder.transform)
+        {
+            //Loop through all children and save their sprite id for their ID and their charData
+
+            charInfo.Add(new CharacterInfo(new CharDataInfo(child.GetComponent<CharData>()), child.GetComponent<SpriteRenderer>().sprite.name));
+        }
 
     }
 

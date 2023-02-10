@@ -4,7 +4,311 @@
     "xMin": 1,
     "yMax": 16,
     "yMin": 1,
-    "ledger": [],
+    "charInfo": [
+        {
+            "data": {
+                "name": "Penguin",
+                "program": {
+                    "list": [
+                        {
+                            "actionType": 0,
+                            "movementName": 1,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 1,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 3,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 1
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        },
+                        {
+                            "actionType": 0,
+                            "movementName": 0,
+                            "mathName": 0,
+                            "logicName": 0,
+                            "variableName": 0
+                        }
+                    ],
+                    "progLength": 0
+                },
+                "programStates": [
+                    {
+                        "list": [
+                            {
+                                "actionType": 0,
+                                "movementName": 1,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 1,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 3,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 1
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            },
+                            {
+                                "actionType": 0,
+                                "movementName": 0,
+                                "mathName": 0,
+                                "logicName": 0,
+                                "variableName": 0
+                            }
+                        ],
+                        "progLength": 0
+                    }
+                ],
+                "initPos": {
+                    "x": 1.5,
+                    "y": 1.5,
+                    "z": 0.0
+                }
+            },
+            "id": "Temp_Char"
+        }
+    ],
     "voidTiles": [
         {
             "id": "void",
@@ -9825,6 +10129,127 @@
     ],
     "decorationTiles": [
         {
+            "id": "Rock",
+            "position": {
+                "x": 2,
+                "y": 1
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 2,
+                "y": 6
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 2,
+                "y": 7
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 2,
+                "y": 8
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 3,
+                "y": 11
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 4,
+                "y": 7
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 5,
+                "y": 3
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 7,
+                "y": 12
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 8,
+                "y": 4
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 9,
+                "y": 1
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 9,
+                "y": 8
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 12,
+                "y": 12
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 13,
+                "y": 4
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 15,
+                "y": 1
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 18,
+                "y": 3
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 18,
+                "y": 5
+            }
+        },
+        {
+            "id": "Rock",
+            "position": {
+                "x": 18,
+                "y": 8
+            }
+        }
+    ],
+    "obstacleTiles": [
+        {
             "id": "zero",
             "position": {
                 "x": 0,
@@ -10305,127 +10730,6 @@
             "position": {
                 "x": 20,
                 "y": 2
-            }
-        }
-    ],
-    "obstacleTiles": [
-        {
-            "id": "Rock",
-            "position": {
-                "x": 2,
-                "y": 1
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 2,
-                "y": 6
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 2,
-                "y": 7
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 2,
-                "y": 8
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 3,
-                "y": 11
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 4,
-                "y": 7
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 5,
-                "y": 3
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 7,
-                "y": 12
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 8,
-                "y": 4
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 9,
-                "y": 1
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 9,
-                "y": 8
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 12,
-                "y": 12
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 13,
-                "y": 4
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 15,
-                "y": 1
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 18,
-                "y": 3
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 18,
-                "y": 5
-            }
-        },
-        {
-            "id": "Rock",
-            "position": {
-                "x": 18,
-                "y": 8
             }
         }
     ]

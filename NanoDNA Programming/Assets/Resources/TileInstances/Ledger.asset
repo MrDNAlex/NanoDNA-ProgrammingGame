@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Ledger
   m_EditorClassIdentifier: 
   tiles:
+  - {fileID: 11400000, guid: d8eed16e94e4ad54a810c57837b618d0, type: 2}
+  - {fileID: 11400000, guid: 5dd048fdac9daff45b0887c9577710b9, type: 2}
+  - {fileID: 11400000, guid: 74df99f659784074fb6032fe88d65063, type: 2}
   - {fileID: 11400000, guid: 5868350ab90dfa34091a73beb070bc08, type: 2}
   - {fileID: 11400000, guid: 7e6a90446ce661b4497f87d1b5a8c982, type: 2}
   - {fileID: 11400000, guid: 097ae9341dda6b84891b2a85b697b518, type: 2}
@@ -21,4 +24,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3fdb4b27db78c92488e0d4e6bee16741, type: 2}
   - {fileID: 11400000, guid: cc661a100013f5941bf43768fae7d649, type: 2}
   - {fileID: 11400000, guid: 1c01534cf4c235147b30d9c10e5c01d6, type: 2}
-  validate: 0
+  validate: 1

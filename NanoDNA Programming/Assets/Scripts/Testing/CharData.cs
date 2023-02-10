@@ -11,7 +11,6 @@ public class CharData : MonoBehaviour
     //Maybe increase efficiency using this https://blog.unity.com/technology/how-on-demand-rendering-can-improve-mobile-performance
     //
 
-
     //Maybe add a system that checks if it's compiling for the right character?
 
     public string name;
@@ -30,9 +29,20 @@ public class CharData : MonoBehaviour
     {
         programStates.Add(program);
 
-        initPos = transform.position;
+        //initPos = transform.localPosition;
+
+        //initPos.z = 0;
 
         OnDemandRendering.renderFrameInterval = 12;
+    }
+
+    public CharData (CharDataInfo info)
+    {
+        this.name = info.name;
+        this.program = info.program;
+        this.programStates = info.programStates;
+        this.initPos = info.initPos;
+
     }
 
     public ProgramAction getAction (int index)

@@ -909,6 +909,7 @@ MonoBehaviour:
   nameHeader: {fileID: 50809219}
   saveBtn: {fileID: 1161868853}
   undoBtn: {fileID: 849177852}
+  obstacles: {fileID: 1176585894}
   undo: 0
 --- !u!1 &474066902
 GameObject:
@@ -3117,8 +3118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa61befe053d31459fa1cfe2c4fe9c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charLedger: {fileID: 11400000, guid: 1aa1af6e311111e4ba4bd07d7a0991c9, type: 2}
   ledger: {fileID: 11400000, guid: e4aa60f931b4f50408e352c9727dc1ec, type: 2}
-  levelPath: Assets/Resources/Levels/Testing/TestLevel.dna
+  charPrefab: {fileID: 8606453985841557872, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
+  charHolder: {fileID: 1414626523}
+  levelPath: Assets/Resources/Levels/Testing/Demo.dna
   background: {fileID: 1892444735}
   mapView: {fileID: 474066903}
   content: {fileID: 473550888}
@@ -3838,7 +3842,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2013354397
 Transform:
   m_ObjectHideFlags: 0
@@ -4221,7 +4225,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2110175892
 Transform:
   m_ObjectHideFlags: 0

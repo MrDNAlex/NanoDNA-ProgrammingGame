@@ -2,9 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FlexUI;
+using UnityEngine.Tilemaps;
 
 namespace DNAStruct
 {
+    [System.Serializable]
+    public struct LevelMakerInfo
+    {
+        public Tilemap voidMap;
+        public Tilemap backgroundMap;
+        public Tilemap obstacleMap;
+        public Tilemap decorationMap;
+        public GameObject charHolder;
+
+        public int maxLines;
+
+    }
 
 
     public struct CardInfo
@@ -62,6 +75,7 @@ namespace DNAStruct
 
     }
 
+    [System.Serializable]
     public enum Direction
     {
         Up, 
@@ -73,7 +87,7 @@ namespace DNAStruct
     //
     //Action Data structs
     //
-
+    [System.Serializable]
     public struct MoveData
     {
         public Direction dir;

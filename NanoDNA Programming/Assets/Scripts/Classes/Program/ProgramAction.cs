@@ -4,7 +4,7 @@ using UnityEngine;
 using DNAStruct;
 
 [System.Serializable]
-public class ProgramAction 
+public class ProgramAction
 {
     //Maybe have a dictionary that stores all the information based off titles, then the program checks the type and grabs all the info it needs?
 
@@ -21,7 +21,9 @@ public class ProgramAction
 
     //Maybe have a data type for all ActionTypes
 
-    public MoveData moveData;
+    public MoveData moveData = new MoveData();
+
+   
 
 
     //Make a Unique Constructore for each? or maybe I stuff the data into the CardInfo?

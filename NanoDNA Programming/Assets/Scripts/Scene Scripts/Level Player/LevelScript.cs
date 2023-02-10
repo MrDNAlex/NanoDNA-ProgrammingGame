@@ -11,8 +11,11 @@ using UnityEngine.Rendering;
 
 public class LevelScript : MonoBehaviour
 {
-
+    [SerializeField] CharLedger charLedger;
     [SerializeField] TileLedger ledger;
+
+    [SerializeField] GameObject charPrefab;
+    [SerializeField] GameObject charHolder;
 
     public string levelPath;
 
@@ -93,6 +96,8 @@ public class LevelScript : MonoBehaviour
     {
 
         loadLevel();
+
+        
       
     }
 
@@ -364,7 +369,7 @@ public class LevelScript : MonoBehaviour
     public void loadLevel ()
     {
         //Load Info
-        LevelInfo info = SaveManager.deepLoad("test");
+        LevelInfo info = SaveManager.deepLoad("Demo");
 
         //Set Void Tiles
         setTileMap(voidMap, info.voidTiles);
@@ -378,19 +383,50 @@ public class LevelScript : MonoBehaviour
         //Set Decoration Tiles
         setTileMap(decorationMap, info.decorationTiles);
 
+        //Set Characters
+        setCharacters(info.charInfo);
+
         setCamera(info);
+
+        maxLines = info.maxLine;
+
+        updateLineUsed(charHolder);
+
+
     }
 
     public void setTileMap (Tilemap map, List<TileInfo> tileList)
     {
-        //name.text += map.name + " " + tileList.Count.ToString();
-        //name.text += map.name + " " + map.transform.position + " ";
+       
         foreach (TileInfo info in tileList)
         {
             
             map.SetTile(new Vector3Int(info.position.x, info.position.y, 0), ledger.tiles.Find(t => t.id == info.id).tile);
            
         }
+    }
+
+    public void setCharacters (List<CharacterInfo> chars)
+    {
+        foreach (CharacterInfo info in chars)
+        {
+
+            //Instantiate new Character prefab
+            GameObject newChar = Instantiate(charPrefab, charHolder.transform);
+
+            //Set Char data
+            newChar.GetComponent<CharData>().name = info.data.name;
+            newChar.GetComponent<CharData>().program = info.data.program;
+            newChar.GetComponent<CharData>().programStates = info.data.programStates;
+            newChar.GetComponent<CharData>().initPos = info.data.initPos;
+
+            //Set Sprite
+            newChar.GetComponent<SpriteRenderer>().sprite = charLedger.chars.Find(c => c.id == info.id).sprite;
+
+            //Set initial position
+            newChar.transform.localPosition = info.data.initPos;
+        }
+
     }
 
 }
