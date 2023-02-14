@@ -3,193 +3,100 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
+using DNAStruct;
+using UnityEngine.Rendering;
 
 public class ProgramCard : MonoBehaviour
 {
 
+    public ActionType actionType;
+    public UIWord cardName;
+
+    public MovementActionNames movementName;
+    public MathActionNames mathName;
+    public LogicActionNames logicName;
+    public VariableActionNames variableName;
+
     public Flex program;
-    public string cardType;
     public Transform progLine;
     public int indent = 0;
 
+    //Action Stuff
     public ProgramAction action;
-    string dir = "up";
-    public int value = 0;
+
+
+    public bool setInf = false;
+
+    ProgramCardFunctionality functionality;
+
+    public MoveData moveData;
+
+
 
     private void Awake()
     {
-        //Debug.Log("Awake 1");
-        setUI();
+        functionality = new ProgramCardFunctionality();
+        setFunctionality();
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-       // Debug.Log("Start");
-      //  Debug.Log(action.dispAction());
-         
+        OnDemandRendering.renderFrameInterval = 12;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void setFunctionality()
     {
-        
-    }
+        //Set the UI
+        program = functionality.setUI(setCardInfo());
 
-
-    public void setUI()
-    {
-
-        //Check the type of card it will be
-        if (cardType == "move")
-        {
-            //Flex Variable Init
-            program = new Flex(transform.GetComponent<RectTransform>(), 2);
-
-            Flex Move = new Flex(program.getChild(0), 1f);
-            Flex Direction = new Flex(program.getChild(1), 1);
-            Flex Value = new Flex(program.getChild(2), 1);
-
-
-            //Set Flex Parameters
-            program.addChild(Move);
-            program.addChild(Direction);
-            program.addChild(Value);
-
-            program.setSpacingFlex(0.4f, 1);
-
-            program.setAllPadSame(0.3f, 1);
-
-            setActionMovement();
-
-
-        } else if (cardType == "var")
-        {
-            //Flex Variable Init
-            program = new Flex(transform.GetComponent<RectTransform>(), 2);
-
-            Flex Var = new Flex(program.getChild(0), 2);
-            Flex VarName = new Flex(program.getChild(1), 1);
-            Flex Sign = new Flex(program.getChild(2), 1);
-            Flex Val = new Flex(program.getChild(3), 1);
-
-
-            //Set Flex Parameters
-            program.addChild(Var);
-            program.addChild(VarName);
-            program.addChild(Sign);
-            program.addChild(Val);
-
-            program.setSpacingFlex(1, 1);
-
-            program.setAllPadSame(0.2f, 1);
-        }
-       
-    }
-
-
-    public void setActionMovement ()
-    {
-        Debug.Log(dir);
-        Debug.Log(value);
-        action = createAction(dir, value);
-
-        transform.GetChild(1).GetComponent<Dropdown>().onValueChanged.AddListener(delegate
-        {
-            
-           //Get Direction
-            dir = transform.GetChild(1).GetComponent<Dropdown>().options[transform.GetChild(1).GetComponent<Dropdown>().value].text.ToLower();
-
-            //Create Action
-            action = createAction(dir, value);
-
-
-            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false)
-            {
-                Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
-            } 
-            
-
-        });
-
-        transform.GetChild(2).GetComponent<InputField>().onEndEdit.AddListener(delegate
-        {
-
-           if (transform.GetChild(2).GetComponent<InputField>().textComponent.text != null)
-            {
-                //Get Value
-                value = int.Parse(transform.GetChild(2).GetComponent<InputField>().textComponent.text);
-            } else
-            {
-                value = 0;
-            }
-
-            //Create Action
-            action = createAction(dir, value);
-
-            if (Camera.main.GetComponent<LevelScript>().progSec.undo == false)
-            {
-                Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
-            }
-
-        });
-
-
-    }
-
-    public ProgramAction createAction(string dir, int val)
-    {
-       
-        return new ProgramAction("move", dir, val);
+        functionality.setAction(setCardInfo());
 
     }
 
     public void setInfo (ProgramAction action)
     {
-        switch (action.type)
-        {
-            case "move":
 
-                cardType = action.type;
-                value = action.value;
-                dir = action.dir;
+        //The action type will have a reference to a function for it's handle so that when the program is being read it doens't need to go around and search for said function, it just instantly runs it, associated with it will be the types and values it needs!
 
-                if (action.dir == "up")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 0;
-                } else if (action.dir == "down")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 1;
-                }
-                else if (action.dir == "left")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 2;
-                }
-                else if (action.dir == "right")
-                {
-                    transform.GetChild(1).GetComponent<Dropdown>().value = 3;
-                }
 
-                
-                transform.GetChild(2).GetComponent<InputField>().text = "" + action.value;
+        //Make sure it won't compile
+        setInf = true;
 
-                this.action = createAction(action.dir, action.value);
+      
+        this.actionType = action.actionType;
+        this.action = action;
 
-                break;
-            case "var":
+        //Actually paste info on the UI
+        functionality.setInfo(setCardInfo());
 
-                break;
-
-            default:
-
-                break;
-
-        }
-
+        //Make sure it won't compile
+        setInf = false;
     }
 
-    
+    public CardInfo setCardInfo ()
+    {
+        CardInfo info = new CardInfo();
 
+        info.actionType = actionType;
+
+        info.movementName = movementName;
+        info.mathName = mathName;
+        info.logicName = logicName;
+        info.variableName = variableName;
+
+        info.cardName = cardName;
+      
+        info.flex = program;
+        info.rectTrans = transform.GetComponent<RectTransform>();
+        info.transform = transform;
+        info.action = action;
+
+        info.programCard = this;
+
+        return info;
+
+    }
 
 }

@@ -4,175 +4,264 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
 using UnityEngine.Tilemaps;
+using DNAStruct;
+using UnityEngine.Rendering;
 
 public class ProgramSection : MonoBehaviour
 {
 
-    public LevelScript level;
+    public Flex flex;
+
+    public LevelType levelType;
 
     public GameObject character;
     public int maxLineNum = 20;
-   
+
     [SerializeField] GameObject progLine;
-    [SerializeField] Button playBtn;
+    [SerializeField] Button testBtn;
     [SerializeField] GameObject charHolder;
     [SerializeField] Text nameHeader;
     [SerializeField] Button saveBtn;
     [SerializeField] Button undoBtn;
+    [SerializeField] Tilemap obstacles;
 
     public bool undo;
-    
+    bool testRunning;
+
+    public Scripts allScripts;
+
+    PlayLevelWords UIwords = new PlayLevelWords();
+
+    Language lang;
+
+    private void Awake()
+    {
+
+        flex = setUI();
+
+        Camera.main.GetComponent<LevelScript>().allScripts.programSection = this;
+
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        level = Camera.main.GetComponent<LevelScript>();
-        character = level.character;
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-        playBtn.onClick.AddListener(playProgram);
+        lang = allScripts.levelScript.lang;
+
+        levelType = allScripts.levelManager.info.levelType;
+
+        character = allScripts.levelScript.character;
+
+        testBtn.onClick.AddListener(testProgram);
         saveBtn.onClick.AddListener(compileProgram);
         undoBtn.onClick.AddListener(undoProgram);
 
+        testRunning = false;
+
+        OnDemandRendering.renderFrameInterval = 12;
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public Flex setUI()
     {
-        
+        Flex Content = new Flex(GetComponent<RectTransform>(), 1);
+
+        Content.setChildMultiH(150);
+
+        //Add all the programLine Children
+
+        addChildren(Content);
+
+        return Content;
     }
 
-
-    
-    public void playProgram ()
+    void addChildren(Flex parent)
     {
-        compileProgram();
-
-        foreach (Transform child in charHolder.transform)
+        for (int i = 0; i < 20; i++)
         {
+            GameObject programLine = Instantiate(progLine, parent.UI);
 
-            Program program = new Program(false);
+            parent.addChild(programLine.GetComponent<ProgramLine>().Line);
 
-
-            for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i ++)
-            {
-                decompose(child.GetComponent<CharData>().program.list[i], program);
-            }
-
-
-
-            //Later add a thing that deconstructs the program into more basic parts
-            /*
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                if (transform.GetChild(i).GetChild(1).childCount != 0)
-                {
-                    program.list.Add(transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<ProgramCard>().action);
-                }
-            }
-            */
-
-            // character.GetComponent<CharData>().program = program;
-
-            StartCoroutine(runProgram(child.gameObject ,program));
+            programLine.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
 
         }
-
-        //Compile program
-        
-
-        //Program that will be run
-       // Program program = character.GetComponent<CharData>().program;
+    }
 
 
+    public void testProgram()
+    {
+        if (testRunning)
+        {
+            //Stop all coroutines
+            StopAllCoroutines();
+
+            //Set all characters to initial position
+            foreach (Transform child in charHolder.transform)
+            {
+                if (child.GetComponent<CharData>() != null)
+                {
+                    child.localPosition = child.GetComponent<CharData>().initPos;
+
+                }
+                else
+                {
+                    //Make interactive appear again
+                    child.gameObject.SetActive(true);
+                }
+
+            }
+
+            testRunning = false;
+
+            testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
+
+            allScripts.levelManager.updateConstraints();
+
+
+        }
+        else
+        {
+            compileProgram();
+
+            foreach (Transform child in charHolder.transform)
+            {
+                if (child.GetComponent<CharData>() != null)
+                {
+                    Program program = new Program(false);
+
+                    //Decompose the program into more basic parts
+                    for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
+                    {
+                        decompose(child.GetComponent<CharData>().program.list[i], program);
+                    }
+
+                    StartCoroutine(runProgram(child.gameObject, program));
+                }
+
+            }
+
+            testRunning = true;
+
+            testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
+        }
     }
 
     public void readAction(GameObject character, ProgramAction action)
     {
-        switch (action.type)
+        switch (action.actionType)
         {
-            case "move":
-                switch (action.dir)
-                {
-                    case "up":
-                        character.transform.position = character.transform.position + new Vector3(0, action.value, 0);
-                        break;
-                    case "left":
-                        character.transform.position = character.transform.position + new Vector3(-action.value, 0, 0);
-                        break;
-                    case "right":
+            case ActionType.Movement:
 
-                        character.transform.position = character.transform.position + new Vector3(action.value, 0, 0);
-                        break;
-                    case "down":
-                        character.transform.position = character.transform.position + new Vector3(0, -action.value, 0);
+                switch (action.movementName)
+                {
+                    case MovementActionNames.Move:
+
+                        //Calculate next position
+                        Vector3 nextPos = character.transform.position + actionToMovement(action);
+
+                        //Check if the tile in that position exists
+                        if (obstacles.GetTile(obstacles.WorldToCell(nextPos)) == null)
+                        {
+                            //Debug.Log("Clear");
+                            character.transform.position = nextPos;
+                        }
+                        else
+                        {
+                            //Debug.Log("Not Clear");
+                        }
+
                         break;
                 }
+
                 break;
+            case ActionType.Math:
+
+                break;
+            case ActionType.Logic:
+
+                break;
+            case ActionType.Variable:
+
+                break;
+        }
+    }
+
+    public Vector3 actionToMovement(ProgramAction action)
+    {
+        switch (action.moveData.dir)
+        {
+            case Direction.Up:
+                return new Vector3(0, action.moveData.value, 0);
+            case Direction.Down:
+                return new Vector3(0, -action.moveData.value, 0);
+            case Direction.Left:
+                return new Vector3(-action.moveData.value, 0, 0);
+            case Direction.Right:
+                return new Vector3(action.moveData.value, 0, 0);
+            default:
+                return new Vector3(0, action.moveData.value, 0);
         }
     }
 
     public void compileProgram()
     {
-
-        Debug.Log("Compile");
-
-        character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
-
-        Program program = new Program(false);
-
-        //Compile program
-
-        for (int i = 0; i < transform.childCount; i++)
+        if (character != null)
         {
-
-            if (transform.GetChild(i).GetChild(1).childCount != 0)
+            //Debug.Log("Compile");
+            if (character.GetComponent<CharData>() != null)
             {
-               
-                program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
-                Debug.Log(getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
-              
-            }
-            else
-            {
-                program.list.Add(new ProgramAction("none", "up", 0));
-            }
+                character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
 
+                Program program = new Program(false);
+
+                //Compile program
+
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    if (transform.GetChild(i).GetChild(1).childCount != 0)
+                    {
+                        // Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
+                        program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
+                    }
+                }
+
+                program.updateLength();
+
+                character.GetComponent<CharData>().program = program;
+
+
+                allScripts.levelManager.updateConstraints();
+
+                //Debug.Log("Compile Done");
+
+            }
         }
-
-        character.GetComponent<CharData>().program = program;
-
-        //Debug.Log("Compile Done");
-
     }
 
-  
-
-  public void renderProgram(GameObject selected)
+    public void renderProgram(GameObject selected)
     {
-        //compileProgram();
+        compileProgram();
 
         character = selected;
 
-        nameHeader.text = character.GetComponent<CharData>().name;
-
+        nameHeader.text = character.GetComponent<CharData>().name.getWord(lang);
         if (selected != null)
         {
-
             if (selected.GetComponent<CharData>() != null)
             {
-
                 CharData data = selected.GetComponent<CharData>();
 
                 //Delete program Child
-
-                for (int i = 0; i < transform.childCount; i ++)
+                for (int i = 0; i < transform.childCount; i++)
                 {
                     GameObject programHolder = getProgramHolderRef(i);
 
                     //Debug.Log(programHolder);
 
-                    Flex flex2 = Flex.findChild(programHolder, level.Background);
+                    Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
 
                     //Delete Game Objects
                     destroyChildren(programHolder);
@@ -181,32 +270,13 @@ public class ProgramSection : MonoBehaviour
                     flex2.deleteAllChildren();
 
                     //Instantiate new Object
-                    if (getProgramLineComp(i) != null)
-                    {
-                        
-                        getProgramLineComp(i).reAddProgram(data.getAction(i));
-                    }
+                    getProgramLineComp(i).reAddProgram(data.getAction(i));
                 }
-
-            }
-            else
-            {
-               
-
             }
         }
-        else
-        {
-            
-          
-        }
-
-     
-        //Check if selected object has a script
-
     }
 
-    public void deleteProgram ()
+    public void deleteProgram()
     {
         foreach (Transform child in transform)
         {
@@ -215,33 +285,32 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public void updateOGPos ()
+    public void updateOGPos()
     {
         //Debug.Log("Hello");
-        for (int i = 0; i < transform.childCount; i ++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             GameObject program = getProgramRef(i);
             if (program != null)
             {
                 program.GetComponent<DeleteIndentDrag>().updateOGPos();
             }
-            
         }
-
     }
 
-    public GameObject getProgramRef (int childIndex)
+    public GameObject getProgramRef(int childIndex)
     {
         if (transform.GetChild(childIndex).GetChild(1).childCount != 0)
         {
             return transform.GetChild(childIndex).GetChild(1).GetChild(0).gameObject;
-        } else
+        }
+        else
         {
             return null;
         }
     }
 
-    public GameObject getProgramHolderRef (int childIndex)
+    public GameObject getProgramHolderRef(int childIndex)
     {
         if (transform.GetChild(childIndex).GetChild(1) != null)
         {
@@ -263,12 +332,13 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public GameObject getProgramLine (int index)
+    public GameObject getProgramLine(int index)
     {
         if (transform.childCount != 0 && (transform.childCount > index))
         {
             return transform.GetChild(index).gameObject;
-        } else
+        }
+        else
         {
             return null;
         }
@@ -276,49 +346,70 @@ public class ProgramSection : MonoBehaviour
 
     public ProgramLine getProgramLineComp(int index)
     {
-
         if (getProgramLine(index).GetComponent<ProgramLine>() != null)
         {
             return getProgramLine(index).GetComponent<ProgramLine>();
-        } else
+        }
+        else
         {
             return null;
         }
-
-
-      
     }
 
-    public IEnumerator runProgram (GameObject character, Program program)
+    public IEnumerator runProgram(GameObject character, Program program)
     {
         for (int i = 0; i < program.list.Count; i++)
         {
-             readAction(character, program.list[i]);
+            readAction(character, program.list[i]);
             yield return new WaitForSeconds(0.5f);
         }
     }
 
-    public void decompose (ProgramAction action, Program program)
+    public void decompose(ProgramAction action, Program program)
     {
-        switch (action.type)
+        //Make this more Complex probably
+
+        //Maybe we make a custom Structure that takes in the action 
+
+        switch (action.actionType)
         {
-            case "move":
+            case ActionType.Movement:
 
-                for (int i = 0; i < action.value; i ++)
+                switch (action.movementName)
                 {
-                    program.list.Add(new ProgramAction(action.type, action.dir, 1));
+                    case MovementActionNames.Move:
 
+                        for (int i = 0; i < action.moveData.value; i++)
+                        {
+                            ProgramAction newAction = new ProgramAction();
+
+                            newAction.movementName = MovementActionNames.Move;
+
+                            newAction.moveData.value = 1;
+                            newAction.moveData.dir = action.moveData.dir;
+
+                            program.list.Add(newAction);
+                        }
+                        break;
                 }
+                break;
+            case ActionType.Math:
+
+                break;
+            case ActionType.Logic:
+
+                break;
+            case ActionType.Variable:
 
                 break;
 
         }
-
     }
 
-    public void undoProgram ()
+    public void undoProgram()
     {
         undo = true;
+
         character.GetComponent<CharData>().program = character.GetComponent<CharData>().undoState();
 
         //Re render program
@@ -326,6 +417,34 @@ public class ProgramSection : MonoBehaviour
 
         undo = false;
 
+    }
+
+    public void runFinalProgram()
+    {
+        compileProgram();
+
+        foreach (Transform child in charHolder.transform)
+        {
+            Program program = new Program(false);
+
+            if (child.GetComponent<CharData>() != null)
+            {
+                //Decompose the program into more basic parts
+                for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
+                {
+                    decompose(child.GetComponent<CharData>().program.list[i], program);
+                }
+
+                StartCoroutine(runProgram(child.gameObject, program));
+            }
+        }
+    }
+
+    public void reload()
+    {
+        lang = Camera.main.GetComponent<LevelScript>().lang;
+
+       // flex = setUI();
     }
 
 }

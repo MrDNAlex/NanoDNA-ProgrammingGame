@@ -6,43 +6,23 @@ using FlexUI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using DNASaveSystem;
+using UnityEngine.Rendering;
+using DNAStruct;
 
 public class LevelScript : MonoBehaviour
 {
+    public Language lang = Language.English;
+
+    PlayLevelWords UIwords = new PlayLevelWords();
+
+    public string levelPath;
 
     [SerializeField] RectTransform background;
 
-
-    /*
-    [SerializeField] RectTransform reg1;
-    [SerializeField] RectTransform header;
-    [SerializeField] RectTransform list;
-    [SerializeField] RectTransform sV;
-   // [SerializeField] RectTransform sB;
-    [SerializeField] RectTransform vP;
-
-
-    [SerializeField] RectTransform reg2;
-    [SerializeField] RectTransform mapView;
-
-    [SerializeField] RectTransform reg3;
-
-    [Header("Store")]
-    [SerializeField] RectTransform store;
-
-    [SerializeField] RectTransform storeHeader;
-
-    [SerializeField] RectTransform constraints;
-    */
+    [Header("Rect Transforms")]
 
     //New Serialize
-    [SerializeField] RectTransform btn1;
-    [SerializeField] RectTransform btn2;
-    [SerializeField] RectTransform btn3;
-    [SerializeField] RectTransform btn4;
-
-    [SerializeField] Button resize;
-    [SerializeField] Button play;
 
     [SerializeField] RectTransform mapView;
 
@@ -50,16 +30,21 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform gridView;
 
+    [SerializeField] RectTransform store;
+
+    //[SerializeField] Button resize;
+    //[SerializeField] Button play;
+
+
+    [Header("Game Objects")]
+
     [SerializeField] GameObject prefab;
 
     [SerializeField] GameObject prefab2;
 
-    [SerializeField] GameObject Movement;
-
-    [SerializeField] GameObject Program;
 
     [SerializeField] GameObject Variable;
-    public string type;
+    // public string type;
 
     public RectTransform contentTrans;
 
@@ -67,37 +52,39 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Camera Cam2;
 
-    [SerializeField] Tilemap BackAndMap;
-    [SerializeField] Tilemap Void;
-    [SerializeField] Tilemap CharAndInt;
+    [Header("Tilemaps")]
+
+    [SerializeField] Tilemap voidMap;
+    [SerializeField] Tilemap backgroundMap;
+  
+
     [SerializeField] TileBase tile;
 
     [SerializeField] public GameObject character;
 
+
+    [SerializeField] Text resize;
+    [SerializeField] Text debug;
+    [SerializeField] Text complete;
+    [SerializeField] Text save;
+    [SerializeField] Text changeLang;
+
+    [SerializeField] Button changeLangBtn;
+
     Vector2 screenPos;
     Vector2 viewSize;
 
-    Dictionary<TileBase, CharData> dic = new Dictionary<TileBase, CharData>();
-
     public Flex Background;
-
 
     public GameObject selected;
 
     Flex Content;
 
-    public ProgramSection progSec;
-
+    public Scripts allScripts = new Scripts();
 
     private void Awake()
     {
-        for (int i = 0; i < 10; i ++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                BackAndMap.SetTile(new Vector3Int(i, j, 0), tile);
-            }
-        }
+        allScripts.levelScript = this;
     }
 
     // Start is called before the first frame update
@@ -105,28 +92,17 @@ public class LevelScript : MonoBehaviour
     {
         setUI();
 
-        btn1.GetComponent<Button>().onClick.AddListener(btn1Ac);
-        btn2.GetComponent<Button>().onClick.AddListener(btn2Ac);
-        btn3.GetComponent<Button>().onClick.AddListener(btn3Ac);
-        btn4.GetComponent<Button>().onClick.AddListener(btn4Ac);
+        setUIText();
 
         contentTrans = content;
 
-        //resize.onClick.AddListener(ResizeCam);
-        //play.onClick.AddListener(runProgram);
+        OnDemandRendering.renderFrameInterval = 12;
 
-        progSec = content.GetComponent<ProgramSection>();
-
+        changeLangBtn.onClick.AddListener(langChange);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-       // Debug.Log(Input.mousePosition);
-    }
-
-
-    void setUI ()
+    void setUI()
     {
         //Create Flex Components
         //Create a new function in the FlexUI library that gets the reference to the rect transform of the Flex Parent and gets the child index from there. 
@@ -141,8 +117,6 @@ public class LevelScript : MonoBehaviour
         Flex List = new Flex(Reg1.getChild(1), 8);
         Flex SV = new Flex(List.getChild(0), 1);
         Flex VP = new Flex(SV.getChild(0), 10);
-       // Flex SB = new Flex(sB, 1);
-        Content = new Flex(VP.getChild(0), 1);
 
         Flex Controls = new Flex(Header.getChild(0), 1.5f);
 
@@ -150,37 +124,25 @@ public class LevelScript : MonoBehaviour
         Flex InteracName = new Flex(Controls.getChild(1), 4);
         Flex Save = new Flex(Controls.getChild(2), 1);
 
-       // Undo.setSquare();
-      //  Save.setSquare();
-
         Flex Scripts = new Flex(Header.getChild(1), 1);
 
         Flex Reg2 = new Flex(Background.getChild(1), 2f);
         Flex MapView = new Flex(Reg2.getChild(0), 2f);
 
-        Flex Zoom = new Flex(MapView.getChild(0), 4);
-        Flex Resize = new Flex(MapView.getChild(1), 1);
-        Flex Play = new Flex(MapView.getChild(2), 1);
-
-        Zoom.setCustomSize(new Vector2(0, 40));
-        Resize.setCustomSize(new Vector2(0, 40));
-        Play.setCustomSize(new Vector2(0, 40));
+        Flex ChangeLang = new Flex(MapView.getChild(0), 1);
+        Flex Zoom = new Flex(MapView.getChild(1), 6);
+        Flex Resize = new Flex(MapView.getChild(2), 1);
+        Flex Play = new Flex(MapView.getChild(3), 1);
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
-        Flex Store = new Flex(Reg3.getChild(0), 4f);
-
-        Flex StoreHeader = new Flex(Store.getChild(0), 1);
-        Flex BTN1 = new Flex(StoreHeader.getChild(0), 1);
-        Flex BTN2 = new Flex(StoreHeader.getChild(1), 1);
-        Flex BTN3 = new Flex(StoreHeader.getChild(2), 1);
-        Flex BTN4 = new Flex(StoreHeader.getChild(3), 1);
-
-        Flex GridView = new Flex(Store.getChild(1), 5);
 
         Flex Constraints = new Flex(Reg3.getChild(1), 1f);
 
-        //Add children
+        Flex CollectedItems = new Flex(Constraints.getChild(0), 1);
+        Flex LinesUsed = new Flex(Constraints.getChild(1), 1);
+        Flex CompleteLevel = new Flex(Constraints.getChild(2), 1);
 
+        //Add children
         Header.addChild(Controls);
         Header.addChild(Scripts);
 
@@ -191,8 +153,7 @@ public class LevelScript : MonoBehaviour
 
         List.addChild(SV);
         SV.addChild(VP);
-       // SV.addChild(SB);
-        VP.addChild(Content);
+        VP.addChild(allScripts.programSection.flex);
 
         Reg1.addChild(Header);
         Reg1.addChild(List);
@@ -200,310 +161,116 @@ public class LevelScript : MonoBehaviour
         Reg2.addChild(MapView);
         Reg2.addChild(Reg3);
 
+        MapView.addChild(ChangeLang);
         MapView.addChild(Zoom);
         MapView.addChild(Resize);
         MapView.addChild(Play);
 
-        Reg3.addChild(Store);
+        Reg3.addChild(store.GetComponent<StoreScript>().Store);
         Reg3.addChild(Constraints);
 
         Background.addChild(Reg1);
         Background.addChild(Reg2);
 
-        Store.addChild(StoreHeader);
-        Store.addChild(GridView);
-
-        StoreHeader.addChild(BTN1);
-        StoreHeader.addChild(BTN2);
-        StoreHeader.addChild(BTN3);
-        StoreHeader.addChild(BTN4);
-
-        //Background.addChild(Reg3);
+        ChangeLang.setSelfHorizontalPadding(12, 1, 0, 1);
+        Zoom.setSelfHorizontalPadding(12, 1, 0, 1);
+        Resize.setSelfHorizontalPadding(12, 1, 0, 1);
+        Play.setSelfHorizontalPadding(12, 1, 0, 1);
 
         MapView.setSpacingFlex(0.2f, 1);
 
         Controls.setSpacingFlex(0.5f, 1);
         Controls.setAllPadSame(0.1f, 1);
 
-        //Add the programming blocks as children
-        addChildren(Content);
-        addStore(GridView);
+        Constraints.addChild(CollectedItems);
+        Constraints.addChild(LinesUsed);
+        Constraints.addChild(CompleteLevel);
 
         //Constraints and Abilities 
-
-        Content.setChildMultiH(150);
-        //Content.useChildMulti = true;
-
-        //Content.setSelfHorizontalPadding(0, 0, 0.05f, 1);
+        Constraints.setAllPadSame(0.1f, 1);
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
-
-        setCamera(new Vector2(Screen.width, Screen.height));
 
         screenPos = new Vector2(mapView.rect.x, Screen.height);
         viewSize = MapView.size;
 
     }
 
-    void addChildren (Flex parent)
-    {
-        
-        for (int i = 0; i < 20; i ++)
-        {
-            GameObject idk = Instantiate(prefab, parent.UI);
-
-            parent.addChild(idk.GetComponent<ProgramLine>().Line);
-
-           // Debug.Log(idk.GetComponent<ProgramBlock>().Block);
-
-            idk.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
-            //idk.GetComponent<Button>().onClick.AddListener(delegate { setBackground(idk); });
-        }
-    }
-
-    void addStore (Flex parent)
-    {
-
-       for (int i = 0; i < 2; i++)
-        {
-            GameObject idk = Instantiate(prefab2, parent.UI);
-
-            idk.GetComponent<StoreCard>().cardFlex.setSize(parent.UI.GetComponent<GridLayoutGroup>().cellSize);
-            //idk.GetComponent<StoreCard>().cardType = "mov";
-        }
-
-    }
-
-    void btn1Ac ()
-    {
-        gridView.GetComponent<Image>().color = Color.red;
-    }
-
-    void btn2Ac()
-    {
-        gridView.GetComponent<Image>().color = Color.blue;
-    }
-
-    void btn3Ac()
-    {
-        gridView.GetComponent<Image>().color = Color.magenta;
-    }
-
-    void btn4Ac()
-    {
-        gridView.GetComponent<Image>().color = Color.cyan;
-    }
-
-    public void addProgram (ProgramLine parent, string type)
-    {
-
-        parent.deleteLine();
-        GameObject idk = null;
-
-        if (type == "move")
-        {
-            idk = Instantiate(Program, parent.ProgramObj.transform);
-            
-        } else if (type == "var")
-        {
-            idk = Instantiate(Variable, parent.ProgramObj.transform);
-           
-        }
-
-        parent.ProgramUI.addChild(idk.GetComponent<ProgramCard>().program);
-
-        Destroy(idk.GetComponent<DragController2>());
-
-        parent.Line.setSize(parent.Line.size);
-
-        idk.GetComponent<ProgramCard>().progLine = parent.transform;
-
-        idk.AddComponent<DeleteIndentDrag>();
-
-    }
-
-  
-    /*
-    public void sendRay ()
-    {
-
-        
-     
-
-        Vector2 worldPoint;
-       
-
-        worldPoint = Cam2.ScreenToWorldPoint(BackCalcPos());
-
-        Image img;
-
-        
-
-
-
-        TileBase tile = CharAndInt.GetTile(CharAndInt.WorldToCell(worldPoint));
-
-        if (dic[tile] != null)
-        {
-            for (int i = 0; i < dic[tile].program.list.Count; i++)
-            {
-                Debug.Log(dic[tile].program.list[i].dispAction());
-
-                readAction(dic[tile].program.list[i]);
-            }
-        }
-
-    }
-    */
-
-   
-
-    public Vector2 BackCalcPos ()
-    {
-        //Debug.Log("Mouse:" + Input.mousePosition);
-
-
-       // Debug.Log("ScreenPos:" + screenPos);
-       // Debug.Log("ScreenSize:" + viewSize);
-
-
-        Vector2 mouse = Input.mousePosition;
-
-        float x = mouse.x - Mathf.Abs(screenPos.x);
-        float y = mouse.y - Screen.height;
-
-        float normalX = x / viewSize.x;
-        float normalY = y / viewSize.y;
-
-       // Debug.Log("x:" + x);
-       // Debug.Log("y:" + y);
-       // Debug.Log("Nx:" + normalX);
-       // Debug.Log("Ny:" + normalY);
-
-       // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
-
-        return new Vector2(normalX * Screen.width, Screen.height * (1 + normalY));
-
-    }
-
-    public float orthoSizeCalc ()
+    public float orthoSizeCalc(LevelInfo info)
     {
 
       
+
         //Fit vertically
-        float vertOrthoSize = ((BackAndMap.cellBounds.yMax - BackAndMap.cellBounds.yMin) / 2 * BackAndMap.cellSize.y);
+        float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * backgroundMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((BackAndMap.cellBounds.xMax - BackAndMap.cellBounds.xMin)/2 * (BackAndMap.cellSize.x * ((float)Screen.height/(float)Screen.width)));
+        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (backgroundMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
             //Give Vert
-           
+
             return vertOrthoSize;
-        } else
+        }
+        else
         {
-           
+
             //Give Hor
             return horOrthoSize;
         }
+    }
 
+    public float getOrthoSize()
+    {
+        return Cam2.orthographicSize;
     }
 
 
-    public void setCamera (Vector2 size)
+    public void setCamera(LevelInfo info)
     {
-        //Calculate max boundaries for both hor and vert
-        //place the tile maps so that centers align
-        //Have the camera fit to the largest of both dimensions
-
-        //First calculate the absolute middle 
-
-        //Get the middle of the void and align it so that it's center block is at 0,0
-        //Get the middle of the background and make sure it's center 
 
 
-        cleanUpMap(BackAndMap);
+        //Set the Camera Texture size
+        camText.width = (int)Screen.width;
+        camText.height = (int)Screen.height;
 
-        camText.width = (int)size.x;
-        camText.height = (int)size.y;
-
-        Cam2.orthographicSize = orthoSizeCalc();
+        //Set the Orthographic size
+        Cam2.orthographicSize = orthoSizeCalc(info);
 
         //Set Backgroud position
+
         //Get center position
-        Vector3 pos = BackAndMap.CellToWorld(getCenter(BackAndMap));
+        Vector3 pos = (voidMap.CellToWorld(getCenter(info, true)) + voidMap.CellToWorld(getCenter(info, false))) / 2;
+
         //Invert center position 
         pos = pos * -1;
+
         //Leave z untouched
-        pos.z = BackAndMap.transform.position.z;
-        
+        pos.z = voidMap.transform.position.z;
+
         //Set position.
-        BackAndMap.transform.SetPositionAndRotation(pos, new Quaternion(0, 0, 0, 0));
-      
-        //BackAndMap.WorldToCell()
-
-        //Later
-        //Add zoom
-        //Add scroll
+        voidMap.transform.SetPositionAndRotation(pos, new Quaternion(0, 0, 0, 0));
 
     }
 
-    Vector3Int getCenter (Tilemap map)
+    Vector3Int getCenter(LevelInfo info, bool floor)
     {
-        int maxX;
-        int maxY;
-        int minX;
-        int minY;
+        float centerX = ((float)(info.xMin + info.xMax + 1) / 2);
+        float centerY = ((float)(info.yMin + info.yMax + 1) / 2);
 
-
-        maxX = map.cellBounds.xMax;
-        maxY = map.cellBounds.yMax;
-        minX = map.cellBounds.xMin;
-        minY = map.cellBounds.yMin;
-
-
-        int centerX = (int)(minX + maxX) / 2;
-        int centerY = (int)(minY + maxY) / 2;
-
-        return new Vector3Int(centerX, centerY, 0);
-
-    }
-
-
-    public void cleanUpMap (Tilemap map)
-    {
-        int maxX;
-        int maxY;
-        int minX;
-        int minY;
-
-
-        maxX = map.cellBounds.xMax;
-        maxY = map.cellBounds.yMax;
-        minX = map.cellBounds.xMin;
-        minY = map.cellBounds.yMin;
-
-        /*
-        for (int i = minX; i <= maxX; i ++)
+        if (floor)
         {
-            for (int j = minY; j <= maxY; j++)
-            {
-
-               TileBase tile = map.GetTile(new Vector3Int(i, j, 0));
-
-                if (tile == null)
-                {
-                    Debug.Log("Hello");
-                    Destroy(tile);
-                }
-            }
+            return new Vector3Int(Mathf.FloorToInt(centerX), Mathf.FloorToInt(centerY), 0);
         }
-        */
+        else
+        {
+            return new Vector3Int(Mathf.CeilToInt(centerX), Mathf.CeilToInt(centerY), 0);
+        }
 
     }
 
-    public void destroySubChildren (GameObject Obj)
+    public void destroySubChildren(GameObject Obj)
     {
         //Only deletes children under the one referenced
         foreach (Transform child in Obj.transform)
@@ -512,24 +279,71 @@ public class LevelScript : MonoBehaviour
             {
                 //Safe to delete
                 Destroy(child.gameObject);
-            } else
+            }
+            else
             {
                 //Delete chidlren first
                 destroySubChildren(child.gameObject);
 
                 Destroy(child.gameObject);
             }
-
         }
+    }
+
+   public void setUIText ()
+    {
+        //Set Text on 
+
+        //REsize
+        //Test
+        //Complete Button
+        //Save button
+        resize.text = UIwords.resize.getWord(lang);
+        debug.text = UIwords.debug.getWord(lang);
+        complete.text = UIwords.complete.getWord(lang);
+        save.text = UIwords.save.getWord(lang);
+        changeLang.text = UIwords.changeLang.getWord(lang);
 
     }
 
-   
+    public void langChange ()
+    {
+        
+        if (lang == Language.English)
+        {
+            //Switch to French
+            lang = Language.French;
 
+            setUIText();
 
+            allScripts.levelManager.updateConstraints();
 
+            allScripts.storeScript.reload();
 
+            allScripts.mapDrag.reload();
 
+            allScripts.programSection.reload();
 
+            setUI();
+
+        } else
+        {
+            //Switch to English
+            lang = Language.English;
+
+            setUIText();
+
+            allScripts.levelManager.updateConstraints();
+
+            allScripts.storeScript.reload();
+
+            allScripts.mapDrag.reload();
+
+            allScripts.programSection.reload();
+
+            setUI();
+        }
+        
+    }
 
 }

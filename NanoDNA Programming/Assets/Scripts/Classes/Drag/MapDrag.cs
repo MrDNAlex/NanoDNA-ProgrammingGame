@@ -5,8 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
-
-
+using DNASaveSystem;
+using UnityEngine.Rendering;
+using DNAStruct;
 
 public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IScrollHandler
 {
@@ -28,23 +29,37 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     float maxOrthoSize;
     float minOrthoSize;
 
+    public Scripts allScripts;
+
+    PlayLevelWords UIwords = new PlayLevelWords();
+
+    Language lang;
+
+
+    private void Awake()
+    {
+        Camera.main.GetComponent<LevelScript>().allScripts.mapDrag = this;
+
+        lang = Camera.main.GetComponent<LevelScript>().lang;
+    }
 
     public void OnScroll(PointerEventData eventData)
     {
        
-        StartCoroutine(smoothZoom());
+        StartCoroutine(smoothZoomMouse());
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //OGPos = transform.position;
+
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         orthoSize = Cam.orthographicSize;
 
-        maxOrthoSize = Camera.main.GetComponent<LevelScript>().orthoSizeCalc()*2;
-        minOrthoSize = maxOrthoSize / 8;
+        maxOrthoSize = allScripts.levelScript.orthoSizeCalc(allScripts.levelManager.info)*2;
+        minOrthoSize = maxOrthoSize / 10;
 
         zoomSlide.value = 0.5f;
 
@@ -54,13 +69,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         {
             Cam.orthographicSize = zoomCalc(zoomSlide.value);
         });
-
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
 
@@ -84,43 +92,29 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             {
                 //content.GetComponent<ProgramSection>().character = rayHit.collider.gameObject;
 
-                ProgramSection sec = Camera.main.GetComponent<LevelScript>().progSec;
-
+                // sec.compileProgram();
                 
 
-               // sec.compileProgram();
+                allScripts.programSection.renderProgram(rayHit.collider.gameObject);
 
-                sec.renderProgram(rayHit.collider.gameObject);
-
-                sec.updateOGPos();
-
+               // sec.updateOGPos();
 
             }
             
         } else
         {
             //Remove the script
-
         }
-       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
 
         float normalX = eventData.delta.x / GetComponent<RectTransform>().sizeDelta.x;
-
         float normalY = eventData.delta.y / GetComponent<RectTransform>().sizeDelta.y;
 
-
         newPos = new Vector3(newPos.x + (tileNumHor()*normalX*tileMap.cellSize.x * -1), newPos.y + ((tileNumVert() * normalY * tileMap.cellSize.y * -1)) , 0);
-
         Cam.transform.position = newPos;
-
-        //Handle pinch zoom here
-
-
-        //Detect Scroll Wheel or 2 thumb 
 
     }
 
@@ -184,7 +178,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     public float zoomCalc (float value)
     {
      
-
         float slope = (minOrthoSize - maxOrthoSize) / (1);
 
         float intercept = maxOrthoSize;
@@ -203,7 +196,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         return (ortho - intercept) / slope;
     }
 
-    public IEnumerator smoothZoom ()
+    public IEnumerator smoothZoomMouse ()
     {
         //Sinusoidal movement could be cool
         
@@ -222,26 +215,23 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             zoomSlide.value = sliderValCalc(orthoSize);
 
             yield return new WaitForSeconds(0.00005f);
-
         }
-
     }
 
     public void ResizeCam()
     {
-        Cam.orthographicSize = orthoSizeCalc();
+
+        Cam.orthographicSize = orthoSizeCalc(allScripts.levelManager.info);
         Cam.transform.position = Vector3.zero;
     }
 
-    public float orthoSizeCalc()
+    public float orthoSizeCalc(LevelInfo info)
     {
-
-
         //Fit vertically
-        float vertOrthoSize = ((BackAndMap.cellBounds.yMax - BackAndMap.cellBounds.yMin) / 2 * BackAndMap.cellSize.y);
+        float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * BackAndMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((BackAndMap.cellBounds.xMax - BackAndMap.cellBounds.xMin) / 2 * (BackAndMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
+        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (BackAndMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
@@ -255,7 +245,30 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             //Give Hor
             return horOrthoSize;
         }
+    }
 
+    public void reload ()
+    {
+        lang = Camera.main.GetComponent<LevelScript>().lang;
+
+        zoomSlide.onValueChanged.RemoveAllListeners();
+        resize.onClick.RemoveAllListeners();
+
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+
+        orthoSize = Cam.orthographicSize;
+
+        maxOrthoSize = allScripts.levelScript.orthoSizeCalc(allScripts.levelManager.info) * 2;
+        minOrthoSize = maxOrthoSize / 10;
+
+        zoomSlide.value = 0.5f;
+
+        resize.onClick.AddListener(ResizeCam);
+
+        zoomSlide.onValueChanged.AddListener(delegate
+        {
+            Cam.orthographicSize = zoomCalc(zoomSlide.value);
+        });
     }
 
 

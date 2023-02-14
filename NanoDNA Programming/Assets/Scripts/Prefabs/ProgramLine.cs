@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
+using DNAStruct;
+using UnityEngine.Rendering;
 
 public class ProgramLine : MonoBehaviour
 {
@@ -18,7 +20,9 @@ public class ProgramLine : MonoBehaviour
     public GameObject ProgramObj;
     public Flex ProgramUI;
 
-   // Flex Program;
+    // Flex Program;
+
+    Scripts allScripts;
 
 
     public void Awake()
@@ -31,7 +35,9 @@ public class ProgramLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+
+        OnDemandRendering.renderFrameInterval = 12;
     }
 
     // Update is called once per frame
@@ -97,24 +103,25 @@ public class ProgramLine : MonoBehaviour
         
     }
 
-    public void addProgram(string type)
+    //Switch this to take in a CardInfo
+    public void addProgram(CardInfo info)
     {
 
         //GameObject prefab = Resources.Load("Prefabs/ProgramLine") as GameObject;
 
+        //Exapnd this later
+
        deleteLine();
         GameObject idk = null;
 
-        if (type == "move")
+        switch (info.actionType)
         {
-          
-            idk = Instantiate(prefab1, ProgramObj.transform);
-
-        }
-        else if (type == "var")
-        {
-           idk = Instantiate(prefab2, ProgramObj.transform);
-
+            case ActionType.Movement:
+                idk = Instantiate(prefab1, ProgramObj.transform);
+                break;
+            case ActionType.Variable:
+                idk = Instantiate(prefab2, ProgramObj.transform);
+                break;
         }
 
         if (idk != null)
@@ -130,7 +137,7 @@ public class ProgramLine : MonoBehaviour
 
             idk.AddComponent<DeleteIndentDrag>();
 
-            Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
+           allScripts.programSection.compileProgram();
         }
 
     }
@@ -141,12 +148,26 @@ public class ProgramLine : MonoBehaviour
         deleteLine();
 
         GameObject program = null;
-        if (action.type == "move")
+
+
+        //Edit this later
+        switch (action.actionType)
         {
-            program = Instantiate(prefab1, ProgramObj.transform);
-        } else if (action.type == "var")
-        {
-            program = Instantiate(prefab2, ProgramObj.transform);
+            case ActionType.Movement:
+
+                switch (action.movementName)
+                {
+                    case MovementActionNames.Move:
+                        program = Instantiate(prefab1, ProgramObj.transform);
+                        break;
+                }
+                break;
+            case ActionType.Variable:
+                program = Instantiate(prefab2, ProgramObj.transform);
+                break;
+            default:
+                Debug.Log(action);
+                break;
         }
 
         if (program != null)
