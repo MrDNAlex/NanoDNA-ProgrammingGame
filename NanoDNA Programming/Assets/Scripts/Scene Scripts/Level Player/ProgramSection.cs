@@ -16,7 +16,7 @@ public class ProgramSection : MonoBehaviour
 
     public GameObject character;
     public int maxLineNum = 20;
-   
+
     [SerializeField] GameObject progLine;
     [SerializeField] Button testBtn;
     [SerializeField] GameObject charHolder;
@@ -49,8 +49,7 @@ public class ProgramSection : MonoBehaviour
 
     }
 
-  
-    public Flex setUI ()
+    public Flex setUI()
     {
         Flex Content = new Flex(GetComponent<RectTransform>(), 1);
 
@@ -77,40 +76,54 @@ public class ProgramSection : MonoBehaviour
     }
 
 
-    public void testProgram ()
+    public void testProgram()
     {
         if (testRunning)
         {
-
             //Stop all coroutines
             StopAllCoroutines();
 
             //Set all characters to initial position
             foreach (Transform child in charHolder.transform)
             {
-                child.localPosition = child.GetComponent<CharData>().initPos;
+                if (child.GetComponent<CharData>() != null)
+                {
+                    child.localPosition = child.GetComponent<CharData>().initPos;
+
+                } else
+                {
+                    //Make interactive appear again
+                    child.gameObject.SetActive(true);
+                }
+
             }
 
             testRunning = false;
 
             testBtn.transform.GetChild(0).GetComponent<Text>().text = "Test";
 
-        } else
+            Camera.main.GetComponent<LevelScript>().updateConstraints();
+
+
+        }
+        else
         {
             compileProgram();
 
             foreach (Transform child in charHolder.transform)
             {
-
-                Program program = new Program(false);
-
-                //Decompose the program into more basic parts
-                for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
+                if (child.GetComponent<CharData>() != null)
                 {
-                    decompose(child.GetComponent<CharData>().program.list[i], program);
-                }
+                    Program program = new Program(false);
 
-                StartCoroutine(runProgram(child.gameObject, program));
+                    //Decompose the program into more basic parts
+                    for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
+                    {
+                        decompose(child.GetComponent<CharData>().program.list[i], program);
+                    }
+
+                    StartCoroutine(runProgram(child.gameObject, program));
+                }
 
             }
 
@@ -136,11 +149,12 @@ public class ProgramSection : MonoBehaviour
                         //Check if the tile in that position exists
                         if (obstacles.GetTile(obstacles.WorldToCell(nextPos)) == null)
                         {
-                            Debug.Log("Clear");
+                            //Debug.Log("Clear");
                             character.transform.position = nextPos;
-                        } else
+                        }
+                        else
                         {
-                            Debug.Log("Not Clear");
+                            //Debug.Log("Not Clear");
                         }
 
                         break;
@@ -159,7 +173,7 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public Vector3 actionToMovement (ProgramAction action)
+    public Vector3 actionToMovement(ProgramAction action)
     {
         switch (action.moveData.dir)
         {
@@ -178,35 +192,38 @@ public class ProgramSection : MonoBehaviour
 
     public void compileProgram()
     {
-
-        //Debug.Log("Compile");
-
-       character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
-
-        Program program = new Program(false);
-
-        //Compile program
-
-        for (int i = 0; i < transform.childCount; i++)
+        if (character != null)
         {
-            if (transform.GetChild(i).GetChild(1).childCount != 0)
+            //Debug.Log("Compile");
+            if (character.GetComponent<CharData>() != null)
             {
-               // Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
-                program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
+                character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
+
+                Program program = new Program(false);
+
+                //Compile program
+
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    if (transform.GetChild(i).GetChild(1).childCount != 0)
+                    {
+                        // Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
+                        program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
+                    }
+                }
+
+                program.updateLength();
+
+                character.GetComponent<CharData>().program = program;
+
+                level.updateConstraints();
+
+                //Debug.Log("Compile Done");
             }
         }
-
-        program.updateLength();
-
-        character.GetComponent<CharData>().program = program;
-
-        level.updateLineUsed(charHolder);
-
-       //Debug.Log("Compile Done");
-
     }
 
-  public void renderProgram(GameObject selected)
+    public void renderProgram(GameObject selected)
     {
         compileProgram();
 
@@ -220,7 +237,7 @@ public class ProgramSection : MonoBehaviour
                 CharData data = selected.GetComponent<CharData>();
 
                 //Delete program Child
-                for (int i = 0; i < transform.childCount; i ++)
+                for (int i = 0; i < transform.childCount; i++)
                 {
                     GameObject programHolder = getProgramHolderRef(i);
 
@@ -241,7 +258,7 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public void deleteProgram ()
+    public void deleteProgram()
     {
         foreach (Transform child in transform)
         {
@@ -250,10 +267,10 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public void updateOGPos ()
+    public void updateOGPos()
     {
         //Debug.Log("Hello");
-        for (int i = 0; i < transform.childCount; i ++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             GameObject program = getProgramRef(i);
             if (program != null)
@@ -263,18 +280,19 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public GameObject getProgramRef (int childIndex)
+    public GameObject getProgramRef(int childIndex)
     {
         if (transform.GetChild(childIndex).GetChild(1).childCount != 0)
         {
             return transform.GetChild(childIndex).GetChild(1).GetChild(0).gameObject;
-        } else
+        }
+        else
         {
             return null;
         }
     }
 
-    public GameObject getProgramHolderRef (int childIndex)
+    public GameObject getProgramHolderRef(int childIndex)
     {
         if (transform.GetChild(childIndex).GetChild(1) != null)
         {
@@ -296,12 +314,13 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public GameObject getProgramLine (int index)
+    public GameObject getProgramLine(int index)
     {
         if (transform.childCount != 0 && (transform.childCount > index))
         {
             return transform.GetChild(index).gameObject;
-        } else
+        }
+        else
         {
             return null;
         }
@@ -312,23 +331,23 @@ public class ProgramSection : MonoBehaviour
         if (getProgramLine(index).GetComponent<ProgramLine>() != null)
         {
             return getProgramLine(index).GetComponent<ProgramLine>();
-        } else
+        }
+        else
         {
             return null;
         }
-
     }
 
-    public IEnumerator runProgram (GameObject character, Program program)
+    public IEnumerator runProgram(GameObject character, Program program)
     {
         for (int i = 0; i < program.list.Count; i++)
         {
-             readAction(character, program.list[i]);
+            readAction(character, program.list[i]);
             yield return new WaitForSeconds(0.5f);
         }
     }
 
-    public void decompose (ProgramAction action, Program program)
+    public void decompose(ProgramAction action, Program program)
     {
         //Make this more Complex probably
 
@@ -342,7 +361,7 @@ public class ProgramSection : MonoBehaviour
                 {
                     case MovementActionNames.Move:
 
-                        for (int i = 0; i < action.moveData.value; i ++)
+                        for (int i = 0; i < action.moveData.value; i++)
                         {
                             ProgramAction newAction = new ProgramAction();
 
@@ -370,7 +389,7 @@ public class ProgramSection : MonoBehaviour
 
     }
 
-    public void undoProgram ()
+    public void undoProgram()
     {
         undo = true;
 
@@ -383,14 +402,16 @@ public class ProgramSection : MonoBehaviour
 
     }
 
-    public void runFinalProgram ()
+    public void runFinalProgram()
     {
-            compileProgram();
+        compileProgram();
 
-            foreach (Transform child in charHolder.transform)
+        foreach (Transform child in charHolder.transform)
+        {
+            Program program = new Program(false);
+
+            if (child.GetComponent<CharData>() != null)
             {
-                Program program = new Program(false);
-
                 //Decompose the program into more basic parts
                 for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
                 {
@@ -399,6 +420,7 @@ public class ProgramSection : MonoBehaviour
 
                 StartCoroutine(runProgram(child.gameObject, program));
             }
+        }
     }
 
 }

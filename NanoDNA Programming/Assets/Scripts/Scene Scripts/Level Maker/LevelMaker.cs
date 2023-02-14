@@ -11,9 +11,6 @@ public class LevelMaker : MonoBehaviour
     [Header("Level Data")]
     public LevelInfo level = new LevelInfo();
 
-    
-
-
     [Header("Saving Utility")]
     [SerializeField] Tilemap voidMap;
     [SerializeField] Tilemap backgroundMap;
@@ -24,15 +21,6 @@ public class LevelMaker : MonoBehaviour
     [SerializeField] TileLedger ledger;
 
     [SerializeField] GameObject charHolder;
-
-
-
-   
-
-   
-    //Ok so we need to find a way to save a ledger of block types.
-
-  
 
     // Start is called before the first frame update
     void Start()
@@ -57,12 +45,5 @@ public class LevelMaker : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-
-
-
-    }
+   
 }

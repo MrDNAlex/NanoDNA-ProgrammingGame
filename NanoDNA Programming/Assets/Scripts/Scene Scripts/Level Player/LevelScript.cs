@@ -13,8 +13,12 @@ public class LevelScript : MonoBehaviour
 {
     [SerializeField] CharLedger charLedger;
     [SerializeField] TileLedger ledger;
+    [SerializeField] InteractableLedger interacLedger;
+    [SerializeField] EndLedger endLedger;
 
     [SerializeField] GameObject charPrefab;
+    [SerializeField] GameObject interacPrefab;
+    [SerializeField] GameObject endGoalPrefab;
     [SerializeField] GameObject charHolder;
 
     public string levelPath;
@@ -24,7 +28,7 @@ public class LevelScript : MonoBehaviour
     [Header("Rect Transforms")]
 
     //New Serialize
-   
+
     [SerializeField] RectTransform mapView;
 
     [SerializeField] RectTransform content;
@@ -45,7 +49,7 @@ public class LevelScript : MonoBehaviour
 
 
     [SerializeField] GameObject Variable;
-   // public string type;
+    // public string type;
 
     public RectTransform contentTrans;
 
@@ -89,16 +93,16 @@ public class LevelScript : MonoBehaviour
 
     public ProgramSection progSec;
 
-    int maxLines = 5;
-    int usedLines = 0;
+    public int maxLines = 5;
+    public int usedLines = 0;
+    public int maxItems = 3;
+    public int itemsCollect = 0;
+
+    bool tryComplete;
 
     private void Awake()
     {
-
         loadLevel();
-
-        
-      
     }
 
     // Start is called before the first frame update
@@ -119,9 +123,9 @@ public class LevelScript : MonoBehaviour
     }
 
     // Update is called once per frame
-   
 
-    void setUI ()
+
+    void setUI()
     {
         //Create Flex Components
         //Create a new function in the FlexUI library that gets the reference to the rect transform of the Flex Parent and gets the child index from there. 
@@ -136,7 +140,7 @@ public class LevelScript : MonoBehaviour
         Flex List = new Flex(Reg1.getChild(1), 8);
         Flex SV = new Flex(List.getChild(0), 1);
         Flex VP = new Flex(SV.getChild(0), 10);
-       
+
 
         Flex Controls = new Flex(Header.getChild(0), 1.5f);
 
@@ -144,8 +148,8 @@ public class LevelScript : MonoBehaviour
         Flex InteracName = new Flex(Controls.getChild(1), 4);
         Flex Save = new Flex(Controls.getChild(2), 1);
 
-       // Undo.setSquare();
-      //  Save.setSquare();
+        // Undo.setSquare();
+        //  Save.setSquare();
 
         Flex Scripts = new Flex(Header.getChild(1), 1);
 
@@ -161,7 +165,7 @@ public class LevelScript : MonoBehaviour
         Play.setCustomSize(new Vector2(80, 0));
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
-       
+
         Flex Constraints = new Flex(Reg3.getChild(1), 1f);
 
         Flex CollectedItems = new Flex(Constraints.getChild(0), 1);
@@ -181,7 +185,7 @@ public class LevelScript : MonoBehaviour
 
         List.addChild(SV);
         SV.addChild(VP);
-       // SV.addChild(SB);
+        // SV.addChild(SB);
         VP.addChild(progSec.flex);
 
         Reg1.addChild(Header);
@@ -221,38 +225,39 @@ public class LevelScript : MonoBehaviour
 
     }
 
-    public float orthoSizeCalc (LevelInfo info)
+    public float orthoSizeCalc(LevelInfo info)
     {
-       
+
         //Fit vertically
-        float vertOrthoSize = ((float)((info.yMax - info.yMin)+1) / 2 * backgroundMap.cellSize.y);
+        float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * backgroundMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((float)((info.xMax - info.yMin)+1) /2 * (backgroundMap.cellSize.x * ((float)Screen.height/(float)Screen.width)));
+        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (backgroundMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
             //Give Vert
-           
+
             return vertOrthoSize;
-        } else
+        }
+        else
         {
-           
+
             //Give Hor
             return horOrthoSize;
         }
 
     }
 
-    public float getOrthoSize ()
+    public float getOrthoSize()
     {
         return Cam2.orthographicSize;
     }
 
 
-    public void setCamera (LevelInfo info)
+    public void setCamera(LevelInfo info)
     {
- 
+
 
         //Set the Camera Texture size
         camText.width = (int)Screen.width;
@@ -264,7 +269,7 @@ public class LevelScript : MonoBehaviour
         //Set Backgroud position
 
         //Get center position
-        Vector3 pos = (voidMap.CellToWorld(getCenter(info, true)) + voidMap.CellToWorld(getCenter(info, false)))/2;
+        Vector3 pos = (voidMap.CellToWorld(getCenter(info, true)) + voidMap.CellToWorld(getCenter(info, false))) / 2;
 
         //Invert center position 
         pos = pos * -1;
@@ -274,10 +279,10 @@ public class LevelScript : MonoBehaviour
 
         //Set position.
         voidMap.transform.SetPositionAndRotation(pos, new Quaternion(0, 0, 0, 0));
-      
+
     }
 
-    Vector3Int getCenter (LevelInfo info, bool floor)
+    Vector3Int getCenter(LevelInfo info, bool floor)
     {
         float centerX = ((float)(info.xMin + info.xMax + 1) / 2);
         float centerY = ((float)(info.yMin + info.yMax + 1) / 2);
@@ -285,14 +290,15 @@ public class LevelScript : MonoBehaviour
         if (floor)
         {
             return new Vector3Int(Mathf.FloorToInt(centerX), Mathf.FloorToInt(centerY), 0);
-        } else
+        }
+        else
         {
             return new Vector3Int(Mathf.CeilToInt(centerX), Mathf.CeilToInt(centerY), 0);
         }
 
     }
 
-    public void destroySubChildren (GameObject Obj)
+    public void destroySubChildren(GameObject Obj)
     {
         //Only deletes children under the one referenced
         foreach (Transform child in Obj.transform)
@@ -301,7 +307,8 @@ public class LevelScript : MonoBehaviour
             {
                 //Safe to delete
                 Destroy(child.gameObject);
-            } else
+            }
+            else
             {
                 //Delete chidlren first
                 destroySubChildren(child.gameObject);
@@ -311,7 +318,7 @@ public class LevelScript : MonoBehaviour
         }
     }
 
-    public void initText ()
+    public void initText()
     {
 
         Dictionary<string, Vector2> idk = new Dictionary<string, Vector2>();
@@ -322,26 +329,46 @@ public class LevelScript : MonoBehaviour
         linesUsed.text = "0/3 Used";
     }
 
-    public void updateLineUsed (GameObject holder)
+    public void updateConstraints()
     {
         //Check all programs, count number of lines, write it down
 
         //Design something that doesn't use the holder, maybe get access 
 
+        //Update Lines used
         usedLines = 0;
-        foreach (Transform child in holder.transform)
+        foreach (Transform child in charHolder.transform)
         {
-            Program prog = child.GetComponent<CharData>().program;
+            if (child.GetComponent<CharData>() != null)
+            {
+                Program prog = child.GetComponent<CharData>().program;
+                usedLines += prog.progLength;
+            }
+        }
+        linesUsed.text = usedLines + "/" + maxLines + " Used";
 
-            usedLines += prog.progLength;
+
+        //Update Collectibles
+
+        itemsCollect = 0;
+
+        foreach (Transform child in charHolder.transform)
+        {
+            if (child.gameObject.activeSelf == false)
+            {
+                if (child.GetComponent<InteractableData>() != null)
+                {
+                    itemsCollect++;
+
+                }
+            }
 
         }
-
-        linesUsed.text = usedLines + "/" + maxLines + " Used";
+        collectedItems.text = itemsCollect + "/" + maxItems + " Collected";
 
     }
 
-    public void completeLevel ()
+    public void completeLevel()
     {
         //Check if max line num is exceeded
 
@@ -350,13 +377,19 @@ public class LevelScript : MonoBehaviour
             //send error message
             Debug.Log("Your program is too long!");
 
-        } else
+        }
+        else
         {
+
+            tryComplete = true;
             //Run final program
 
-            Debug.Log("Running final Program");
+           // Debug.Log("Running final Program");
 
             progSec.runFinalProgram();
+
+            //Debug.Log("Finished");
+
 
             //Give out score if successful
 
@@ -366,7 +399,7 @@ public class LevelScript : MonoBehaviour
 
     }
 
-    public void loadLevel ()
+    public void loadLevel()
     {
         //Load Info
         LevelInfo info = SaveManager.deepLoad("Demo");
@@ -386,27 +419,35 @@ public class LevelScript : MonoBehaviour
         //Set Characters
         setCharacters(info.charInfo);
 
+        //Set Interactables
+        setInteractables(info.interacInfo);
+
+        //Set End Goal
+        setEndGoal(info.endGoal);
+
+        //Set Other Info
         setCamera(info);
 
         maxLines = info.maxLine;
 
-        updateLineUsed(charHolder);
+        updateConstraints();
 
+        //character = GameObject.Find("Characters").transform.GetChild(0).gameObject;
 
     }
 
-    public void setTileMap (Tilemap map, List<TileInfo> tileList)
+    public void setTileMap(Tilemap map, List<TileInfo> tileList)
     {
-       
+
         foreach (TileInfo info in tileList)
         {
-            
+
             map.SetTile(new Vector3Int(info.position.x, info.position.y, 0), ledger.tiles.Find(t => t.id == info.id).tile);
-           
+
         }
     }
 
-    public void setCharacters (List<CharacterInfo> chars)
+    public void setCharacters(List<CharacterInfo> chars)
     {
         foreach (CharacterInfo info in chars)
         {
@@ -426,7 +467,65 @@ public class LevelScript : MonoBehaviour
             //Set initial position
             newChar.transform.localPosition = info.data.initPos;
         }
+    }
+
+    public void setInteractables(List<InteractableInfo> interac)
+    {
+
+        foreach (InteractableInfo info in interac)
+        {
+            //Instantiate new Interactable
+            GameObject newInterac = Instantiate(interacPrefab, charHolder.transform);
+
+            //Set Interac Data
+            newInterac.GetComponent<InteractableData>().name = info.data.name;
+            newInterac.GetComponent<InteractableData>().initPos = info.data.initPos;
+
+            //Set Sprite
+            newInterac.GetComponent<SpriteRenderer>().sprite = interacLedger.sprites.Find(c => c.id == info.id).sprite;
+
+            //Set initial position
+            newInterac.transform.localPosition = info.data.initPos;
+        }
+    }
+
+    public void setEndGoal(EndInfo info)
+    {
+        //Instantiate Prefab
+        GameObject endGoal = Instantiate(endGoalPrefab, charHolder.transform);
+
+        //Set Data
+        endGoal.GetComponent<EndData>().name = info.data.name;
+        endGoal.GetComponent<EndData>().pos = info.data.pos;
+        endGoal.GetComponent<EndData>().size = info.data.size;
+
+        //Set Sprite
+        endGoal.GetComponent<SpriteRenderer>().sprite = endLedger.sprites.Find(s => s.id == info.id).sprite;
+
+        //Set Initial Position
+        endGoal.transform.localPosition = info.data.pos;
+
+        //Set Size
+        endGoal.GetComponent<BoxCollider>().size = info.data.size;
+    }
+
+    public void finishLevel()
+    {
+        if (tryComplete)
+        {
+
+            Debug.Log("All finished Thanks for Playing");
+
+            //transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+
+            transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+
+
+
+        }
 
     }
+
+
 
 }

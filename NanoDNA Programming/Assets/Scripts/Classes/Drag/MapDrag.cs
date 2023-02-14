@@ -55,8 +55,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             Cam.orthographicSize = zoomCalc(zoomSlide.value);
         });
 
-       
-
     }
 
     public void OnPointerDown(PointerEventData eventData)

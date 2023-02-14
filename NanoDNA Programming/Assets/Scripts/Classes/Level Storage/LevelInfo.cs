@@ -23,6 +23,10 @@ public class LevelInfo
     //Some sort of dictionary system
     //public List<TileInstance> ledger = new List<TileInstance>();
 
+    public EndInfo endGoal;
+
+    public List<InteractableInfo> interacInfo = new List<InteractableInfo>();
+
     public List<CharacterInfo> charInfo = new List<CharacterInfo>();
 
     //public Dictionary<string, TileInstance> ledger = new Dictionary<string, TileInstance>();
@@ -56,10 +60,15 @@ public class LevelInfo
         //Save Character Info
         createCharArrayInfo(info.charHolder);
 
+        //Save Interactables
+        createInteractableArrayInfo(info.charHolder);
+
+        //Create end goal
+        createEndGoal(info.charHolder);
+
         //Get true boundaries
         getTrueCellBoundaries(backgroundTiles);
 
-        
     }
 
     public void createArrayInfo (Tilemap map, List<TileInfo> info)
@@ -85,21 +94,46 @@ public class LevelInfo
                 }
             }
         }
-
         //Debug.Log("Complete");
-
     }
 
     public void createCharArrayInfo (GameObject charHolder)
     {
         foreach (Transform child in charHolder.transform)
         {
-            //Loop through all children and save their sprite id for their ID and their charData
+            if (child.GetComponent<CharData>() != null)
+            {
+                //Loop through all children and save their sprite id for their ID and their charData
 
-            charInfo.Add(new CharacterInfo(new CharDataInfo(child.GetComponent<CharData>()), child.GetComponent<SpriteRenderer>().sprite.name));
+                charInfo.Add(new CharacterInfo(new CharDataInfo(child.GetComponent<CharData>()), child.GetComponent<SpriteRenderer>().sprite.name));
+            }
         }
-
     }
+
+    public void createInteractableArrayInfo (GameObject charHolder)
+    {
+        foreach (Transform child in charHolder.transform)
+        {
+            if (child.GetComponent<InteractableData>() != null)
+            {
+                //Loop through all children and save their sprite id for their ID and their charData
+
+                interacInfo.Add(new InteractableInfo(new InteractableDataInfo(child.GetComponent<InteractableData>()), child.GetComponent<SpriteRenderer>().sprite.name));
+            }
+        }
+    }
+
+    public void createEndGoal (GameObject charHolder)
+    {
+        foreach (Transform child in charHolder.transform)
+        {
+            if (child.GetComponent<EndData>() != null)
+            {
+                endGoal = new EndInfo(new EndDataInfo(child.GetComponent<EndData>()), child.GetComponent<SpriteRenderer>().sprite.name);
+            }
+        }
+    }
+
 
     public void getTrueCellBoundaries (List<TileInfo> info)
     {
@@ -144,9 +178,7 @@ public class LevelInfo
                 }
             }
         }
-
         return max;
-
     }
 
     public int getMin(bool X, List<TileInfo> info)
@@ -181,21 +213,7 @@ public class LevelInfo
                 }
             }
         }
-
         return min;
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }
