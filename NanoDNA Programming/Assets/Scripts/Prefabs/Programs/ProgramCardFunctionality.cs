@@ -10,6 +10,13 @@ public class ProgramCardFunctionality
 
     Flex Program;
 
+    Scripts allScripts;
+
+    public ProgramCardFunctionality ()
+    {
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+    }
+
     //
     //Set UI
     //
@@ -193,9 +200,9 @@ public class ProgramCardFunctionality
                     info.programCard.action = createAction(info);
 
 
-                    if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && info.programCard.setInf == false)
+                    if (allScripts.programSection.undo == false && info.programCard.setInf == false)
                     {
-                        Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
+                        allScripts.programSection.compileProgram();
                     }
 
                 });
@@ -223,9 +230,9 @@ public class ProgramCardFunctionality
 
                     //Create Action
                   
-                    if (Camera.main.GetComponent<LevelScript>().progSec.undo == false && info.programCard.setInf == false)
+                    if (allScripts.programSection.undo == false && info.programCard.setInf == false)
                     {
-                        Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
+                        allScripts.programSection.compileProgram();
                     }
 
                 });

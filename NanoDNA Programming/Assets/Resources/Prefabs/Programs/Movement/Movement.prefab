@@ -1577,7 +1577,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionType: 0
-  cardName: Move
+  cardName:
+    french: Bouge
+    english: Move
   movementName: 1
   mathName: 0
   logicName: 0
@@ -1585,17 +1587,18 @@ MonoBehaviour:
   progLine: {fileID: 0}
   indent: 0
   action:
-    type: move
-    value: 0
-    dir: up
     actionType: 0
     movementName: 0
     mathName: 0
     logicName: 0
     variableName: 0
-  dir: up
-  value: 0
+    moveData:
+      dir: 0
+      value: 0
   setInf: 0
+  moveData:
+    dir: 0
+    value: 0
 --- !u!1 &8931726586915314693
 GameObject:
   m_ObjectHideFlags: 0

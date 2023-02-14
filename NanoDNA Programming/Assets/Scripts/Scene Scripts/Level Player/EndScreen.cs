@@ -4,6 +4,7 @@ using UnityEngine;
 using FlexUI;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DNAStruct;
 
 public class EndScreen : MonoBehaviour
 {
@@ -15,15 +16,17 @@ public class EndScreen : MonoBehaviour
     public int itemsColl;
     public int totalItems;
 
+    Scripts allScripts;
+
     // Start is called before the first frame update
     void Start()
     {
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-
-        maxLines = Camera.main.GetComponent<LevelScript>().maxLines;
-        totalItems = Camera.main.GetComponent<LevelScript>().maxItems;
-       linesUsed = Camera.main.GetComponent<LevelScript>().usedLines;
-        itemsColl = Camera.main.GetComponent<LevelScript>().itemsCollect;
+        maxLines = allScripts.levelManager.maxLines;
+        totalItems = allScripts.levelManager.maxItems;
+        linesUsed = allScripts.levelManager.usedLines;
+        itemsColl = allScripts.levelManager.itemsCollect;
 
         setUI();
 
@@ -35,10 +38,10 @@ public class EndScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void setUI ()
+    public void setUI()
     {
 
         endScreen = new Flex(transform.GetComponent<RectTransform>(), 1);
@@ -69,13 +72,13 @@ public class EndScreen : MonoBehaviour
 
     }
 
-    public void FinishLevel ()
+    public void FinishLevel()
     {
         SceneManager.LoadScene(0);
 
     }
 
-    public void setText ()
+    public void setText()
     {
 
         transform.GetChild(1).GetComponent<Text>().text = "Items Collected: " + itemsColl + " / " + totalItems;
@@ -84,7 +87,7 @@ public class EndScreen : MonoBehaviour
 
 
     }
-    
+
 
 
 

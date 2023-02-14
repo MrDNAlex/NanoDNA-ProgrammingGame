@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using DNAStruct;
 
 
 [System.Serializable]
@@ -13,7 +14,7 @@ public class CharData : MonoBehaviour
 
     //Maybe add a system that checks if it's compiling for the right character?
 
-    public string name;
+    public UIWord name;
 
     //public string name = "Bob";
     public Program program = new Program(true);

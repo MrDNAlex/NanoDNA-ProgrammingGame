@@ -374,7 +374,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionType: 3
-  cardName: Variable
+  cardName:
+    french: Variable
+    english: Variable
   movementName: 0
   mathName: 0
   logicName: 0
@@ -382,17 +384,18 @@ MonoBehaviour:
   progLine: {fileID: 0}
   indent: 0
   action:
-    type: 
-    value: 0
-    dir: 
     actionType: 0
     movementName: 0
     mathName: 0
     logicName: 0
     variableName: 0
-  dir: up
-  value: 0
+    moveData:
+      dir: 0
+      value: 0
   setInf: 0
+  moveData:
+    dir: 0
+    value: 0
 --- !u!1 &7771231246973281111
 GameObject:
   m_ObjectHideFlags: 0

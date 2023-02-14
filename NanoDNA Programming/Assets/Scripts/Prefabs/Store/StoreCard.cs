@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
+using DNAStruct;
 
 public class StoreCard : MonoBehaviour
 {
 
     [SerializeField] RectTransform card;
-
-
     [SerializeField] GameObject Movement;
     [SerializeField] GameObject Variable;
 
@@ -17,18 +16,22 @@ public class StoreCard : MonoBehaviour
     public string storeType;
     public string cardType;
     public int number;
-    public GameObject Program; 
+    public GameObject Program;
+
+    Language lang;
 
 
     public void Awake()
     {
         setUI();
+        lang = Camera.main.GetComponent<LevelScript>().lang;
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-    
+        
     }
 
     // Update is called once per frame
@@ -56,28 +59,6 @@ public class StoreCard : MonoBehaviour
 
     }
 
-    void AddChild ()
-    {
-        if (card.GetSiblingIndex() == 0)
-        {
-            //Instantiate Object and make it the child 
-            Program = Instantiate(Movement, card.transform);
-
-            
-        } else
-        {
-            //Instantiate Object and make it the child 
-            Program = Instantiate(Variable, card.transform);
-
-           
-        }
-
-        Program.transform.SetSiblingIndex(0);
-        cardFlex.addChild(Program.GetComponent<ProgramCard>().program);
-
-
-    }
-
     public void setStoreCard (GameObject prog)
     {
         //Instantiate Object
@@ -90,7 +71,7 @@ public class StoreCard : MonoBehaviour
         cardFlex.addChild(Program.GetComponent<ProgramCard>().program);
 
         //Set name
-        cardFlex.getChild(1).GetComponent<Text>().text = cardFlex.getChild(0).GetComponent<ProgramCard>().cardName;
+        cardFlex.getChild(1).GetComponent<Text>().text = cardFlex.getChild(0).GetComponent<ProgramCard>().cardName.getWord(lang);
     }
 
 }

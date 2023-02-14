@@ -13,15 +13,15 @@ public class LevelInfo
     public string levelName;
 
     public int maxLine;
+    public int maxItems;
+
+    public LevelType levelType;
 
     [Header("Automatic")]
     public int xMax;
     public int xMin;
     public int yMax;
     public int yMin;
-
-    //Some sort of dictionary system
-    //public List<TileInstance> ledger = new List<TileInstance>();
 
     public EndInfo endGoal;
 
@@ -84,8 +84,6 @@ public class LevelInfo
 
                 if (tile != null)
                 {
-                  
-
                     info.Add(new TileInfo(tile.name, new Vector2Int(xIndex, yIndex)));
                 }
                 else
@@ -119,6 +117,13 @@ public class LevelInfo
                 //Loop through all children and save their sprite id for their ID and their charData
 
                 interacInfo.Add(new InteractableInfo(new InteractableDataInfo(child.GetComponent<InteractableData>()), child.GetComponent<SpriteRenderer>().sprite.name));
+
+                if (child.GetComponent<InteractableData>().collectible)
+                {
+                    //Add one to the max items
+                    maxItems++;
+                }
+
             }
         }
     }

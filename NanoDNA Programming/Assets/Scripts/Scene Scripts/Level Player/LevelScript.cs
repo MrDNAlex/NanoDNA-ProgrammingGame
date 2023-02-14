@@ -8,18 +8,13 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using DNASaveSystem;
 using UnityEngine.Rendering;
+using DNAStruct;
 
 public class LevelScript : MonoBehaviour
 {
-    [SerializeField] CharLedger charLedger;
-    [SerializeField] TileLedger ledger;
-    [SerializeField] InteractableLedger interacLedger;
-    [SerializeField] EndLedger endLedger;
+    public Language lang = Language.English;
 
-    [SerializeField] GameObject charPrefab;
-    [SerializeField] GameObject interacPrefab;
-    [SerializeField] GameObject endGoalPrefab;
-    [SerializeField] GameObject charHolder;
+    PlayLevelWords UIwords = new PlayLevelWords();
 
     public string levelPath;
 
@@ -37,8 +32,8 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform store;
 
-    [SerializeField] Button resize;
-    [SerializeField] Button play;
+    //[SerializeField] Button resize;
+    //[SerializeField] Button play;
 
 
     [Header("Game Objects")]
@@ -61,29 +56,23 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Tilemap voidMap;
     [SerializeField] Tilemap backgroundMap;
-    [SerializeField] Tilemap obstacleMap;
-    [SerializeField] Tilemap decorationMap;
-
+  
 
     [SerializeField] TileBase tile;
 
     [SerializeField] public GameObject character;
 
-    [Header("Requirement Section")]
 
-    [SerializeField] Text collectedItems;
+    [SerializeField] Text resize;
+    [SerializeField] Text debug;
+    [SerializeField] Text complete;
+    [SerializeField] Text save;
+    [SerializeField] Text changeLang;
 
-    [SerializeField] Text linesUsed;
-
-    [SerializeField] Button complete;
-
-    [SerializeField] Text name;
-
+    [SerializeField] Button changeLangBtn;
 
     Vector2 screenPos;
     Vector2 viewSize;
-
-    Dictionary<TileBase, CharData> dic = new Dictionary<TileBase, CharData>();
 
     public Flex Background;
 
@@ -91,40 +80,28 @@ public class LevelScript : MonoBehaviour
 
     Flex Content;
 
-    public ProgramSection progSec;
-
-    public int maxLines = 5;
-    public int usedLines = 0;
-    public int maxItems = 3;
-    public int itemsCollect = 0;
-
-    bool tryComplete;
+    public Scripts allScripts = new Scripts();
 
     private void Awake()
     {
-        loadLevel();
+        allScripts.levelScript = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        progSec = content.GetComponent<ProgramSection>();
-
         setUI();
+
+        setUIText();
 
         contentTrans = content;
 
-        initText();
-
-        complete.onClick.AddListener(completeLevel);
-
         OnDemandRendering.renderFrameInterval = 12;
 
+        changeLangBtn.onClick.AddListener(langChange);
     }
 
     // Update is called once per frame
-
-
     void setUI()
     {
         //Create Flex Components
@@ -141,28 +118,21 @@ public class LevelScript : MonoBehaviour
         Flex SV = new Flex(List.getChild(0), 1);
         Flex VP = new Flex(SV.getChild(0), 10);
 
-
         Flex Controls = new Flex(Header.getChild(0), 1.5f);
 
         Flex Undo = new Flex(Controls.getChild(0), 1);
         Flex InteracName = new Flex(Controls.getChild(1), 4);
         Flex Save = new Flex(Controls.getChild(2), 1);
 
-        // Undo.setSquare();
-        //  Save.setSquare();
-
         Flex Scripts = new Flex(Header.getChild(1), 1);
 
         Flex Reg2 = new Flex(Background.getChild(1), 2f);
         Flex MapView = new Flex(Reg2.getChild(0), 2f);
 
-        Flex Zoom = new Flex(MapView.getChild(0), 6);
-        Flex Resize = new Flex(MapView.getChild(1), 1);
-        Flex Play = new Flex(MapView.getChild(2), 1);
-
-        Zoom.setCustomSize(new Vector2(80, 0));
-        Resize.setCustomSize(new Vector2(80, 0));
-        Play.setCustomSize(new Vector2(80, 0));
+        Flex ChangeLang = new Flex(MapView.getChild(0), 1);
+        Flex Zoom = new Flex(MapView.getChild(1), 6);
+        Flex Resize = new Flex(MapView.getChild(2), 1);
+        Flex Play = new Flex(MapView.getChild(3), 1);
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
 
@@ -172,9 +142,7 @@ public class LevelScript : MonoBehaviour
         Flex LinesUsed = new Flex(Constraints.getChild(1), 1);
         Flex CompleteLevel = new Flex(Constraints.getChild(2), 1);
 
-
         //Add children
-
         Header.addChild(Controls);
         Header.addChild(Scripts);
 
@@ -185,8 +153,7 @@ public class LevelScript : MonoBehaviour
 
         List.addChild(SV);
         SV.addChild(VP);
-        // SV.addChild(SB);
-        VP.addChild(progSec.flex);
+        VP.addChild(allScripts.programSection.flex);
 
         Reg1.addChild(Header);
         Reg1.addChild(List);
@@ -194,6 +161,7 @@ public class LevelScript : MonoBehaviour
         Reg2.addChild(MapView);
         Reg2.addChild(Reg3);
 
+        MapView.addChild(ChangeLang);
         MapView.addChild(Zoom);
         MapView.addChild(Resize);
         MapView.addChild(Play);
@@ -204,7 +172,10 @@ public class LevelScript : MonoBehaviour
         Background.addChild(Reg1);
         Background.addChild(Reg2);
 
-        //Background.addChild(Reg3);
+        ChangeLang.setSelfHorizontalPadding(12, 1, 0, 1);
+        Zoom.setSelfHorizontalPadding(12, 1, 0, 1);
+        Resize.setSelfHorizontalPadding(12, 1, 0, 1);
+        Play.setSelfHorizontalPadding(12, 1, 0, 1);
 
         MapView.setSpacingFlex(0.2f, 1);
 
@@ -228,6 +199,8 @@ public class LevelScript : MonoBehaviour
     public float orthoSizeCalc(LevelInfo info)
     {
 
+      
+
         //Fit vertically
         float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * backgroundMap.cellSize.y);
 
@@ -246,7 +219,6 @@ public class LevelScript : MonoBehaviour
             //Give Hor
             return horOrthoSize;
         }
-
     }
 
     public float getOrthoSize()
@@ -318,214 +290,60 @@ public class LevelScript : MonoBehaviour
         }
     }
 
-    public void initText()
+   public void setUIText ()
     {
+        //Set Text on 
 
-        Dictionary<string, Vector2> idk = new Dictionary<string, Vector2>();
+        //REsize
+        //Test
+        //Complete Button
+        //Save button
+        resize.text = UIwords.resize.getWord(lang);
+        debug.text = UIwords.debug.getWord(lang);
+        complete.text = UIwords.complete.getWord(lang);
+        save.text = UIwords.save.getWord(lang);
+        changeLang.text = UIwords.changeLang.getWord(lang);
 
-
-        collectedItems.text = "0/3 Collected";
-
-        linesUsed.text = "0/3 Used";
     }
 
-    public void updateConstraints()
+    public void langChange ()
     {
-        //Check all programs, count number of lines, write it down
-
-        //Design something that doesn't use the holder, maybe get access 
-
-        //Update Lines used
-        usedLines = 0;
-        foreach (Transform child in charHolder.transform)
+        
+        if (lang == Language.English)
         {
-            if (child.GetComponent<CharData>() != null)
-            {
-                Program prog = child.GetComponent<CharData>().program;
-                usedLines += prog.progLength;
-            }
-        }
-        linesUsed.text = usedLines + "/" + maxLines + " Used";
+            //Switch to French
+            lang = Language.French;
 
+            setUIText();
 
-        //Update Collectibles
+            allScripts.levelManager.updateConstraints();
 
-        itemsCollect = 0;
+            allScripts.storeScript.reload();
 
-        foreach (Transform child in charHolder.transform)
+            allScripts.mapDrag.reload();
+
+            allScripts.programSection.reload();
+
+            setUI();
+
+        } else
         {
-            if (child.gameObject.activeSelf == false)
-            {
-                if (child.GetComponent<InteractableData>() != null)
-                {
-                    itemsCollect++;
+            //Switch to English
+            lang = Language.English;
 
-                }
-            }
+            setUIText();
 
+            allScripts.levelManager.updateConstraints();
+
+            allScripts.storeScript.reload();
+
+            allScripts.mapDrag.reload();
+
+            allScripts.programSection.reload();
+
+            setUI();
         }
-        collectedItems.text = itemsCollect + "/" + maxItems + " Collected";
-
+        
     }
-
-    public void completeLevel()
-    {
-        //Check if max line num is exceeded
-
-        if (usedLines > maxLines)
-        {
-            //send error message
-            Debug.Log("Your program is too long!");
-
-        }
-        else
-        {
-
-            tryComplete = true;
-            //Run final program
-
-           // Debug.Log("Running final Program");
-
-            progSec.runFinalProgram();
-
-            //Debug.Log("Finished");
-
-
-            //Give out score if successful
-
-        }
-
-        //If not start running the program
-
-    }
-
-    public void loadLevel()
-    {
-        //Load Info
-        LevelInfo info = SaveManager.deepLoad("Demo");
-
-        //Set Void Tiles
-        setTileMap(voidMap, info.voidTiles);
-
-        //Set Background Tiles
-        setTileMap(backgroundMap, info.backgroundTiles);
-
-        //Set Obstacles Tiles
-        setTileMap(obstacleMap, info.obstacleTiles);
-
-        //Set Decoration Tiles
-        setTileMap(decorationMap, info.decorationTiles);
-
-        //Set Characters
-        setCharacters(info.charInfo);
-
-        //Set Interactables
-        setInteractables(info.interacInfo);
-
-        //Set End Goal
-        setEndGoal(info.endGoal);
-
-        //Set Other Info
-        setCamera(info);
-
-        maxLines = info.maxLine;
-
-        updateConstraints();
-
-        //character = GameObject.Find("Characters").transform.GetChild(0).gameObject;
-
-    }
-
-    public void setTileMap(Tilemap map, List<TileInfo> tileList)
-    {
-
-        foreach (TileInfo info in tileList)
-        {
-
-            map.SetTile(new Vector3Int(info.position.x, info.position.y, 0), ledger.tiles.Find(t => t.id == info.id).tile);
-
-        }
-    }
-
-    public void setCharacters(List<CharacterInfo> chars)
-    {
-        foreach (CharacterInfo info in chars)
-        {
-
-            //Instantiate new Character prefab
-            GameObject newChar = Instantiate(charPrefab, charHolder.transform);
-
-            //Set Char data
-            newChar.GetComponent<CharData>().name = info.data.name;
-            newChar.GetComponent<CharData>().program = info.data.program;
-            newChar.GetComponent<CharData>().programStates = info.data.programStates;
-            newChar.GetComponent<CharData>().initPos = info.data.initPos;
-
-            //Set Sprite
-            newChar.GetComponent<SpriteRenderer>().sprite = charLedger.chars.Find(c => c.id == info.id).sprite;
-
-            //Set initial position
-            newChar.transform.localPosition = info.data.initPos;
-        }
-    }
-
-    public void setInteractables(List<InteractableInfo> interac)
-    {
-
-        foreach (InteractableInfo info in interac)
-        {
-            //Instantiate new Interactable
-            GameObject newInterac = Instantiate(interacPrefab, charHolder.transform);
-
-            //Set Interac Data
-            newInterac.GetComponent<InteractableData>().name = info.data.name;
-            newInterac.GetComponent<InteractableData>().initPos = info.data.initPos;
-
-            //Set Sprite
-            newInterac.GetComponent<SpriteRenderer>().sprite = interacLedger.sprites.Find(c => c.id == info.id).sprite;
-
-            //Set initial position
-            newInterac.transform.localPosition = info.data.initPos;
-        }
-    }
-
-    public void setEndGoal(EndInfo info)
-    {
-        //Instantiate Prefab
-        GameObject endGoal = Instantiate(endGoalPrefab, charHolder.transform);
-
-        //Set Data
-        endGoal.GetComponent<EndData>().name = info.data.name;
-        endGoal.GetComponent<EndData>().pos = info.data.pos;
-        endGoal.GetComponent<EndData>().size = info.data.size;
-
-        //Set Sprite
-        endGoal.GetComponent<SpriteRenderer>().sprite = endLedger.sprites.Find(s => s.id == info.id).sprite;
-
-        //Set Initial Position
-        endGoal.transform.localPosition = info.data.pos;
-
-        //Set Size
-        endGoal.GetComponent<BoxCollider>().size = info.data.size;
-    }
-
-    public void finishLevel()
-    {
-        if (tryComplete)
-        {
-
-            Debug.Log("All finished Thanks for Playing");
-
-            //transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
-
-            transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
-
-
-
-        }
-
-    }
-
-
 
 }

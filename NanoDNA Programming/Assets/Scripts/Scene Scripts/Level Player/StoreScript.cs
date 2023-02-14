@@ -18,16 +18,33 @@ public class StoreScript : MonoBehaviour
     [SerializeField] GameObject storeCard;
 
 
-    Flex GridView; 
+    Flex GridView;
+    Flex StoreHeader;
+    Flex Content;
+
+    Language lang;
+
+    Scripts allScripts;
+
+    PlayLevelWords UIwords = new PlayLevelWords();
+    
 
     private void Awake()
     {
+        Camera.main.GetComponent<LevelScript>().allScripts.storeScript = this;
+
+        lang = Camera.main.GetComponent<LevelScript>().lang;
+
         setUI();
+
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+
         StartCoroutine(renderStore(ActionType.Movement));
 
         OnDemandRendering.renderFrameInterval = 12;
@@ -38,11 +55,11 @@ public class StoreScript : MonoBehaviour
     {
         Store = new Flex(transform.GetComponent<RectTransform>(), 4f);
 
-        Flex StoreHeader = new Flex(Store.getChild(0), 1);
+        StoreHeader = new Flex(Store.getChild(0), 1);
 
         Flex VP = new Flex(StoreHeader.getChild(0), 1);
 
-        Flex Content = new Flex(VP.getChild(0), 1);
+         Content = new Flex(VP.getChild(0), 1);
 
         GridView = new Flex(Store.getChild(1), 5);
 
@@ -71,25 +88,25 @@ public class StoreScript : MonoBehaviour
 
         switch (tag)
         {
-
+            
             case ActionType.Movement:
                 //Set button info and set it's store tag
-                btn.transform.GetChild(0).GetComponent<Text>().text = "Movement";
+                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.movement.getWord(lang);
                 btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Movement;
                
                 break;
             case ActionType.Math:
-                btn.transform.GetChild(0).GetComponent<Text>().text = "Math";
+                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.math.getWord(lang);
                 btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Math;
               
                 break;
             case ActionType.Logic:
-                btn.transform.GetChild(0).GetComponent<Text>().text = "Logic";
+                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.logic.getWord(lang);
                 btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Logic;
               
                 break;
             case ActionType.Variable:
-                btn.transform.GetChild(0).GetComponent<Text>().text = "Variable";
+                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.variable.getWord(lang);
                 btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Variable;
                
                 break;
@@ -111,7 +128,7 @@ public class StoreScript : MonoBehaviour
     {
         //Delete all current children (Flex and real)
         destroyChildren(GridView.UI.gameObject);
-
+       
         GridView.deleteAllChildren();
 
         //Add the children and size them
@@ -159,6 +176,21 @@ public class StoreScript : MonoBehaviour
             
         }
 
+    }
+
+    public void reload ()
+    {
+        lang = Camera.main.GetComponent<LevelScript>().lang;
+
+        destroyChildren(Content.UI.gameObject);
+
+        Content.deleteAllChildren();
+
+        setUI();
+
+        StartCoroutine(renderStore(ActionType.Movement));
+
+       
     }
 
     //Instantiate multiple button design with titles associated to the tag

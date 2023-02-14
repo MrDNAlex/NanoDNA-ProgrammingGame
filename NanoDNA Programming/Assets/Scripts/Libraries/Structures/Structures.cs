@@ -24,7 +24,7 @@ namespace DNAStruct
     {
         public ActionType actionType;
         public string cardType; //eventually replace this with the storeTag I think
-        public string cardName;
+        public UIWord cardName;
 
         public MovementActionNames movementName;
         public MathActionNames mathName;
@@ -93,6 +93,120 @@ namespace DNAStruct
         public Direction dir;
         public int value;
     }
+
+
+    //
+    //Script Storage
+    //
+
+    public struct Scripts
+    {
+        public LevelScript levelScript;
+        public LevelManager levelManager;
+        public ProgramSection programSection;
+        public MapDrag mapDrag;
+        public StoreScript storeScript;
+
+    }
+
+
+    //
+    //Level Type
+    //
+    [System.Serializable]
+    public enum LevelType
+    {
+        TopDown,
+        SideView, 
+
+    }
+
+
+
+
+    public enum Language
+    {
+        English, 
+        French
+    }
+
+
+
+
+    //
+    //Word Storage
+    //
+
+    [System.Serializable]
+    public class UIWord
+    {
+        public string french;
+        public string english;
+
+        public UIWord (string eng, string fren)
+        {
+            this.english = eng;
+            this.french = fren;
+        }
+
+
+        public void setWords(string eng, string fren)
+        {
+            this.french = fren;
+            this.english = eng;
+        }
+
+        public string getWord(Language lang)
+        {
+            switch (lang)
+            {
+                case Language.English:
+                    return english;
+                case Language.French:
+                    return french;
+                default:
+                    return english;
+            }
+
+        }
+
+
+    }
+
+    [System.Serializable]
+    public class PlayLevelWords
+    {
+
+        public UIWord name = new UIWord("Name", "Nom");
+        public UIWord save = new UIWord("Save", "Sauve");
+        public UIWord resize = new UIWord("Resize", "Redimensionner");
+        public UIWord used = new UIWord("Used", "Utilisé");
+        public UIWord debug = new UIWord("Debug", "Déboguer");
+        public UIWord reset = new UIWord("Reset", "Réinitialiser");
+        public UIWord collected = new UIWord("Collected", "Collecté");
+        public UIWord complete = new UIWord("Complete", "Complété");     // Maybe replace this with something like finish
+        public UIWord changeLang = new UIWord("Change Language", "Change Langue");
+
+
+        public UIWord movement = new UIWord("Movement", "Mouvement");
+        public UIWord math = new UIWord("Math", "Mathématique");
+        public UIWord logic = new UIWord("Logic", "Logique");
+        public UIWord variable = new UIWord("Variable", "Variable");
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

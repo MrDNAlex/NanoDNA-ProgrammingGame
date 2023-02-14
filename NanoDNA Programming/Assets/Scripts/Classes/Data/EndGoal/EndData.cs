@@ -20,7 +20,7 @@ public class EndData : MonoBehaviour
         if (other.gameObject.GetComponent<CharData>() != null)
         {
             //Run a function
-            Camera.main.GetComponent<LevelScript>().finishLevel();
+            Camera.main.GetComponent<LevelManager>().finishLevel();
         }
 
 

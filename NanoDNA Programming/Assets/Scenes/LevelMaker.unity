@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: initPos.y
       value: 8.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5023790446864790989, guid: 86126a51968630345bdbd753ce33490d, type: 3}
+      propertyPath: collectible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5035113501127521568, guid: 86126a51968630345bdbd753ce33490d, type: 3}
       propertyPath: m_Name
       value: Fish1 (1)
@@ -29276,6 +29280,10 @@ PrefabInstance:
       propertyPath: initPos.y
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5023790446864790989, guid: 86126a51968630345bdbd753ce33490d, type: 3}
+      propertyPath: collectible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5035113501127521568, guid: 86126a51968630345bdbd753ce33490d, type: 3}
       propertyPath: m_Name
       value: Fish1
@@ -33680,6 +33688,10 @@ PrefabInstance:
       propertyPath: initPos.y
       value: 8.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5023790446864790989, guid: 86126a51968630345bdbd753ce33490d, type: 3}
+      propertyPath: collectible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5035113501127521568, guid: 86126a51968630345bdbd753ce33490d, type: 3}
       propertyPath: m_Name
       value: Fish1 (2)
@@ -33709,6 +33721,14 @@ PrefabInstance:
     - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
       propertyPath: initPos.y
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
+      propertyPath: name.french
+      value: Penguin
+      objectReference: {fileID: 0}
+    - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
+      propertyPath: name.english
+      value: Penguin
       objectReference: {fileID: 0}
     - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
       propertyPath: program.list.Array.size
@@ -33937,6 +33957,8 @@ MonoBehaviour:
   level:
     levelName: Demo
     maxLine: 5
+    maxItems: 0
+    levelType: 0
     xMax: 0
     xMin: 0
     yMax: 0

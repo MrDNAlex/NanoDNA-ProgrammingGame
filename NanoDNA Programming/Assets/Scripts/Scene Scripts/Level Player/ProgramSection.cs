@@ -12,7 +12,7 @@ public class ProgramSection : MonoBehaviour
 
     public Flex flex;
 
-    public LevelScript level;
+    public LevelType levelType;
 
     public GameObject character;
     public int maxLineNum = 20;
@@ -28,16 +28,31 @@ public class ProgramSection : MonoBehaviour
     public bool undo;
     bool testRunning;
 
+    public Scripts allScripts;
+
+    PlayLevelWords UIwords = new PlayLevelWords();
+
+    Language lang;
+
     private void Awake()
     {
+
         flex = setUI();
+
+        Camera.main.GetComponent<LevelScript>().allScripts.programSection = this;
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        level = Camera.main.GetComponent<LevelScript>();
-        character = level.character;
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+
+        lang = allScripts.levelScript.lang;
+
+        levelType = allScripts.levelManager.info.levelType;
+
+        character = allScripts.levelScript.character;
 
         testBtn.onClick.AddListener(testProgram);
         saveBtn.onClick.AddListener(compileProgram);
@@ -90,7 +105,8 @@ public class ProgramSection : MonoBehaviour
                 {
                     child.localPosition = child.GetComponent<CharData>().initPos;
 
-                } else
+                }
+                else
                 {
                     //Make interactive appear again
                     child.gameObject.SetActive(true);
@@ -100,9 +116,9 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = false;
 
-            testBtn.transform.GetChild(0).GetComponent<Text>().text = "Test";
+            testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
 
-            Camera.main.GetComponent<LevelScript>().updateConstraints();
+            allScripts.levelManager.updateConstraints();
 
 
         }
@@ -129,7 +145,7 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = true;
 
-            testBtn.transform.GetChild(0).GetComponent<Text>().text = "Reset";
+            testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
         }
     }
 
@@ -216,7 +232,7 @@ public class ProgramSection : MonoBehaviour
 
                 character.GetComponent<CharData>().program = program;
 
-                level.updateConstraints();
+                allScripts.levelManager.updateConstraints();
 
                 //Debug.Log("Compile Done");
             }
@@ -229,7 +245,7 @@ public class ProgramSection : MonoBehaviour
 
         character = selected;
 
-        nameHeader.text = character.GetComponent<CharData>().name;
+        nameHeader.text = character.GetComponent<CharData>().name.getWord(lang);
         if (selected != null)
         {
             if (selected.GetComponent<CharData>() != null)
@@ -243,7 +259,7 @@ public class ProgramSection : MonoBehaviour
 
                     //Debug.Log(programHolder);
 
-                    Flex flex2 = Flex.findChild(programHolder, level.Background);
+                    Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
 
                     //Delete Game Objects
                     destroyChildren(programHolder);
@@ -386,7 +402,6 @@ public class ProgramSection : MonoBehaviour
                 break;
 
         }
-
     }
 
     public void undoProgram()
@@ -421,6 +436,13 @@ public class ProgramSection : MonoBehaviour
                 StartCoroutine(runProgram(child.gameObject, program));
             }
         }
+    }
+
+    public void reload()
+    {
+        lang = Camera.main.GetComponent<LevelScript>().lang;
+
+       // flex = setUI();
     }
 
 }

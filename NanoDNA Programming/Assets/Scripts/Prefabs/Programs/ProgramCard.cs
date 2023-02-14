@@ -10,7 +10,7 @@ public class ProgramCard : MonoBehaviour
 {
 
     public ActionType actionType;
-    public string cardName;
+    public UIWord cardName;
 
     public MovementActionNames movementName;
     public MathActionNames mathName;

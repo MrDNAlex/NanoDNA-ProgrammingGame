@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DNAStruct;
 
 [System.Serializable]
 public class CharDataInfo
 {
 
-    public string name;
+    public UIWord name;
 
     //public string name = "Bob";
     public Program program = new Program(true);

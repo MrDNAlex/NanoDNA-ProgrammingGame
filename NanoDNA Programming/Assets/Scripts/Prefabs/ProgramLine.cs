@@ -20,7 +20,9 @@ public class ProgramLine : MonoBehaviour
     public GameObject ProgramObj;
     public Flex ProgramUI;
 
-   // Flex Program;
+    // Flex Program;
+
+    Scripts allScripts;
 
 
     public void Awake()
@@ -33,6 +35,8 @@ public class ProgramLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+
         OnDemandRendering.renderFrameInterval = 12;
     }
 
@@ -133,7 +137,7 @@ public class ProgramLine : MonoBehaviour
 
             idk.AddComponent<DeleteIndentDrag>();
 
-            Camera.main.GetComponent<LevelScript>().progSec.compileProgram();
+           allScripts.programSection.compileProgram();
         }
 
     }
