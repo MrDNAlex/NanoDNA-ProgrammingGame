@@ -232,9 +232,11 @@ public class ProgramSection : MonoBehaviour
 
                 character.GetComponent<CharData>().program = program;
 
+
                 allScripts.levelManager.updateConstraints();
 
                 //Debug.Log("Compile Done");
+
             }
         }
     }

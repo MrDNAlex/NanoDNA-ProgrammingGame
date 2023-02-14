@@ -24,11 +24,13 @@ public class ProgramCard : MonoBehaviour
     //Action Stuff
     public ProgramAction action;
 
+
     public bool setInf = false;
 
     ProgramCardFunctionality functionality;
 
     public MoveData moveData;
+
 
 
     private void Awake()
@@ -55,7 +57,9 @@ public class ProgramCard : MonoBehaviour
 
     public void setInfo (ProgramAction action)
     {
+
         //The action type will have a reference to a function for it's handle so that when the program is being read it doens't need to go around and search for said function, it just instantly runs it, associated with it will be the types and values it needs!
+
 
         //Make sure it won't compile
         setInf = true;
