@@ -68,7 +68,6 @@ public class LevelManager : MonoBehaviour
 
         getConstraints();
 
-
     }
 
     // Start is called before the first frame update

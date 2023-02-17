@@ -22,8 +22,7 @@ public class ProgramAction
     //Maybe have a data type for all ActionTypes
 
     public MoveData moveData = new MoveData();
-
-   
+    public VariableData varData = new VariableData();
 
 
     //Make a Unique Constructore for each? or maybe I stuff the data into the CardInfo?
@@ -36,7 +35,17 @@ public class ProgramAction
         this.variableName = info.variableName;
 
         this.moveData = data;
+    }
 
+    public ProgramAction(CardInfo info, VariableData data)
+    {
+        this.actionType = info.actionType;
+        this.movementName = info.movementName;
+        this.mathName = info.mathName;
+        this.logicName = info.logicName;
+        this.variableName = info.variableName;
+
+        this.varData = data;
     }
 
     public ProgramAction ()

@@ -31,12 +31,20 @@ namespace DNAStruct
         public LogicActionNames logicName;
         public VariableActionNames variableName;
 
+        public EditDataType editDataType;
+
         //Program Related Stuff
         public Flex flex;
         public RectTransform rectTrans;
         public Transform transform;
         public ProgramAction action;
         public ProgramCard programCard;
+
+        public GameObject panel;
+
+        public VariableType varType;
+
+        public ValueEditType valEditType;
 
     }
 
@@ -75,12 +83,42 @@ namespace DNAStruct
 
     }
 
+
+    public enum EditDataType
+    {
+        Direction,
+        Value,
+        NewValue,
+        Multichoice,
+
+    }
+
+    public enum ValueEditType
+    {
+        Name,
+        Value,
+        Direction,
+        VariableType,
+        Public,
+        Bool,
+
+    }
+
+    public enum VariableType
+    {
+        Text,
+        Number,
+        Decimal,
+        Bool,
+    }
+
+
     [System.Serializable]
     public enum Direction
     {
-        Up, 
+        Up,
         Left,
-        Right, 
+        Right,
         Down
     }
 
@@ -92,6 +130,22 @@ namespace DNAStruct
     {
         public Direction dir;
         public int value;
+    }
+    [System.Serializable]
+    public struct VariableData
+    {
+        public bool isPublic;
+        public VariableType varType;
+        public string name;
+        public string value;
+
+        public void setData(bool pub, VariableType varType, string name, string value)
+        {
+            this.isPublic = pub;
+            this.varType = varType;
+            this.name = name;
+            this.value = value;
+        }
     }
 
 
@@ -117,7 +171,7 @@ namespace DNAStruct
     public enum LevelType
     {
         TopDown,
-        SideView, 
+        SideView,
 
     }
 
@@ -126,7 +180,7 @@ namespace DNAStruct
 
     public enum Language
     {
-        English, 
+        English,
         French
     }
 
@@ -143,7 +197,7 @@ namespace DNAStruct
         public string french;
         public string english;
 
-        public UIWord (string eng, string fren)
+        public UIWord(string eng, string fren)
         {
             this.english = eng;
             this.french = fren;
@@ -176,7 +230,6 @@ namespace DNAStruct
     [System.Serializable]
     public class PlayLevelWords
     {
-
         public UIWord name = new UIWord("Name", "Nom");
         public UIWord save = new UIWord("Save", "Sauve");
         public UIWord resize = new UIWord("Resize", "Redimensionner");
@@ -194,13 +247,6 @@ namespace DNAStruct
         public UIWord variable = new UIWord("Variable", "Variable");
 
     }
-
-
-
-
-
-
-
 
 
 

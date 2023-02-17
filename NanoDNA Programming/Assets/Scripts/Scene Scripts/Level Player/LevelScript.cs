@@ -292,12 +292,6 @@ public class LevelScript : MonoBehaviour
 
    public void setUIText ()
     {
-        //Set Text on 
-
-        //REsize
-        //Test
-        //Complete Button
-        //Save button
         resize.text = UIwords.resize.getWord(lang);
         debug.text = UIwords.debug.getWord(lang);
         complete.text = UIwords.complete.getWord(lang);

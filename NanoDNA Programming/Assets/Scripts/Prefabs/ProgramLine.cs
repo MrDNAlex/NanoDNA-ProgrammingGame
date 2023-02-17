@@ -111,31 +111,33 @@ public class ProgramLine : MonoBehaviour
 
         //Exapnd this later
 
-       deleteLine();
-        GameObject idk = null;
+        deleteLine();
+        GameObject ProgramCard = null;
 
         switch (info.actionType)
         {
             case ActionType.Movement:
-                idk = Instantiate(prefab1, ProgramObj.transform);
+                ProgramCard = Instantiate(prefab1, ProgramObj.transform);
                 break;
             case ActionType.Variable:
-                idk = Instantiate(prefab2, ProgramObj.transform);
+                ProgramCard = Instantiate(prefab2, ProgramObj.transform);
                 break;
         }
 
-        if (idk != null)
+        if (ProgramCard != null)
         {
 
-           ProgramUI.addChild(idk.GetComponent<ProgramCard>().program);
+           ProgramUI.addChild(ProgramCard.GetComponent<ProgramCard>().program);
 
-            Destroy(idk.GetComponent<DragController2>());
+            Destroy(ProgramCard.GetComponent<DragController2>());
 
             Line.setSize(Line.size);
 
-            idk.GetComponent<ProgramCard>().progLine = transform;
+            ProgramCard.GetComponent<ProgramCard>().setEditable();
 
-            idk.AddComponent<DeleteIndentDrag>();
+            ProgramCard.GetComponent<ProgramCard>().progLine = transform;
+
+            ProgramCard.AddComponent<DeleteIndentDrag>();
 
            allScripts.programSection.compileProgram();
         }
@@ -148,7 +150,6 @@ public class ProgramLine : MonoBehaviour
         deleteLine();
 
         GameObject program = null;
-
 
         //Edit this later
         switch (action.actionType)
@@ -176,7 +177,9 @@ public class ProgramLine : MonoBehaviour
             Destroy(program.GetComponent<DragController2>());
 
             //Add as a Flex child
-            ProgramUI.addChild(program.GetComponent<ProgramCard>().program);  
+            ProgramUI.addChild(program.GetComponent<ProgramCard>().program);
+
+           
 
             //Set the transform
             program.GetComponent<ProgramCard>().progLine = transform;
@@ -190,7 +193,9 @@ public class ProgramLine : MonoBehaviour
             //Set Info
             program.GetComponent<ProgramCard>().setInfo(action);
 
-           // ProgramObj = program;
+            //Make it editable
+            program.GetComponent<ProgramCard>().setEditable();
+            // ProgramObj = program;
 
         }
 
