@@ -383,6 +383,8 @@ namespace DNAStruct
     public enum SettingCardType
     {
         Button, 
+        Slider,
+
 
     }
 

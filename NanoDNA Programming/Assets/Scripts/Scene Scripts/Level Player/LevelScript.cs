@@ -12,7 +12,7 @@ using DNAStruct;
 
 public class LevelScript : MonoBehaviour
 {
-    public Language lang = Language.English;
+    public Language lang;
 
     PlayLevelWords UIwords = new PlayLevelWords();
 
@@ -82,9 +82,13 @@ public class LevelScript : MonoBehaviour
 
     public Scripts allScripts = new Scripts();
 
+    public PlayerSettings playerSettings;
+
     private void Awake()
     {
         allScripts.levelScript = this;
+        playerSettings = SaveManager.loadPlaySettings();
+        lang = playerSettings.language;
     }
 
     // Start is called before the first frame update

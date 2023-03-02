@@ -12,9 +12,14 @@ public class SettingCard : MonoBehaviour
 
     public Flex flex;
 
+    public Button.ButtonClickedEvent onClick;
+    public Slider.SliderEvent onChange;
+
+
     private void Awake()
     {
         setUI();
+        
     }
 
     // Start is called before the first frame update
@@ -31,28 +36,59 @@ public class SettingCard : MonoBehaviour
 
     void setUI ()
     {
-
         //Check what type it is potentially?
         switch (type)
         {
+            //Everything must sum up to 8
             //Size will be 800x100
             case SettingCardType.Button:
 
-                Flex Background = new Flex(this.transform.GetComponent<RectTransform>(), 1);
+                flex = new Flex(this.transform.GetComponent<RectTransform>(), 1);
 
-                Flex Name = new Flex(Background.getChild(0), 4.5f, Background);
-                Flex Button = new Flex(Background.getChild(1), 4.5f, Background);
+                //Both 4.5f
+                Flex ButtonName = new Flex(flex.getChild(0), 4f, flex);
+                Flex Button = new Flex(flex.getChild(1), 4f, flex);
 
-                Background.setSpacingFlex(1, 1);
+                //Used to be 1
+               // flex.setSpacingFlex(2, 1);
 
+                onClick = flex.getChild(1).GetComponent<Button>().onClick;
+                break;
+
+            case SettingCardType.Slider:
+                flex = new Flex(this.transform.GetComponent<RectTransform>(), 1);
+
+                Flex SliderName = new Flex(flex.getChild(0), 4f, flex);
+
+                Flex SlideHolder = new Flex(flex.getChild(1), 4, flex);
+
+                Flex Slider = new Flex(SlideHolder.getChild(0), 3f, SlideHolder);
+                Flex SliderPercent = new Flex(SlideHolder.getChild(1), 1f, SlideHolder);
+
+                //flex.setSpacingFlex(2, 1);
+
+               
+                onChange = flex.getChild(1).GetChild(0).GetComponent<Slider>().onValueChanged;
                 break;
         }
 
     }
 
-    public void setInfo ()
+    public void setInfoButton (string name, string value)
     {
+        flex.getChild(0).GetComponent<Text>().text = name;
 
+        flex.getChild(1).GetChild(0).GetComponent<Text>().text = value;
+    }
+
+    public void setInfoSlider (string name, int value)
+    {
+        //Value is int from 0-100
+        flex.getChild(0).GetComponent<Text>().text = name;
+
+        flex.getChild(1).GetChild(0).GetComponent<Slider>().value = (float)value / 100;
+
+        flex.getChild(1).GetChild(1).GetComponent<Text>().text = value + "%";
     }
 }
 

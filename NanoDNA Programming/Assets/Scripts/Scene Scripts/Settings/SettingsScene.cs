@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using FlexUI;
 using DNAStruct;
 using DNASaveSystem;
+using DNAScenes;
+using UnityEngine.SceneManagement;
 
 public class SettingsScene : MonoBehaviour
 {
@@ -14,23 +16,14 @@ public class SettingsScene : MonoBehaviour
 
     //Settings
     [Header("Settings")]
-    [SerializeField] Button languageBTN;
-    [SerializeField] Button colourBTN;
-
-    [SerializeField] Slider volumeSlider;
-    [SerializeField] Text volumePercent;
+    [SerializeField] RectTransform content;
 
     [SerializeField] Button saveBTN;
 
-
     //Create a new Class for storing settings details
     PlayerSettings playSettings;
-    Language lang;
-    SettingColourScheme colourScheme;
-
-
+    
     //Maybe add all these words to a class
-
 
     //Words
     UIWord English = new UIWord("English", "Anglais");
@@ -62,12 +55,10 @@ public class SettingsScene : MonoBehaviour
             playSettings = SaveManager.loadPlaySettings();
         }
        
-
-        lang = playSettings.language;
-
         setUI();
+        addSettings();
+        setLang(playSettings.language);
         setFunctionality();
-        setLang(lang);
         
     }
 
@@ -79,7 +70,6 @@ public class SettingsScene : MonoBehaviour
 
     void setUI ()
     {
-
         //Size of each setting is 150 tall?
 
         Flex Settings = new Flex(settings, 1);
@@ -87,107 +77,135 @@ public class SettingsScene : MonoBehaviour
         Flex Title = new Flex(Settings.getChild(0), 1, Settings);
         Flex SettingsPanel = new Flex(Settings.getChild(1), 5, Settings);
 
-        Flex ScrollView = new Flex(SettingsPanel.getChild(0), 1, SettingsPanel);
-
+        Flex ScrollView = new Flex(SettingsPanel.getChild(0), 5, SettingsPanel);
         Flex Viewport = new Flex(ScrollView.getChild(0), 1, ScrollView);
-
         Flex Content = new Flex(Viewport.getChild(0), 1, Viewport);
 
-        //ChildHeight?
-        Flex ActualSettings = new Flex(Content.getChild(0), 5, Content);
-
-        Flex SettingName = new Flex(ActualSettings.getChild(0), 1, ActualSettings);
-
-        Flex LangName = new Flex(SettingName.getChild(0), 1, SettingName);
-        Flex ColourName = new Flex(SettingName.getChild(1), 1, SettingName);
-        Flex VolumeName = new Flex(SettingName.getChild(2), 1, SettingName);
-
-
-        Flex SettingVal = new Flex(ActualSettings.getChild(1), 2, ActualSettings);
-
-        Flex LangBTN = new Flex(SettingVal.getChild(0), 1, SettingVal);
-        Flex ColourBTN = new Flex(SettingVal.getChild(1), 1, SettingVal);
-        Flex VolumeBTN = new Flex(SettingVal.getChild(2), 1, SettingVal);
-
-        Flex VolumeSlide = new Flex(VolumeBTN.getChild(0), 4, VolumeBTN);
-        Flex VolumePercent = new Flex(VolumeBTN.getChild(1), 1, VolumeBTN);
-
         Flex SaveBTN = new Flex(SettingsPanel.getChild(1), 1, SettingsPanel);
-
 
         Settings.setHorizontalPadding(0.1f, 1, 0.1f, 1);
         Settings.setVerticalPadding(0.2f, 1, 0.2f, 1);
         Settings.setSpacingFlex(0.1f, 1);
 
-        ActualSettings.setHorizontalPadding(0.2f, 1, 0.2f, 1);
-        ActualSettings.setVerticalPadding(0.1f, 1, 0.1f, 1);
+        Content.setHorizontalPadding(0.1f, 1, 0.1f, 1);
+        Content.setVerticalPadding(0.1f, 1, 0.1f, 1);
 
-        SettingName.setSpacingFlex(1, 1);
-        SettingVal.setSpacingFlex(1, 1);
+        Content.setSpacingFlex(1, 1);
 
-        VolumeBTN.setSpacingFlex(0.2f, 1);
+        Content.setChildMultiH(80);
+    }
 
-        Settings.setSize(new Vector2(Screen.width, Screen.height));
+    public void addSettings ()
+    {
+        destroyChildren(content.gameObject);
+
+        content.GetComponent<FlexInfo>().flex.deleteAllChildren();
+
+        for (int i = 0; i < 3; i++)
+        {
+            
+
+            SettingFunctionality(i);
+
+            //800, 
+            
+
+        }
+
+        settings.GetComponent<FlexInfo>().flex.setSize(new Vector2(Screen.width, Screen.height));
+    }
+
+    public void SettingFunctionality (int index)
+    {
+        GameObject gameObj = null;
+        switch (index)
+        {
+            case 0:
+
+                gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
+
+                gameObj.GetComponent<SettingCard>().setInfoButton(Lang.getWord(playSettings.language) + ":", getLang(playSettings.language));
+
+                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
+                {
+                    infoEditPanel.SetActive(true);
+
+                    destroyChildren(infoEditPanel);
+
+                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+
+                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.Language, infoEditPanel.transform, playSettings);
+
+                });
+
+                break;
+            case 1:
+
+                gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
+
+                gameObj.GetComponent<SettingCard>().setInfoButton(Colour.getWord(playSettings.language) + ":", getColour(playSettings.colourScheme));
+
+                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
+                {
+                    infoEditPanel.SetActive(true);
+
+                    destroyChildren(infoEditPanel);
+
+                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+
+                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.ColourScheme, infoEditPanel.transform, playSettings);
+
+                });
+                break;
+            case 2:
+                gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardSlider") as GameObject, content);
+
+                gameObj.GetComponent<SettingCard>().setInfoSlider(Volume.getWord(playSettings.language) + ":", playSettings.volume);
 
 
+                gameObj.GetComponent<SettingCard>().onChange.AddListener(delegate
+                {
+                    gameObj.GetComponent<SettingCard>().flex.getChild(1).GetChild(1).GetComponent<Text>().text = Mathf.FloorToInt(gameObj.GetComponent<SettingCard>().flex.getChild(1).GetChild(0).GetComponent<Slider>().value * 100) + "%";
+                });
+              
+                break;
+
+            default:
+
+                gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
+
+                gameObj.GetComponent<SettingCard>().setInfoButton(Lang.getWord(playSettings.language) + ":", getLang(playSettings.language));
+
+                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
+                {
+                    infoEditPanel.SetActive(true);
+
+                    destroyChildren(infoEditPanel);
+
+                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+
+                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.Language, infoEditPanel.transform, playSettings);
+
+                });
+
+                break;
+
+        }
+
+        gameObj.GetComponent<SettingCard>().flex.setCustomSize(new Vector2(0, 80));
+
+        content.GetComponent<FlexInfo>().flex.addChild(gameObj.GetComponent<SettingCard>().flex);
     }
 
     public void setFunctionality ()
     {
-        //Need to add a load of past settings
-        volumeSlider.value = (float)playSettings.volume / 100;
-        volumePercent.text = Mathf.FloorToInt(volumeSlider.value * 100) + "%";
-
-
-        volumeSlider.onValueChanged.AddListener(delegate
-        {
-            volumePercent.text = Mathf.FloorToInt(volumeSlider.value * 100) + "%";
-            playSettings.volume = Mathf.FloorToInt(volumeSlider.value * 100);
-        });
-
-        languageBTN.onClick.AddListener(delegate
-        {
-            //Spawn the info panel
-
-            //Multi Choice
-
-            infoEditPanel.SetActive(true);
-
-            destroyChildren(infoEditPanel);
-
-            GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
-
-            panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.Language, infoEditPanel.transform, playSettings);
-
-        });
-
-        colourBTN.onClick.AddListener(delegate
-        {
-            infoEditPanel.SetActive(true);
-
-            destroyChildren(infoEditPanel);
-
-            GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
-
-            panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.ColourScheme, infoEditPanel.transform, playSettings);
-
-        });
-
         saveBTN.onClick.AddListener(delegate
         {
-            //Save all settings
-
-            playSettings.setVolume(playSettings.volume = Mathf.FloorToInt(volumeSlider.value * 100));
-            playSettings.setLanguage(lang);
-            playSettings.setColourScheme(colourScheme);
-
             SaveManager.savePlaySettings(playSettings);
 
+            //Head to Menu Scene
+            SceneManager.LoadScene(SceneConversion.GetScene(Scenes.Menu), LoadSceneMode.Single);
         });
-
-
-        
-
     }
 
 
@@ -206,27 +224,6 @@ public class SettingsScene : MonoBehaviour
     public void setLang (Language lang)
     {
         settings.GetChild(0).GetComponent<Text>().text = Settings.getWord(lang);
-
-        //Names
-        settings.GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = Lang.getWord(lang) + ":";
-        settings.GetChild(1).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>().text = Colour.getWord(lang) + ":";
-        settings.GetChild(1).GetChild(0).GetChild(0).GetChild(2).GetComponent<Text>().text = Volume.getWord(lang) + ":";
-
-        if (playSettings.language == Language.English)
-        {
-           //settings.GetChild(1).GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = English.getWord(lang);
-            languageBTN.transform.GetChild(0).GetComponent<Text>().text = English.getWord(lang);
-
-        } else
-        {
-           // settings.GetChild(1).GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = French.getWord(lang);
-            languageBTN.transform.GetChild(0).GetComponent<Text>().text = French.getWord(lang);
-        }
-
-        //Colour Button
-       // settings.GetChild(1).GetChild(0).GetChild(1).GetChild(1).GetChild(0).GetComponent<Text>().text = getColour(playSettings.colourScheme);
-        colourBTN.transform.GetChild(0).GetComponent<Text>().text = getColour(playSettings.colourScheme);
-
     }
 
     private string getColour (SettingColourScheme colour)
@@ -235,56 +232,57 @@ public class SettingsScene : MonoBehaviour
         switch (colour)
         {
             case SettingColourScheme.Col1:
-                word = Col1.getWord(lang);
+                word = Col1.getWord(playSettings.language);
                 break;
             case SettingColourScheme.Col2:
-                word = Col2.getWord(lang);
+                word = Col2.getWord(playSettings.language);
                 break;
             case SettingColourScheme.Col3:
-                word = Col3.getWord(lang);
+                word = Col3.getWord(playSettings.language);
                 break;
             case SettingColourScheme.Col4:
-                word = Col4.getWord(lang);
+                word = Col4.getWord(playSettings.language);
                 break;
             case SettingColourScheme.Col5:
-                word = Col5.getWord(lang);
+                word = Col5.getWord(playSettings.language);
                 break;
             case SettingColourScheme.Col6:
-                word = Col6.getWord(lang);
+                word = Col6.getWord(playSettings.language);
                 break;
             case SettingColourScheme.Col7:
-                word = Col7.getWord(lang);
+                word = Col7.getWord(playSettings.language);
                 break;
             case SettingColourScheme.Col8:
-                word = Col8.getWord(lang);
+                word = Col8.getWord(playSettings.language);
                 break;
-
         }
 
         return word;
 
     }
 
+    private string getLang (Language lang)
+    {
+        string word = "";
+        switch (lang)
+        {
+            case Language.English:
+                word = English.getWord(lang);
+                break;
+            case Language.French:
+                word = French.getWord(lang);
+                break;
+        }
+        return word;
+    }
+
     public void updateSettings(PlayerSettings settings)
     {
         this.playSettings = settings;
 
-        //Update Shit like language and colour
-        lang = playSettings.language;
-        colourScheme = playSettings.colourScheme;
-        volumeSlider.value = (float)playSettings.volume / 100;
-        volumePercent.text = Mathf.FloorToInt(volumeSlider.value * 100) + "%";
-
-
-        setLang(lang);
+        addSettings();
+        setLang(playSettings.language);
 
     }
 
-
-
-
-
-
 }
-
-

@@ -14,7 +14,9 @@ public class MenuScript : MonoBehaviour
     [SerializeField] RectTransform menu;
 
 
-    Language lang = Language.French;
+    Language lang;
+
+    PlayerSettings playSettings;
 
     UIWord TitleWord = new UIWord("Nano Program", "Program Nano");
 
@@ -24,6 +26,18 @@ public class MenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (SaveManager.loadPlaySettings() == null)
+        {
+            Debug.Log("Error");
+            playSettings = new PlayerSettings();
+        }
+        else
+        {
+            playSettings = SaveManager.loadPlaySettings();
+        }
+
+        lang = playSettings.language;
+
         setUI();
         setFunctionality();
         setLang();
@@ -85,7 +99,7 @@ public class MenuScript : MonoBehaviour
 
         Debug.Log("Start Scene");
 
-        SceneManager.LoadScene(SceneConversion.GetScene(Scenes.Start), LoadSceneMode.Single);
+        SceneManager.LoadScene(SceneConversion.GetScene(Scenes.PlayLevel), LoadSceneMode.Single);
 
     }
 
