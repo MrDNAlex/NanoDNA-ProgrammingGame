@@ -45,6 +45,41 @@ namespace DNASaveSystem
 
         }
 
+        public static void savePlaySettings (PlayerSettings playSettings)
+        {
+            var dir = commonPath + "/" + "PlaySettings" + ".json";
+
+
+            string jsonData = JsonUtility.ToJson(playSettings, true);
+
+            Debug.Log(jsonData);
+
+            File.WriteAllText(dir, jsonData);
+        }
+
+        public static PlayerSettings loadPlaySettings ()
+        {
+            //This function loads the save named into the currently used save file
+
+            string path = commonPath + "/" + "PlaySettings" + ".json";
+
+            //Debug.Log(path);
+            string jsonData = "";
+            if (File.Exists(path))
+            {
+                //Extract JSON Data
+                jsonData = File.ReadAllText(path);
+                Debug.Log(jsonData);
+                return JsonUtility.FromJson<PlayerSettings>(jsonData);
+            }
+            else
+            {
+                Debug.Log("Doesn't exist");
+                return null;
+            }
+
+        }
+
         public static void deepSave (string name, LevelInfo info)
         {
             var dir = commonPath + "/" + name + ".json";

@@ -112,66 +112,42 @@ public class LevelScript : MonoBehaviour
 
         Background = new Flex(background, 1);
 
-        Flex Reg1 = new Flex(Background.getChild(0), 1);
-        Flex Header = new Flex(Reg1.getChild(0), 1);
-        Flex List = new Flex(Reg1.getChild(1), 8);
-        Flex SV = new Flex(List.getChild(0), 1);
-        Flex VP = new Flex(SV.getChild(0), 10);
+        Flex Reg1 = new Flex(Background.getChild(0), 1, Background);
+        Flex Header = new Flex(Reg1.getChild(0), 1, Reg1);
+        Flex List = new Flex(Reg1.getChild(1), 8, Reg1);
+        Flex SV = new Flex(List.getChild(0), 1, List);
+        Flex VP = new Flex(SV.getChild(0), 10, SV);
 
-        Flex Controls = new Flex(Header.getChild(0), 1.5f);
+        Flex Controls = new Flex(Header.getChild(0), 1.5f, Header);
 
-        Flex Undo = new Flex(Controls.getChild(0), 1);
-        Flex InteracName = new Flex(Controls.getChild(1), 4);
-        Flex Save = new Flex(Controls.getChild(2), 1);
+        Flex Undo = new Flex(Controls.getChild(0), 1, Controls);
+        Flex InteracName = new Flex(Controls.getChild(1), 4, Controls);
+        Flex Save = new Flex(Controls.getChild(2), 1, Controls);
 
         Flex Scripts = new Flex(Header.getChild(1), 1);
 
-        Flex Reg2 = new Flex(Background.getChild(1), 2f);
-        Flex MapView = new Flex(Reg2.getChild(0), 2f);
+        Flex Reg2 = new Flex(Background.getChild(1), 2f, Background);
+        Flex MapView = new Flex(Reg2.getChild(0), 2f, Reg2);
 
-        Flex ChangeLang = new Flex(MapView.getChild(0), 1);
-        Flex Zoom = new Flex(MapView.getChild(1), 6);
-        Flex Resize = new Flex(MapView.getChild(2), 1);
-        Flex Play = new Flex(MapView.getChild(3), 1);
+        Flex ChangeLang = new Flex(MapView.getChild(0), 1, MapView);
+        Flex Zoom = new Flex(MapView.getChild(1), 6, MapView);
+        Flex Resize = new Flex(MapView.getChild(2), 1, MapView);
+        Flex Play = new Flex(MapView.getChild(3), 1, MapView);
 
-        Flex Reg3 = new Flex(Reg2.getChild(1), 1f);
+        Flex Reg3 = new Flex(Reg2.getChild(1), 1f, Reg2);
 
-        Flex Constraints = new Flex(Reg3.getChild(1), 1f);
+        Flex Constraints = new Flex(Reg3.getChild(1), 1f, Reg3);
 
-        Flex CollectedItems = new Flex(Constraints.getChild(0), 1);
-        Flex LinesUsed = new Flex(Constraints.getChild(1), 1);
-        Flex CompleteLevel = new Flex(Constraints.getChild(2), 1);
+        Flex CollectedItems = new Flex(Constraints.getChild(0), 1, Constraints);
+        Flex LinesUsed = new Flex(Constraints.getChild(1), 1, Constraints);
+        Flex CompleteLevel = new Flex(Constraints.getChild(2), 1, Constraints);
 
-        //Add children
-        Header.addChild(Controls);
-        Header.addChild(Scripts);
-
-        Controls.addChild(InteracName);
-        Controls.addChild(Undo);
-        Controls.addChild(Save);
-
-
-        List.addChild(SV);
-        SV.addChild(VP);
+        //Add Children
         VP.addChild(allScripts.programSection.flex);
 
-        Reg1.addChild(Header);
-        Reg1.addChild(List);
-
-        Reg2.addChild(MapView);
-        Reg2.addChild(Reg3);
-
-        MapView.addChild(ChangeLang);
-        MapView.addChild(Zoom);
-        MapView.addChild(Resize);
-        MapView.addChild(Play);
-
         Reg3.addChild(store.GetComponent<StoreScript>().Store);
-        Reg3.addChild(Constraints);
-
-        Background.addChild(Reg1);
-        Background.addChild(Reg2);
-
+       
+        //Edit Look
         ChangeLang.setSelfHorizontalPadding(12, 1, 0, 1);
         Zoom.setSelfHorizontalPadding(12, 1, 0, 1);
         Resize.setSelfHorizontalPadding(12, 1, 0, 1);
@@ -181,10 +157,6 @@ public class LevelScript : MonoBehaviour
 
         Controls.setSpacingFlex(0.5f, 1);
         Controls.setAllPadSame(0.1f, 1);
-
-        Constraints.addChild(CollectedItems);
-        Constraints.addChild(LinesUsed);
-        Constraints.addChild(CompleteLevel);
 
         //Constraints and Abilities 
         Constraints.setAllPadSame(0.1f, 1);
@@ -198,9 +170,6 @@ public class LevelScript : MonoBehaviour
 
     public float orthoSizeCalc(LevelInfo info)
     {
-
-      
-
         //Fit vertically
         float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * backgroundMap.cellSize.y);
 
@@ -210,12 +179,10 @@ public class LevelScript : MonoBehaviour
         if (vertOrthoSize >= horOrthoSize)
         {
             //Give Vert
-
             return vertOrthoSize;
         }
         else
         {
-
             //Give Hor
             return horOrthoSize;
         }
@@ -229,8 +196,6 @@ public class LevelScript : MonoBehaviour
 
     public void setCamera(LevelInfo info)
     {
-
-
         //Set the Camera Texture size
         camText.width = (int)Screen.width;
         camText.height = (int)Screen.height;
@@ -251,7 +216,6 @@ public class LevelScript : MonoBehaviour
 
         //Set position.
         voidMap.transform.SetPositionAndRotation(pos, new Quaternion(0, 0, 0, 0));
-
     }
 
     Vector3Int getCenter(LevelInfo info, bool floor)
@@ -267,7 +231,6 @@ public class LevelScript : MonoBehaviour
         {
             return new Vector3Int(Mathf.CeilToInt(centerX), Mathf.CeilToInt(centerY), 0);
         }
-
     }
 
     public void destroySubChildren(GameObject Obj)
@@ -292,12 +255,6 @@ public class LevelScript : MonoBehaviour
 
    public void setUIText ()
     {
-        //Set Text on 
-
-        //REsize
-        //Test
-        //Complete Button
-        //Save button
         resize.text = UIwords.resize.getWord(lang);
         debug.text = UIwords.debug.getWord(lang);
         complete.text = UIwords.complete.getWord(lang);

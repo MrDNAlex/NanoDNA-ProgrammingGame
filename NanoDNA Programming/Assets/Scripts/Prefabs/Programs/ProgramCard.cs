@@ -16,6 +16,7 @@ public class ProgramCard : MonoBehaviour
     public MathActionNames mathName;
     public LogicActionNames logicName;
     public VariableActionNames variableName;
+    public ActionActionNames actionName;
 
     public Flex program;
     public Transform progLine;
@@ -24,19 +25,21 @@ public class ProgramCard : MonoBehaviour
     //Action Stuff
     public ProgramAction action;
 
-
     public bool setInf = false;
 
     ProgramCardFunctionality functionality;
 
-    public MoveData moveData;
 
+    //Data
+    //public MoveData moveData;
+    //public VariableData varData;
 
 
     private void Awake()
     {
         functionality = new ProgramCardFunctionality();
         setFunctionality();
+      
     }
 
 
@@ -50,8 +53,6 @@ public class ProgramCard : MonoBehaviour
     {
         //Set the UI
         program = functionality.setUI(setCardInfo());
-
-        functionality.setAction(setCardInfo());
 
     }
 
@@ -75,6 +76,11 @@ public class ProgramCard : MonoBehaviour
         setInf = false;
     }
 
+    public void setEditable ()
+    {
+        functionality.setAction(setCardInfo());
+    }
+
     public CardInfo setCardInfo ()
     {
         CardInfo info = new CardInfo();
@@ -85,6 +91,7 @@ public class ProgramCard : MonoBehaviour
         info.mathName = mathName;
         info.logicName = logicName;
         info.variableName = variableName;
+        info.actionName = actionName;
 
         info.cardName = cardName;
       
@@ -94,6 +101,9 @@ public class ProgramCard : MonoBehaviour
         info.action = action;
 
         info.programCard = this;
+
+        //Change this
+        info.varType = VariableType.Number;
 
         return info;
 

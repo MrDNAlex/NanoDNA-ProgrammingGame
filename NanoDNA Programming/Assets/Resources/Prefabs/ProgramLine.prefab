@@ -203,6 +203,7 @@ MonoBehaviour:
   background: {fileID: 2175663195785219503}
   prefab1: {fileID: 8138498152997489336, guid: c83d178a7f3a7794eaef8f278893c5ea, type: 3}
   prefab2: {fileID: 6849765539173945905, guid: e62678bfdf228354ea1aded334001160, type: 3}
+  prefab3: {fileID: 6849765539173945905, guid: e3bd56d149f89244b9c4169eb0b6ce98, type: 3}
   ProgramObj: {fileID: 0}
 --- !u!1 &2175663195905682200
 GameObject:

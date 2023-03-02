@@ -19,7 +19,7 @@ public class ProgramSection : MonoBehaviour
 
     [SerializeField] GameObject progLine;
     [SerializeField] Button testBtn;
-    [SerializeField] GameObject charHolder;
+    [SerializeField] public GameObject charHolder;
     [SerializeField] Text nameHeader;
     [SerializeField] Button saveBtn;
     [SerializeField] Button undoBtn;
@@ -68,7 +68,7 @@ public class ProgramSection : MonoBehaviour
     {
         Flex Content = new Flex(GetComponent<RectTransform>(), 1);
 
-        Content.setChildMultiH(150);
+        Content.setChildMultiH(175);
 
         //Add all the programLine Children
 
@@ -184,25 +184,83 @@ public class ProgramSection : MonoBehaviour
 
                 break;
             case ActionType.Variable:
+                
+                switch (action.variableName)
+                {
+                    case VariableActionNames.Variable:
+
+                        //Update Variable value in program manager
+                        Camera.main.GetComponent<ProgramManager>().updateVariable(action.varData);
+
+                        break;
+                }
+                break;
+            case ActionType.Action:
+
+                switch (action.actionName)
+                {
+                    case ActionActionNames.Speak:
+
+                        //Delete all speak children first
+                        destroyChildren(action.actData.character.gameObject);
+
+                        string path = "Prefabs/Actions/Talk";
+                        switch (action.actData.descriptor)
+                        {
+                            case ActionDescriptor.Whisper:
+                                path = "Prefabs/Actions/Whisper";
+                                break;
+                            case ActionDescriptor.Talk:
+                                path = "Prefabs/Actions/Talk";
+                                break;
+                            case ActionDescriptor.Yell:
+                                path = "Prefabs/Actions/Yell";
+                                break;
+                        }
+
+                        //Instantiate
+                        GameObject bubbleText = Instantiate(Resources.Load(path) as GameObject, action.actData.character);
+
+                        //Get Sprite renderer
+                        SpriteRenderer charRender = action.actData.character.GetComponent<SpriteRenderer>();
+
+                        //Set Message
+                        bubbleText.GetComponent<ChatBubble>().setMessage(action.actData.data, charRender, action.actData.descriptor);
+
+
+                        break;
+                }
 
                 break;
         }
     }
 
     public Vector3 actionToMovement(ProgramAction action)
-    {
+    { 
         switch (action.moveData.dir)
         {
             case Direction.Up:
-                return new Vector3(0, action.moveData.value, 0);
+                return new Vector3(0, getMovementVal(action), 0);
             case Direction.Down:
-                return new Vector3(0, -action.moveData.value, 0);
+                return new Vector3(0, -1* getMovementVal(action), 0);
             case Direction.Left:
-                return new Vector3(-action.moveData.value, 0, 0);
+                return new Vector3(-1 * getMovementVal(action), 0, 0);
             case Direction.Right:
-                return new Vector3(action.moveData.value, 0, 0);
+                return new Vector3(getMovementVal(action), 0, 0);
             default:
-                return new Vector3(0, action.moveData.value, 0);
+                return new Vector3(0, getMovementVal(action), 0);
+        }
+    }
+
+    public int getMovementVal (ProgramAction action)
+    {
+        if (action.moveData.refID != 0)
+        {
+            //Convert 
+            return int.Parse(Camera.main.GetComponent<ProgramManager>().getVariableValue(action.moveData.refID));
+        } else
+        {
+            return int.Parse(action.moveData.value);
         }
     }
 
@@ -218,12 +276,11 @@ public class ProgramSection : MonoBehaviour
                 Program program = new Program(false);
 
                 //Compile program
-
                 for (int i = 0; i < transform.childCount; i++)
                 {
                     if (transform.GetChild(i).GetChild(1).childCount != 0)
                     {
-                        // Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
+                        Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
                         program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
                     }
                 }
@@ -232,8 +289,9 @@ public class ProgramSection : MonoBehaviour
 
                 character.GetComponent<CharData>().program = program;
 
-
                 allScripts.levelManager.updateConstraints();
+
+                Camera.main.GetComponent<ProgramManager>().updateVariables();
 
                 //Debug.Log("Compile Done");
 
@@ -363,6 +421,8 @@ public class ProgramSection : MonoBehaviour
             readAction(character, program.list[i]);
             yield return new WaitForSeconds(0.5f);
         }
+
+        Camera.main.GetComponent<ProgramManager>().displayAllVariables();
     }
 
     public void decompose(ProgramAction action, Program program)
@@ -379,13 +439,13 @@ public class ProgramSection : MonoBehaviour
                 {
                     case MovementActionNames.Move:
 
-                        for (int i = 0; i < action.moveData.value; i++)
+                        for (int i = 0; i < getMovementVal(action); i++)
                         {
                             ProgramAction newAction = new ProgramAction();
 
                             newAction.movementName = MovementActionNames.Move;
 
-                            newAction.moveData.value = 1;
+                            newAction.moveData.value = "1";
                             newAction.moveData.dir = action.moveData.dir;
 
                             program.list.Add(newAction);
@@ -400,6 +460,18 @@ public class ProgramSection : MonoBehaviour
 
                 break;
             case ActionType.Variable:
+                
+                program.list.Add(action);
+                break;
+            case ActionType.Action:
+
+                switch (action.actionName)
+                {
+                    case ActionActionNames.Speak:
+                        program.list.Add(action);
+                        break;
+                }
+
 
                 break;
 

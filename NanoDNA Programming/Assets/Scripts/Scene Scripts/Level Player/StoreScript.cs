@@ -81,39 +81,13 @@ public class StoreScript : MonoBehaviour
 
    public Flex storeSecBtn (ActionType tag)
     {
-
         GameObject btn = Instantiate(storeSection, Store.getChild(0).GetChild(0).GetChild(0).transform);
 
         Flex section = new Flex(btn.GetComponent<RectTransform>(), 1);
 
-        switch (tag)
-        {
-            
-            case ActionType.Movement:
-                //Set button info and set it's store tag
-                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.movement.getWord(lang);
-                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Movement;
-               
-                break;
-            case ActionType.Math:
-                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.math.getWord(lang);
-                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Math;
-              
-                break;
-            case ActionType.Logic:
-                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.logic.getWord(lang);
-                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Logic;
-              
-                break;
-            case ActionType.Variable:
-                btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.variable.getWord(lang);
-                btn.transform.GetComponent<StoreBtn>().actionType = ActionType.Variable;
-               
-                break;
-            default:
-                section.flex = 0.01f;
-                break;
-        }
+        //Set Info
+        btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.getStoreTitle(tag, lang);
+        btn.transform.GetComponent<StoreBtn>().actionType = tag;
 
         btn.transform.GetComponent<StoreBtn>().onclick.AddListener(delegate
         {
@@ -170,6 +144,8 @@ public class StoreScript : MonoBehaviour
                 
             case ActionType.Variable:
                 return "Prefabs/Programs/Variable";
+            case ActionType.Action:
+                return "Prefabs/Programs/Action";
                
             default:
                 return "";

@@ -41,6 +41,9 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
         info.mathName = transform.GetComponent<ProgramCard>().mathName;
         info.logicName = transform.GetComponent<ProgramCard>().logicName;
         info.variableName = transform.GetComponent<ProgramCard>().variableName;
+        info.actionName = transform.GetComponent<ProgramCard>().actionName;
+        
+        
 
     }
 
@@ -89,6 +92,7 @@ public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler,
                 if (distance < 0.9f)
                 {
 
+                    Debug.Log(info.variableName);
                     child.GetComponent<ProgramLine>().addProgram(info);
 
                     //Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>(), type);

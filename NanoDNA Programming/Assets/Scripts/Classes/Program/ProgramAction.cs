@@ -18,12 +18,13 @@ public class ProgramAction
     public MathActionNames mathName;
     public LogicActionNames logicName;
     public VariableActionNames variableName;
+    public ActionActionNames actionName;
 
     //Maybe have a data type for all ActionTypes
 
     public MoveData moveData = new MoveData();
-
-   
+    public VariableData varData = new VariableData();
+    public ActionData actData = new ActionData();
 
 
     //Make a Unique Constructore for each? or maybe I stuff the data into the CardInfo?
@@ -34,9 +35,35 @@ public class ProgramAction
         this.mathName = info.mathName;
         this.logicName = info.logicName;
         this.variableName = info.variableName;
+        this.actionName = info.actionName;
 
         this.moveData = data;
+    }
 
+    public ProgramAction(CardInfo info, VariableData data)
+    {
+
+        this.actionType = info.actionType;
+        this.movementName = info.movementName;
+        this.mathName = info.mathName;
+        this.logicName = info.logicName;
+        this.variableName = info.variableName;
+        this.actionName = info.actionName;
+
+        this.varData = data;
+    }
+
+    public ProgramAction(CardInfo info, ActionData data)
+    {
+
+        this.actionType = info.actionType;
+        this.movementName = info.movementName;
+        this.mathName = info.mathName;
+        this.logicName = info.logicName;
+        this.variableName = info.variableName;
+        this.actionName = info.actionName;
+
+        this.actData = data;
     }
 
     public ProgramAction ()
@@ -47,6 +74,7 @@ public class ProgramAction
         this.mathName = MathActionNames.None;
         this.logicName = LogicActionNames.None;
         this.variableName = VariableActionNames.None;
+        this.actionName = ActionActionNames.None;
         this.moveData = new MoveData();
 
     }
@@ -62,7 +90,28 @@ public class ProgramAction
 
     public string dispAction ()
     {
-        return actionType + " " + movementName;
+        string str = "";
+
+        switch (actionType)
+        {
+            case ActionType.Movement:
+                str = actionType + " " + movementName;
+                break;
+            case ActionType.Math:
+                str = actionType + " " + mathName;
+                break;
+            case ActionType.Logic:
+                str = actionType + " " + logicName;
+                break;
+            case ActionType.Variable:
+                str = actionType + " " + variableName;
+                break;
+            case ActionType.Action:
+                str = actionType + " " + actionName;
+                break;
+           
+        }
+        return str;
     }
 
     
