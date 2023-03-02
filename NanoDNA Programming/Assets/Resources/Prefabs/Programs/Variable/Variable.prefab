@@ -873,18 +873,23 @@ MonoBehaviour:
   progLine: {fileID: 0}
   indent: 0
   action:
-    actionType: 0
+    actionType: 3
     movementName: 0
     mathName: 0
     logicName: 0
-    variableName: 0
+    variableName: 1
     moveData:
       dir: 0
       value: 0
+    varData:
+      isPublic: 0
+      varType: 0
+      name: 
+      value: 
+      character: {fileID: 0}
+      id: 0
+      refID: 0
   setInf: 0
-  moveData:
-    dir: 0
-    value: 0
 --- !u!1 &6993912430497903501
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,8 +9,8 @@ public class StoreCard : MonoBehaviour
 {
 
     [SerializeField] RectTransform card;
-    [SerializeField] GameObject Movement;
-    [SerializeField] GameObject Variable;
+    //[SerializeField] GameObject Movement;
+    //[SerializeField] GameObject Variable;
 
     public Flex cardFlex;
     public string storeType;
@@ -45,7 +45,6 @@ public class StoreCard : MonoBehaviour
         //Set up default UI
         //Instantiate store item
         //Return everything
-
 
         //Set up UI 
         cardFlex = new Flex(card, 1);

@@ -16,6 +16,7 @@ public class ProgramCard : MonoBehaviour
     public MathActionNames mathName;
     public LogicActionNames logicName;
     public VariableActionNames variableName;
+    public ActionActionNames actionName;
 
     public Flex program;
     public Transform progLine;
@@ -38,6 +39,7 @@ public class ProgramCard : MonoBehaviour
     {
         functionality = new ProgramCardFunctionality();
         setFunctionality();
+      
     }
 
 
@@ -89,6 +91,7 @@ public class ProgramCard : MonoBehaviour
         info.mathName = mathName;
         info.logicName = logicName;
         info.variableName = variableName;
+        info.actionName = actionName;
 
         info.cardName = cardName;
       

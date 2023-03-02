@@ -94,17 +94,15 @@ namespace FlexUI
         public Vector2 customSize;
 
         //Constructor function
-        public Flex(RectTransform UIItem, float flex)
+        public Flex(RectTransform UIItem, float flex, Flex parent = null)
         {
             //Assign initial values 
             this.UI = UIItem;
             this.flex = flex;
             this.size = UIItem.sizeDelta;
 
-
             //Initialize the Children List
             children = new List<Flex>();
-
 
             //Determine if there's a Vertical or Horizontal Layout Group on this UI Item
             if (UIItem.gameObject.GetComponent<HorizontalLayoutGroup>())
@@ -134,6 +132,11 @@ namespace FlexUI
 
             FlexInfo info = UI.gameObject.AddComponent<FlexInfo>();
             info.flex = this;
+
+            if (parent != null)
+            {
+                parent.addChild(this);
+            }
 
         }
 
@@ -466,8 +469,13 @@ namespace FlexUI
                     if (children[i].square)
                     {
                         //Add a polynomial with the minimum dimension
-                        eqY.addPolynomial(Mathf.Min(size.y, size.x), 0); //wVal
-
+                        if (layoutGroupVert)
+                        {
+                            eqY.addPolynomial(size.x, 0); //wVal
+                        } else
+                        {
+                            eqY.addPolynomial(size.y, 0); //hVal
+                        }
                        // Debug.Log("Square");
                     }
                     else
@@ -517,10 +525,16 @@ namespace FlexUI
                 {
                     if (children[i].square)
                     {
-                       //Add polynomial with minimum dimension 
-                        eqX.addPolynomial(Mathf.Min(size.y, size.x), 0); //hval
-
-                       // Debug.Log("Square");
+                        //Add polynomial with minimum dimension 
+                        if (layoutGroupVert)
+                        {
+                            eqX.addPolynomial(size.x, 0); //wVal
+                        }
+                        else
+                        {
+                            eqX.addPolynomial(size.y, 0); //hVal
+                        }
+                        // Debug.Log("Square");
                     }
                     else
                     {

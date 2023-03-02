@@ -71,9 +71,6 @@ public class ValueDisp : MonoBehaviour
             flex.setVerticalPadding(0.07f, 1, 0.07f, 1);
         }
 
-        
-
-       
     }
 
     public void setInfo (VariableData varData)
@@ -93,8 +90,6 @@ public class ValueDisp : MonoBehaviour
         }
        
     }
-
-
 
 
 }

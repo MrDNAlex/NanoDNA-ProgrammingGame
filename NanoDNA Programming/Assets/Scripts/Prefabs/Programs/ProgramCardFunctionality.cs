@@ -46,6 +46,10 @@ public class ProgramCardFunctionality
             case ActionType.Variable:
                 return setUIVariables(info);
 
+            case ActionType.Action:
+                Debug.Log("Here");
+                return setUIActions(info);
+
             default:
                 Debug.Log("Here");
                 return setUIMovement(info);
@@ -66,9 +70,10 @@ public class ProgramCardFunctionality
                 Flex Value = new Flex(Program.getChild(2), 1);
 
                 //Set Flex Parameters
-                Program.addChild(Move);
+
                 Program.addChild(Direction);
                 Program.addChild(Value);
+                Program.addChild(Move);
 
                 Program.setSpacingFlex(0.2f, 1);
 
@@ -102,11 +107,36 @@ public class ProgramCardFunctionality
 
                 Program.setSpacingFlex(0.5f, 1);
 
-                Program.setAllPadSame(0.2f, 1);
+                Program.setAllPadSame(0.3f, 1);
 
                 break;
         }
         return Program;
+    }
+
+    public Flex setUIActions(CardInfo info)
+    {
+
+        switch (info.actionName)
+        {
+            case ActionActionNames.Speak:
+
+                Program = new Flex(info.rectTrans, 2);
+
+                Flex SpeakType = new Flex(Program.getChild(0), 1);
+                Flex SpeakMessage = new Flex(Program.getChild(1), 1);
+
+                Program.addChild(SpeakType);
+                Program.addChild(SpeakMessage);
+
+                Program.setSpacingFlex(0.2f, 1);
+                Program.setAllPadSame(0.2f, 1);
+
+                break;
+        }
+
+        return Program;
+
     }
 
 
@@ -129,6 +159,10 @@ public class ProgramCardFunctionality
                 break;
             case ActionType.Variable:
                 setInfoVariable(info);
+                break;
+
+            case ActionType.Action:
+                setInfoAction(info);
                 break;
             default:
                 Debug.Log("Here");
@@ -164,7 +198,19 @@ public class ProgramCardFunctionality
 
                 info.rectTrans.GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                info.rectTrans.GetChild(2).GetChild(0).GetComponent<Text>().text = "" + info.action.moveData.value;
+                if (info.action.moveData.refID != 0)
+                {
+                    info.rectTrans.GetChild(2).GetChild(0).GetComponent<Text>().text = Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.moveData.refID);
+                }
+                else
+                {
+                    info.rectTrans.GetChild(2).GetChild(0).GetComponent<Text>().text = info.action.moveData.value;
+                }
+
+                //
+                //Implement reference ID
+                //
+
                 break;
         }
     }
@@ -182,17 +228,20 @@ public class ProgramCardFunctionality
                 if (info.action.varData.isPublic)
                 {
                     //Public
+                    // Debug.Log("Public Path");
                     path = "Images/EditControllerAssets/Public";
 
                 }
                 else
                 {
                     //Local
+                    // Debug.Log("Private Path");
                     path = "Images/EditControllerAssets/Local";
                 }
 
                 Texture2D image = Resources.Load(path) as Texture2D;
 
+                //Public / Private
                 info.transform.GetChild(0).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
                 path = getVarTypeImage(info.action.varData.varType);
@@ -208,27 +257,11 @@ public class ProgramCardFunctionality
 
                 //Check if type is bool, set image in that cases
 
-                if (info.action.varData.varType == VariableType.Bool)
+                if (info.action.varData.refID != 0)
                 {
-                    if (info.action.varData.value == "true")
-                    {
-                        path = "Images/EditControllerAssets/True";
-                    }
-                    else
-                    {
-                        path = "Images/EditControllerAssets/False";
-                    }
 
-                    image = Resources.Load(path) as Texture2D;
-
-                    info.transform.GetChild(4).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
-
-                    info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "";
-
-                }
-                else
-                {
-                    info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = info.action.varData.value;
+                    //Set the value to the name of the reference variable
+                    info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData);
 
                     path = "unity_builtin_extra/UISprite";
 
@@ -236,10 +269,83 @@ public class ProgramCardFunctionality
 
                     info.transform.GetChild(4).GetComponent<Button>().image.sprite = null;
 
+                    //info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = info.action.varData.value;
+                }
+                else
+                {
+
+                    if (info.action.varData.varType == VariableType.Bool)
+                    {
+                        if (info.action.varData.value == "true")
+                        {
+                            path = "Images/EditControllerAssets/True";
+                        }
+                        else
+                        {
+                            path = "Images/EditControllerAssets/False";
+                        }
+
+                        image = Resources.Load(path) as Texture2D;
+
+                        info.transform.GetChild(4).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+
+                        info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "";
+
+                    }
+                    else
+                    {
+                        path = "unity_builtin_extra/UISprite";
+
+                        image = Resources.Load(path) as Texture2D;
+
+                        info.transform.GetChild(4).GetComponent<Button>().image.sprite = null;
+
+                        info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = info.action.varData.value;
+                    }
                 }
                 break;
         }
 
+    }
+
+    public void setInfoAction(CardInfo info)
+    {
+        switch (info.actionName)
+        {
+            case ActionActionNames.Speak:
+
+                string path = "";
+
+                switch (info.action.actData.descriptor)
+                {
+                    case ActionDescriptor.Talk:
+                        path = "Images/EditControllerAssets/Talk";
+                        break;
+                    case ActionDescriptor.Whisper:
+                        path = "Images/EditControllerAssets/Whisper";
+                        break;
+                    case ActionDescriptor.Yell:
+                        path = "Images/EditControllerAssets/Yell";
+                        break;
+                }
+                Texture2D image = Resources.Load(path) as Texture2D;
+
+                info.transform.GetChild(0).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+
+                if (info.action.actData.refID != 0)
+                {
+                    //Make it equal to reference
+                    info.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.actData.refID);
+
+                }
+                else
+                {
+                    info.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = info.action.actData.data;
+                }
+
+
+                break;
+        }
     }
 
 
@@ -262,6 +368,9 @@ public class ProgramCardFunctionality
             case ActionType.Variable:
                 setActionVariable(info);
                 break;
+            case ActionType.Action:
+                setActionAction(info);
+                break;
             default:
                 Debug.Log("Here");
                 break;
@@ -278,12 +387,11 @@ public class ProgramCardFunctionality
 
                 info.programCard.action = createAction(info);
 
-
                 //Direction
                 info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
                     //Set Panel Type
-                    info.editDataType = EditDataType.Direction;
+                    info.editDataType = EditDataType.Multichoice;
 
                     //Set Editable Variable Type
                     info.varType = VariableType.Number;
@@ -299,11 +407,11 @@ public class ProgramCardFunctionality
 
                     // GameObject dir1 = Resources.Load<GameObject>("Prefabs/EditPanels/Direction.prefab") as GameObject;
 
-                    GameObject dir = Resources.Load("Prefabs/EditPanels/Direction") as GameObject;
+                    GameObject dir = Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject;
 
                     GameObject direction = GameObject.Instantiate(dir, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this, info.transform.GetChild(1));
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
 
 
                 });
@@ -332,7 +440,7 @@ public class ProgramCardFunctionality
 
                     GameObject direction = GameObject.Instantiate(dir, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this, info.transform.GetChild(2));
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
 
                 });
 
@@ -368,7 +476,7 @@ public class ProgramCardFunctionality
 
                     GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this, info.transform.GetChild(2));
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                 });
 
                 //Variable Type
@@ -391,7 +499,7 @@ public class ProgramCardFunctionality
 
                     GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this, info.transform.GetChild(2));
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                 });
 
                 //Name
@@ -414,7 +522,7 @@ public class ProgramCardFunctionality
 
                     GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/NewValue") as GameObject, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this, info.transform.GetChild(2));
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
 
 
                 });
@@ -425,16 +533,8 @@ public class ProgramCardFunctionality
                     //Set Editable Variable Type
                     info.varType = info.action.varData.varType;
 
-                    if (info.varType == VariableType.Bool)
-                    {
-                        //Set Panel Type
-                        info.editDataType = EditDataType.Multichoice;
-                    }
-                    else
-                    {
-                        //Set Panel Type
-                        info.editDataType = EditDataType.Value;
-                    }
+                    //Set Panel Type
+                    info.editDataType = EditDataType.Value;
 
                     if (info.varType == VariableType.Bool)
                     {
@@ -454,21 +554,83 @@ public class ProgramCardFunctionality
                     destroyChildren(panel);
 
                     string path = "";
-                    if (info.varType == VariableType.Bool)
-                    {
-                        path = "Prefabs/EditPanels/MultiChoice";
-                    }
-                    else
-                    {
-                        path = "Prefabs/EditPanels/Value";
-                    }
+                    path = "Prefabs/EditPanels/Value";
+
                     GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this, info.transform.GetChild(2));
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                 });
 
                 break;
         }
+    }
+
+    public void setActionAction(CardInfo info)
+    {
+
+
+        switch (info.actionName)
+        {
+            case ActionActionNames.Speak:
+
+                info.programCard.action = createAction(info);
+
+                info.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    //Yell, Talk, Whipser
+                    //Set Panel Type
+                    info.editDataType = EditDataType.Multichoice;
+
+                    //Set Editable Variable Type
+                    info.varType = VariableType.Number;
+
+                    //Set the Data type it will change
+                    info.valEditType = ValueEditType.Speak;
+
+                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                    panel.SetActive(true);
+
+                    destroyChildren(panel);
+
+                    GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+
+
+                });
+
+                info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    //Message
+
+                    //Set Editable Variable Type
+                    info.varType = VariableType.Text;
+
+                    //Set Panel Type
+                    info.editDataType = EditDataType.Value;
+
+                    //Set the Data type it will change
+                    info.valEditType = ValueEditType.Value;
+
+                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                    panel.SetActive(true);
+
+                    destroyChildren(panel);
+
+                    string path = "Prefabs/EditPanels/Value";
+
+                    GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
+
+                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+
+                });
+
+
+                break;
+        }
+
     }
 
     //
@@ -484,6 +646,8 @@ public class ProgramCardFunctionality
                 return createMovementAction(info);
             case ActionType.Variable:
                 return createVariableAction(info);
+            case ActionType.Action:
+                return createActionAction(info);
 
             default:
                 Debug.Log("Here");
@@ -516,6 +680,19 @@ public class ProgramCardFunctionality
             case VariableActionNames.Variable:
 
                 return new ProgramAction(info, info.action.varData);
+            default:
+                Debug.Log("Here");
+                return null;
+        }
+    }
+
+    public ProgramAction createActionAction(CardInfo info)
+    {
+        info.action.actData.character = allScripts.programSection.character.transform;
+        switch (info.actionName)
+        {
+            case ActionActionNames.Speak:
+                return new ProgramAction(info, info.action.actData);
             default:
                 Debug.Log("Here");
                 return null;

@@ -13,7 +13,7 @@ public class ProgramLine : MonoBehaviour
 
     [SerializeField] GameObject prefab1;
     [SerializeField] GameObject prefab2;
-
+    [SerializeField] GameObject prefab3;
 
     public Flex Line;
 
@@ -43,7 +43,7 @@ public class ProgramLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 
     public void setUI()
@@ -70,7 +70,7 @@ public class ProgramLine : MonoBehaviour
     {
         //Set the text to the correct number
         Line.getChild(0).GetComponent<Text>().text = Line.UI.GetSiblingIndex().ToString();
-        
+
     }
 
     public void setNumber(string num)
@@ -80,13 +80,17 @@ public class ProgramLine : MonoBehaviour
 
     }
 
-    void setButton ()
+    void setButton()
     {
         //Set the garbage can button
-        Line.getChild(2).GetComponent<Button>().onClick.AddListener(deleteLine);
+        Line.getChild(2).GetComponent<Button>().onClick.AddListener(delegate
+        {
+            deleteLine();
+            allScripts.programSection.compileProgram();
+        });
     }
 
-    public void deleteLine ()
+    public void deleteLine()
     {
         //Loop through all children to delete
         for (int i = 0; i < ProgramUI.UI.childCount; i++)
@@ -100,7 +104,6 @@ public class ProgramLine : MonoBehaviour
         //Reset color
         background.GetComponent<Image>().color = Color.cyan;
 
-        
     }
 
     //Switch this to take in a CardInfo
@@ -122,12 +125,15 @@ public class ProgramLine : MonoBehaviour
             case ActionType.Variable:
                 ProgramCard = Instantiate(prefab2, ProgramObj.transform);
                 break;
+            case ActionType.Action:
+                ProgramCard = Instantiate(prefab3, ProgramObj.transform);
+                break;
         }
 
         if (ProgramCard != null)
         {
 
-           ProgramUI.addChild(ProgramCard.GetComponent<ProgramCard>().program);
+            ProgramUI.addChild(ProgramCard.GetComponent<ProgramCard>().program);
 
             Destroy(ProgramCard.GetComponent<DragController2>());
 
@@ -139,12 +145,12 @@ public class ProgramLine : MonoBehaviour
 
             ProgramCard.AddComponent<DeleteIndentDrag>();
 
-           allScripts.programSection.compileProgram();
+            allScripts.programSection.compileProgram();
         }
 
     }
 
-    public void reAddProgram (ProgramAction action)
+    public void reAddProgram(ProgramAction action)
     {
         //Delete line
         deleteLine();
@@ -179,7 +185,7 @@ public class ProgramLine : MonoBehaviour
             //Add as a Flex child
             ProgramUI.addChild(program.GetComponent<ProgramCard>().program);
 
-           
+
 
             //Set the transform
             program.GetComponent<ProgramCard>().progLine = transform;

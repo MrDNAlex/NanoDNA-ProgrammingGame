@@ -192,8 +192,6 @@ public class LevelManager : MonoBehaviour
 
     public void loadLevel()
     {
-        
-
         //Set Void Tiles
         setTileMap(voidMap, info.voidTiles);
 
@@ -223,7 +221,25 @@ public class LevelManager : MonoBehaviour
 
         updateConstraints();
 
-        //character = GameObject.Find("Characters").transform.GetChild(0).gameObject;
+        //Get the first character instance
+        bool findingChar = true;
+        int index = 0;
+        while (findingChar)
+        {
+            if (charHolder.transform.GetChild(index).GetComponent<CharData>() != null)
+            {
+                //Set Character
+                allScripts.levelScript.character = charHolder.transform.GetChild(index).gameObject;
+
+                findingChar = false; 
+            } else
+            {
+                index++;
+            }
+        }
+
+        //Reload Program
+        allScripts.programSection.renderProgram(allScripts.levelScript.character);
 
     }
 
