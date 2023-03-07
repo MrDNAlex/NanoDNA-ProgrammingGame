@@ -52,13 +52,14 @@ public class LevelManager : MonoBehaviour
 
     PlayLevelWords UIwords = new PlayLevelWords();
 
-    Language lang;
+    List<CharData> charData = new List<CharData>();
 
+    Language lang;
 
     private void Awake()
     {
         //Load Info
-        info = SaveManager.deepLoad("Demo");
+        info = SaveManager.loadJSON<LevelInfo>("Levels/Testing", "Demo");
 
         Camera.main.GetComponent<LevelScript>().allScripts.levelManager = this;
 
@@ -67,7 +68,6 @@ public class LevelManager : MonoBehaviour
         getTileMaps();
 
         getConstraints();
-
     }
 
     // Start is called before the first frame update
@@ -80,7 +80,6 @@ public class LevelManager : MonoBehaviour
         complete.onClick.AddListener(completeLevel);
 
         loadLevel();
-
     }
 
     // Update is called once per frame
@@ -89,30 +88,27 @@ public class LevelManager : MonoBehaviour
 
     }
 
-
     public void updateConstraints()
     {
         //Check all programs, count number of lines, write it down
-
         //Design something that doesn't use the holder, maybe get access 
-
+        
         lang = allScripts.levelScript.lang;
+
+        //Something in here
+        int lines = 0;
 
         //Update Lines used
         usedLines = 0;
-        foreach (Transform child in charHolder.transform)
+
+        foreach (CharData data in charData)
         {
-            if (child.GetComponent<CharData>() != null)
-            {
-                Program prog = child.GetComponent<CharData>().program;
-                usedLines += prog.progLength;
-            }
+            lines += data.program.getLength();
         }
-        linesUsed.text = usedLines + "/" + maxLines + " " + UIwords.used.getWord(lang);
-
-
+       
+        linesUsed.text = lines + "/" + maxLines + " " + UIwords.used.getWord(lang);
+        
         //Update Collectibles
-
         itemsCollect = 0;
 
         foreach (Transform child in charHolder.transform)
@@ -122,27 +118,22 @@ public class LevelManager : MonoBehaviour
                 if (child.GetComponent<InteractableData>() != null)
                 {
                     itemsCollect++;
-
                 }
             }
-
         }
         collectedItems.text = itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang);
-
-       
+        
     }
 
     public void completeLevel()
     {
         //Check if max line num is exceeded
-
         if (tryComplete == false)
         {
             if (usedLines > maxLines)
             {
                 //send error message
                 Debug.Log("Your program is too long!");
-
             }
             else
             {
@@ -152,7 +143,6 @@ public class LevelManager : MonoBehaviour
 
                 //Run final program
                 allScripts.programSection.runFinalProgram();
-
             }
         }
         else
@@ -170,39 +160,38 @@ public class LevelManager : MonoBehaviour
                 if (child.GetComponent<CharData>() != null)
                 {
                     child.localPosition = child.GetComponent<CharData>().initPos;
-
                 }
                 else
                 {
                     //Make interactive appear again
                     child.gameObject.SetActive(true);
                 }
-
             }
 
             complete.transform.GetChild(0).GetComponent<Text>().text = UIwords.complete.getWord(lang);
 
             updateConstraints();
-
         }
-
         //If not start running the program
-
     }
 
     public void loadLevel()
     {
         //Set Void Tiles
         setTileMap(voidMap, info.voidTiles);
+        //yield return null;
 
         //Set Background Tiles
         setTileMap(backgroundMap, info.backgroundTiles);
+        // yield return null;
 
         //Set Obstacles Tiles
         setTileMap(obstacleMap, info.obstacleTiles);
+        //yield return null;
 
         //Set Decoration Tiles
         setTileMap(decorationMap, info.decorationTiles);
+        // yield return null;
 
         //Set Characters
         setCharacters(info.charInfo);
@@ -220,6 +209,7 @@ public class LevelManager : MonoBehaviour
         maxItems = info.maxItems;
 
         updateConstraints();
+        // yield return null;
 
         //Get the first character instance
         bool findingChar = true;
@@ -231,12 +221,24 @@ public class LevelManager : MonoBehaviour
                 //Set Character
                 allScripts.levelScript.character = charHolder.transform.GetChild(index).gameObject;
 
-                findingChar = false; 
-            } else
+                findingChar = false;
+            }
+            else
             {
                 index++;
             }
         }
+
+        foreach (Transform child in charHolder.transform)
+        {
+          
+            if (child.GetComponent<CharData>() != null)
+            {
+                charData.Add(child.GetComponent<CharData>());
+            }
+           
+        }
+        //  yield return null;
 
         //Reload Program
         allScripts.programSection.renderProgram(allScripts.levelScript.character);
@@ -245,12 +247,9 @@ public class LevelManager : MonoBehaviour
 
     public void setTileMap(Tilemap map, List<TileInfo> tileList)
     {
-
         foreach (TileInfo info in tileList)
         {
-
             map.SetTile(new Vector3Int(info.position.x, info.position.y, 0), Tileledger.tiles.Find(t => t.id == info.id).tile);
-
         }
     }
 

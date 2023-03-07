@@ -5,102 +5,121 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DNAStruct;
 using UnityEngine.Rendering;
+using DNAMathAnimation;
 
 
-public class DragController2 : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-
-    int lastChildIndex;
+    Vector3 OGpos;
+    
     Vector3 lastPos;
-    Transform lastParent;
+    //Transform lastParent;
     Vector3 newPos;
+
+    Vector3 curGlobPos;
+    Vector3 curLocPos;
 
     CardInfo info;
 
-
-    // [SerializeField] RectTransform code;
     // Start is called before the first frame update
     void Start()
     {
-       
+        OGpos = transform.position;
+        Debug.Log(OGpos);
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-
         // lastChildIndex = UIObject.GetSiblingIndex();
-        lastPos = transform.position;
-        lastParent = transform.parent;
+       // Debug.Log("Begin: " +transform.localPosition);
+        lastPos = transform.localPosition;
         newPos = transform.localPosition;
 
         info = new CardInfo();
 
-        info.actionType = transform.GetComponent<ProgramCard>().actionType;
+        //Get the info from the StoreCardDragInfo
 
-        info.movementName = transform.GetComponent<ProgramCard>().movementName;
-        info.mathName = transform.GetComponent<ProgramCard>().mathName;
-        info.logicName = transform.GetComponent<ProgramCard>().logicName;
-        info.variableName = transform.GetComponent<ProgramCard>().variableName;
-        info.actionName = transform.GetComponent<ProgramCard>().actionName;
-        
-        
+        info.actionType = transform.GetComponent<StoreCardDragInfo>().info.actionType;
+
+        info.movementName = transform.GetComponent<StoreCardDragInfo>().info.movementName;
+        info.mathName = transform.GetComponent<StoreCardDragInfo>().info.mathName;
+        info.logicName = transform.GetComponent<StoreCardDragInfo>().info.logicName;
+        info.variableName = transform.GetComponent<StoreCardDragInfo>().info.variableName;
+        info.actionName = transform.GetComponent<StoreCardDragInfo>().info.actionName;
 
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+       // Debug.Log("Drag: " + transform.localPosition);
+
         //Get the new Position
         newPos = new Vector3(newPos.x + eventData.delta.x, newPos.y + eventData.delta.y, 0);
         transform.localPosition = newPos;
 
+        curGlobPos = transform.position;
+        curLocPos = transform.localPosition;
+
         RectTransform content = Camera.main.GetComponent<LevelScript>().contentTrans;
 
-        //Debug.Log(content);
+       // Debug.Log(transform.position);
+      //  Debug.Log(transform.localPosition);
+        
+       // Debug.Log(transform);
 
-        //IS this needed?
         for (int i = 0; i < content.childCount; i ++)
         {
             Transform child = content.GetChild(i);
-            float distance = Vector3.Distance(transform.position, child.position);
-            //Set the type
-           // Camera.main.GetComponent<LevelScript>().type = type;
 
-            if (distance <= 0.9f)
+            MouseOverDetect mouse = content.GetChild(i).GetChild(1).GetComponent<MouseOverDetect>();
+
+            if (mouse.mouseOver)
             {
                 child.GetComponent<Image>().color = Color.red;
             } else
             {
                 child.GetComponent<Image>().color = Color.cyan;
             }
-
         }
-
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnEndDrag(PointerEventData eventData)
     {
+       // Debug.Log("End: " +transform.localPosition);
+        //Vector3 curPos = transform.localPosition;
+
         RectTransform content = Camera.main.GetComponent<LevelScript>().contentTrans;
+
 
         for (int i = 0; i < content.childCount; i++)
         {
-            Transform child = content.GetChild(i); //Program Line
-            float distance = Vector3.Distance(transform.position, child.position);
+           
+            Transform child = content.GetChild(i);
+            MouseOverDetect mouse = content.GetChild(i).GetChild(1).GetComponent<MouseOverDetect>();
 
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (mouse.mouseOver)
             {
-                //Find a way to raycast 
-                if (distance < 0.9f)
-                {
+                //Debug.Log(info.variableName);
+               // Debug.Log(transform.position);
+               // Debug.Log(transform.localPosition);
+               // Debug.Log(transform);
 
-                    Debug.Log(info.variableName);
-                    child.GetComponent<ProgramLine>().addProgram(info);
+                child.GetComponent<ProgramLine>().addProgram(info, transform);
 
-                    //Camera.main.GetComponent<LevelScript>().addProgram(child.GetComponent<ProgramLine>(), type);
-                }
             }
+
         }
 
-        //Set Position
-        transform.position = lastPos;
+        // transform.localPosition = curPos;
+       // transform.position = curGlobPos;
+       // transform.localPosition = curLocPos;
+
+        Debug.Log("End: " + transform.localPosition);
+
+        //So the glitch is being caused by the text for lines being used updating, it updates all the position of the UI, but it looks like we can hide this glitch by making this animation faster
+        StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 100, 0, false));
+
+
+
     }
 }

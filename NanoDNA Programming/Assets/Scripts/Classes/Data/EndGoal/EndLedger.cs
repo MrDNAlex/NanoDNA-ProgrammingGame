@@ -13,9 +13,6 @@ public class EndLedger : ScriptableObject
     private void OnValidate()
     {
 
-        EndInstance[] idk = (EndInstance[])Resources.FindObjectsOfTypeAll(typeof(EndInstance));
-
-        sprites = idk.ToList();
 
     }
 }

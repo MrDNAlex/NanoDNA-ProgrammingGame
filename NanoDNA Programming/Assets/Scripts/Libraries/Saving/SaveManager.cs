@@ -127,11 +127,37 @@ namespace DNASaveSystem
             Debug.Log(jsonData);
 
             File.WriteAllText(dir, jsonData);
-
         }
 
+        public static Type loadJSON<Type> (string path, string name)
+        {
+            var dir = path + "/" + name;
+            TextAsset json = null;
+            try
+            {
+                json = Resources.Load<TextAsset>(dir);
+               
+            } catch
+            {
+                Debug.Log("Doesn't Exist or Wrong Type");
+            }
+            return JsonUtility.FromJson<Type>(json.text);
+        }
 
+        public static void saveJSON (object json,string path, string name)
+        {
+            Debug.Log(json);
 
+            var dir = path + "/" + name + "." + "json";
+
+            string jsonData = JsonUtility.ToJson(json, true);
+
+            Debug.Log(jsonData);
+
+            File.WriteAllText(dir, jsonData);
+        }
+
+        
 
     }
 }

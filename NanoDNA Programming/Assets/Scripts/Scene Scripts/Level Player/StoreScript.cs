@@ -17,6 +17,8 @@ public class StoreScript : MonoBehaviour
 
     [SerializeField] GameObject storeCard;
 
+    [SerializeField] GameObject storeCardInfo;
+
 
     Flex GridView;
     Flex StoreHeader;
@@ -107,6 +109,8 @@ public class StoreScript : MonoBehaviour
 
         //Add the children and size them
         //Instantiate storeCard
+        Debug.Log("Render Store");
+
         Object[] storeItems = Resources.LoadAll(folderPaths(tag));
 
         foreach (Object obj in storeItems)
@@ -118,6 +122,7 @@ public class StoreScript : MonoBehaviour
             card.GetComponent<StoreCard>().cardFlex.setSize(GridView.UI.GetComponent<GridLayoutGroup>().cellSize);
             yield return null;
         }
+        
     }
 
     public void destroyChildren(GameObject Obj)
@@ -135,17 +140,17 @@ public class StoreScript : MonoBehaviour
         switch (tag)
         {
             case ActionType.Movement:
-                return "Prefabs/Programs/Movement";
+                return "Prefabs/Store/StoreCardDrags/Movement";
             case ActionType.Math:
-                return "Prefabs/Programs/Math";
+                return "Prefabs/Store/StoreCardDrags/Math";
                
             case ActionType.Logic:
-                return "Prefabs/Programs/Logic";
+                return "Prefabs/Store/StoreCardDrags/Logic";
                 
             case ActionType.Variable:
-                return "Prefabs/Programs/Variable";
+                return "Prefabs/Store/StoreCardDrags/Variable";
             case ActionType.Action:
-                return "Prefabs/Programs/Action";
+                return "Prefabs/Store/StoreCardDrags/Action";
                
             default:
                 return "";
@@ -154,6 +159,7 @@ public class StoreScript : MonoBehaviour
 
     }
 
+    /*
     public void reload ()
     {
         lang = Camera.main.GetComponent<LevelScript>().lang;
@@ -168,6 +174,7 @@ public class StoreScript : MonoBehaviour
 
        
     }
+    */
 
     //Instantiate multiple button design with titles associated to the tag
 

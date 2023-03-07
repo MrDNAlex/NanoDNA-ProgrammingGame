@@ -58,6 +58,7 @@ public class StoreCard : MonoBehaviour
 
     }
 
+    /*
     public void setStoreCard (GameObject prog)
     {
         //Instantiate Object
@@ -71,6 +72,23 @@ public class StoreCard : MonoBehaviour
 
         //Set name
         cardFlex.getChild(1).GetComponent<Text>().text = cardFlex.getChild(0).GetComponent<ProgramCard>().cardName.getWord(lang);
+    }
+    */
+
+    public void setStoreCard (GameObject prog)
+    {
+        Debug.Log("set store card");
+        //Instantiate Object
+        Program = Instantiate(prog, card.transform);
+
+        //Make it the first Child
+        Program.transform.SetSiblingIndex(0);
+
+        cardFlex.addChild(Program.GetComponent<StoreCardDragInfo>().flex);
+
+        //Set name
+        cardFlex.getChild(1).GetComponent<Text>().text = cardFlex.getChild(0).GetComponent<StoreCardDragInfo>().cardName.getWord(lang);
+
     }
 
 }

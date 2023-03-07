@@ -33982,6 +33982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46c66081694acd4fb08ee42b94d6e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: Assets/Resources/Levels/Testing
   level:
     levelName: Demo
     maxLine: 5

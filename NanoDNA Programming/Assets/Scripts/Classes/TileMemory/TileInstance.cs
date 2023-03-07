@@ -27,7 +27,25 @@ public class TileInstance : ScriptableObject
 
             
         }
+
+        loadLedger<TileLedger>();
        
+    }
+
+    void loadLedger<Type>()
+    {
+        Object[] ledgers = Resources.FindObjectsOfTypeAll(typeof(Type));
+        //Debug.Log("Grabbed Ledgers");
+
+        foreach (TileLedger ledger in ledgers)
+        {
+            //Add current instance to the ledger
+            if (!ledger.tiles.Contains(this))
+            {
+                ledger.tiles.Add(this);
+                //Debug.Log("Added this");
+            }
+        }
     }
 
 }

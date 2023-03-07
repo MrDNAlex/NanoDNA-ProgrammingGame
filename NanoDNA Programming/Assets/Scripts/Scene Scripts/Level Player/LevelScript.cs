@@ -67,7 +67,7 @@ public class LevelScript : MonoBehaviour
     [SerializeField] Text debug;
     [SerializeField] Text complete;
     [SerializeField] Text save;
-    [SerializeField] Text changeLang;
+    //[SerializeField] Text changeLang;
 
     [SerializeField] Button changeLangBtn;
 
@@ -102,7 +102,8 @@ public class LevelScript : MonoBehaviour
 
         OnDemandRendering.renderFrameInterval = 12;
 
-        changeLangBtn.onClick.AddListener(langChange);
+        //changeLangBtn.onClick.AddListener(langChange);
+
     }
 
     // Update is called once per frame
@@ -166,6 +167,8 @@ public class LevelScript : MonoBehaviour
         Constraints.setAllPadSame(0.1f, 1);
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
+
+        Debug.Log("UI Set");
 
         screenPos = new Vector2(mapView.rect.x, Screen.height);
         viewSize = MapView.size;
@@ -263,10 +266,11 @@ public class LevelScript : MonoBehaviour
         debug.text = UIwords.debug.getWord(lang);
         complete.text = UIwords.complete.getWord(lang);
         save.text = UIwords.save.getWord(lang);
-        changeLang.text = UIwords.changeLang.getWord(lang);
+        //changeLang.text = UIwords.changeLang.getWord(lang);
 
     }
 
+    /*
     public void langChange ()
     {
         
@@ -306,5 +310,6 @@ public class LevelScript : MonoBehaviour
         }
         
     }
+    */
 
 }

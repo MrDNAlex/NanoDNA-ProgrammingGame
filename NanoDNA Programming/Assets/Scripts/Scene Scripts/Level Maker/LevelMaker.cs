@@ -7,6 +7,8 @@ using DNAStruct;
 
 public class LevelMaker : MonoBehaviour
 {
+    [Header("Location")]
+    [SerializeField] string path;
 
     [Header("Level Data")]
     public LevelInfo level = new LevelInfo();
@@ -34,13 +36,13 @@ public class LevelMaker : MonoBehaviour
         info.obstacleMap = obstaclesMap;
         info.charHolder = charHolder;
 
-
-
         level.createLevelInfo(info);
 
        // SaveManager.saveLevel(level.levelName, level);
 
         SaveManager.deepSave(level.levelName, level);
+
+        SaveManager.saveJSON(level, path, level.levelName);
 
 
     }

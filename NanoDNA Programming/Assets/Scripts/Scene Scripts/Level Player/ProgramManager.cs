@@ -18,6 +18,11 @@ public class ProgramManager : MonoBehaviour
 
     //Add functions to load in pre existing / global variables from the level
 
+    private void Awake()
+    {
+        Camera.main.GetComponent<LevelScript>().allScripts.programManager = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -178,13 +183,13 @@ public class ProgramManager : MonoBehaviour
                 } else
                 {
                     //Search for the Ref ID
-                    Debug.Log(allVariables[i].value);
+                    //Debug.Log(allVariables[i].value);
                     allVariables[i].setValue(allVariables.Find(val => val.id == data.refID).value);
                     data.setValue(allVariables.Find(val => val.id == data.refID).value);
-                    Debug.Log(allVariables[i].value);
+                   // Debug.Log(allVariables[i].value);
 
                    // Debug.Log(allVariables.Find(val => val.id == data.refID).value);
-                    Debug.Log("Value Updated");
+                   // Debug.Log("Value Updated");
 
                    
 

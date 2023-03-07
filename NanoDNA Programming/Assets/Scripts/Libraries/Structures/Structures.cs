@@ -129,9 +129,9 @@ namespace DNAStruct
 
     public enum ActionDescriptor
     {
-        Yell, 
+        Yell,
         Talk,
-        Whisper, 
+        Whisper,
 
     }
 
@@ -145,7 +145,7 @@ namespace DNAStruct
         Down
     }
 
-   
+
 
     //
     //Script Storage
@@ -158,6 +158,7 @@ namespace DNAStruct
         public ProgramSection programSection;
         public MapDrag mapDrag;
         public StoreScript storeScript;
+        public ProgramManager programManager;
 
     }
 
@@ -243,9 +244,9 @@ namespace DNAStruct
         public UIWord math = new UIWord("Math", "Mathématique");
         public UIWord logic = new UIWord("Logic", "Logique");
         public UIWord variable = new UIWord("Variable", "Variable");
-        public UIWord action = new UIWord("Action","Action");
+        public UIWord action = new UIWord("Action", "Action");
 
-        public string getStoreTitle (ActionType type, Language lang)
+        public string getStoreTitle(ActionType type, Language lang)
         {
             switch (type)
             {
@@ -291,7 +292,7 @@ namespace DNAStruct
         public int id;
         public int refID;
 
-        public VariableData (bool pub, VariableType varType, string name, string value)
+        public VariableData(bool pub, VariableType varType, string name, string value)
         {
             this.isPublic = pub;
             this.varType = varType;
@@ -301,7 +302,7 @@ namespace DNAStruct
 
         public VariableData()
         {
-           
+
         }
 
         public void setData(bool pub, VariableType varType, string name, string value)
@@ -325,9 +326,9 @@ namespace DNAStruct
 
         public void setValue(string value)
         {
-           
+
             this.value = value;
-           
+
         }
     }
 
@@ -342,7 +343,7 @@ namespace DNAStruct
 
         public int refID;
 
-        public void setData (string data)
+        public void setData(string data)
         {
             this.data = data;
         }
@@ -363,7 +364,7 @@ namespace DNAStruct
 
     public enum SettingValueType
     {
-        Language, 
+        Language,
         ColourScheme
     }
 
@@ -382,9 +383,22 @@ namespace DNAStruct
 
     public enum SettingCardType
     {
-        Button, 
+        Button,
         Slider,
 
+
+    }
+
+    [System.Serializable]
+    public struct StoreCardInfo
+    {
+        public ActionType actionType;
+
+        public MovementActionNames movementName;
+        public MathActionNames mathName;
+        public LogicActionNames logicName;
+        public VariableActionNames variableName;
+        public ActionActionNames actionName;
 
     }
 

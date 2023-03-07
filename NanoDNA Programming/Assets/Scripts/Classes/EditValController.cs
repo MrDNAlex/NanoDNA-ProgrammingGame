@@ -585,12 +585,6 @@ public class EditValController : MonoBehaviour
                 {
                     value = Holder.getChild(1).GetChild(0).GetChild(1).GetComponent<InputField>().text;
 
-                  //  Holder.getChild(2).GetChild(0).GetChild(0).GetComponent<Text>().text = getVarType(varType);
-
-                 //   Holder.getChild(2).GetChild(0).GetChild(1).GetComponent<Text>().text = variable.getWord(lang);
-
-                 //   Holder.getChild(2).GetChild(0).GetChild(2).GetComponent<Text>().text = value.ToString();
-
                     checkValueType();
                 });
 
@@ -620,21 +614,7 @@ public class EditValController : MonoBehaviour
                 break;
         }
     }
-    /*
-    public void setView()
-    {
-        //Create functions to get the values from other data types
-        Holder.getChild(3).GetChild(0).GetChild(0).GetComponent<Text>().text = getVarType(varData.varType);
-
-        Holder.getChild(3).GetChild(0).GetChild(1).GetComponent<Text>().text = varData.name.ToString();
-
-        Holder.getChild(3).GetChild(0).GetChild(2).GetComponent<Text>().text = varData.value.ToString();
-
-        varType = varData.varType;
-        value = varData.value;
-    }
-    */
-
+  
     public void checkValueType()
     {
         int index = 0;

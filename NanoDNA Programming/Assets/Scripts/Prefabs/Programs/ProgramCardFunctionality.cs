@@ -47,7 +47,7 @@ public class ProgramCardFunctionality
                 return setUIVariables(info);
 
             case ActionType.Action:
-                Debug.Log("Here");
+               // Debug.Log("Here");
                 return setUIActions(info);
 
             default:
@@ -390,6 +390,7 @@ public class ProgramCardFunctionality
                 //Direction
                 info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
+                    
                     //Set Panel Type
                     info.editDataType = EditDataType.Multichoice;
 
@@ -419,6 +420,7 @@ public class ProgramCardFunctionality
 
                 info.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
                 {
+                    
                     //Set Panel Type
                     info.editDataType = EditDataType.Value;
 
@@ -596,8 +598,6 @@ public class ProgramCardFunctionality
                     GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
                     direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-
-
                 });
 
                 info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
@@ -624,10 +624,7 @@ public class ProgramCardFunctionality
                     GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
 
                     direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-
                 });
-
-
                 break;
         }
 

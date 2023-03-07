@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DNAMathAnimation;
 
-public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     
     Vector3 lastPos;
@@ -13,100 +14,75 @@ public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     Vector3 OGPos;
 
+    bool firstRun = true;
+
+    Vector3 mouseStart;
+
     
     // Start is called before the first frame update
     void Start()
     {
-        OGPos = transform.position;
+      
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (firstRun)
+        {
+            firstRun = false;
+            OGPos = transform.position;
+           // Debug.Log("Init Pos: " + transform.position);
+        }
 
+        
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnBeginDrag (PointerEventData eventData)
     {
         //Get last and current position
-        lastPos = transform.position;
         newPos = transform.localPosition;
+        lastPos = transform.localPosition;
 
+        mouseStart = Input.mousePosition;
+        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        //Get the new Position
-        newPos = new Vector3(newPos.x + eventData.delta.x, newPos.y, 0);
-        transform.localPosition = newPos;
+        Vector3 dist = mouseStart - Input.mousePosition;
 
-        //Get the distance from the original position
-        Vector3 distance = OGPos - transform.position;
+        float NewPosx = lastPos.x - Mathf.Max(0, dist.x);
+
+        transform.localPosition = new Vector3(NewPosx, lastPos.y, lastPos.z);
 
         //Display colour
-        if (distance.x >= 2)
+        if (dist.x >= GetComponent<RectTransform>().sizeDelta.x * (0.75f))
         {
             transform.parent.parent.GetComponent<Image>().color = Color.red;
         } else
         {
             transform.parent.parent.GetComponent<Image>().color = Color.cyan;
         }
-
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnEndDrag (PointerEventData eventData)
     {
+        Vector3 dist = mouseStart - Input.mousePosition;
 
-
-        Vector3 distance = OGPos - transform.position;
-
-        float dist = Vector3.Distance(transform.position, OGPos);
-
-        if (dist <= 0.9f)
-        {
-
-            transform.position = OGPos;
-            transform.GetComponent<ProgramCard>().indent = 0;
-
-
-        } else if (distance.x >= 2.2f)
+        if (dist.x >= GetComponent<RectTransform>().sizeDelta.x * (0.75f))
         {
             //Delete the line
-            transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteLine();
-
-            
-
-            //Debug.Log("Delete");
-        }
-        else if (distance.x < -1 && distance.x > -2)
-        {
-            //Set indent pos
-            transform.position = OGPos + new Vector3(1, 0, 0);
-            //Set indentation
-            transform.GetComponent<ProgramCard>().indent = 1;
-        }
-        else if (distance.x < -2 && distance.x > -3)
-        {
-            //Set indent pos
-            transform.position = OGPos + new Vector3(2, 0, 0);
-            //Set indentation
-            transform.GetComponent<ProgramCard>().indent = 2;
-           
-        }
-        else if (distance.x < -3 && distance.x > -4)
-        {
-            //Set indent pos
-            transform.position = OGPos + new Vector3(3, 0, 0);
-            //Set indentation
-            transform.GetComponent<ProgramCard>().indent = 3;
-            
+            StartCoroutine(transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().delLines());
+            //transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteProgramLine(transform.GetSiblingIndex());
         } else
         {
-            transform.position = lastPos;
-            
-            transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.setSize(transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.size);
-        }
+            //Start Coroutine to slide it back to original position
 
+            transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.setSize(transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.size);
+
+            StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 100, 0, false));
+        }
     }
 
     public void updateOGPos ()
@@ -115,4 +91,7 @@ public class DeleteIndentDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
         OGPos = transform.position;
 
     }
+
+   
+    
 }

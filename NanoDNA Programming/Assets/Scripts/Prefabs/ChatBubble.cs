@@ -26,6 +26,7 @@ public class ChatBubble : MonoBehaviour
     public void setMessage (string text, SpriteRenderer parent, ActionDescriptor desc)
     {
         //Set Text Mesh
+
         textMesh.SetText(text);
         textMesh.ForceMeshUpdate();
         textMesh.fontSize = fontSize;

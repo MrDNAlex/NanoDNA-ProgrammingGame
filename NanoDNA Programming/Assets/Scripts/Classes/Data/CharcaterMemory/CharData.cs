@@ -30,10 +30,6 @@ public class CharData : MonoBehaviour
     {
         programStates.Add(program);
 
-        //initPos = transform.localPosition;
-
-        //initPos.z = 0;
-
         OnDemandRendering.renderFrameInterval = 12;
     }
 

@@ -14,13 +14,4 @@ public class CharLedger : ScriptableObject
 
     public bool validate;
 
-    private void OnValidate()
-    {
-
-        CharInstance[] idk = (CharInstance[])Resources.FindObjectsOfTypeAll(typeof(CharInstance));
-
-        chars = idk.ToList();
-
-    }
-
 }

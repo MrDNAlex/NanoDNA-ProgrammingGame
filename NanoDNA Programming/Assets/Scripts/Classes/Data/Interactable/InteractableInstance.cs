@@ -26,6 +26,24 @@ public class InteractableInstance : ScriptableObject
             this.id = sprite.name;
 
         }
+
+        loadLedger<InteractableLedger>();
+    }
+
+    void loadLedger<Type>()
+    {
+        Object[] ledgers = Resources.FindObjectsOfTypeAll(typeof(Type));
+        //Debug.Log("Grabbed Ledgers");
+
+        foreach (InteractableLedger ledger in ledgers)
+        {
+            //Add current instance to the ledger
+            if (!ledger.sprites.Contains(this))
+            {
+                ledger.sprites.Add(this);
+                //Debug.Log("Added this");
+            }
+        }
     }
 
 }

@@ -24,6 +24,10 @@ public class ProgramSection : MonoBehaviour
     [SerializeField] Button saveBtn;
     [SerializeField] Button undoBtn;
     [SerializeField] Tilemap obstacles;
+    [SerializeField] Button progSpeed;
+
+    ProgramSpeed speed = ProgramSpeed.Op1;
+    int speedDivider = 1 ;
 
     public bool undo;
     bool testRunning;
@@ -41,6 +45,8 @@ public class ProgramSection : MonoBehaviour
 
         Camera.main.GetComponent<LevelScript>().allScripts.programSection = this;
 
+        progSpeed.onClick.AddListener(editSpeed);
+
     }
 
     // Start is called before the first frame update
@@ -55,7 +61,7 @@ public class ProgramSection : MonoBehaviour
         character = allScripts.levelScript.character;
 
         testBtn.onClick.AddListener(testProgram);
-        saveBtn.onClick.AddListener(compileProgram);
+        //saveBtn.onClick.AddListener(compileProgram);
         undoBtn.onClick.AddListener(undoProgram);
 
         testRunning = false;
@@ -124,7 +130,7 @@ public class ProgramSection : MonoBehaviour
         }
         else
         {
-            compileProgram();
+            allScripts.programSection.compileProgram();
 
             foreach (Transform child in charHolder.transform)
             {
@@ -184,13 +190,13 @@ public class ProgramSection : MonoBehaviour
 
                 break;
             case ActionType.Variable:
-                
+
                 switch (action.variableName)
                 {
                     case VariableActionNames.Variable:
 
                         //Update Variable value in program manager
-                        Camera.main.GetComponent<ProgramManager>().updateVariable(action.varData);
+                        allScripts.programManager.updateVariable(action.varData);
 
                         break;
                 }
@@ -225,9 +231,14 @@ public class ProgramSection : MonoBehaviour
                         SpriteRenderer charRender = action.actData.character.GetComponent<SpriteRenderer>();
 
                         //Set Message
-                        bubbleText.GetComponent<ChatBubble>().setMessage(action.actData.data, charRender, action.actData.descriptor);
-
-
+                        if (action.actData.refID == 0)
+                        {
+                            bubbleText.GetComponent<ChatBubble>().setMessage(action.actData.data, charRender, action.actData.descriptor);
+                        }
+                        else
+                        {
+                            bubbleText.GetComponent<ChatBubble>().setMessage(allScripts.programManager.getVariableValue(action.actData.refID), charRender, action.actData.descriptor);
+                        }
                         break;
                 }
 
@@ -236,13 +247,13 @@ public class ProgramSection : MonoBehaviour
     }
 
     public Vector3 actionToMovement(ProgramAction action)
-    { 
+    {
         switch (action.moveData.dir)
         {
             case Direction.Up:
                 return new Vector3(0, getMovementVal(action), 0);
             case Direction.Down:
-                return new Vector3(0, -1* getMovementVal(action), 0);
+                return new Vector3(0, -1 * getMovementVal(action), 0);
             case Direction.Left:
                 return new Vector3(-1 * getMovementVal(action), 0, 0);
             case Direction.Right:
@@ -252,23 +263,27 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public int getMovementVal (ProgramAction action)
+    public int getMovementVal(ProgramAction action)
     {
         if (action.moveData.refID != 0)
         {
             //Convert 
             return int.Parse(Camera.main.GetComponent<ProgramManager>().getVariableValue(action.moveData.refID));
-        } else
+        }
+        else
         {
             return int.Parse(action.moveData.value);
         }
     }
 
+
+   
     public void compileProgram()
     {
+       
         if (character != null)
         {
-            //Debug.Log("Compile");
+             Debug.Log("Compile");
             if (character.GetComponent<CharData>() != null)
             {
                 character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
@@ -280,7 +295,7 @@ public class ProgramSection : MonoBehaviour
                 {
                     if (transform.GetChild(i).GetChild(1).childCount != 0)
                     {
-                        Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
+                        //Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
                         program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
                     }
                 }
@@ -289,19 +304,52 @@ public class ProgramSection : MonoBehaviour
 
                 character.GetComponent<CharData>().program = program;
 
+                allScripts.programManager.updateVariables();
+
                 allScripts.levelManager.updateConstraints();
 
-                Camera.main.GetComponent<ProgramManager>().updateVariables();
+            }
 
-                //Debug.Log("Compile Done");
+        }
+    }
 
+    public void reRenderProgram(GameObject selected)
+    {
+       
+        character = selected;
+
+        nameHeader.text = character.GetComponent<CharData>().name.getWord(lang);
+        if (selected != null)
+        {
+            if (selected.GetComponent<CharData>() != null)
+            {
+                CharData data = selected.GetComponent<CharData>();
+
+                //Delete program Child
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    GameObject programHolder = getProgramHolderRef(i);
+
+                    //Debug.Log(programHolder);
+
+                    Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
+
+                    //Delete Game Objects
+                    destroyChildren(programHolder);
+
+                    //Delete Flex References
+                    flex2.deleteAllChildren();
+
+                    //Instantiate new Object
+                    getProgramLineComp(i).reAddProgram(data.getAction(i));
+                }
             }
         }
     }
 
     public void renderProgram(GameObject selected)
     {
-        compileProgram();
+        allScripts.programSection.compileProgram();
 
         character = selected;
 
@@ -419,7 +467,7 @@ public class ProgramSection : MonoBehaviour
         for (int i = 0; i < program.list.Count; i++)
         {
             readAction(character, program.list[i]);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f / speedDivider);
         }
 
         Camera.main.GetComponent<ProgramManager>().displayAllVariables();
@@ -460,7 +508,7 @@ public class ProgramSection : MonoBehaviour
 
                 break;
             case ActionType.Variable:
-                
+
                 program.list.Add(action);
                 break;
             case ActionType.Action:
@@ -493,7 +541,7 @@ public class ProgramSection : MonoBehaviour
 
     public void runFinalProgram()
     {
-        compileProgram();
+        allScripts.programSection.compileProgram();
 
         foreach (Transform child in charHolder.transform)
         {
@@ -516,7 +564,42 @@ public class ProgramSection : MonoBehaviour
     {
         lang = Camera.main.GetComponent<LevelScript>().lang;
 
-       // flex = setUI();
+        // flex = setUI();
     }
 
+    void editSpeed ()
+    {
+        switch (speed)
+        {
+            case ProgramSpeed.Op1:
+                speed = ProgramSpeed.Op2;
+                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x2";
+                speedDivider = 2;
+                break;
+            case ProgramSpeed.Op2:
+                speed = ProgramSpeed.Op3;
+                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x4";
+                speedDivider = 4;
+                break;
+            case ProgramSpeed.Op3:
+                speed = ProgramSpeed.Op4;
+                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x8";
+                speedDivider = 8;
+                break;
+            case ProgramSpeed.Op4:
+                speed = ProgramSpeed.Op1;
+                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x1";
+                speedDivider = 1;
+                break;
+        }
+    }
+
+}
+
+public enum ProgramSpeed
+{
+    Op1, 
+    Op2, 
+    Op3, 
+    Op4,
 }

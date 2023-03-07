@@ -39,6 +39,21 @@ public class Program
         }
     }
 
+    public int getLength ()
+    {
+        int length = 0;
+
+        foreach (ProgramAction action in list)
+        {
+            if (viableActionType(action))
+            {
+                length += 1;
+            }
+        }
+
+        return length;
+    }
+
     //Put this in a different script later
     public bool viableActionType (ProgramAction action)
     {
@@ -77,6 +92,15 @@ public class Program
                         return false;
                     default:
                         return true;
+                }
+            case ActionType.Action:
+                switch (action.actionName)
+                {
+                    case ActionActionNames.None:
+                        return false;
+                    default:
+                        return true;
+                        
                 }
             default:
                 return false;

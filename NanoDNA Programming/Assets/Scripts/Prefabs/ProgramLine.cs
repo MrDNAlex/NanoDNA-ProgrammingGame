@@ -29,7 +29,7 @@ public class ProgramLine : MonoBehaviour
     {
         setUI();
         setNumber();
-        setButton();
+        setButton(transform.GetSiblingIndex());
     }
 
     // Start is called before the first frame update
@@ -80,14 +80,26 @@ public class ProgramLine : MonoBehaviour
 
     }
 
-    void setButton()
+    void setButton(int index)
     {
         //Set the garbage can button
         Line.getChild(2).GetComponent<Button>().onClick.AddListener(delegate
         {
-            deleteLine();
-            allScripts.programSection.compileProgram();
+            StartCoroutine(delLines());
+
+            //deleteProgramLine(index);
+
         });
+    }
+
+    public IEnumerator delLines()
+    {
+        deleteLine();
+        Debug.Log("Hello");
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Hello 2");
+        allScripts.programSection.compileProgram();
+        yield return null;
     }
 
     public void deleteLine()
@@ -106,17 +118,25 @@ public class ProgramLine : MonoBehaviour
 
     }
 
-    //Switch this to take in a CardInfo
-    public void addProgram(CardInfo info)
+    public void deleteProgramLine(int index)
     {
+        deleteLine();
 
-        //GameObject prefab = Resources.Load("Prefabs/ProgramLine") as GameObject;
+        Program prog = allScripts.levelScript.character.GetComponent<CharData>().program;
 
+        prog.list.RemoveAt(index);
+
+        allScripts.programSection.compileProgram();
+
+    }
+
+
+    //Switch this to take in a CardInfo
+    public void addProgram(CardInfo info, Transform trans)
+    {
         //Exapnd this later
-
         deleteLine();
         GameObject ProgramCard = null;
-
         switch (info.actionType)
         {
             case ActionType.Movement:
@@ -132,10 +152,11 @@ public class ProgramLine : MonoBehaviour
 
         if (ProgramCard != null)
         {
+            ProgramCard.name += transform.GetSiblingIndex();
 
             ProgramUI.addChild(ProgramCard.GetComponent<ProgramCard>().program);
 
-            Destroy(ProgramCard.GetComponent<DragController2>());
+            //Destroy(ProgramCard.GetComponent<DragController2>());
 
             Line.setSize(Line.size);
 
@@ -146,6 +167,7 @@ public class ProgramLine : MonoBehaviour
             ProgramCard.AddComponent<DeleteIndentDrag>();
 
             allScripts.programSection.compileProgram();
+
         }
 
     }
@@ -179,29 +201,28 @@ public class ProgramLine : MonoBehaviour
 
         if (program != null)
         {
+            program.name += transform.GetSiblingIndex();
+
             //Get rid of Drag controller
-            Destroy(program.GetComponent<DragController2>());
+            // Destroy(program.GetComponent<DragController2>());
 
             //Add as a Flex child
             ProgramUI.addChild(program.GetComponent<ProgramCard>().program);
 
-
-
             //Set the transform
             program.GetComponent<ProgramCard>().progLine = transform;
 
-            //Add the indent and delete Drag script
-            program.AddComponent<DeleteIndentDrag>();
-
             //Set size of the component
             Line.setSize(Line.size);
+
+            //Add the indent and delete Drag script
+            program.AddComponent<DeleteIndentDrag>();
 
             //Set Info
             program.GetComponent<ProgramCard>().setInfo(action);
 
             //Make it editable
             program.GetComponent<ProgramCard>().setEditable();
-            // ProgramObj = program;
 
         }
 

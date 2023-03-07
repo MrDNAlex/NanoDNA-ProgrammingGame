@@ -238,7 +238,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3551191700839227555
 CanvasRenderer:
@@ -496,7 +496,6 @@ GameObject:
   - component: {fileID: 6380200507187299437}
   - component: {fileID: 822691314091239528}
   - component: {fileID: 3497862695777829894}
-  - component: {fileID: 9043278858698628732}
   - component: {fileID: 7720614945227396249}
   m_Layer: 0
   m_Name: Movement
@@ -526,7 +525,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6380200507187299437
 CanvasRenderer:
@@ -592,18 +591,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &9043278858698628732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8138498152997489336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcd3a5c75f51d974e8a8f78d409b226c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7720614945227396249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,6 +611,7 @@ MonoBehaviour:
   mathName: 0
   logicName: 0
   variableName: 0
+  actionName: 0
   progLine: {fileID: 0}
   indent: 0
   action:
@@ -632,12 +620,23 @@ MonoBehaviour:
     mathName: 0
     logicName: 0
     variableName: 0
+    actionName: 0
     moveData:
       dir: 0
       value: 0
+      refID: 0
     varData:
       isPublic: 0
       varType: 0
       name: 
       value: 
+      character: {fileID: 0}
+      id: 0
+      refID: 0
+    actData:
+      actionName: 0
+      descriptor: 0
+      data: 
+      character: {fileID: 0}
+      refID: 0
   setInf: 0

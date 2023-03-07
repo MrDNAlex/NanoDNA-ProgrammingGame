@@ -1112,6 +1112,7 @@ MonoBehaviour:
   saveBtn: {fileID: 1161868853}
   undoBtn: {fileID: 849177852}
   obstacles: {fileID: 1176585894}
+  progSpeed: {fileID: 746715376}
   undo: 0
 --- !u!1 &474066902
 GameObject:
@@ -2020,7 +2021,7 @@ GameObject:
   - component: {fileID: 746715377}
   - component: {fileID: 746715376}
   m_Layer: 5
-  m_Name: ChangeLang
+  m_Name: ProgramSpeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3216,6 +3217,103 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1221393415}
   m_CullTransparentMesh: 1
+--- !u!1 &1281750855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1281750859}
+  - component: {fileID: 1281750858}
+  - component: {fileID: 1281750857}
+  - component: {fileID: 1281750856}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &1281750856
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281750855}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1281750857
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281750855}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1281750858
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281750855}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1281750859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281750855}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 94.8607, y: -1.9421415, z: 0.13147666}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1302882784
 GameObject:
   m_ObjectHideFlags: 0
@@ -3550,6 +3648,7 @@ MonoBehaviour:
   storeNum: 4
   storeSection: {fileID: 330988772233574108, guid: 779433d5b1467574c847d35c46f79e1d, type: 3}
   storeCard: {fileID: 3237715990226463739, guid: 2ec48f8a8457a3e4f8d3fb730d1ee5a1, type: 3}
+  storeCardInfo: {fileID: 3237715990226463739, guid: b691bfd8fa3b11b4b894e45c5ac621dd, type: 3}
 --- !u!1 &1424875451
 GameObject:
   m_ObjectHideFlags: 0
@@ -3826,9 +3925,12 @@ MonoBehaviour:
   debug: {fileID: 2114155975}
   complete: {fileID: 1221393417}
   save: {fileID: 380952685}
-  changeLang: {fileID: 2023487095}
   changeLangBtn: {fileID: 746715376}
   selected: {fileID: 0}
+  playerSettings:
+    language: 0
+    volume: 0
+    colourScheme: 0
 --- !u!114 &1453692407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4724,7 +4826,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Change Language
+  m_Text: x1
 --- !u!1 &2068190460
 GameObject:
   m_ObjectHideFlags: 0

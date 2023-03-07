@@ -90,15 +90,15 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             //Check if there is character data associated
             if (rayHit.collider.GetComponent<CharData>() != null)
             {
-                //content.GetComponent<ProgramSection>().character = rayHit.collider.gameObject;
-
-                // sec.compileProgram();
-                
+                allScripts.levelScript.selected = rayHit.collider.gameObject;
 
                 allScripts.programSection.renderProgram(rayHit.collider.gameObject);
 
                // sec.updateOGPos();
 
+            } else
+            {
+                Debug.Log("Bad Char");
             }
             
         } else

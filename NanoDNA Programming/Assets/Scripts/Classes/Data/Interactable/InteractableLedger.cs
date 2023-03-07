@@ -12,13 +12,5 @@ public class InteractableLedger : ScriptableObject
 
     public bool validate;
 
-    private void OnValidate()
-    {
-
-        InteractableInstance[] idk = (InteractableInstance[])Resources.FindObjectsOfTypeAll(typeof(InteractableInstance));
-
-       sprites = idk.ToList();
-
-    }
 
 }
