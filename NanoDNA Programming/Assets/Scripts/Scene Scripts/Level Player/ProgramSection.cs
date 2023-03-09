@@ -14,7 +14,10 @@ public class ProgramSection : MonoBehaviour
 
     public LevelType levelType;
 
-    public GameObject character;
+    public GameObject selectedCharacter;
+    public CharData selectedCharData;
+
+
     public int maxLineNum = 20;
 
     [SerializeField] GameObject progLine;
@@ -27,7 +30,7 @@ public class ProgramSection : MonoBehaviour
     [SerializeField] Button progSpeed;
 
     ProgramSpeed speed = ProgramSpeed.Op1;
-    int speedDivider = 1 ;
+    int speedDivider = 1;
 
     public bool undo;
     bool testRunning;
@@ -58,15 +61,18 @@ public class ProgramSection : MonoBehaviour
 
         levelType = allScripts.levelManager.info.levelType;
 
-        character = allScripts.levelScript.character;
-
         testBtn.onClick.AddListener(testProgram);
-        //saveBtn.onClick.AddListener(compileProgram);
-        undoBtn.onClick.AddListener(undoProgram);
+        saveBtn.onClick.AddListener(delegate
+        {
+            selectedCharData.displayProgram(true);
+            });
+        //undoBtn.onClick.AddListener(undoProgram);
 
         testRunning = false;
 
         OnDemandRendering.renderFrameInterval = 12;
+
+        UIHelper.setText(progSpeed.transform.GetChild(0), "x1", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
 
     }
 
@@ -90,8 +96,6 @@ public class ProgramSection : MonoBehaviour
             GameObject programLine = Instantiate(progLine, parent.UI);
 
             parent.addChild(programLine.GetComponent<ProgramLine>().Line);
-
-            programLine.GetComponent<RectTransform>().GetChild(0).GetComponent<Text>().text = i.ToString();
 
         }
     }
@@ -122,7 +126,8 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = false;
 
-            testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
+            testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/Debug");
+            //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
 
             allScripts.levelManager.updateConstraints();
 
@@ -130,8 +135,7 @@ public class ProgramSection : MonoBehaviour
         }
         else
         {
-            allScripts.programSection.compileProgram();
-
+           
             foreach (Transform child in charHolder.transform)
             {
                 if (child.GetComponent<CharData>() != null)
@@ -141,17 +145,21 @@ public class ProgramSection : MonoBehaviour
                     //Decompose the program into more basic parts
                     for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
                     {
-                        decompose(child.GetComponent<CharData>().program.list[i], program);
+                       // Debug.Log(selectedCharData.program.list[i].dispDetailedAction());
+                        decompose(selectedCharData.program.list[i], program);
                     }
 
                     StartCoroutine(runProgram(child.gameObject, program));
-                }
 
+                    child.GetComponent<CharData>().displayProgram(true);
+
+                }
             }
 
             testRunning = true;
 
-            testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
+            testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/DebugActive");
+            //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
         }
     }
 
@@ -241,7 +249,6 @@ public class ProgramSection : MonoBehaviour
                         }
                         break;
                 }
-
                 break;
         }
     }
@@ -276,110 +283,37 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-
-   
-    public void compileProgram()
+    public void renderProgram()
     {
-       
-        if (character != null)
+        UIHelper.setText(nameHeader.transform, selectedCharData.name, allScripts.levelScript.playerSettings.colourScheme.getAccentTextColor());
+
+        if (selectedCharData != null)
         {
-             Debug.Log("Compile");
-            if (character.GetComponent<CharData>() != null)
+            CharData data = selectedCharData;
+
+           // data.displayProgram(true);
+
+            //Delete program Child
+            for (int i = 0; i < transform.childCount; i++)
             {
-                character.GetComponent<CharData>().addPastState(character.GetComponent<CharData>().program);
+                GameObject programHolder = getProgramHolderRef(i);
 
-                Program program = new Program(false);
+                //Debug.Log(programHolder);
 
-                //Compile program
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    if (transform.GetChild(i).GetChild(1).childCount != 0)
-                    {
-                        //Debug.Log("Index: " + i + " " + getProgramRef(i).GetComponent<ProgramCard>().action.dispAction());
-                        program.list.Add(getProgramRef(i).GetComponent<ProgramCard>().action);
-                    }
-                }
+                Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
 
-                program.updateLength();
+                //Delete Game Objects
+                destroyChildren(programHolder);
 
-                character.GetComponent<CharData>().program = program;
+                //Delete Flex References
+                flex2.deleteAllChildren();
 
-                allScripts.programManager.updateVariables();
-
-                allScripts.levelManager.updateConstraints();
+                //Instantiate new Object
+                getProgramLineComp(i).reAddProgram(data.getAction(i));
 
             }
-
         }
-    }
 
-    public void reRenderProgram(GameObject selected)
-    {
-       
-        character = selected;
-
-        nameHeader.text = character.GetComponent<CharData>().name.getWord(lang);
-        if (selected != null)
-        {
-            if (selected.GetComponent<CharData>() != null)
-            {
-                CharData data = selected.GetComponent<CharData>();
-
-                //Delete program Child
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    GameObject programHolder = getProgramHolderRef(i);
-
-                    //Debug.Log(programHolder);
-
-                    Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
-
-                    //Delete Game Objects
-                    destroyChildren(programHolder);
-
-                    //Delete Flex References
-                    flex2.deleteAllChildren();
-
-                    //Instantiate new Object
-                    getProgramLineComp(i).reAddProgram(data.getAction(i));
-                }
-            }
-        }
-    }
-
-    public void renderProgram(GameObject selected)
-    {
-        allScripts.programSection.compileProgram();
-
-        character = selected;
-
-        nameHeader.text = character.GetComponent<CharData>().name.getWord(lang);
-        if (selected != null)
-        {
-            if (selected.GetComponent<CharData>() != null)
-            {
-                CharData data = selected.GetComponent<CharData>();
-
-                //Delete program Child
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    GameObject programHolder = getProgramHolderRef(i);
-
-                    //Debug.Log(programHolder);
-
-                    Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
-
-                    //Delete Game Objects
-                    destroyChildren(programHolder);
-
-                    //Delete Flex References
-                    flex2.deleteAllChildren();
-
-                    //Instantiate new Object
-                    getProgramLineComp(i).reAddProgram(data.getAction(i));
-                }
-            }
-        }
     }
 
     public void deleteProgram()
@@ -526,6 +460,7 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
+    /*
     public void undoProgram()
     {
         undo = true;
@@ -538,10 +473,11 @@ public class ProgramSection : MonoBehaviour
         undo = false;
 
     }
+    */
 
     public void runFinalProgram()
     {
-        allScripts.programSection.compileProgram();
+        // allScripts.programSection.compileProgram();
 
         foreach (Transform child in charHolder.transform)
         {
@@ -567,28 +503,28 @@ public class ProgramSection : MonoBehaviour
         // flex = setUI();
     }
 
-    void editSpeed ()
+    void editSpeed()
     {
         switch (speed)
         {
             case ProgramSpeed.Op1:
                 speed = ProgramSpeed.Op2;
-                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x2";
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x2", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
                 speedDivider = 2;
                 break;
             case ProgramSpeed.Op2:
                 speed = ProgramSpeed.Op3;
-                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x4";
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x4", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
                 speedDivider = 4;
                 break;
             case ProgramSpeed.Op3:
                 speed = ProgramSpeed.Op4;
-                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x8";
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x8", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
                 speedDivider = 8;
                 break;
             case ProgramSpeed.Op4:
                 speed = ProgramSpeed.Op1;
-                progSpeed.transform.GetChild(0).GetComponent<Text>().text = "x1";
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x1", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
                 speedDivider = 1;
                 break;
         }
@@ -598,8 +534,8 @@ public class ProgramSection : MonoBehaviour
 
 public enum ProgramSpeed
 {
-    Op1, 
-    Op2, 
-    Op3, 
+    Op1,
+    Op2,
+    Op3,
     Op4,
 }

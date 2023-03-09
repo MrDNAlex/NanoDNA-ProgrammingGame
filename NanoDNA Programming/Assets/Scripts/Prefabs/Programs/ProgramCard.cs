@@ -25,23 +25,22 @@ public class ProgramCard : MonoBehaviour
     //Action Stuff
     public ProgramAction action;
 
-    public bool setInf = false;
+    //public bool setInf = false;
 
     ProgramCardFunctionality functionality;
-
-
-    //Data
-    //public MoveData moveData;
-    //public VariableData varData;
-
 
     private void Awake()
     {
         functionality = new ProgramCardFunctionality();
         setFunctionality();
-      
-    }
 
+        //Add action
+        action = functionality.createAction(setCardInfo());
+
+      //  Debug.Log(action.dispAction());
+        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(action, transform.parent.parent.GetSiblingIndex());
+     
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -60,17 +59,14 @@ public class ProgramCard : MonoBehaviour
     {
         //The action type will have a reference to a function for it's handle so that when the program is being read it doens't need to go around and search for said function, it just instantly runs it, associated with it will be the types and values it needs!
 
-        //Make sure it won't compile
-        setInf = true;
-
+        //Set Action
         this.actionType = action.actionType;
         this.action = action;
+        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(action, transform.parent.parent.GetSiblingIndex());
 
         //Actually paste info on the UI
         functionality.setInfo(setCardInfo());
 
-        //Make sure it won't compile
-        setInf = false;
     }
 
     public void setEditable ()
@@ -101,6 +97,8 @@ public class ProgramCard : MonoBehaviour
 
         //Change this
         info.varType = VariableType.Number;
+
+        info.progLineIndex = transform.parent.parent.GetSiblingIndex();
 
         return info;
 

@@ -10,18 +10,16 @@ public class PlayerSettings
 
     public Language language;
     public int volume;
-    public SettingColourScheme colourScheme;
+    //public SettingColourScheme colourScheme;
+    public ColourPaletteStorage colourScheme;
     
-
-
-
     public PlayerSettings (Language lang = Language.English)
     {
         //Set Default settings
 
         this.language = lang;
         this.volume = 50;
-        this.colourScheme = SettingColourScheme.Col1;
+        this.colourScheme = new ColourPaletteStorage("Images/UIDesigns/Palettes/Palette 1");
 
     }
 
@@ -35,11 +33,13 @@ public class PlayerSettings
         this.volume = volume;
     }
 
-    public void setColourScheme (SettingColourScheme colour)
+    public void setColourScheme (SettingColourScheme colour, string path)
     {
-        this.colourScheme = colour;
+        colourScheme = new ColourPaletteStorage(path);
+        colourScheme.colourScheme = colour;
     }
 
+  
 
 
   

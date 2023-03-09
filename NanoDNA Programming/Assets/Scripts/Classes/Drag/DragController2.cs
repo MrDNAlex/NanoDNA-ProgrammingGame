@@ -25,7 +25,6 @@ public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     void Start()
     {
         OGpos = transform.position;
-        Debug.Log(OGpos);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -78,18 +77,14 @@ public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, I
                 child.GetComponent<Image>().color = Color.red;
             } else
             {
-                child.GetComponent<Image>().color = Color.cyan;
+                child.GetComponent<Image>().color = Color.white;
             }
         }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-       // Debug.Log("End: " +transform.localPosition);
-        //Vector3 curPos = transform.localPosition;
-
         RectTransform content = Camera.main.GetComponent<LevelScript>().contentTrans;
-
 
         for (int i = 0; i < content.childCount; i++)
         {
@@ -99,27 +94,16 @@ public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
             if (mouse.mouseOver)
             {
-                //Debug.Log(info.variableName);
-               // Debug.Log(transform.position);
-               // Debug.Log(transform.localPosition);
-               // Debug.Log(transform);
-
                 child.GetComponent<ProgramLine>().addProgram(info, transform);
 
             }
 
         }
-
-        // transform.localPosition = curPos;
-       // transform.position = curGlobPos;
-       // transform.localPosition = curLocPos;
-
-        Debug.Log("End: " + transform.localPosition);
-
+       
         //So the glitch is being caused by the text for lines being used updating, it updates all the position of the UI, but it looks like we can hide this glitch by making this animation faster
-        StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 100, 0, false));
+       // StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 300, 0, false));
 
-
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, 300, 0, false));
 
     }
 }

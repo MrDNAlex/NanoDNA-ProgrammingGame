@@ -97,23 +97,24 @@ public class ProgramManager : MonoBehaviour
         //Loop through all scripts and add all variables
         foreach (Transform child in allScripts.programSection.charHolder.transform)
         {
-           
-
             if (child.GetComponent<CharData>() != null)
             {
                 //Loop through the program to see if it has any variables
+                Debug.Log(child.name);
 
                 foreach (ProgramAction action in child.GetComponent<CharData>().program.list)
                 {
                     if (action.actionType == ActionType.Variable)
                     {
+                        Debug.Log("Variable");
+                        Debug.Log(action.dispDetailedAction());
                         if (action.varData.id == 0)
                         {
                             //Gen new ID
                             action.varData.setID(genUniqueID());
                         }
 
-                        action.varData.setParent(child.gameObject);
+                        action.varData.setParent(child.GetComponent<CharData>());
 
                         allVariables.Add(action.varData);
                     }

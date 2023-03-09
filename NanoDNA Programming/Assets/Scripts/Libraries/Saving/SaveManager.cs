@@ -69,7 +69,7 @@ namespace DNASaveSystem
             {
                 //Extract JSON Data
                 jsonData = File.ReadAllText(path);
-                Debug.Log(jsonData);
+                //Debug.Log(jsonData);
                 return JsonUtility.FromJson<PlayerSettings>(jsonData);
             }
             else

@@ -205,8 +205,104 @@ namespace DNAMathAnimation
                 trans.localPosition = startPos + fullAdd;
                 yield return null;
             }
-             trans.localPosition = OGPos;
+
+            trans.localPosition = OGPos;
+
         }
+        
+        public static IEnumerator animateReboundRelocationLocal (Transform trans, Vector3 OGPos, int frameCount, int index, bool singleAxis)
+        {
+            Vector3 startPos = trans.localPosition;
+            Vector3 fullAdd = Vector3.zero;
+
+            //Amplitude
+            float A = 0;
+            Vector3 As = Vector3.zero;
+
+            if (singleAxis)
+            {
+                switch (index)
+                {
+                    case 0:
+                        
+                        A = calcReboundAmplitude(OGPos.x - trans.localPosition.x, frameCount);
+                        break;
+                    case 1:
+                        A = calcReboundAmplitude(OGPos.y - trans.localPosition.y, frameCount);
+                        break;
+                    case 2:
+                        A = calcReboundAmplitude(OGPos.z - trans.localPosition.z, frameCount);
+                        break;
+                }
+            }
+            else
+            {
+                As = new Vector3(calcReboundAmplitude(OGPos.x - trans.localPosition.x, frameCount), calcReboundAmplitude(OGPos.y - trans.localPosition.y, frameCount), calcReboundAmplitude(OGPos.z - trans.localPosition.z, frameCount));
+            }
+
+            for (int i = 0; i < frameCount; i++)
+            {
+                if (singleAxis)
+                {
+                    float add = reboundEQ(A, frameCount, i);
+                    switch (index)
+                    {
+                        case 0:
+                            fullAdd = new Vector3(fullAdd.x + add, fullAdd.y, fullAdd.z);
+                            break;
+                        case 1:
+                            fullAdd = new Vector3(fullAdd.x, fullAdd.y + add, fullAdd.z);
+                            break;
+                        case 2:
+                            fullAdd = new Vector3(fullAdd.x, fullAdd.y, fullAdd.z + add);
+                            break;
+                    }
+                }
+                else
+                {
+                    Vector3 add = new Vector3(reboundEQ(As[0], frameCount, i), reboundEQ(As[1], frameCount, i), reboundEQ(As[2], frameCount, i));
+                    fullAdd = fullAdd + add;
+                }
+                trans.localPosition = startPos + fullAdd;
+                yield return null;
+            }
+
+
+            trans.localPosition = OGPos;
+
+        }
+        
+        public static float calcReboundAmplitude (float total,float finalTime)
+        {
+            float a = 1;
+            float b = -0.97222f;
+            float c = 5.5972222f;
+            float d = -14.65277777f;
+            float e = 9.027777777f;
+
+
+            float intFun = (a * finalTime) + getPolInt(b, 2, finalTime, finalTime) + getPolInt(c, 3, finalTime, finalTime) + getPolInt(d, 4, finalTime, finalTime) + getPolInt(e, 5, finalTime, finalTime);
+
+            return total / intFun;
+        }
+
+        public static float getPolInt (float coef, float pow, float T, float j)
+        {
+            return (coef * Mathf.Pow(T, pow)) / (pow * Mathf.Pow(j, pow - 1));
+        }
+        
+        public static float reboundEQ (float A, float P, float x)
+        {
+            float a = 1;
+            float b = -0.97222f;
+            float c = 5.5972222f;
+            float d = -14.65277777f;
+            float e = 9.027777777f;
+
+            //P is the period/total time of the function
+            return A*(a + b * Mathf.Pow(x / P, 1) + c * Mathf.Pow(x / P, 2) + d * Mathf.Pow(x / P, 3) + e * Mathf.Pow(x / P, 4));
+        }
+
 
         public static float calcSinAmplitude(float value, float period, float finalTime)
         {

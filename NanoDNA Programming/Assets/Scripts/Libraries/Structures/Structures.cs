@@ -42,7 +42,6 @@ namespace DNAStruct
         public ProgramAction action;
         public ProgramCard programCard;
 
-
         //CharData Object reference
         public Transform charDataTrans;
 
@@ -52,6 +51,8 @@ namespace DNAStruct
         public VariableType varType;
 
         public ValueEditType valEditType;
+
+        public int progLineIndex;
 
     }
 
@@ -288,7 +289,8 @@ namespace DNAStruct
         public VariableType varType;
         public string name;
         public string value;
-        public GameObject character;
+       // public GameObject character;
+        public CharData charData;
         public int id;
         public int refID;
 
@@ -314,9 +316,9 @@ namespace DNAStruct
 
         }
 
-        public void setParent(GameObject parent)
+        public void setParent(CharData parentData)
         {
-            this.character = parent;
+            this.charData = parentData;
         }
 
         public void setID(int id)

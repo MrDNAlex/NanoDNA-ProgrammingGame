@@ -86,12 +86,10 @@ public class EditValController : MonoBehaviour
         {
             this.func = func;
         }
-        
 
         allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         lang = allScripts.levelScript.lang;
-
 
         ParentTrans = parent;
 
@@ -121,11 +119,28 @@ public class EditValController : MonoBehaviour
 
     }
 
+    void setColours ()
+    {
+        switch (info.editDataType)
+        {
+            case EditDataType.Multichoice:
+
+               
+                break;
+
+            case EditDataType.Value:
+
+                break;
+
+            case EditDataType.NewValue:
+
+                break;
+        }
+    }
+
     public void setUI()
     {
-
         Parent = new Flex(ParentTrans.GetComponent<RectTransform>(), 1);
-
 
         //Set types
         //MultiChoice
@@ -228,11 +243,11 @@ public class EditValController : MonoBehaviour
 
                 Flex ViewSet = new Flex(Holder.getChild(2), 3);
 
-               // Flex VariableExample = new Flex(ViewSet.getChild(0), 1.5f);
+                // Flex VariableExample = new Flex(ViewSet.getChild(0), 1.5f);
 
-               // Flex Type = new Flex(VariableExample.getChild(0), 1);
-               // Flex VarName = new Flex(VariableExample.getChild(1), 1);
-              //  Flex Value = new Flex(VariableExample.getChild(2), 1);
+                // Flex Type = new Flex(VariableExample.getChild(0), 1);
+                // Flex VarName = new Flex(VariableExample.getChild(1), 1);
+                //  Flex Value = new Flex(VariableExample.getChild(2), 1);
 
                 Flex SetBTN = new Flex(ViewSet.getChild(0), 1);
 
@@ -251,13 +266,13 @@ public class EditValController : MonoBehaviour
                 NewVar.addChild(NewVarTitle);
                 NewVar.addChild(NewVarInput);
 
-               // ViewSet.addChild(VariableExample);
+                // ViewSet.addChild(VariableExample);
                 ViewSet.addChild(SetBTN);
                 ViewSet.addChild(ErrorMSG);
 
-              //  VariableExample.addChild(Type);
-             //   VariableExample.addChild(VarName);
-             //   VariableExample.addChild(Value);
+                //  VariableExample.addChild(Type);
+                //   VariableExample.addChild(VarName);
+                //   VariableExample.addChild(Value);
 
                 Holder.setSpacingFlex(1f, 1);
 
@@ -269,7 +284,7 @@ public class EditValController : MonoBehaviour
 
                 NewVar.setAllPadSame(0.05f, 1);
 
-              //  VariableExample.setSpacingFlex(1, 1);
+                //  VariableExample.setSpacingFlex(1, 1);
 
                 ViewSet.setHorizontalPadding(0.2f, 1, 0.2f, 1);
 
@@ -316,16 +331,16 @@ public class EditValController : MonoBehaviour
 
         Flex Row1 = new Flex(GridHolder.getChild(0), 1);
         //Flex Row2 = new Flex(GridHolder.getChild(1), 1);
-       // Flex Row3 = new Flex(GridHolder.getChild(2), 1);
+        // Flex Row3 = new Flex(GridHolder.getChild(2), 1);
 
         //View and Set
         Flex ViewSet = new Flex(Holder.getChild(3), 2);
 
-      //  Flex VariableExample = new Flex(ViewSet.getChild(0), 1.5f);
+        //  Flex VariableExample = new Flex(ViewSet.getChild(0), 1.5f);
 
-       // Flex Type = new Flex(VariableExample.getChild(0), 1);
-       // Flex VarName = new Flex(VariableExample.getChild(1), 1);
-      //  Flex Value = new Flex(VariableExample.getChild(2), 1);
+        // Flex Type = new Flex(VariableExample.getChild(0), 1);
+        // Flex VarName = new Flex(VariableExample.getChild(1), 1);
+        //  Flex Value = new Flex(VariableExample.getChild(2), 1);
 
         Flex SetBTN = new Flex(ViewSet.getChild(0), 1);
 
@@ -350,19 +365,19 @@ public class EditValController : MonoBehaviour
         Premade.addChild(SV);
 
         GridHolder.addChild(Row1);
-       // GridHolder.addChild(Row2);
-       // GridHolder.addChild(Row3);
+        // GridHolder.addChild(Row2);
+        // GridHolder.addChild(Row3);
 
         SV.addChild(Viewport);
         Viewport.addChild(Content);
 
-      //  ViewSet.addChild(VariableExample);
+        //  ViewSet.addChild(VariableExample);
         ViewSet.addChild(SetBTN);
         ViewSet.addChild(ErrorMSG);
 
-       // VariableExample.addChild(Type);
-       // VariableExample.addChild(VarName);
-       // VariableExample.addChild(Value);
+        // VariableExample.addChild(Type);
+        // VariableExample.addChild(VarName);
+        // VariableExample.addChild(Value);
 
 
         //Make sure Premade is hidden
@@ -374,7 +389,8 @@ public class EditValController : MonoBehaviour
         if (info.valEditType == ValueEditType.Bool)
         {
             NewVar.UI.gameObject.SetActive(false);
-        } else
+        }
+        else
         {
             GridHolder.UI.gameObject.SetActive(false);
         }
@@ -394,7 +410,7 @@ public class EditValController : MonoBehaviour
 
         Premade.setAllPadSame(0.1f, 1);
 
-      //  VariableExample.setSpacingFlex(1, 1);
+        //  VariableExample.setSpacingFlex(1, 1);
 
         ViewSet.setHorizontalPadding(0.2f, 1, 0.2f, 1);
 
@@ -417,7 +433,7 @@ public class EditValController : MonoBehaviour
                 else
                 {
                     //Check if the parent gameObject is the same as the variables
-                    if (allScripts.programSection.character == varData.character)
+                    if (allScripts.programSection.selectedCharData == varData.charData)
                     {
                         display = true;
                     }
@@ -456,10 +472,10 @@ public class EditValController : MonoBehaviour
                             this.actData.data = variable.GetComponent<ValueDisp>().varData.name;
                             this.value = variable.GetComponent<ValueDisp>().varData.name;
                             break;
-                        
+
                     }
-                   
-                   // setView();
+
+                    // setView();
 
                     Holder.getChild(3).GetChild(1).GetComponent<Text>().text = "";
                 });
@@ -488,6 +504,8 @@ public class EditValController : MonoBehaviour
             ParentTrans.gameObject.SetActive(false);
 
             Destroy(this.gameObject);
+
+            allScripts.programManager.updateVariables();
         });
 
         switch (info.editDataType)
@@ -508,7 +526,8 @@ public class EditValController : MonoBehaviour
                     {
                         Holder.getChild(2).GetChild(2).gameObject.SetActive(true);
                         Holder.getChild(2).GetChild(0).gameObject.SetActive(false);
-                    } else
+                    }
+                    else
                     {
                         Holder.getChild(2).GetChild(0).gameObject.SetActive(true);
                         Holder.getChild(2).GetChild(2).gameObject.SetActive(false);
@@ -522,11 +541,11 @@ public class EditValController : MonoBehaviour
                 {
                     value = Holder.getChild(2).GetChild(0).GetChild(1).GetComponent<InputField>().text;
 
-                   // Holder.getChild(3).GetChild(0).GetChild(0).GetComponent<Text>().text = getVarType(varType);
+                    // Holder.getChild(3).GetChild(0).GetChild(0).GetComponent<Text>().text = getVarType(varType);
 
                     //Holder.getChild(3).GetChild(0).GetChild(1).GetComponent<Text>().text = variable.getWord(lang);
 
-                   // Holder.getChild(3).GetChild(0).GetChild(2).GetComponent<Text>().text = value.ToString();
+                    // Holder.getChild(3).GetChild(0).GetChild(2).GetComponent<Text>().text = value.ToString();
 
                     checkValueType();
                 });
@@ -561,12 +580,16 @@ public class EditValController : MonoBehaviour
 
                     func.setInfo(info);
 
+                    allScripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
+
                     //Compile Program
-                    allScripts.programSection.compileProgram();
+                    // allScripts.programSection.compileProgram();
 
                     ParentTrans.gameObject.SetActive(false);
 
                     Destroy(this.gameObject);
+
+                    allScripts.programManager.updateVariables();
 
                 });
 
@@ -603,18 +626,22 @@ public class EditValController : MonoBehaviour
 
                     func.setInfo(info);
 
+                    allScripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
+
                     //Compile Program
-                    allScripts.programSection.compileProgram();
+                    // allScripts.programSection.compileProgram();
 
                     ParentTrans.gameObject.SetActive(false);
 
                     Destroy(this.gameObject);
 
+                    allScripts.programManager.updateVariables();
+
                 });
                 break;
         }
     }
-  
+
     public void checkValueType()
     {
         int index = 0;
@@ -731,22 +758,15 @@ public class EditValController : MonoBehaviour
                         switch (info.valEditType)
                         {
                             case ValueEditType.Value:
-
                                 //Get Direction
                                 info.action.moveData.value = value.ToString();
-
                                 break;
-
                             case ValueEditType.Direction:
-
-
                                 info.action.moveData.dir = indexToDir(index);
                                 break;
                         }
-
                         break;
                 }
-
                 break;
             case ActionType.Math:
 
@@ -775,7 +795,6 @@ public class EditValController : MonoBehaviour
 
                                 break;
                             case ValueEditType.VariableType:
-
 
                                 info.action.varData.varType = GridViewVarType(index);
 
@@ -812,7 +831,6 @@ public class EditValController : MonoBehaviour
                                 }
                                 break;
                         }
-
                         break;
                 }
                 break;
@@ -895,14 +913,20 @@ public class EditValController : MonoBehaviour
                 //Set Info
                 func.setInfo(info);
 
+                allScripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
+
                 //Compile Program
-                allScripts.programSection.compileProgram();
+                //allScripts.programSection.compileProgram();
+                //allScripts.programSection.renderProgram();
 
                 ParentTrans.gameObject.SetActive(false);
 
                 Destroy(this.gameObject);
+
+                allScripts.programManager.updateVariables();
             });
-        } else
+        }
+        else
         {
             valDisp.GetComponent<Button>().onClick.AddListener(delegate
             {
@@ -913,7 +937,7 @@ public class EditValController : MonoBehaviour
                 if (index == 0)
                 {
                     varData.refID = 0;
-                   varData.value = "true";
+                    varData.value = "true";
                 }
                 else
                 {
@@ -924,9 +948,11 @@ public class EditValController : MonoBehaviour
 
                 globalIndex = index;
 
-               // setView();
+                // setView();
 
                 Holder.getChild(3).GetChild(1).GetComponent<Text>().text = "";
+
+                allScripts.programManager.updateVariables();
             });
         }
 
@@ -1082,7 +1108,7 @@ public class EditValController : MonoBehaviour
         }
     }
 
-    public void resetRefID (ActionType type)
+    public void resetRefID(ActionType type)
     {
         switch (type)
         {

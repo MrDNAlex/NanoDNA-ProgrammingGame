@@ -25,6 +25,9 @@ public class CharData : MonoBehaviour
     //Eventually replace this with vector2int, referring to tile it would be on, it would then have to align itself to said tile
     public Vector3 initPos;
 
+    //Maybe delete this
+    public int charID;
+
 
     public void Start()
     {
@@ -39,6 +42,7 @@ public class CharData : MonoBehaviour
         this.program = info.program;
         this.programStates = info.programStates;
         this.initPos = info.initPos;
+        
 
     }
 
@@ -55,13 +59,20 @@ public class CharData : MonoBehaviour
         }
     }
 
-    public void displayProgram ()
+    public void displayProgram (bool detailed = false)
     {
        // Debug.Log(program.list.Count);
 
         for (int i = 0; i < program.list.Count; i++)
         {
-            Debug.Log(program.list[i].dispAction());
+            if (detailed)
+            {
+                Debug.Log(i + ": " + program.list[i].dispDetailedAction());
+            } else
+            {
+                Debug.Log(i + ": " + program.list[i].dispAction());
+            }
+            
         }
     }
 
@@ -111,6 +122,11 @@ public class CharData : MonoBehaviour
         program.list.Add(action);
 
         program.updateLength();
+    }
+
+    void genID ()
+    {
+        charID = Random.Range(0, 1000000);
     }
 
 

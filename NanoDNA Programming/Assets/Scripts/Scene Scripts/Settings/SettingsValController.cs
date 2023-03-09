@@ -58,7 +58,28 @@ public class SettingsValController : MonoBehaviour
 
         setUI();
         setControls();
+        setColour();
     }
+
+   void setColour ()
+    {
+        switch (editType)
+        {
+            case SettingEditType.MultiChoice:
+
+
+                //Accent / Background
+                UIHelper.setImage(Parent.getChild(0), playSettings.colourScheme.getAccent());
+
+
+                //Main
+                UIHelper.setImage(Parent.getChild(0).GetChild(1), playSettings.colourScheme.getMain());
+                break;
+        }
+    }
+
+   
+   
 
     public void setUI()
     {
@@ -76,9 +97,9 @@ public class SettingsValController : MonoBehaviour
 
                 Flex Grid = new Flex(Panel.getChild(1), 9, Panel);
 
-                Flex Row1;
-                Flex Row2;
-                Flex Row3;
+                Flex Row1 = null;
+                Flex Row2 = null;
+                Flex Row3 = null;
 
 
                 if (editValue == SettingValueType.Language)
@@ -94,29 +115,32 @@ public class SettingsValController : MonoBehaviour
                     Row2 = new Flex(Grid.getChild(1), 1, Grid);
                     Row3 = new Flex(Grid.getChild(2), 1, Grid);
 
-                    Row1.setSpacingFlex(0.2f, 1);
-                    Row2.setSpacingFlex(0.2f, 1);
-                    Row3.setSpacingFlex(0.2f, 1);
                 }
 
+                Panel.setSpacingFlex(0.1f, 1);
 
-
-                Panel.setSpacingFlex(0.3f, 1);
-
-                Panel.setHorizontalPadding(0.05f, 1, 0.05f, 1);
-
-                Panel.setVerticalPadding(0.5f, 1, 0.5f, 1);
+                Panel.setVerticalPadding(0.1f, 1, 0, 1);
 
                 ExitBTN.setSquare();
 
-                Grid.setAllPadSame(0.05f, 1);
+                ExitRow.setSelfHorizontalPadding(0, 1, 0.02f, 1);
 
                 Grid.setSpacingFlex(0.2f, 1);
+
+                Grid.setAllPadSame(0.1f, 1);
 
                 //Set gridview
                 setGridView(Grid);
 
                 Parent.setSize(new Vector2(1000, 700));
+
+                Row1.UI.GetComponent<HorizontalLayoutGroup>().spacing = 20;
+
+                if (Row2 != null)
+                {
+                    Row2.UI.GetComponent<HorizontalLayoutGroup>().spacing = 20;
+                    Row3.UI.GetComponent<HorizontalLayoutGroup>().spacing = 20;
+                }
 
                 break;
         }
@@ -149,10 +173,10 @@ public class SettingsValController : MonoBehaviour
 
                 break;
             case SettingValueType.ColourScheme:
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col1", GridView, Col1, 0, 0);
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col2", GridView, Col2, 1, 0);
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col3", GridView, Col3, 2, 0);
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col4", GridView, Col4, 3, 0);
+                instantiateDisplayCard("Images/SettingsControllerAssets/PalCol1", GridView, Col1, 0, 0);
+                instantiateDisplayCard("Images/SettingsControllerAssets/PalCol2", GridView, Col2, 1, 0);
+                instantiateDisplayCard("Images/SettingsControllerAssets/PalCol3", GridView, Col3, 2, 0);
+                instantiateDisplayCard("Images/SettingsControllerAssets/PalCol4", GridView, Col4, 3, 0);
 
                 instantiateDisplayCard("Images/SettingsControllerAssets/Col5", GridView, Col5, 4, 1);
                 instantiateDisplayCard("Images/SettingsControllerAssets/Col6", GridView, Col6, 5, 1);
@@ -186,35 +210,11 @@ public class SettingsValController : MonoBehaviour
 
         valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
+        UIHelper.setImage(valDisp.transform, playSettings.colourScheme.getSecondary());
 
         valDisp.GetComponent<Button>().onClick.AddListener(delegate
         {
-            //Edit Values of the settings class
-
-
-
-            /*
-             
-            //Set Var Data
-            info.action.varData = varData;
-
-            //Set data
-            setData(index);
-
-            //Create and set the Action
-            info.programCard.action = func.createAction(info);
-
-            //Set Info
-            func.setInfo(info);
-
-            //Compile Program
-            allScripts.programSection.compileProgram();
-
-           
-
             
-            */
-
             //Edit the settings
             setData(index);
 
@@ -223,8 +223,6 @@ public class SettingsValController : MonoBehaviour
             this.parent.gameObject.SetActive(false);
 
             Destroy(this.gameObject);
-
-            
 
         });
 
@@ -259,28 +257,43 @@ public class SettingsValController : MonoBehaviour
                 switch (index)
                 {
                     case 0:
-                        playSettings.setColourScheme(SettingColourScheme.Col1);
+                        playSettings.setColourScheme(SettingColourScheme.Col1, "Images/UIDesigns/Palettes/Palette 1");
+
+                        playSettings.colourScheme.textColorMain = Color.white;
+                        playSettings.colourScheme.textColorAccent = Color.black; //Try black
+
                         break;
                     case 1:
-                        playSettings.setColourScheme(SettingColourScheme.Col2);
+                        playSettings.setColourScheme(SettingColourScheme.Col2, "Images/UIDesigns/Palettes/Palette 2");
+
+                        playSettings.colourScheme.textColorMain = Color.white;
+                        playSettings.colourScheme.textColorAccent = Color.black;
                         break;
                     case 2:
-                        playSettings.setColourScheme(SettingColourScheme.Col3);
+                        playSettings.setColourScheme(SettingColourScheme.Col3, "Images/UIDesigns/Palettes/Palette 3");
+
+                        playSettings.colourScheme.textColorMain = Color.black;
+                        playSettings.colourScheme.textColorAccent = Color.black;
+
                         break;
                     case 3:
-                        playSettings.setColourScheme(SettingColourScheme.Col4);
+                        playSettings.setColourScheme(SettingColourScheme.Col4, "Images/UIDesigns/Palettes/Palette 4");
+
+                        playSettings.colourScheme.textColorMain = Color.white;
+                        playSettings.colourScheme.textColorAccent = Color.black;
+
                         break;
                     case 4:
-                        playSettings.setColourScheme(SettingColourScheme.Col5);
+                        playSettings.setColourScheme(SettingColourScheme.Col5, "Images/UIDesigns/Palettes/Palette 5");
                         break;
                     case 5:
-                        playSettings.setColourScheme(SettingColourScheme.Col6);
+                        playSettings.setColourScheme(SettingColourScheme.Col6, "Images/UIDesigns/Palettes/Palette 6");
                         break;
                     case 6:
-                        playSettings.setColourScheme(SettingColourScheme.Col7);
+                        playSettings.setColourScheme(SettingColourScheme.Col7, "Images/UIDesigns/Palettes/Palette 7");
                         break;
                     case 7:
-                        playSettings.setColourScheme(SettingColourScheme.Col8);
+                        playSettings.setColourScheme(SettingColourScheme.Col8, "Images/UIDesigns/Palettes/Palette 8");
                         break;
                 }
                 break;

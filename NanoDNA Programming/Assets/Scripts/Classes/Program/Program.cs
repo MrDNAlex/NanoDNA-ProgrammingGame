@@ -4,13 +4,13 @@ using UnityEngine;
 using DNAStruct;
 
 [System.Serializable]
-public class Program 
+public class Program
 {
-   
+
     public List<ProgramAction> list = new List<ProgramAction>();
     public int progLength;
 
-    public Program (bool fillEmpty)
+    public Program(bool fillEmpty)
     {
         //Spawn a default list of empty commands
 
@@ -18,14 +18,14 @@ public class Program
         {
             for (int i = 0; i < 20; i++)
             {
-               
+
                 list.Add(ProgramAction.empty());
             }
         }
-       
+
     }
 
-    public void updateLength ()
+    public void updateLength()
     {
         progLength = 0;
 
@@ -35,11 +35,11 @@ public class Program
             if (viableActionType(action))
             {
                 progLength += 1;
-            } 
+            }
         }
     }
 
-    public int getLength ()
+    public int getLength()
     {
         int length = 0;
 
@@ -55,7 +55,7 @@ public class Program
     }
 
     //Put this in a different script later
-    public bool viableActionType (ProgramAction action)
+    public bool viableActionType(ProgramAction action)
     {
         switch (action.actionType)
         {
@@ -100,14 +100,51 @@ public class Program
                         return false;
                     default:
                         return true;
-                        
+
                 }
             default:
                 return false;
-              
         }
     }
 
-   
+    public void setAction(ProgramAction action, int index)
+    {
+        List<ProgramAction> prog = list;
+
+        list.RemoveAt(index);
+        list.Insert(index, action);
+
+        list = prog;
+
+        updateLength();
+    }
+
+    public void RemoveLine(int index)
+    {
+        list.RemoveAt(index);
+
+        //Replace with an empty action
+        list.Insert(index, new ProgramAction());
+    }
+
+    public void SwitchActions (int index1, int index2)
+    {
+        //Action 1 goes to index 2
+        //Action 2 goes to Index 1
+
+        Debug.Log("Swap");
+
+        ProgramAction action1 = list[index1];
+        ProgramAction action2 = list[index2];
+
+        list.RemoveAt(index1);
+        list.Insert(index1, action2);
+
+        list.RemoveAt(index2);
+        list.Insert(index2, action1);
+
+
+
+    }
 
 }

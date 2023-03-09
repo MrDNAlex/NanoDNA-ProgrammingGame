@@ -105,9 +105,9 @@ public class LevelManager : MonoBehaviour
         {
             lines += data.program.getLength();
         }
-       
-        linesUsed.text = lines + "/" + maxLines + " " + UIwords.used.getWord(lang);
-        
+
+        UIHelper.setText(linesUsed.transform, lines + "/" + maxLines + " " + UIwords.used.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+
         //Update Collectibles
         itemsCollect = 0;
 
@@ -121,8 +121,8 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-        collectedItems.text = itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang);
-        
+        UIHelper.setText(collectedItems.transform, itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+
     }
 
     public void completeLevel()
@@ -168,7 +168,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-            complete.transform.GetChild(0).GetComponent<Text>().text = UIwords.complete.getWord(lang);
+            UIHelper.setText(complete.transform.GetChild(0), UIwords.complete, SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
 
             updateConstraints();
         }
@@ -219,7 +219,8 @@ public class LevelManager : MonoBehaviour
             if (charHolder.transform.GetChild(index).GetComponent<CharData>() != null)
             {
                 //Set Character
-                allScripts.levelScript.character = charHolder.transform.GetChild(index).gameObject;
+                allScripts.programSection.selectedCharacter = charHolder.transform.GetChild(index).gameObject;
+                allScripts.programSection.selectedCharData = charHolder.transform.GetChild(index).GetComponent<CharData>();
 
                 findingChar = false;
             }
@@ -238,10 +239,8 @@ public class LevelManager : MonoBehaviour
             }
            
         }
-        //  yield return null;
-
         //Reload Program
-        allScripts.programSection.renderProgram(allScripts.levelScript.character);
+        allScripts.programSection.renderProgram();
 
     }
 

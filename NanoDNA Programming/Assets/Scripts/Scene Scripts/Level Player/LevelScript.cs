@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FlexUI;
-using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using DNASaveSystem;
@@ -32,10 +31,6 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform store;
 
-    //[SerializeField] Button resize;
-    //[SerializeField] Button play;
-
-
     [Header("Game Objects")]
 
     [SerializeField] GameObject prefab;
@@ -44,7 +39,6 @@ public class LevelScript : MonoBehaviour
 
 
     [SerializeField] GameObject Variable;
-    // public string type;
 
     public RectTransform contentTrans;
 
@@ -60,23 +54,17 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] TileBase tile;
 
-    [SerializeField] public GameObject character;
-
-
     [SerializeField] Text resize;
     [SerializeField] Text debug;
     [SerializeField] Text complete;
     [SerializeField] Text save;
-    //[SerializeField] Text changeLang;
 
     [SerializeField] Button changeLangBtn;
 
-    Vector2 screenPos;
-    Vector2 viewSize;
 
     public Flex Background;
 
-    public GameObject selected;
+    //public GameObject selected;
 
     Flex Content;
 
@@ -90,6 +78,9 @@ public class LevelScript : MonoBehaviour
         playerSettings = SaveManager.loadPlaySettings();
         lang = playerSettings.language;
     }
+
+    //Going to start needing a loading screen I think
+
 
     // Start is called before the first frame update
     void Start()
@@ -134,10 +125,14 @@ public class LevelScript : MonoBehaviour
         Flex Reg2 = new Flex(Background.getChild(1), 2f, Background);
         Flex MapView = new Flex(Reg2.getChild(0), 2f, Reg2);
 
-        Flex ChangeLang = new Flex(MapView.getChild(0), 1, MapView);
-        Flex Zoom = new Flex(MapView.getChild(1), 6, MapView);
-        Flex Resize = new Flex(MapView.getChild(2), 1, MapView);
-        Flex Play = new Flex(MapView.getChild(3), 1, MapView);
+
+        Flex UIHolder = new Flex(MapView.getChild(0), 1, MapView);
+
+        Flex Zoom = new Flex(UIHolder.getChild(0), 6, UIHolder);
+        Flex Buttons = new Flex(UIHolder.getChild(1), 3, UIHolder);
+        Flex ProgSpeed = new Flex(Buttons.getChild(0), 1, Buttons);
+        Flex Resize = new Flex(Buttons.getChild(1), 1, Buttons);
+        Flex DebugBTN = new Flex(Buttons.getChild(2), 1, Buttons);
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f, Reg2);
 
@@ -151,14 +146,17 @@ public class LevelScript : MonoBehaviour
         VP.addChild(allScripts.programSection.flex);
 
         Reg3.addChild(store.GetComponent<StoreScript>().Store);
-       
-        //Edit Look
-        ChangeLang.setSelfHorizontalPadding(12, 1, 0, 1);
-        Zoom.setSelfHorizontalPadding(12, 1, 0, 1);
-        Resize.setSelfHorizontalPadding(12, 1, 0, 1);
-        Play.setSelfHorizontalPadding(12, 1, 0, 1);
 
-        MapView.setSpacingFlex(0.2f, 1);
+        MapView.setHorizontalPadding(12, 1, 0, 1);
+        MapView.setVerticalPadding(0.02f, 1, 0.02f, 1);
+
+        UIHolder.setSpacingFlex(0.2f, 1);
+        
+        ProgSpeed.setSquare();
+        Resize.setSquare();
+        DebugBTN.setSquare();
+
+        Buttons.setSpacingFlex(0.3f, 1);
 
         Controls.setSpacingFlex(0.5f, 1);
         Controls.setAllPadSame(0.1f, 1);
@@ -168,10 +166,29 @@ public class LevelScript : MonoBehaviour
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
-        Debug.Log("UI Set");
+        //Calculate leftover height, and fix the size of the Zoom slider
 
-        screenPos = new Vector2(mapView.rect.x, Screen.height);
-        viewSize = MapView.size;
+        Buttons.UI.GetComponent<VerticalLayoutGroup>().spacing = 5;
+        Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
+
+        //Set Images
+        UIHelper.setImage(Header.UI, playerSettings.colourScheme.getAccent(true));
+        UIHelper.setImage(Constraints.UI, playerSettings.colourScheme.getSecondary(true));
+        UIHelper.setImage(List.UI, playerSettings.colourScheme.getMain(true));
+
+        UIHelper.setImage(ProgSpeed.UI, playerSettings.colourScheme.getMain());
+        UIHelper.setImage(Resize.UI, playerSettings.colourScheme.getMain());
+        UIHelper.setImage(DebugBTN.UI, playerSettings.colourScheme.getMain());
+
+        UIHelper.setImage(Zoom.UI.GetChild(0), playerSettings.colourScheme.getMain());
+        UIHelper.setImage(Zoom.UI.GetChild(1).GetChild(0), playerSettings.colourScheme.getSecondary());
+        UIHelper.setImage(Zoom.UI.GetChild(2).GetChild(0), playerSettings.colourScheme.getAccent());
+
+        UIHelper.setImage(Reg3.getChild(0).GetChild(1), playerSettings.colourScheme.getMain(true));
+
+        UIHelper.setImage(CompleteLevel.UI, playerSettings.colourScheme.getAccent());
+
+        UIHelper.setImage(Save.UI, playerSettings.colourScheme.getSecondary());
 
     }
 
@@ -262,54 +279,10 @@ public class LevelScript : MonoBehaviour
 
    public void setUIText ()
     {
-        resize.text = UIwords.resize.getWord(lang);
-        debug.text = UIwords.debug.getWord(lang);
-        complete.text = UIwords.complete.getWord(lang);
-        save.text = UIwords.save.getWord(lang);
-        //changeLang.text = UIwords.changeLang.getWord(lang);
+        UIHelper.setText(complete.transform, UIwords.complete, playerSettings.colourScheme.getAccentTextColor());
+
+        UIHelper.setText(save.transform, UIwords.save, playerSettings.colourScheme.getAccentTextColor());
 
     }
-
-    /*
-    public void langChange ()
-    {
-        
-        if (lang == Language.English)
-        {
-            //Switch to French
-            lang = Language.French;
-
-            setUIText();
-
-            allScripts.levelManager.updateConstraints();
-
-            allScripts.storeScript.reload();
-
-            allScripts.mapDrag.reload();
-
-            allScripts.programSection.reload();
-
-            setUI();
-
-        } else
-        {
-            //Switch to English
-            lang = Language.English;
-
-            setUIText();
-
-            allScripts.levelManager.updateConstraints();
-
-            allScripts.storeScript.reload();
-
-            allScripts.mapDrag.reload();
-
-            allScripts.programSection.reload();
-
-            setUI();
-        }
-        
-    }
-    */
 
 }

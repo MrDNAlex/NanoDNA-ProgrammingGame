@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DNAMathAnimation;
+using DNASaveSystem;
 
 public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler, IEndDragHandler
 {
@@ -18,11 +19,13 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
 
     Vector3 mouseStart;
 
+    PlayerSettings settings;
+
     
     // Start is called before the first frame update
     void Start()
     {
-      
+        settings = SaveManager.loadPlaySettings();
     }
 
     // Update is called once per frame
@@ -59,10 +62,10 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
         //Display colour
         if (dist.x >= GetComponent<RectTransform>().sizeDelta.x * (0.75f))
         {
-            transform.parent.parent.GetComponent<Image>().color = Color.red;
+            UIHelper.setImage(transform.parent.parent, "Images/UIDesigns/Delete");
         } else
         {
-            transform.parent.parent.GetComponent<Image>().color = Color.cyan;
+            UIHelper.setImage(transform.parent.parent, settings.colourScheme.getMain(true));
         }
     }
 
@@ -73,15 +76,20 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
         if (dist.x >= GetComponent<RectTransform>().sizeDelta.x * (0.75f))
         {
             //Delete the line
-            StartCoroutine(transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().delLines());
-            //transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteProgramLine(transform.GetSiblingIndex());
+            //StartCoroutine(transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().delLines());
+            transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteProgramLine(transform.GetSiblingIndex());
+
+            UIHelper.setImage(transform.parent.parent, settings.colourScheme.getMain(true));
         } else
         {
             //Start Coroutine to slide it back to original position
 
-            transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.setSize(transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.size);
+            if (!transform.parent.parent.GetChild(0).GetComponent<DragController>().animating)
+            {
+                transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.setSize(transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.size);
 
-            StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 100, 0, false));
+                StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, 300, 0, false));
+            }
         }
     }
 
@@ -93,5 +101,7 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
     }
 
    
-    
+
+
+
 }

@@ -32,6 +32,7 @@ public class SettingsScene : MonoBehaviour
     UIWord Colour = new UIWord("Colour", "Couleur");
     UIWord Volume = new UIWord("Volume", "Volume");
     UIWord Settings = new UIWord("Settings", "Paramètre");
+    UIWord Save = new UIWord("Save", "Sauve");
 
     UIWord Col1 = new UIWord("Colour 1", "Couleur 1");
     UIWord Col2 = new UIWord("Colour 2", "Couleur 2");
@@ -67,12 +68,15 @@ public class SettingsScene : MonoBehaviour
     {
         
     }
+    
 
-    void setUI ()
+   void setUI ()
     {
         //Size of each setting is 150 tall?
 
         Flex Settings = new Flex(settings, 1);
+
+        Settings.deleteAllChildren();
 
         Flex Title = new Flex(Settings.getChild(0), 1, Settings);
         Flex SettingsPanel = new Flex(Settings.getChild(1), 5, Settings);
@@ -93,6 +97,16 @@ public class SettingsScene : MonoBehaviour
         Content.setSpacingFlex(1, 1);
 
         Content.setChildMultiH(80);
+
+        //SetImage
+
+        UIHelper.setImage(Settings.UI.transform, playSettings.colourScheme.getMain(true));
+
+        UIHelper.setImage(SettingsPanel.UI.transform, playSettings.colourScheme.getSecondary());
+
+        UIHelper.setImage(SaveBTN.UI.transform, playSettings.colourScheme.getAccent());
+
+
     }
 
     public void addSettings ()
@@ -124,7 +138,13 @@ public class SettingsScene : MonoBehaviour
 
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
 
+                gameObj.GetComponent<SettingCard>().mainColor = playSettings.colourScheme.getMainTextColor();
+
+                gameObj.GetComponent<SettingCard>().accentColor = playSettings.colourScheme.getAccentTextColor();
+
                 gameObj.GetComponent<SettingCard>().setInfoButton(Lang.getWord(playSettings.language) + ":", getLang(playSettings.language));
+
+                gameObj.GetComponent<SettingCard>().setColourScheme(playSettings);
 
                 gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
                 {
@@ -143,7 +163,13 @@ public class SettingsScene : MonoBehaviour
 
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
 
-                gameObj.GetComponent<SettingCard>().setInfoButton(Colour.getWord(playSettings.language) + ":", getColour(playSettings.colourScheme));
+                gameObj.GetComponent<SettingCard>().mainColor = playSettings.colourScheme.getMainTextColor();
+
+                gameObj.GetComponent<SettingCard>().accentColor = playSettings.colourScheme.getAccentTextColor();
+
+                gameObj.GetComponent<SettingCard>().setInfoButton(Colour.getWord(playSettings.language) + ":", getColour(playSettings.colourScheme.colourScheme));
+
+                gameObj.GetComponent<SettingCard>().setColourScheme(playSettings);
 
                 gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
                 {
@@ -160,8 +186,13 @@ public class SettingsScene : MonoBehaviour
             case 2:
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardSlider") as GameObject, content);
 
+                gameObj.GetComponent<SettingCard>().mainColor = playSettings.colourScheme.getMainTextColor();
+
+                gameObj.GetComponent<SettingCard>().accentColor = playSettings.colourScheme.getAccentTextColor();
+
                 gameObj.GetComponent<SettingCard>().setInfoSlider(Volume.getWord(playSettings.language) + ":", playSettings.volume);
 
+                gameObj.GetComponent<SettingCard>().flex.getChild(1).GetChild(1).GetComponent<Text>().color = playSettings.colourScheme.getMainTextColor();
 
                 gameObj.GetComponent<SettingCard>().onChange.AddListener(delegate
                 {
@@ -174,7 +205,13 @@ public class SettingsScene : MonoBehaviour
 
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
 
+                gameObj.GetComponent<SettingCard>().mainColor = playSettings.colourScheme.getMainTextColor();
+
+                gameObj.GetComponent<SettingCard>().accentColor = playSettings.colourScheme.getAccentTextColor();
+
                 gameObj.GetComponent<SettingCard>().setInfoButton(Lang.getWord(playSettings.language) + ":", getLang(playSettings.language));
+
+                gameObj.GetComponent<SettingCard>().setColourScheme(playSettings);
 
                 gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
                 {
@@ -223,7 +260,9 @@ public class SettingsScene : MonoBehaviour
 
     public void setLang (Language lang)
     {
-        settings.GetChild(0).GetComponent<Text>().text = Settings.getWord(lang);
+        UIHelper.setText(settings.GetChild(0), Settings, playSettings.colourScheme.getMainTextColor());
+
+        UIHelper.setText(saveBTN.transform.GetChild(0), Save, playSettings.colourScheme.getAccentTextColor());
     }
 
     private string getColour (SettingColourScheme colour)
@@ -280,9 +319,12 @@ public class SettingsScene : MonoBehaviour
     {
         this.playSettings = settings;
 
+        setUI();
         addSettings();
+
         setLang(playSettings.language);
 
     }
 
+   
 }

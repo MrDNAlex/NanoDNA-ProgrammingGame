@@ -90,9 +90,10 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             //Check if there is character data associated
             if (rayHit.collider.GetComponent<CharData>() != null)
             {
-                allScripts.levelScript.selected = rayHit.collider.gameObject;
+                allScripts.programSection.selectedCharacter = rayHit.collider.gameObject;
+                allScripts.programSection.selectedCharData = rayHit.collider.GetComponent<CharData>();
 
-                allScripts.programSection.renderProgram(rayHit.collider.gameObject);
+                allScripts.programSection.renderProgram();
 
                // sec.updateOGPos();
 
@@ -204,7 +205,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         float intercept = Cam.orthographicSize;
 
-        for (int i = 0; i < 50; i ++)
+        for (int i = 0; i < 100; i ++)
         {
             orthoSize = slope * i + intercept;
 

@@ -8,9 +8,8 @@ public class ProgramAction
 {
     //Maybe have a dictionary that stores all the information based off titles, then the program checks the type and grabs all the info it needs?
 
-    //public string type;
-    //public int value;
-    //public string dir;
+
+    //Add a bool to say it's empty
 
     public ActionType actionType;
 
@@ -114,12 +113,70 @@ public class ProgramAction
         return str;
     }
 
+    public string dispDetailedAction ()
+    {
+        string str = "";
+
+        switch (actionType)
+        {
+            case ActionType.Movement:
+
+                if (movementName == MovementActionNames.None)
+                {
+                    str = "";
+                } else
+                {
+                    str = actionType + " " + movementName + " " + getDirection(moveData.dir) + " " + moveData.value + " " + moveData.refID;
+                }
+               
+                break;
+            case ActionType.Math:
+                str = actionType + " " + mathName;
+                break;
+            case ActionType.Logic:
+                str = actionType + " " + logicName;
+                break;
+            case ActionType.Variable:
+                str = actionType + " " + variableName + " " + varData.name + " " + varData.value;
+                break;
+            case ActionType.Action:
+                str = actionType + " " + actionName;
+                break;
+
+        }
+        return str;
+    }
+
     
     public static ProgramAction empty()
     {
         return new ProgramAction();
     }
 
+
+    public string getDirection (Direction dir)
+    {
+        UIWord Up = new UIWord("Up", "Haut");
+        UIWord Left = new UIWord("Left", "Gauche");
+        UIWord Right = new UIWord("Right", "Droite");
+        UIWord Down = new UIWord("Down", "Bas");
+
+        switch (dir)
+        {
+            case Direction.Up:
+                return Up.getWord(Language.English);
+            case Direction.Left:
+                return Left.getWord(Language.English);
+            case Direction.Right:
+                return Right.getWord(Language.English);
+            case Direction.Down:
+                return Down.getWord(Language.English);
+            default:
+                return "";
+        }
+
+       
+    }
     
     
 

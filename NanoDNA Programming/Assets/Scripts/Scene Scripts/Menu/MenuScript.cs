@@ -72,6 +72,10 @@ public class MenuScript : MonoBehaviour
 
         //Set Size
         Menu.setSize(new Vector2(Screen.width, Screen.height));
+
+        UIHelper.setImage(Start.UI, playSettings.colourScheme.getAccent());
+        UIHelper.setImage(Settings.UI, playSettings.colourScheme.getAccent());
+        UIHelper.setImage(Exit.UI, playSettings.colourScheme.getAccent());
     }
 
     public void setFunctionality ()
@@ -115,15 +119,17 @@ public class MenuScript : MonoBehaviour
     public void setLang ()
     {
         //Title
-        menu.GetChild(0).GetChild(0).GetComponent<Text>().text = TitleWord.getWord(lang);
+        UIHelper.setText(menu.GetChild(0).GetChild(0), TitleWord, playSettings.colourScheme.getMainTextColor());
 
         //Start
-        menu.GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>().text = StartWord.getWord(lang);
+        UIHelper.setText(menu.GetChild(0).GetChild(1).GetChild(0), StartWord, playSettings.colourScheme.getAccentTextColor());
 
         //Settings
-        menu.GetChild(0).GetChild(2).GetChild(0).GetComponent<Text>().text = SettingsWord.getWord(lang);
+        UIHelper.setText(menu.GetChild(0).GetChild(2).GetChild(0), SettingsWord, playSettings.colourScheme.getAccentTextColor());
 
         //Exit
-        menu.GetChild(0).GetChild(3).GetChild(0).GetComponent<Text>().text = ExitWord.getWord(lang);
+        UIHelper.setText(menu.GetChild(0).GetChild(3).GetChild(0), ExitWord, playSettings.colourScheme.getAccentTextColor());
     }
+
+   
 }

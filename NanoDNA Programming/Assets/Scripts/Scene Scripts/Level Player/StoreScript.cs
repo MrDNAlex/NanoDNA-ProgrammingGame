@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.IO;
 using DNAStruct;
 using UnityEngine.Rendering;
+using DNASaveSystem;
 
 
 public class StoreScript : MonoBehaviour
@@ -78,6 +79,8 @@ public class StoreScript : MonoBehaviour
         {
             Content.addChild(storeSecBtn(tag));
         }
+
+        setImage(StoreHeader.UI, SaveManager.loadPlaySettings().colourScheme.getAccent(true));
 
     }
 
@@ -157,6 +160,15 @@ public class StoreScript : MonoBehaviour
             
         }
 
+    }
+
+    void setImage(Transform trans, string path)
+    {
+        Sprite sprite = Resources.Load<Sprite>(path);
+
+        trans.GetComponent<Image>().type = Image.Type.Sliced;
+
+        trans.GetComponent<Image>().sprite = sprite;
     }
 
     /*

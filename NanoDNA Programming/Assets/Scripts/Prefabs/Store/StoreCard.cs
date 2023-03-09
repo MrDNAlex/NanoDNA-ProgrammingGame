@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
 using DNAStruct;
+using DNASaveSystem;
 
 public class StoreCard : MonoBehaviour
 {
@@ -77,7 +78,6 @@ public class StoreCard : MonoBehaviour
 
     public void setStoreCard (GameObject prog)
     {
-        Debug.Log("set store card");
         //Instantiate Object
         Program = Instantiate(prog, card.transform);
 
@@ -87,7 +87,7 @@ public class StoreCard : MonoBehaviour
         cardFlex.addChild(Program.GetComponent<StoreCardDragInfo>().flex);
 
         //Set name
-        cardFlex.getChild(1).GetComponent<Text>().text = cardFlex.getChild(0).GetComponent<StoreCardDragInfo>().cardName.getWord(lang);
+        UIHelper.setText(cardFlex.getChild(1), cardFlex.getChild(0).GetComponent<StoreCardDragInfo>().cardName.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getMainTextColor());
 
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
 using DNAStruct;
+using DNASaveSystem;
 
 public class SettingCard : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class SettingCard : MonoBehaviour
 
     public Button.ButtonClickedEvent onClick;
     public Slider.SliderEvent onChange;
+
+    public Color mainColor;
+    public Color accentColor;
 
 
     private void Awake()
@@ -49,10 +53,8 @@ public class SettingCard : MonoBehaviour
                 Flex ButtonName = new Flex(flex.getChild(0), 4f, flex);
                 Flex Button = new Flex(flex.getChild(1), 4f, flex);
 
-                //Used to be 1
-               // flex.setSpacingFlex(2, 1);
-
                 onClick = flex.getChild(1).GetComponent<Button>().onClick;
+
                 break;
 
             case SettingCardType.Slider:
@@ -74,22 +76,32 @@ public class SettingCard : MonoBehaviour
 
     }
 
+    public void setColourScheme (PlayerSettings playsettings)
+    {
+        UIHelper.setImage(flex.getChild(1), playsettings.colourScheme.getAccent());
+    }
+
     public void setInfoButton (string name, string value)
     {
-        flex.getChild(0).GetComponent<Text>().text = name;
+        UIHelper.setText(flex.getChild(0), name, mainColor);
 
-        flex.getChild(1).GetChild(0).GetComponent<Text>().text = value;
+        UIHelper.setText(flex.getChild(1).GetChild(0), value, mainColor);
+
     }
 
     public void setInfoSlider (string name, int value)
     {
         //Value is int from 0-100
-        flex.getChild(0).GetComponent<Text>().text = name;
+        UIHelper.setText(flex.getChild(0), name, mainColor);
+
+        UIHelper.setText(flex.getChild(1).GetChild(1), value + "%", mainColor);
 
         flex.getChild(1).GetChild(0).GetComponent<Slider>().value = (float)value / 100;
-
-        flex.getChild(1).GetChild(1).GetComponent<Text>().text = value + "%";
     }
+
+   
+
+   
 }
 
 

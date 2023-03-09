@@ -49,10 +49,8 @@ public class ValueDisp : MonoBehaviour
             flex.addChild(Image);
             flex.addChild(Name);
             
-
-            //flex.setSpacingFlex(0.3f, 1);
-
-            flex.setAllPadSame(0.1f, 1);
+            flex.setHorizontalPadding(0.1f, 1, 0.1f, 1);
+            flex.setVerticalPadding(0.3f, 1, 0.3f, 1);
         } else
         {
             flex = new Flex(this.GetComponent<RectTransform>(), 1);

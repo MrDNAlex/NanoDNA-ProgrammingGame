@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using FlexUI;
 using DNAStruct;
 using UnityEngine.Rendering;
+using DNASaveSystem;
 
 public class ProgramLine : MonoBehaviour
 {
@@ -50,33 +51,34 @@ public class ProgramLine : MonoBehaviour
     {
         //Define all the Flex components
         Line = new Flex(background, 1);
-        Flex LineNumber = new Flex(Line.getChild(0), 1);
+        Flex LineNumberHolder = new Flex(Line.getChild(0), 1);
+        Flex LineNumber = new Flex(LineNumberHolder.getChild(0), 1);
+
         ProgramUI = new Flex(Line.getChild(1), 6);
         Flex Drag = new Flex(Line.getChild(2), 1);
 
         //Add children
-        Line.addChild(LineNumber);
+        Line.addChild(LineNumberHolder);
         Line.addChild(ProgramUI);
         Line.addChild(Drag);
+
+        LineNumberHolder.addChild(LineNumber);
 
         //Get extra References
         ProgramObj = Line.getChild(1).gameObject;
         //ProgramUI = ProgramUI;
 
-    }
+        //Set Images
+        UIHelper.setImage(Line.UI, SaveManager.loadPlaySettings().colourScheme.getMain(true));
+        UIHelper.setImage(LineNumberHolder.UI, SaveManager.loadPlaySettings().colourScheme.getSecondary(true));
 
+    }
 
     public void setNumber()
     {
         //Set the text to the correct number
-        Line.getChild(0).GetComponent<Text>().text = Line.UI.GetSiblingIndex().ToString();
 
-    }
-
-    public void setNumber(string num)
-    {
-        //Set the text to the correct number
-        Line.getChild(0).GetComponent<Text>().text = num;
+        UIHelper.setText(Line.getChild(0).GetChild(0), Line.UI.GetSiblingIndex().ToString(), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
 
     }
 
@@ -85,21 +87,11 @@ public class ProgramLine : MonoBehaviour
         //Set the garbage can button
         Line.getChild(2).GetComponent<Button>().onClick.AddListener(delegate
         {
-            StartCoroutine(delLines());
+            deleteProgramLine(index);
 
-            //deleteProgramLine(index);
+            allScripts.programSection.selectedCharData.displayProgram(true);
 
         });
-    }
-
-    public IEnumerator delLines()
-    {
-        deleteLine();
-        Debug.Log("Hello");
-        yield return new WaitForEndOfFrame();
-        Debug.Log("Hello 2");
-        allScripts.programSection.compileProgram();
-        yield return null;
     }
 
     public void deleteLine()
@@ -114,7 +106,7 @@ public class ProgramLine : MonoBehaviour
         ProgramUI.deleteAllChildren();
 
         //Reset color
-        background.GetComponent<Image>().color = Color.cyan;
+        background.GetComponent<Image>().color = Color.white;
 
     }
 
@@ -122,14 +114,13 @@ public class ProgramLine : MonoBehaviour
     {
         deleteLine();
 
-        Program prog = allScripts.levelScript.character.GetComponent<CharData>().program;
+        Program prog = allScripts.programSection.selectedCharData.program;
 
-        prog.list.RemoveAt(index);
+        prog.RemoveLine(index);
 
-        allScripts.programSection.compileProgram();
+        allScripts.levelManager.updateConstraints();
 
     }
-
 
     //Switch this to take in a CardInfo
     public void addProgram(CardInfo info, Transform trans)
@@ -166,10 +157,8 @@ public class ProgramLine : MonoBehaviour
 
             ProgramCard.AddComponent<DeleteIndentDrag>();
 
-            allScripts.programSection.compileProgram();
-
+            allScripts.levelManager.updateConstraints();
         }
-
     }
 
     public void reAddProgram(ProgramAction action)
@@ -203,9 +192,6 @@ public class ProgramLine : MonoBehaviour
         {
             program.name += transform.GetSiblingIndex();
 
-            //Get rid of Drag controller
-            // Destroy(program.GetComponent<DragController2>());
-
             //Add as a Flex child
             ProgramUI.addChild(program.GetComponent<ProgramCard>().program);
 
@@ -224,9 +210,8 @@ public class ProgramLine : MonoBehaviour
             //Make it editable
             program.GetComponent<ProgramCard>().setEditable();
 
+            allScripts.levelManager.updateConstraints();
         }
-
-
     }
 
     public void destroySubChildren(GameObject Obj)
@@ -246,10 +231,10 @@ public class ProgramLine : MonoBehaviour
 
                 Destroy(child.gameObject);
             }
-
         }
-
     }
+
+    
 
 
 

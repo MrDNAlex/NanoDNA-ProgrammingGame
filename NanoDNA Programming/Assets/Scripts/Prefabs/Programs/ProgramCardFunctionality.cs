@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexUI;
 using DNAStruct;
+using DNASaveSystem;
 
 public class ProgramCardFunctionality
 {
@@ -14,16 +15,22 @@ public class ProgramCardFunctionality
 
     Language lang;
 
+    PlayerSettings playSettings;
+
     //Var Types
     UIWord Text = new UIWord("Text", "Texte");
     UIWord Number = new UIWord("Number", "Nombre");
     UIWord Decimal = new UIWord("Decimal", "Decimale");
     UIWord Bool = new UIWord("Boolean", "Booléen");
 
+    UIWord Move = new UIWord("Move", "Bouge");
+
     public ProgramCardFunctionality()
     {
         allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-        lang = allScripts.levelScript.lang;
+
+        playSettings = SaveManager.loadPlaySettings();
+        lang = playSettings.language;
     }
 
     //
@@ -168,7 +175,6 @@ public class ProgramCardFunctionality
                 Debug.Log("Here");
                 break;
         }
-
     }
 
     public void setInfoMovement(CardInfo info)
@@ -200,12 +206,14 @@ public class ProgramCardFunctionality
 
                 if (info.action.moveData.refID != 0)
                 {
-                    info.rectTrans.GetChild(2).GetChild(0).GetComponent<Text>().text = Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.moveData.refID);
+                    UIHelper.setText(info.rectTrans.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.moveData.refID), playSettings.colourScheme.getBlackTextColor());
                 }
                 else
                 {
-                    info.rectTrans.GetChild(2).GetChild(0).GetComponent<Text>().text = info.action.moveData.value;
+                    UIHelper.setText(info.rectTrans.GetChild(2).GetChild(0), info.action.moveData.value, playSettings.colourScheme.getBlackTextColor());
                 }
+
+                UIHelper.setText(info.rectTrans.GetChild(0), Move, playSettings.colourScheme.getBlackTextColor());
 
                 //
                 //Implement reference ID
@@ -252,16 +260,14 @@ public class ProgramCardFunctionality
 
                 info.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
 
-                info.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = info.action.varData.name;
-
-
+                UIHelper.setText(info.transform.GetChild(2).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
+                
                 //Check if type is bool, set image in that cases
-
                 if (info.action.varData.refID != 0)
                 {
 
                     //Set the value to the name of the reference variable
-                    info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData);
+                    UIHelper.setText(info.transform.GetChild(4).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
 
                     path = "unity_builtin_extra/UISprite";
 
@@ -269,7 +275,6 @@ public class ProgramCardFunctionality
 
                     info.transform.GetChild(4).GetComponent<Button>().image.sprite = null;
 
-                    //info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = info.action.varData.value;
                 }
                 else
                 {
@@ -289,7 +294,7 @@ public class ProgramCardFunctionality
 
                         info.transform.GetChild(4).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                        info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "";
+                        UIHelper.setText(info.transform.GetChild(4).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
 
                     }
                     else
@@ -300,7 +305,7 @@ public class ProgramCardFunctionality
 
                         info.transform.GetChild(4).GetComponent<Button>().image.sprite = null;
 
-                        info.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = info.action.varData.value;
+                        UIHelper.setText(info.transform.GetChild(4).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
                     }
                 }
                 break;
@@ -335,15 +340,12 @@ public class ProgramCardFunctionality
                 if (info.action.actData.refID != 0)
                 {
                     //Make it equal to reference
-                    info.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.actData.refID);
-
+                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.actData.refID), playSettings.colourScheme.getBlackTextColor());
                 }
                 else
                 {
-                    info.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = info.action.actData.data;
+                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.actData.data, playSettings.colourScheme.getBlackTextColor());
                 }
-
-
                 break;
         }
     }
@@ -685,7 +687,7 @@ public class ProgramCardFunctionality
 
     public ProgramAction createActionAction(CardInfo info)
     {
-        info.action.actData.character = allScripts.programSection.character.transform;
+        info.action.actData.character = allScripts.programSection.selectedCharacter.transform;
         switch (info.actionName)
         {
             case ActionActionNames.Speak:
@@ -767,6 +769,8 @@ public class ProgramCardFunctionality
                 return "Images/EditControllerAssets/Text";
         }
     }
+
+   
 
 
 }

@@ -223,7 +223,7 @@ MonoBehaviour:
     varType: 0
     name: 
     value: 
-    character: {fileID: 0}
+    charData: {fileID: 0}
     id: 0
     refID: 0
 --- !u!114 &5337792026326269238
