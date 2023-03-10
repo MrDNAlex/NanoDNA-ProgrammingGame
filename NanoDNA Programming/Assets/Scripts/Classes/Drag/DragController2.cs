@@ -38,13 +38,13 @@ public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
         //Get the info from the StoreCardDragInfo
 
-        info.actionType = transform.GetComponent<StoreCardDragInfo>().info.actionType;
+        info.actionType = transform.GetComponent<ProgramCard>().actionType;
 
-        info.movementName = transform.GetComponent<StoreCardDragInfo>().info.movementName;
-        info.mathName = transform.GetComponent<StoreCardDragInfo>().info.mathName;
-        info.logicName = transform.GetComponent<StoreCardDragInfo>().info.logicName;
-        info.variableName = transform.GetComponent<StoreCardDragInfo>().info.variableName;
-        info.actionName = transform.GetComponent<StoreCardDragInfo>().info.actionName;
+        info.movementName = transform.GetComponent<ProgramCard>().movementName;
+        info.mathName = transform.GetComponent<ProgramCard>().mathName;
+        info.logicName = transform.GetComponent<ProgramCard>().logicName;
+        info.variableName = transform.GetComponent<ProgramCard>().variableName;
+        info.actionName = transform.GetComponent<ProgramCard>().actionName;
 
     }
 

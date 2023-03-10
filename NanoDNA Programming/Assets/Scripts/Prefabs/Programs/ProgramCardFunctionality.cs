@@ -99,18 +99,18 @@ public class ProgramCardFunctionality
                 //Flex Variable Init
                 Program = new Flex(info.rectTrans, 2);
 
-                Flex Public = new Flex(Program.getChild(0), 1);
-                Flex VarType = new Flex(Program.getChild(1), 1);
-                Flex VarName = new Flex(Program.getChild(2), 1);
-                Flex VarSign = new Flex(Program.getChild(3), 0.5f);
-                Flex VarValue = new Flex(Program.getChild(4), 1);
+                Flex PublicAndType = new Flex(Program.getChild(0), 0.5f, Program);
 
-                //Set Flex Parameters
-                Program.addChild(Public);
-                Program.addChild(VarType);
-                Program.addChild(VarName);
-                Program.addChild(VarSign);
-                Program.addChild(VarValue);
+                Debug.Log(Program.getChild(0).name);
+
+                Flex Public = new Flex(PublicAndType.getChild(0), 1, PublicAndType);
+                Flex VarType = new Flex(PublicAndType.getChild(1), 1, PublicAndType);
+
+                Flex VarName = new Flex(Program.getChild(1), 1, Program);
+                Flex VarSign = new Flex(Program.getChild(2), 0.5f, Program);
+                Flex VarValue = new Flex(Program.getChild(3), 1, Program);
+
+                PublicAndType.setSpacingFlex(0.05f, 1);
 
                 Program.setSpacingFlex(0.5f, 1);
 
@@ -230,8 +230,6 @@ public class ProgramCardFunctionality
         {
             case VariableActionNames.Variable:
 
-
-
                 //Check if public or local
                 if (info.action.varData.isPublic)
                 {
@@ -250,30 +248,30 @@ public class ProgramCardFunctionality
                 Texture2D image = Resources.Load(path) as Texture2D;
 
                 //Public / Private
-                info.transform.GetChild(0).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+                info.transform.GetChild(0).GetChild(0).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
                 path = getVarTypeImage(info.action.varData.varType);
 
                 image = Resources.Load(path) as Texture2D;
 
-                info.transform.GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+                info.transform.GetChild(0).GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                info.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                info.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>().text = "";
 
-                UIHelper.setText(info.transform.GetChild(2).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
                 
                 //Check if type is bool, set image in that cases
                 if (info.action.varData.refID != 0)
                 {
 
                     //Set the value to the name of the reference variable
-                    UIHelper.setText(info.transform.GetChild(4).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
 
                     path = "unity_builtin_extra/UISprite";
 
                     image = Resources.Load(path) as Texture2D;
 
-                    info.transform.GetChild(4).GetComponent<Button>().image.sprite = null;
+                    info.transform.GetChild(3).GetComponent<Button>().image.sprite = null;
 
                 }
                 else
@@ -292,9 +290,9 @@ public class ProgramCardFunctionality
 
                         image = Resources.Load(path) as Texture2D;
 
-                        info.transform.GetChild(4).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+                        info.transform.GetChild(3).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                        UIHelper.setText(info.transform.GetChild(4).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+                        UIHelper.setText(info.transform.GetChild(3).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
 
                     }
                     else
@@ -303,9 +301,9 @@ public class ProgramCardFunctionality
 
                         image = Resources.Load(path) as Texture2D;
 
-                        info.transform.GetChild(4).GetComponent<Button>().image.sprite = null;
+                        info.transform.GetChild(3).GetComponent<Button>().image.sprite = null;
 
-                        UIHelper.setText(info.transform.GetChild(4).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
+                        UIHelper.setText(info.transform.GetChild(3).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
                     }
                 }
                 break;
@@ -461,7 +459,7 @@ public class ProgramCardFunctionality
                 info.programCard.action = createAction(info);
 
                 //Public Local
-                info.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+                info.transform.GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
                 {
                     //Set Panel Type
                     info.editDataType = EditDataType.Multichoice;
@@ -484,7 +482,7 @@ public class ProgramCardFunctionality
                 });
 
                 //Variable Type
-                info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
+                info.transform.GetChild(0).GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
                     //Set Panel Type
                     info.editDataType = EditDataType.Multichoice;
@@ -507,7 +505,7 @@ public class ProgramCardFunctionality
                 });
 
                 //Name
-                info.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
+                info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
                     //Set Panel Type
                     info.editDataType = EditDataType.NewValue;
@@ -532,7 +530,7 @@ public class ProgramCardFunctionality
                 });
 
                 //Value
-                info.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(delegate
+                info.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(delegate
                 {
                     //Set Editable Variable Type
                     info.varType = info.action.varData.varType;
@@ -571,7 +569,6 @@ public class ProgramCardFunctionality
 
     public void setActionAction(CardInfo info)
     {
-
 
         switch (info.actionName)
         {

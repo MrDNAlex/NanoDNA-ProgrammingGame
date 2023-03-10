@@ -59,7 +59,7 @@ public class StoreCard : MonoBehaviour
 
     }
 
-    /*
+    
     public void setStoreCard (GameObject prog)
     {
         //Instantiate Object
@@ -68,14 +68,19 @@ public class StoreCard : MonoBehaviour
         //Make it the first Child
         Program.transform.SetSiblingIndex(0);
 
+        Program.AddComponent<DragController2>();
+
         //Add the child 
         cardFlex.addChild(Program.GetComponent<ProgramCard>().program);
 
         //Set name
-        cardFlex.getChild(1).GetComponent<Text>().text = cardFlex.getChild(0).GetComponent<ProgramCard>().cardName.getWord(lang);
-    }
-    */
 
+        UIHelper.setText(cardFlex.getChild(1), cardFlex.getChild(0).GetComponent<ProgramCard>().cardName.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getMainTextColor());
+
+    }
+    
+
+    /*
     public void setStoreCard (GameObject prog)
     {
         //Instantiate Object
@@ -90,5 +95,5 @@ public class StoreCard : MonoBehaviour
         UIHelper.setText(cardFlex.getChild(1), cardFlex.getChild(0).GetComponent<StoreCardDragInfo>().cardName.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getMainTextColor());
 
     }
-
+    */
 }

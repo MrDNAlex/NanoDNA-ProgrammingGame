@@ -36,10 +36,6 @@ public class ProgramCard : MonoBehaviour
 
         //Add action
         action = functionality.createAction(setCardInfo());
-
-      //  Debug.Log(action.dispAction());
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(action, transform.parent.parent.GetSiblingIndex());
-     
     }
 
     // Start is called before the first frame update
@@ -62,6 +58,8 @@ public class ProgramCard : MonoBehaviour
         //Set Action
         this.actionType = action.actionType;
         this.action = action;
+
+        //Set the action index
         Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(action, transform.parent.parent.GetSiblingIndex());
 
         //Actually paste info on the UI

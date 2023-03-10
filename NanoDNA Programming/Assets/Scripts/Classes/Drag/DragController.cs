@@ -21,11 +21,13 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
     private void Update()
     {
+        /*
         if (!animating && updateRender)
         {
             Camera.main.GetComponent<LevelScript>().allScripts.programSection.renderProgram();
             updateRender = false;
         }
+        */
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -173,7 +175,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
         animating = false;
         trans.localPosition = OGPos;
-
+        Camera.main.GetComponent<LevelScript>().allScripts.programSection.renderProgram();
     }
 
 

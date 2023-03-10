@@ -475,8 +475,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 414effa1d73ca4e4a966eb1c03175738, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -550,7 +550,7 @@ MonoBehaviour:
       varType: 0
       name: 
       value: 
-      character: {fileID: 0}
+      charData: {fileID: 0}
       id: 0
       refID: 0
     actData:
@@ -559,7 +559,6 @@ MonoBehaviour:
       data: 
       character: {fileID: 0}
       refID: 0
-  setInf: 0
 --- !u!61 &8864324988612070715
 BoxCollider2D:
   m_ObjectHideFlags: 0

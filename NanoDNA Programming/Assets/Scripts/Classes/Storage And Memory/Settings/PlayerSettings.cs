@@ -12,6 +12,7 @@ public class PlayerSettings
     public int volume;
     //public SettingColourScheme colourScheme;
     public ColourPaletteStorage colourScheme;
+    public bool advancedVariables;
     
     public PlayerSettings (Language lang = Language.English)
     {

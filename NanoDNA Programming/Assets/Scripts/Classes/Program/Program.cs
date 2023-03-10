@@ -109,6 +109,8 @@ public class Program
 
     public void setAction(ProgramAction action, int index)
     {
+       // Debug.Log("Set Action: " + action.dispDetailedAction() + " " + index);
+
         List<ProgramAction> prog = list;
 
         list.RemoveAt(index);
@@ -132,7 +134,7 @@ public class Program
         //Action 1 goes to index 2
         //Action 2 goes to Index 1
 
-        Debug.Log("Swap");
+        Debug.Log("Swap: " + index1 + " And " + index2);
 
         ProgramAction action1 = list[index1];
         ProgramAction action2 = list[index2];

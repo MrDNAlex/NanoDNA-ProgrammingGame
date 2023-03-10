@@ -30,7 +30,7 @@ public class StoreScript : MonoBehaviour
     Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
-    
+
 
     private void Awake()
     {
@@ -40,7 +40,7 @@ public class StoreScript : MonoBehaviour
 
         setUI();
 
-        
+
     }
 
     // Start is called before the first frame update
@@ -54,7 +54,7 @@ public class StoreScript : MonoBehaviour
     }
 
     //Buttons get a 200 pixel multi
-    public void setUI ()
+    public void setUI()
     {
         Store = new Flex(transform.GetComponent<RectTransform>(), 4f);
 
@@ -62,7 +62,7 @@ public class StoreScript : MonoBehaviour
 
         Flex VP = new Flex(StoreHeader.getChild(0), 1);
 
-         Content = new Flex(VP.getChild(0), 1);
+        Content = new Flex(VP.getChild(0), 1);
 
         GridView = new Flex(Store.getChild(1), 5);
 
@@ -73,47 +73,50 @@ public class StoreScript : MonoBehaviour
 
         VP.addChild(Content);
 
-        Content.setChildMultiW(230);
+        Content.setChildMultiW(300);
 
         foreach (ActionType tag in System.Enum.GetValues(typeof(ActionType)))
         {
             Content.addChild(storeSecBtn(tag));
         }
 
-        setImage(StoreHeader.UI, SaveManager.loadPlaySettings().colourScheme.getAccent(true));
+        Content.setSpacingFlex(0.1f, 1);
+
+        setImage(StoreHeader.UI, SaveManager.loadPlaySettings().colourScheme.getSecondary(true));
 
     }
 
-   public Flex storeSecBtn (ActionType tag)
+    public Flex storeSecBtn(ActionType tag)
     {
         GameObject btn = Instantiate(storeSection, Store.getChild(0).GetChild(0).GetChild(0).transform);
 
-        Flex section = new Flex(btn.GetComponent<RectTransform>(), 1);
+        StoreBtn storeBTN = btn.GetComponent<StoreBtn>();
 
         //Set Info
-        btn.transform.GetChild(0).GetComponent<Text>().text = UIwords.getStoreTitle(tag, lang);
-        btn.transform.GetComponent<StoreBtn>().actionType = tag;
+        storeBTN.setText(UIwords.getStoreTitle(tag, lang));
+        storeBTN.setImage();
 
-        btn.transform.GetComponent<StoreBtn>().onclick.AddListener(delegate
+        storeBTN.actionType = tag;
+
+        storeBTN.onclick.AddListener(delegate
         {
-            StartCoroutine(renderStore(btn.transform.GetComponent<StoreBtn>().actionType));
+            StartCoroutine(renderStore(storeBTN.actionType));
             //Use a function that passes the tag and renders all the children of that tag
         });
+
+        Flex section = storeBTN.flex;
 
         return section;
     }
 
-    public IEnumerator renderStore (ActionType tag)
+    public IEnumerator renderStore(ActionType tag)
     {
         //Delete all current children (Flex and real)
         destroyChildren(GridView.UI.gameObject);
-       
+
         GridView.deleteAllChildren();
 
-        //Add the children and size them
         //Instantiate storeCard
-        Debug.Log("Render Store");
-
         Object[] storeItems = Resources.LoadAll(folderPaths(tag));
 
         foreach (Object obj in storeItems)
@@ -125,7 +128,6 @@ public class StoreScript : MonoBehaviour
             card.GetComponent<StoreCard>().cardFlex.setSize(GridView.UI.GetComponent<GridLayoutGroup>().cellSize);
             yield return null;
         }
-        
     }
 
     public void destroyChildren(GameObject Obj)
@@ -138,28 +140,24 @@ public class StoreScript : MonoBehaviour
         }
     }
 
-    public string folderPaths (ActionType tag)
+    public string folderPaths(ActionType tag)
     {
         switch (tag)
         {
             case ActionType.Movement:
-                return "Prefabs/Store/StoreCardDrags/Movement";
+                return "Prefabs/Programs/Movement";
             case ActionType.Math:
-                return "Prefabs/Store/StoreCardDrags/Math";
-               
+                return "Prefabs/Programs/Math";
             case ActionType.Logic:
-                return "Prefabs/Store/StoreCardDrags/Logic";
-                
+                return "Prefabs/Programs/Logic";
             case ActionType.Variable:
-                return "Prefabs/Store/StoreCardDrags/Variable";
+                return "Prefabs/Programs/Variable";
             case ActionType.Action:
-                return "Prefabs/Store/StoreCardDrags/Action";
-               
+                return "Prefabs/Programs/Action";
+
             default:
                 return "";
-            
         }
-
     }
 
     void setImage(Transform trans, string path)

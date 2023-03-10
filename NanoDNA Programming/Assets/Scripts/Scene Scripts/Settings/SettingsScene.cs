@@ -22,7 +22,7 @@ public class SettingsScene : MonoBehaviour
 
     //Create a new Class for storing settings details
     PlayerSettings playSettings;
-    
+
     //Maybe add all these words to a class
 
     //Words
@@ -51,26 +51,27 @@ public class SettingsScene : MonoBehaviour
         {
             Debug.Log("Error");
             playSettings = new PlayerSettings();
-        } else
+        }
+        else
         {
             playSettings = SaveManager.loadPlaySettings();
         }
-       
+
         setUI();
         addSettings();
         setLang(playSettings.language);
         setFunctionality();
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-    
 
-   void setUI ()
+    }
+
+
+    void setUI()
     {
         //Size of each setting is 150 tall?
 
@@ -109,7 +110,7 @@ public class SettingsScene : MonoBehaviour
 
     }
 
-    public void addSettings ()
+    public void addSettings()
     {
         destroyChildren(content.gameObject);
 
@@ -117,19 +118,19 @@ public class SettingsScene : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            
+
 
             SettingFunctionality(i);
 
             //800, 
-            
+
 
         }
 
         settings.GetComponent<FlexInfo>().flex.setSize(new Vector2(Screen.width, Screen.height));
     }
 
-    public void SettingFunctionality (int index)
+    public void SettingFunctionality(int index)
     {
         GameObject gameObj = null;
         switch (index)
@@ -186,19 +187,49 @@ public class SettingsScene : MonoBehaviour
             case 2:
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardSlider") as GameObject, content);
 
+                SettingCard setCard = gameObj.GetComponent<SettingCard>();
+
+                setCard.mainColor = playSettings.colourScheme.getMainTextColor();
+
+                setCard.accentColor = playSettings.colourScheme.getAccentTextColor();
+
+                setCard.setInfoSlider(Volume.getWord(playSettings.language) + ":", playSettings.volume);
+
+                setCard.flex.getChild(1).GetChild(1).GetComponent<Text>().color = playSettings.colourScheme.getMainTextColor();
+
+                setCard.onChange.AddListener(delegate
+                {
+                    setCard.flex.getChild(1).GetChild(1).GetComponent<Text>().text = Mathf.FloorToInt(setCard.flex.getChild(1).GetChild(0).GetComponent<Slider>().value * 100) + "%";
+                });
+
+                break;
+
+            case 3:
+
+                //Advanced Variables
+                gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
+
                 gameObj.GetComponent<SettingCard>().mainColor = playSettings.colourScheme.getMainTextColor();
 
                 gameObj.GetComponent<SettingCard>().accentColor = playSettings.colourScheme.getAccentTextColor();
 
-                gameObj.GetComponent<SettingCard>().setInfoSlider(Volume.getWord(playSettings.language) + ":", playSettings.volume);
+                gameObj.GetComponent<SettingCard>().setInfoButton(Colour.getWord(playSettings.language) + ":", getColour(playSettings.colourScheme.colourScheme));
 
-                gameObj.GetComponent<SettingCard>().flex.getChild(1).GetChild(1).GetComponent<Text>().color = playSettings.colourScheme.getMainTextColor();
+                gameObj.GetComponent<SettingCard>().setColourScheme(playSettings);
 
-                gameObj.GetComponent<SettingCard>().onChange.AddListener(delegate
+                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
                 {
-                    gameObj.GetComponent<SettingCard>().flex.getChild(1).GetChild(1).GetComponent<Text>().text = Mathf.FloorToInt(gameObj.GetComponent<SettingCard>().flex.getChild(1).GetChild(0).GetComponent<Slider>().value * 100) + "%";
+                    infoEditPanel.SetActive(true);
+
+                    destroyChildren(infoEditPanel);
+
+                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+
+                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.ColourScheme, infoEditPanel.transform, playSettings);
+
                 });
-              
+
+
                 break;
 
             default:
@@ -234,7 +265,7 @@ public class SettingsScene : MonoBehaviour
         content.GetComponent<FlexInfo>().flex.addChild(gameObj.GetComponent<SettingCard>().flex);
     }
 
-    public void setFunctionality ()
+    public void setFunctionality()
     {
         saveBTN.onClick.AddListener(delegate
         {
@@ -256,16 +287,16 @@ public class SettingsScene : MonoBehaviour
         }
     }
 
-  
 
-    public void setLang (Language lang)
+
+    public void setLang(Language lang)
     {
         UIHelper.setText(settings.GetChild(0), Settings, playSettings.colourScheme.getMainTextColor());
 
         UIHelper.setText(saveBTN.transform.GetChild(0), Save, playSettings.colourScheme.getAccentTextColor());
     }
 
-    private string getColour (SettingColourScheme colour)
+    private string getColour(SettingColourScheme colour)
     {
         string word = "";
         switch (colour)
@@ -300,7 +331,7 @@ public class SettingsScene : MonoBehaviour
 
     }
 
-    private string getLang (Language lang)
+    private string getLang(Language lang)
     {
         string word = "";
         switch (lang)
@@ -326,5 +357,5 @@ public class SettingsScene : MonoBehaviour
 
     }
 
-   
+
 }

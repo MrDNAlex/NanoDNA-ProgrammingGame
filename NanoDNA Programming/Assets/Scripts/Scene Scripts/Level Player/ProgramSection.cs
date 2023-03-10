@@ -80,7 +80,9 @@ public class ProgramSection : MonoBehaviour
     {
         Flex Content = new Flex(GetComponent<RectTransform>(), 1);
 
-        Content.setChildMultiH(175);
+        //Content.setChildMultiH(175);
+
+        Content.setChildMultiH((Screen.height * 0.9f) / 6);
 
         //Add all the programLine Children
 

@@ -143,19 +143,23 @@ public class ProgramLine : MonoBehaviour
 
         if (ProgramCard != null)
         {
+            ProgramCard card = ProgramCard.GetComponent<ProgramCard>();
+
             ProgramCard.name += transform.GetSiblingIndex();
 
-            ProgramUI.addChild(ProgramCard.GetComponent<ProgramCard>().program);
+            ProgramUI.addChild(card.program);
 
             //Destroy(ProgramCard.GetComponent<DragController2>());
 
             Line.setSize(Line.size);
 
-            ProgramCard.GetComponent<ProgramCard>().setEditable();
-
-            ProgramCard.GetComponent<ProgramCard>().progLine = transform;
+            card.progLine = transform;
 
             ProgramCard.AddComponent<DeleteIndentDrag>();
+
+            card.setEditable();
+
+           // Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(card.action, transform.parent.parent.GetSiblingIndex());
 
             allScripts.levelManager.updateConstraints();
         }
@@ -190,13 +194,15 @@ public class ProgramLine : MonoBehaviour
 
         if (program != null)
         {
+            ProgramCard card = program.GetComponent<ProgramCard>();
+
             program.name += transform.GetSiblingIndex();
 
             //Add as a Flex child
-            ProgramUI.addChild(program.GetComponent<ProgramCard>().program);
+            ProgramUI.addChild(card.program);
 
             //Set the transform
-            program.GetComponent<ProgramCard>().progLine = transform;
+            card.progLine = transform;
 
             //Set size of the component
             Line.setSize(Line.size);
@@ -205,10 +211,10 @@ public class ProgramLine : MonoBehaviour
             program.AddComponent<DeleteIndentDrag>();
 
             //Set Info
-            program.GetComponent<ProgramCard>().setInfo(action);
+            card.setInfo(action);
 
             //Make it editable
-            program.GetComponent<ProgramCard>().setEditable();
+            card.setEditable();
 
             allScripts.levelManager.updateConstraints();
         }

@@ -90,6 +90,8 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             //Check if there is character data associated
             if (rayHit.collider.GetComponent<CharData>() != null)
             {
+                Debug.Log("Right Click");
+
                 allScripts.programSection.selectedCharacter = rayHit.collider.gameObject;
                 allScripts.programSection.selectedCharData = rayHit.collider.GetComponent<CharData>();
 
@@ -172,7 +174,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
 
-        return new Vector2(normalX * Screen.width, Screen.height * (1 + normalY));
+        return new Vector2(normalX * allScripts.levelScript.MapView.size.x, allScripts.levelScript.MapView.size.y * (1 + normalY));
 
     }
 

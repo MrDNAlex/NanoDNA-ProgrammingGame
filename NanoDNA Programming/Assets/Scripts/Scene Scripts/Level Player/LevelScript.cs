@@ -63,6 +63,7 @@ public class LevelScript : MonoBehaviour
 
 
     public Flex Background;
+    public Flex MapView;
 
     //public GameObject selected;
 
@@ -123,7 +124,7 @@ public class LevelScript : MonoBehaviour
         Flex Scripts = new Flex(Header.getChild(1), 1);
 
         Flex Reg2 = new Flex(Background.getChild(1), 2f, Background);
-        Flex MapView = new Flex(Reg2.getChild(0), 2f, Reg2);
+        MapView = new Flex(Reg2.getChild(0), 2f, Reg2);
 
 
         Flex UIHolder = new Flex(MapView.getChild(0), 1, MapView);
@@ -172,7 +173,7 @@ public class LevelScript : MonoBehaviour
         Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
 
         //Set Images
-        UIHelper.setImage(Header.UI, playerSettings.colourScheme.getAccent(true));
+        UIHelper.setImage(Header.UI, playerSettings.colourScheme.getSecondary(true));
         UIHelper.setImage(Constraints.UI, playerSettings.colourScheme.getSecondary(true));
         UIHelper.setImage(List.UI, playerSettings.colourScheme.getMain(true));
 
@@ -188,7 +189,8 @@ public class LevelScript : MonoBehaviour
 
         UIHelper.setImage(CompleteLevel.UI, playerSettings.colourScheme.getAccent());
 
-        UIHelper.setImage(Save.UI, playerSettings.colourScheme.getSecondary());
+        UIHelper.setImage(Save.UI, playerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Undo.UI, playerSettings.colourScheme.getAccent());
 
     }
 
@@ -212,17 +214,15 @@ public class LevelScript : MonoBehaviour
         }
     }
 
-    public float getOrthoSize()
-    {
-        return Cam2.orthographicSize;
-    }
-
+ 
 
     public void setCamera(LevelInfo info)
     {
         //Set the Camera Texture size
-        camText.width = (int)Screen.width;
-        camText.height = (int)Screen.height;
+
+
+        camText.width = (int)MapView.size.x;
+        camText.height = (int)MapView.size.y;
 
         //Set the Orthographic size
         Cam2.orthographicSize = orthoSizeCalc(info);
