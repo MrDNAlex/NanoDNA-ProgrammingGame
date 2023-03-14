@@ -66,10 +66,10 @@ public class ProgramManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public List<VariableData> getVariables (VariableType varType)
+    public List<VariableData> getVariables(VariableType varType)
     {
         List<VariableData> list = new List<VariableData>();
 
@@ -83,7 +83,18 @@ public class ProgramManager : MonoBehaviour
         return list;
     }
 
-    public void updateVariables ()
+    public List<VariableData> getAllVariables()
+    {
+        List<VariableData> list = new List<VariableData>();
+
+        foreach (VariableData var in allVariables)
+        {
+            list.Add(var);
+        }
+        return list;
+    }
+
+    public void updateVariables()
     {
         //Delete allVariables
         allVariables = new List<VariableData>();
@@ -100,14 +111,14 @@ public class ProgramManager : MonoBehaviour
             if (child.GetComponent<CharData>() != null)
             {
                 //Loop through the program to see if it has any variables
-                Debug.Log(child.name);
+                //Debug.Log(child.name);
 
                 foreach (ProgramAction action in child.GetComponent<CharData>().program.list)
                 {
                     if (action.actionType == ActionType.Variable)
                     {
-                        Debug.Log("Variable");
-                        Debug.Log(action.dispDetailedAction());
+                        //Debug.Log("Variable");
+                        //Debug.Log(action.dispDetailedAction());
                         if (action.varData.id == 0)
                         {
                             //Gen new ID
@@ -119,16 +130,12 @@ public class ProgramManager : MonoBehaviour
                         allVariables.Add(action.varData);
                     }
                 }
-
             }
-
         }
-
         //displayAllVariables();
-
     }
 
-    public void displayAllVariables ()
+    public void displayAllVariables()
     {
         foreach (VariableData data in allVariables)
         {
@@ -136,9 +143,9 @@ public class ProgramManager : MonoBehaviour
         }
     }
 
-   public int genUniqueID ()
+    public int genUniqueID()
     {
-        
+
         int rngID = 0;
 
         bool sameID = true;
@@ -153,7 +160,7 @@ public class ProgramManager : MonoBehaviour
 
     }
 
-    public bool isSameID (int id)
+    public bool isSameID(int id)
     {
         bool verdict = false;
         foreach (VariableData var in allVariables)
@@ -167,13 +174,13 @@ public class ProgramManager : MonoBehaviour
         return verdict;
     }
 
-    public void updateVariable (VariableData data)
+    public void updateVariable(VariableData data)
     {
         //Search for same ID
-       
-        for (int i = 0; i < allVariables.Count; i ++)
+
+        for (int i = 0; i < allVariables.Count; i++)
         {
-           if (allVariables[i].id == data.id)
+            if (allVariables[i].id == data.id)
             {
                 //Check if they have a reference ID
 
@@ -181,18 +188,19 @@ public class ProgramManager : MonoBehaviour
                 {
                     //Not referencing
                     allVariables[i].setValue(data.value);
-                } else
+                }
+                else
                 {
                     //Search for the Ref ID
                     //Debug.Log(allVariables[i].value);
                     allVariables[i].setValue(allVariables.Find(val => val.id == data.refID).value);
                     data.setValue(allVariables.Find(val => val.id == data.refID).value);
-                   // Debug.Log(allVariables[i].value);
+                    // Debug.Log(allVariables[i].value);
 
-                   // Debug.Log(allVariables.Find(val => val.id == data.refID).value);
-                   // Debug.Log("Value Updated");
+                    // Debug.Log(allVariables.Find(val => val.id == data.refID).value);
+                    // Debug.Log("Value Updated");
 
-                   
+
 
                 }
             }
@@ -200,12 +208,12 @@ public class ProgramManager : MonoBehaviour
 
     }
 
-    public string getVariableName (VariableData data)
+    public string getVariableName(VariableData data)
     {
         return allVariables.Find(val => val.id == data.refID).name;
     }
 
-    public string getVariableName (int refID)
+    public string getVariableName(int refID)
     {
         return allVariables.Find(val => val.id == refID).name;
     }

@@ -137,7 +137,7 @@ public class ProgramAction
                 str = actionType + " " + logicName;
                 break;
             case ActionType.Variable:
-                str = actionType + " " + variableName + " " + varData.name + " " + varData.value;
+                str = actionType + " " + variableName + " "+ varData.isPublic + " " + varData.varType + " " + varData.name + " " + varData.value;
                 break;
             case ActionType.Action:
                 str = actionType + " " + actionName;
@@ -178,11 +178,4 @@ public class ProgramAction
        
     }
     
-    
-
-
-
-
-
-
 }

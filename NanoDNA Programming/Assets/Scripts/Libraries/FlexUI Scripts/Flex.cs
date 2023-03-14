@@ -7,6 +7,8 @@ using UnityEngine.UI;
 namespace FlexUI
 {
 
+    
+
     public class Flex
     {
 
@@ -781,6 +783,11 @@ namespace FlexUI
             }
 
             return result;
+        }
+
+        public static Vector2 ScreenSize ()
+        {
+            return new Vector2(Screen.width, Screen.height);
         }
 
     }

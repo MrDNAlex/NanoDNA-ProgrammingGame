@@ -117,6 +117,7 @@ namespace DNAStruct
         Public,
         Bool,
         Speak,
+        VariableSmartAssign
 
     }
 
@@ -126,6 +127,7 @@ namespace DNAStruct
         Number,
         Decimal,
         Bool,
+        SmartAssign
     }
 
     public enum ActionDescriptor
@@ -367,7 +369,8 @@ namespace DNAStruct
     public enum SettingValueType
     {
         Language,
-        ColourScheme
+        ColourScheme,
+        AdvancedVariables
     }
 
     public enum SettingColourScheme

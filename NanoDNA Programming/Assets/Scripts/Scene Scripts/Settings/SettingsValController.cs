@@ -5,6 +5,7 @@ using DNAStruct;
 using FlexUI;
 using UnityEngine.UI;
 using DNASaveSystem;
+using DNAMathAnimation;
 
 public class SettingsValController : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class SettingsValController : MonoBehaviour
 
     UIWord English = new UIWord("English", "Anglais");
     UIWord French = new UIWord("French", "Français");
+
+    UIWord Advanced = new UIWord("Advanced", "Avancée");
+    UIWord Simple = new UIWord("Simple", "Simple");
 
     UIWord Col1 = new UIWord("Colour 1", "Couleur 1");
     UIWord Col2 = new UIWord("Colour 2", "Couleur 2");
@@ -59,9 +63,16 @@ public class SettingsValController : MonoBehaviour
         setUI();
         setControls();
         setColour();
+
+        Vector3 currentPos = parent.localPosition;
+        Vector3 startPos = currentPos + new Vector3(0, -Screen.height, 0);
+
+        parent.localPosition = startPos;
+
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(parent, currentPos, 150, 1, true));
     }
 
-   void setColour ()
+    void setColour()
     {
         switch (editType)
         {
@@ -78,8 +89,8 @@ public class SettingsValController : MonoBehaviour
         }
     }
 
-   
-   
+
+
 
     public void setUI()
     {
@@ -119,7 +130,8 @@ public class SettingsValController : MonoBehaviour
 
                 Panel.setSpacingFlex(0.1f, 1);
 
-                Panel.setVerticalPadding(0.1f, 1, 0, 1);
+                Panel.setVerticalPadding(0.1f, 1, 0.1f, 1);
+                Panel.setHorizontalPadding(0.01f, 1, 0.01f, 1);
 
                 ExitBTN.setSquare();
 
@@ -146,9 +158,9 @@ public class SettingsValController : MonoBehaviour
         }
     }
 
-    public void setControls ()
+    public void setControls()
     {
-       
+
         //Exit Button
         Parent.getChild(0).GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
@@ -157,12 +169,12 @@ public class SettingsValController : MonoBehaviour
             Destroy(this.gameObject);
         });
 
-        
+
     }
 
-    public void setGridView (Flex GridView)
+    public void setGridView(Flex GridView)
     {
-       
+
 
         switch (editValue)
         {
@@ -182,6 +194,10 @@ public class SettingsValController : MonoBehaviour
                 instantiateDisplayCard("Images/SettingsControllerAssets/Col6", GridView, Col6, 5, 1);
                 instantiateDisplayCard("Images/SettingsControllerAssets/Col7", GridView, Col7, 6, 1);
                 instantiateDisplayCard("Images/SettingsControllerAssets/Col8", GridView, Col8, 7, 1);
+                break;
+            case SettingValueType.AdvancedVariables:
+                instantiateDisplayCard("Images/SettingsControllerAssets/Advanced", GridView, Advanced, 0, 0);
+                instantiateDisplayCard("Images/SettingsControllerAssets/Simple", GridView, Simple, 1, 0);
                 break;
         }
 
@@ -206,7 +222,7 @@ public class SettingsValController : MonoBehaviour
 
         GameObject valDisp = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDispCard") as GameObject, parent.UI.GetChild(rowIndex).transform);
 
-        valDisp.transform.GetChild(1).GetComponent<Text>().text = word.getWord(lang);
+        UIHelper.setText(valDisp.transform.GetChild(1), word.getWord(lang), playSettings.colourScheme.getBlackTextColor());
 
         valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
@@ -214,7 +230,7 @@ public class SettingsValController : MonoBehaviour
 
         valDisp.GetComponent<Button>().onClick.AddListener(delegate
         {
-            
+
             //Edit the settings
             setData(index);
 
@@ -235,7 +251,7 @@ public class SettingsValController : MonoBehaviour
 
     }
 
-    public void setData (int index)
+    public void setData(int index)
     {
         switch (editValue)
         {
@@ -253,21 +269,24 @@ public class SettingsValController : MonoBehaviour
 
                 break;
             case SettingValueType.ColourScheme:
-
+                Color white = new Color(1, 1, 1, 1);
+                Color black = new Color(0, 0, 0, 1);
                 switch (index)
                 {
                     case 0:
                         playSettings.setColourScheme(SettingColourScheme.Col1, "Images/UIDesigns/Palettes/Palette 1");
 
-                        playSettings.colourScheme.textColorMain = Color.white;
-                        playSettings.colourScheme.textColorAccent = Color.black; //Try black
+                        playSettings.colourScheme.textColorMain = white;
+                        playSettings.colourScheme.textColorAccent = black; //Try black
 
                         break;
                     case 1:
                         playSettings.setColourScheme(SettingColourScheme.Col2, "Images/UIDesigns/Palettes/Palette 2");
 
-                        playSettings.colourScheme.textColorMain = Color.white;
-                        playSettings.colourScheme.textColorAccent = Color.black;
+
+
+                        playSettings.colourScheme.textColorMain = white;
+                        playSettings.colourScheme.textColorAccent = black;
                         break;
                     case 2:
                         playSettings.setColourScheme(SettingColourScheme.Col3, "Images/UIDesigns/Palettes/Palette 3");
@@ -297,13 +316,27 @@ public class SettingsValController : MonoBehaviour
                         break;
                 }
                 break;
+
+            case SettingValueType.AdvancedVariables:
+
+                switch (index)
+                {
+                    case 0:
+                        playSettings.advancedVariables = true;
+                        break;
+                    case 1:
+                        playSettings.advancedVariables = false;
+                        break;
+                }
+
+                break;
         }
     }
 
-   
 
 
 
 
-   
+
+
 }

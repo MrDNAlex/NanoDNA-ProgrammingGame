@@ -99,18 +99,26 @@ public class ProgramCardFunctionality
                 //Flex Variable Init
                 Program = new Flex(info.rectTrans, 2);
 
-                Flex PublicAndType = new Flex(Program.getChild(0), 0.5f, Program);
+                if (playSettings.advancedVariables)
+                {
+                    Flex PublicAndType = new Flex(Program.getChild(0), 0.5f, Program);
 
-                Debug.Log(Program.getChild(0).name);
+                    Debug.Log(Program.getChild(0).name);
 
-                Flex Public = new Flex(PublicAndType.getChild(0), 1, PublicAndType);
-                Flex VarType = new Flex(PublicAndType.getChild(1), 1, PublicAndType);
+                    Flex Public = new Flex(PublicAndType.getChild(0), 1, PublicAndType);
+                    Flex VarType = new Flex(PublicAndType.getChild(1), 1, PublicAndType);
 
-                Flex VarName = new Flex(Program.getChild(1), 1, Program);
-                Flex VarSign = new Flex(Program.getChild(2), 0.5f, Program);
-                Flex VarValue = new Flex(Program.getChild(3), 1, Program);
+                    Flex VarName = new Flex(Program.getChild(1), 1, Program);
+                    Flex VarSign = new Flex(Program.getChild(2), 0.5f, Program);
+                    Flex VarValue = new Flex(Program.getChild(3), 1, Program);
 
-                PublicAndType.setSpacingFlex(0.05f, 1);
+                    PublicAndType.setSpacingFlex(0.05f, 1);
+                } else
+                {
+                    Flex VarName = new Flex(Program.getChild(0), 1, Program);
+                    Flex VarSign = new Flex(Program.getChild(1), 0.5f, Program);
+                    Flex VarValue = new Flex(Program.getChild(2), 1, Program);
+                }
 
                 Program.setSpacingFlex(0.5f, 1);
 
@@ -230,82 +238,142 @@ public class ProgramCardFunctionality
         {
             case VariableActionNames.Variable:
 
-                //Check if public or local
-                if (info.action.varData.isPublic)
+                if (playSettings.advancedVariables)
                 {
-                    //Public
-                    // Debug.Log("Public Path");
-                    path = "Images/EditControllerAssets/Public";
-
-                }
-                else
-                {
-                    //Local
-                    // Debug.Log("Private Path");
-                    path = "Images/EditControllerAssets/Local";
-                }
-
-                Texture2D image = Resources.Load(path) as Texture2D;
-
-                //Public / Private
-                info.transform.GetChild(0).GetChild(0).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
-
-                path = getVarTypeImage(info.action.varData.varType);
-
-                image = Resources.Load(path) as Texture2D;
-
-                info.transform.GetChild(0).GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
-
-                info.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-
-                UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
-                
-                //Check if type is bool, set image in that cases
-                if (info.action.varData.refID != 0)
-                {
-
-                    //Set the value to the name of the reference variable
-                    UIHelper.setText(info.transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
-
-                    path = "unity_builtin_extra/UISprite";
-
-                    image = Resources.Load(path) as Texture2D;
-
-                    info.transform.GetChild(3).GetComponent<Button>().image.sprite = null;
-
-                }
-                else
-                {
-
-                    if (info.action.varData.varType == VariableType.Bool)
+                    //Check if public or local
+                    if (info.action.varData.isPublic)
                     {
-                        if (info.action.varData.value == "true")
-                        {
-                            path = "Images/EditControllerAssets/True";
-                        }
-                        else
-                        {
-                            path = "Images/EditControllerAssets/False";
-                        }
-
-                        image = Resources.Load(path) as Texture2D;
-
-                        info.transform.GetChild(3).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
-
-                        UIHelper.setText(info.transform.GetChild(3).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+                        //Public
+                        // Debug.Log("Public Path");
+                        path = "Images/EditControllerAssets/Public";
 
                     }
                     else
                     {
+                        //Local
+                        // Debug.Log("Private Path");
+                        path = "Images/EditControllerAssets/Local";
+                    }
+
+                    Texture2D image = Resources.Load(path) as Texture2D;
+
+                    //Public / Private
+                    info.transform.GetChild(0).GetChild(0).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+
+                    //Variable Type
+                    path = getVarTypeImage(info.action.varData.varType);
+
+                    image = Resources.Load(path) as Texture2D;
+
+                    info.transform.GetChild(0).GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(1).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+
+                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
+
+                    //Check if type is bool, set image in that cases
+                    if (info.action.varData.refID != 0)
+                    {
+
+                        //Set the value to the name of the reference variable
+                        UIHelper.setText(info.transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
+
                         path = "unity_builtin_extra/UISprite";
 
                         image = Resources.Load(path) as Texture2D;
 
                         info.transform.GetChild(3).GetComponent<Button>().image.sprite = null;
 
-                        UIHelper.setText(info.transform.GetChild(3).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
+                    }
+                    else
+                    {
+
+                        if (info.action.varData.varType == VariableType.Bool)
+                        {
+                            if (info.action.varData.value == "true")
+                            {
+                                path = "Images/EditControllerAssets/True";
+                            }
+                            else
+                            {
+                                path = "Images/EditControllerAssets/False";
+                            }
+
+                            image = Resources.Load(path) as Texture2D;
+
+                            info.transform.GetChild(3).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+
+                            UIHelper.setText(info.transform.GetChild(3).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+
+                        }
+                        else
+                        {
+                            path = "unity_builtin_extra/UISprite";
+
+                            image = Resources.Load(path) as Texture2D;
+
+                            info.transform.GetChild(3).GetComponent<Button>().image.sprite = null;
+
+                            UIHelper.setText(info.transform.GetChild(3).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
+                        }
+                    }
+                } else
+                {
+
+                    //Simple Variable
+                    Texture2D image;
+
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
+
+                    //Check if type is bool, set image in that cases
+                    if (info.action.varData.refID != 0)
+                    {
+
+                        //Set the value to the name of the reference variable
+                        UIHelper.setText(info.transform.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
+
+                        path = "unity_builtin_extra/UISprite";
+
+                        image = Resources.Load(path) as Texture2D;
+
+                        info.transform.GetChild(2).GetComponent<Button>().image.sprite = null;
+
+                    }
+                    else
+                    {
+
+                        if (info.action.varData.varType == VariableType.Bool)
+                        {
+                            if (info.action.varData.value == "true")
+                            {
+                                path = "Images/EditControllerAssets/True";
+                            }
+                            else
+                            {
+                                path = "Images/EditControllerAssets/False";
+                            }
+
+                            image = Resources.Load(path) as Texture2D;
+
+                            info.transform.GetChild(2).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+
+                            UIHelper.setText(info.transform.GetChild(2).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+
+                        }
+                        else
+                        {
+                            path = "unity_builtin_extra/UISprite";
+
+                            image = Resources.Load(path) as Texture2D;
+
+                            info.transform.GetChild(2).GetComponent<Button>().image.sprite = null;
+
+                            UIHelper.setText(info.transform.GetChild(2).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
+                        }
                     }
                 }
+
+               
                 break;
         }
 
@@ -414,7 +482,6 @@ public class ProgramCardFunctionality
 
                     direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
 
-
                 });
 
 
@@ -457,55 +524,65 @@ public class ProgramCardFunctionality
             case VariableActionNames.Variable:
 
                 info.programCard.action = createAction(info);
+                int offset = 0;
 
-                //Public Local
-                info.transform.GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+                if (playSettings.advancedVariables)
                 {
-                    //Set Panel Type
-                    info.editDataType = EditDataType.Multichoice;
+                    offset = 1;
 
-                    //Set Editable Variable Type
-                    info.varType = info.action.varData.varType;
+                    //Public Local
+                    info.transform.GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Multichoice;
 
-                    //Set the Data type it will change
-                    info.valEditType = ValueEditType.Public;
+                        //Set Editable Variable Type
+                        info.varType = info.action.varData.varType;
 
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Public;
 
-                    panel.SetActive(true);
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                    destroyChildren(panel);
+                        panel.SetActive(true);
 
-                    GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+                        destroyChildren(panel);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-                });
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                //Variable Type
-                info.transform.GetChild(0).GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
+                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    });
+
+                    //Variable Type
+                    info.transform.GetChild(0).GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Multichoice;
+
+                        //Set Editable Variable Type
+                        info.varType = info.action.varData.varType;
+
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.VariableType;
+
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                        panel.SetActive(true);
+
+                        destroyChildren(panel);
+
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+
+                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    });
+
+                } else
                 {
-                    //Set Panel Type
-                    info.editDataType = EditDataType.Multichoice;
-
-                    //Set Editable Variable Type
-                    info.varType = info.action.varData.varType;
-
-                    //Set the Data type it will change
-                    info.valEditType = ValueEditType.VariableType;
-
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
-
-                    panel.SetActive(true);
-
-                    destroyChildren(panel);
-
-                    GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
-
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-                });
+                    offset = 0;
+                }
 
                 //Name
-                info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
+                info.transform.GetChild(0 + offset).GetComponent<Button>().onClick.AddListener(delegate
                 {
                     //Set Panel Type
                     info.editDataType = EditDataType.NewValue;
@@ -530,7 +607,7 @@ public class ProgramCardFunctionality
                 });
 
                 //Value
-                info.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(delegate
+                info.transform.GetChild(2 + offset).GetComponent<Button>().onClick.AddListener(delegate
                 {
                     //Set Editable Variable Type
                     info.varType = info.action.varData.varType;
@@ -538,15 +615,21 @@ public class ProgramCardFunctionality
                     //Set Panel Type
                     info.editDataType = EditDataType.Value;
 
-                    if (info.varType == VariableType.Bool)
+                    if (playSettings.advancedVariables)
                     {
-                        //Set the Data type it will change
-                        info.valEditType = ValueEditType.Bool;
-                    }
-                    else
+                        if (info.varType == VariableType.Bool)
+                        {
+                            //Set the Data type it will change
+                            info.valEditType = ValueEditType.Bool;
+                        }
+                        else
+                        {
+                            //Set the Data type it will change
+                            info.valEditType = ValueEditType.Value;
+                        }
+                    } else
                     {
-                        //Set the Data type it will change
-                        info.valEditType = ValueEditType.Value;
+                        info.valEditType = ValueEditType.VariableSmartAssign;
                     }
 
                     GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;

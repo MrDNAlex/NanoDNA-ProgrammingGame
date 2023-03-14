@@ -23,22 +23,24 @@ public class SettingCard : MonoBehaviour
     private void Awake()
     {
         setUI();
-        
+
+
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-       
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    void setUI ()
+    void setUI()
     {
         //Check what type it is potentially?
         switch (type)
@@ -69,19 +71,23 @@ public class SettingCard : MonoBehaviour
 
                 //flex.setSpacingFlex(2, 1);
 
-               
+
                 onChange = flex.getChild(1).GetChild(0).GetComponent<Slider>().onValueChanged;
                 break;
         }
 
     }
 
-    public void setColourScheme (PlayerSettings playsettings)
+    public void setColourScheme(PlayerSettings playSettings)
     {
-        UIHelper.setImage(flex.getChild(1), playsettings.colourScheme.getAccent());
+        this.mainColor = playSettings.colourScheme.getMainTextColor();
+
+        this.accentColor = playSettings.colourScheme.getAccentTextColor();
+
+        UIHelper.setImage(flex.getChild(1), playSettings.colourScheme.getAccent());
     }
 
-    public void setInfoButton (string name, string value)
+    public void setInfoButton(string name, string value)
     {
         UIHelper.setText(flex.getChild(0), name, mainColor);
 
@@ -89,7 +95,7 @@ public class SettingCard : MonoBehaviour
 
     }
 
-    public void setInfoSlider (string name, int value)
+    public void setInfoSlider(string name, int value)
     {
         //Value is int from 0-100
         UIHelper.setText(flex.getChild(0), name, mainColor);
@@ -99,9 +105,11 @@ public class SettingCard : MonoBehaviour
         flex.getChild(1).GetChild(0).GetComponent<Slider>().value = (float)value / 100;
     }
 
-   
 
-   
+
+
+
+
 }
 
 

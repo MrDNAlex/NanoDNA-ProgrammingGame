@@ -15,6 +15,7 @@ public class ProgramLine : MonoBehaviour
     [SerializeField] GameObject prefab1;
     [SerializeField] GameObject prefab2;
     [SerializeField] GameObject prefab3;
+    [SerializeField] GameObject simpVar;
 
     public Flex Line;
 
@@ -78,7 +79,7 @@ public class ProgramLine : MonoBehaviour
     {
         //Set the text to the correct number
 
-        UIHelper.setText(Line.getChild(0).GetChild(0), Line.UI.GetSiblingIndex().ToString(), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+        UIHelper.setText(Line.getChild(0).GetChild(0), (Line.UI.GetSiblingIndex() + 1).ToString(), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
 
     }
 
@@ -134,7 +135,15 @@ public class ProgramLine : MonoBehaviour
                 ProgramCard = Instantiate(prefab1, ProgramObj.transform);
                 break;
             case ActionType.Variable:
-                ProgramCard = Instantiate(prefab2, ProgramObj.transform);
+
+                if (SaveManager.loadPlaySettings().advancedVariables)
+                {
+                    ProgramCard = Instantiate(prefab2, ProgramObj.transform);
+                } else
+                {
+                    ProgramCard = Instantiate(simpVar, ProgramObj.transform);
+                }
+               
                 break;
             case ActionType.Action:
                 ProgramCard = Instantiate(prefab3, ProgramObj.transform);
@@ -185,7 +194,14 @@ public class ProgramLine : MonoBehaviour
                 }
                 break;
             case ActionType.Variable:
-                program = Instantiate(prefab2, ProgramObj.transform);
+                if (SaveManager.loadPlaySettings().advancedVariables)
+                {
+                    program = Instantiate(prefab2, ProgramObj.transform);
+                }
+                else
+                {
+                   program = Instantiate(simpVar, ProgramObj.transform);
+                }
                 break;
             default:
                 Debug.Log(action);

@@ -22,11 +22,20 @@ public class UIHelper
         text.GetComponent<Text>().text = words;
 
         text.GetComponent<Text>().color = col;
+
+       // text.GetComponent<Text>().
     }
 
     public static void setImage(Transform trans, string path)
     {
         Sprite sprite = Resources.Load<Sprite>(path);
+
+        //Check if Image component exists
+        if (trans.GetComponent<Image>() == null)
+        {
+            //Add image component 
+            trans.gameObject.AddComponent<Image>();
+        }
 
         trans.GetComponent<Image>().type = Image.Type.Sliced;
 

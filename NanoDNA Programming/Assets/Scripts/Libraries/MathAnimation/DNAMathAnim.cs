@@ -7,6 +7,15 @@ namespace DNAMathAnimation
     public class DNAMathAnim 
     {
 
+        public enum Axis
+        {
+            //Replace the index with the axis
+            All,
+            x,
+            y, 
+            z, 
+        }
+
         //Alright Well I can't tell what is happening 
 
         //Maybe pass initial position inside and keep calling it and stack the additions?
