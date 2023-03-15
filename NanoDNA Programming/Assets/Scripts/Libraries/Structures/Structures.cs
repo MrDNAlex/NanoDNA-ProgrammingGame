@@ -6,9 +6,46 @@ using UnityEngine.Tilemaps;
 
 namespace DNAStruct
 {
+
+    [System.Serializable]
+    public struct SavedPlayerSettings
+    {
+        public Language language;
+        public int volume;
+        public ColourPaletteStorage colourScheme;
+        public bool advancedVariables;
+
+        public static SavedPlayerSettings CreateNewSettings ()
+        {
+            SavedPlayerSettings settings = new SavedPlayerSettings();
+
+            settings.language = Language.English;
+            settings.volume = 50;
+            settings.advancedVariables = false;
+            settings.colourScheme = new ColourPaletteStorage("Images/UIDesigns/Palettes/Palette 1");
+            
+            settings.colourScheme.textColorMain = Color.white;
+            settings.colourScheme.textColorAccent = Color.black;
+
+            return settings;
+        }
+    }
+
+    [System.Serializable]
+    public struct CurrentLevelLoader
+    {
+        public static string path;
+        public static string name;
+    }
+
+
     [System.Serializable]
     public struct LevelMakerInfo
     {
+        public LevelIconInstance levelIcon;
+        //From After Resource path
+        public string levelPath;
+
         public Tilemap voidMap;
         public Tilemap backgroundMap;
         public Tilemap obstacleMap;
@@ -16,9 +53,7 @@ namespace DNAStruct
         public GameObject charHolder;
 
         public int maxLines;
-
     }
-
 
     public struct CardInfo
     {
@@ -53,7 +88,6 @@ namespace DNAStruct
         public ValueEditType valEditType;
 
         public int progLineIndex;
-
     }
 
     //
@@ -72,7 +106,6 @@ namespace DNAStruct
     {
         None,
         Move,
-
     }
 
     public enum MathActionNames

@@ -10,6 +10,9 @@ using DNAMathAnimation;
 public class EditValController : MonoBehaviour
 {
 
+    //Going to eventually have to check for key words as name 
+
+
     ProgramCardFunctionality func;
 
     CardInfo info;
@@ -39,8 +42,6 @@ public class EditValController : MonoBehaviour
     bool isPub;
 
     int globalIndex = 0;
-
-    PlayerSettings playSettings;
 
     //
     //
@@ -74,13 +75,13 @@ public class EditValController : MonoBehaviour
     UIWord Talk = new UIWord("Talk", "Dit");
     UIWord Yell = new UIWord("Yell", "Crie");
 
+    UIWord EntText = new UIWord("Enter Text...", "Entrez du Texte...");
+
     List<UIWord> VariableTypes = new List<UIWord>();
 
 
     public void setPanel(CardInfo info, Transform parent, ProgramCardFunctionality func = null)
     {
-        playSettings = SaveManager.loadPlaySettings();
-
         VariableTypes.Add(Text);
         VariableTypes.Add(Number);
         VariableTypes.Add(Decimal);
@@ -143,22 +144,40 @@ public class EditValController : MonoBehaviour
             case EditDataType.Multichoice:
 
                 //Background
-                UIHelper.setImage(Holder.UI, playSettings.colourScheme.getAccent());
+                UIHelper.setImage(Holder.UI, PlayerSettings.colourScheme.getAccent());
 
-                UIHelper.setImage(Holder.getChild(1), playSettings.colourScheme.getMain());
+                UIHelper.setImage(Holder.getChild(1), PlayerSettings.colourScheme.getMain());
 
                 break;
 
             case EditDataType.Value:
-                UIHelper.setImage(Holder.UI, playSettings.colourScheme.getAccent());
+                UIHelper.setImage(Holder.UI, PlayerSettings.colourScheme.getAccent());
 
-                UIHelper.setImage(Holder.getChild(1), playSettings.colourScheme.getMain());
+                UIHelper.setImage(Holder.getChild(1), PlayerSettings.colourScheme.getMain());
+
+                //Tabs
+                UIHelper.setImage(Holder.getChild(1).GetChild(0).GetChild(0), PlayerSettings.colourScheme.getSecondary());
+                UIHelper.setImage(Holder.getChild(1).GetChild(0).GetChild(1), PlayerSettings.colourScheme.getSecondary());
+
+                //New Value (InputField) 
+                UIHelper.setImage(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1), PlayerSettings.colourScheme.getSecondary());
+
+                //Scroll View, Premade
+                UIHelper.setImage(Holder.getChild(1).GetChild(1).GetChild(1).GetChild(1), PlayerSettings.colourScheme.getSecondary());
+
+                //Set Button
+                UIHelper.setImage(Holder.getChild(1).GetChild(2).GetChild(0), PlayerSettings.colourScheme.getSecondary());
+
                 break;
 
             case EditDataType.NewValue:
-                UIHelper.setImage(Holder.UI, playSettings.colourScheme.getAccent());
+                UIHelper.setImage(Holder.UI, PlayerSettings.colourScheme.getAccent());
 
-                UIHelper.setImage(Holder.getChild(1), playSettings.colourScheme.getMain());
+                UIHelper.setImage(Holder.getChild(1), PlayerSettings.colourScheme.getMain());
+
+                UIHelper.setImage(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1), PlayerSettings.colourScheme.getSecondary());
+
+                UIHelper.setImage(Holder.getChild(1).GetChild(1).GetChild(0), PlayerSettings.colourScheme.getSecondary());
                 break;
         }
     }
@@ -371,7 +390,7 @@ public class EditValController : MonoBehaviour
 
         Holder.setVerticalPadding(0.1f, 1, 0.1f, 1);
 
-        Tabs.setHorizontalPadding(0.2f, 1, 0.2f, 1);
+        //Tabs.setHorizontalPadding(0.2f, 1, 0.2f, 1);
 
         Exit.setSquare();
 
@@ -400,7 +419,7 @@ public class EditValController : MonoBehaviour
 
             bool display = false;
 
-            if (playSettings.advancedVariables)
+            if (PlayerSettings.advancedVariables)
             {
                 if (varData.name != this.varData.name)
                 {
@@ -449,7 +468,7 @@ public class EditValController : MonoBehaviour
                             this.varData.refID = variable.GetComponent<ValueDisp>().varData.id;
                             this.varData.value = variable.GetComponent<ValueDisp>().varData.name;
                             this.value = variable.GetComponent<ValueDisp>().varData.name;
-                            if (!playSettings.advancedVariables)
+                            if (!PlayerSettings.advancedVariables)
                             {
                                 this.varData.isPublic = true;
                             }
@@ -580,7 +599,7 @@ public class EditValController : MonoBehaviour
                 //Input
                 Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetComponent<InputField>().onValueChanged.AddListener(delegate
                 {
-                    value = Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1).GetComponent<InputField>().text;
+                    value = Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetComponent<InputField>().text;
 
                     checkValueType();
                 });
@@ -617,7 +636,7 @@ public class EditValController : MonoBehaviour
 
     public void checkValueType()
     {
-        if (playSettings.advancedVariables)
+        if (PlayerSettings.advancedVariables)
         {
             Debug.Log("editing Val");
             int index = 0;
@@ -633,8 +652,7 @@ public class EditValController : MonoBehaviour
             switch (varType)
             {
                 case VariableType.Text:
-                    //Anythign works for this
-                    //Do nothing
+                    //Do Nothing
                     Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = true;
                     Holder.getChild(index).GetChild(1).GetComponent<Text>().text = "";
                     resetRefID(info.actionType);
@@ -748,25 +766,32 @@ public class EditValController : MonoBehaviour
 
             case EditDataType.Value:
 
-                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), customTab.getWord(lang), playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), customTab.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
 
-                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(1).GetChild(0), premadeTab.getWord(lang), playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(1).GetChild(0), premadeTab.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
 
-                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(1).GetChild(0), variable.getWord(lang) + " (" + getVarType(varType) + ")", playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(1).GetChild(0), variable.getWord(lang) + " (" + getVarType(varType) + ")", PlayerSettings.colourScheme.getBlackTextColor());
 
-                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), newVariable.getWord(lang), playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), newVariable.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
 
-                UIHelper.setText(Holder.getChild(1).GetChild(2).GetChild(0).GetChild(0), setbtn.getWord(lang), playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(Holder.getChild(1).GetChild(2).GetChild(0).GetChild(0), setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+
+                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1).GetChild(0), EntText.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+
+                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor());
 
                 break;
             case EditDataType.NewValue:
-                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), newVariable.getWord(lang), playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), newVariable.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
 
-                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), setbtn.getWord(lang), playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+
+                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(0), EntText, PlayerSettings.colourScheme.getBlackTextColor());
+
+                UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor());
 
                 break;
         }
-
     }
 
     public void setData(int index)

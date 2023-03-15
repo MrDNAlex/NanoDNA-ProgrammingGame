@@ -4,6 +4,7 @@ using UnityEngine;
 using FlexUI;
 using DNAStruct;
 using UnityEngine.UI;
+using DNASaveSystem;
 
 public class ValueDisp : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class ValueDisp : MonoBehaviour
 
     private void Awake()
     {
+       // playSettings = SaveManager.loadPlaySettings();
         setUI();
        
     }
@@ -67,6 +69,9 @@ public class ValueDisp : MonoBehaviour
             flex.setHorizontalPadding(0.2f, 1, 0.2f, 1);
 
             flex.setVerticalPadding(0.07f, 1, 0.07f, 1);
+
+            UIHelper.setImage(flex.UI, PlayerSettings.colourScheme.getSecondary());
+
         }
 
     }
@@ -75,14 +80,14 @@ public class ValueDisp : MonoBehaviour
     {
         if (singleVal)
         {
-            this.transform.GetChild(0).GetComponent<Text>().text = varData.name;
+            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor());
 
             this.varData = varData;
         } else
         {
-            this.transform.GetChild(0).GetComponent<Text>().text = varData.name;
+            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor());
 
-            this.transform.GetChild(1).GetComponent<Text>().text = varData.value.ToString();
+            UIHelper.setText(transform.GetChild(1), varData.value.ToString(), PlayerSettings.colourScheme.getBlackTextColor());
 
             this.varData = varData;
         }

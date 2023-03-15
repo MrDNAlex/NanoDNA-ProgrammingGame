@@ -8,6 +8,10 @@ using UnityEngine.Tilemaps;
 
 public class LevelManager : MonoBehaviour
 {
+
+    //Level Loader
+   // https://www.youtube.com/watch?v=OmobsXZSRKo
+
     //Try and Compress this section
 
     [SerializeField] CharLedger charLedger;
@@ -58,8 +62,10 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        //Get the levelInfo
+        
         //Load Info
-        info = SaveManager.loadJSON<LevelInfo>("Levels/Testing", "Demo");
+        info = SaveManager.loadJSON<LevelInfo>(CurrentLevelLoader.path, CurrentLevelLoader.name);
 
         Camera.main.GetComponent<LevelScript>().allScripts.levelManager = this;
 
@@ -106,7 +112,7 @@ public class LevelManager : MonoBehaviour
             lines += data.program.getLength();
         }
 
-        UIHelper.setText(linesUsed.transform, lines + "/" + maxLines + " " + UIwords.used.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+        UIHelper.setText(linesUsed.transform, lines + "/" + maxLines + " " + UIwords.used.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
 
         //Update Collectibles
         itemsCollect = 0;
@@ -121,7 +127,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-        UIHelper.setText(collectedItems.transform, itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+        UIHelper.setText(collectedItems.transform, itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 
@@ -168,7 +174,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-            UIHelper.setText(complete.transform.GetChild(0), UIwords.complete, SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+            UIHelper.setText(complete.transform.GetChild(0), UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
 
             updateConstraints();
         }

@@ -78362,12 +78362,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46c66081694acd4fb08ee42b94d6e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: Assets/Resources/Levels/Testing
+  path: Levels/Testing
+  levelIcon: {fileID: 11400000, guid: 13736c3500b6e554b8610251405ec04f, type: 2}
   level:
     levelName: Demo
     maxLine: 5
     maxItems: 0
     levelType: 0
+    levelIcon:
+      id: 
     xMax: 0
     xMin: 0
     yMax: 0

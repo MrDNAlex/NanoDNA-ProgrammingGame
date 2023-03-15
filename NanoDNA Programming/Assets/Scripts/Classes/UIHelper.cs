@@ -12,7 +12,7 @@ public class UIHelper
 
     public static void setText(Transform text, UIWord word, Color col)
     {
-        text.GetComponent<Text>().text = word.getWord(SaveManager.loadPlaySettings().language);
+        text.GetComponent<Text>().text = word.getWord(PlayerSettings.language);
 
         text.GetComponent<Text>().color = col;
     }

@@ -43,7 +43,7 @@ public class StoreBtn : MonoBehaviour
 
     public void setText (string text)
     {
-        UIHelper.setText(flex.getChild(0).GetChild(0), text, SaveManager.loadPlaySettings().colourScheme.getBlackTextColor());
+        UIHelper.setText(flex.getChild(0).GetChild(0), text, PlayerSettings.colourScheme.getBlackTextColor());
     }
 
     public void setImage ()

@@ -71,13 +71,11 @@ public class LevelScript : MonoBehaviour
 
     public Scripts allScripts = new Scripts();
 
-    public PlayerSettings playerSettings;
-
     private void Awake()
     {
+        PlayerSettings.LoadSettings(SaveManager.loadPlaySettings());
         allScripts.levelScript = this;
-        playerSettings = SaveManager.loadPlaySettings();
-        lang = playerSettings.language;
+        lang = PlayerSettings.language;
     }
 
     //Going to start needing a loading screen I think
@@ -173,24 +171,24 @@ public class LevelScript : MonoBehaviour
         Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
 
         //Set Images
-        UIHelper.setImage(Header.UI, playerSettings.colourScheme.getSecondary(true));
-        UIHelper.setImage(Constraints.UI, playerSettings.colourScheme.getSecondary(true));
-        UIHelper.setImage(List.UI, playerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Header.UI, PlayerSettings.colourScheme.getSecondary(true));
+        UIHelper.setImage(Constraints.UI, PlayerSettings.colourScheme.getSecondary(true));
+        UIHelper.setImage(List.UI, PlayerSettings.colourScheme.getMain(true));
 
-        UIHelper.setImage(ProgSpeed.UI, playerSettings.colourScheme.getMain());
-        UIHelper.setImage(Resize.UI, playerSettings.colourScheme.getMain());
-        UIHelper.setImage(DebugBTN.UI, playerSettings.colourScheme.getMain());
+        UIHelper.setImage(ProgSpeed.UI, PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(Resize.UI, PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(DebugBTN.UI, PlayerSettings.colourScheme.getMain());
 
-        UIHelper.setImage(Zoom.UI.GetChild(0), playerSettings.colourScheme.getMain());
-        UIHelper.setImage(Zoom.UI.GetChild(1).GetChild(0), playerSettings.colourScheme.getSecondary());
-        UIHelper.setImage(Zoom.UI.GetChild(2).GetChild(0), playerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Zoom.UI.GetChild(0), PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(Zoom.UI.GetChild(1).GetChild(0), PlayerSettings.colourScheme.getSecondary());
+        UIHelper.setImage(Zoom.UI.GetChild(2).GetChild(0), PlayerSettings.colourScheme.getAccent());
 
-        UIHelper.setImage(Reg3.getChild(0).GetChild(1), playerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(0).GetChild(1), PlayerSettings.colourScheme.getMain(true));
 
-        UIHelper.setImage(CompleteLevel.UI, playerSettings.colourScheme.getAccent());
+        UIHelper.setImage(CompleteLevel.UI, PlayerSettings.colourScheme.getAccent());
 
-        UIHelper.setImage(Save.UI, playerSettings.colourScheme.getAccent());
-        UIHelper.setImage(Undo.UI, playerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Save.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Undo.UI, PlayerSettings.colourScheme.getAccent());
 
     }
 
@@ -279,9 +277,9 @@ public class LevelScript : MonoBehaviour
 
    public void setUIText ()
     {
-        UIHelper.setText(complete.transform, UIwords.complete, playerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(complete.transform, UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
 
-        UIHelper.setText(save.transform, UIwords.save, playerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 

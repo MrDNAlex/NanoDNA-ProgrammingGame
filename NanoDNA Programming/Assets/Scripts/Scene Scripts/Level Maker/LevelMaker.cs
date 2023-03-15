@@ -11,6 +11,7 @@ public class LevelMaker : MonoBehaviour
     [SerializeField] string path;
 
     [Header("Level Data")]
+    public LevelIconInstance levelIcon;
     public LevelInfo level = new LevelInfo();
 
     [Header("Saving Utility")]
@@ -35,6 +36,8 @@ public class LevelMaker : MonoBehaviour
         info.decorationMap = decorationMap;
         info.obstacleMap = obstaclesMap;
         info.charHolder = charHolder;
+        info.levelIcon = levelIcon;
+        info.levelPath = path;
 
         level.createLevelInfo(info);
 
@@ -42,7 +45,9 @@ public class LevelMaker : MonoBehaviour
 
         SaveManager.deepSave(level.levelName, level);
 
-        SaveManager.saveJSON(level, path, level.levelName);
+
+        //Asset Path
+        SaveManager.saveJSON(level, "Assets/Resources/" + path, level.levelName);
 
 
     }

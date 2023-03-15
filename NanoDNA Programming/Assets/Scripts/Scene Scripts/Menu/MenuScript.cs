@@ -26,17 +26,9 @@ public class MenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (SaveManager.loadPlaySettings() == null)
-        {
-            Debug.Log("Error");
-            playSettings = new PlayerSettings();
-        }
-        else
-        {
-            playSettings = SaveManager.loadPlaySettings();
-        }
+        PlayerSettings.LoadSettings(SaveManager.loadPlaySettings());
 
-        lang = playSettings.language;
+        lang = PlayerSettings.language;
 
         setUI();
         setFunctionality();
@@ -73,9 +65,9 @@ public class MenuScript : MonoBehaviour
         //Set Size
         Menu.setSize(new Vector2(Screen.width, Screen.height));
 
-        UIHelper.setImage(Start.UI, playSettings.colourScheme.getAccent());
-        UIHelper.setImage(Settings.UI, playSettings.colourScheme.getAccent());
-        UIHelper.setImage(Exit.UI, playSettings.colourScheme.getAccent());
+        UIHelper.setImage(Start.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Settings.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Exit.UI, PlayerSettings.colourScheme.getAccent());
     }
 
     public void setFunctionality ()
@@ -103,7 +95,7 @@ public class MenuScript : MonoBehaviour
 
         Debug.Log("Start Scene");
 
-        SceneManager.LoadScene(SceneConversion.GetScene(Scenes.PlayLevel), LoadSceneMode.Single);
+        SceneManager.LoadScene(SceneConversion.GetScene(Scenes.SelectLevel), LoadSceneMode.Single);
 
     }
 
@@ -119,17 +111,16 @@ public class MenuScript : MonoBehaviour
     public void setLang ()
     {
         //Title
-        UIHelper.setText(menu.GetChild(0).GetChild(0), TitleWord, playSettings.colourScheme.getMainTextColor());
+        UIHelper.setText(menu.GetChild(0).GetChild(0), TitleWord, PlayerSettings.colourScheme.getMainTextColor());
 
         //Start
-        UIHelper.setText(menu.GetChild(0).GetChild(1).GetChild(0), StartWord, playSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(menu.GetChild(0).GetChild(1).GetChild(0), StartWord, PlayerSettings.colourScheme.getAccentTextColor());
 
         //Settings
-        UIHelper.setText(menu.GetChild(0).GetChild(2).GetChild(0), SettingsWord, playSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(menu.GetChild(0).GetChild(2).GetChild(0), SettingsWord, PlayerSettings.colourScheme.getAccentTextColor());
 
         //Exit
-        UIHelper.setText(menu.GetChild(0).GetChild(3).GetChild(0), ExitWord, playSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(menu.GetChild(0).GetChild(3).GetChild(0), ExitWord, PlayerSettings.colourScheme.getAccentTextColor());
     }
 
-   
 }

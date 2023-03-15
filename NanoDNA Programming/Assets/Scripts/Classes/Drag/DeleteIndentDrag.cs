@@ -19,13 +19,11 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
 
     Vector3 mouseStart;
 
-    PlayerSettings settings;
-
     
     // Start is called before the first frame update
     void Start()
     {
-        settings = SaveManager.loadPlaySettings();
+        
     }
 
     // Update is called once per frame
@@ -65,7 +63,7 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
             UIHelper.setImage(transform.parent.parent, "Images/UIDesigns/Delete");
         } else
         {
-            UIHelper.setImage(transform.parent.parent, settings.colourScheme.getMain(true));
+            UIHelper.setImage(transform.parent.parent, PlayerSettings.colourScheme.getMain(true));
         }
     }
 
@@ -79,7 +77,7 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
             //StartCoroutine(transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().delLines());
             transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteProgramLine(transform.GetSiblingIndex());
 
-            UIHelper.setImage(transform.parent.parent, settings.colourScheme.getMain(true));
+            UIHelper.setImage(transform.parent.parent, PlayerSettings.colourScheme.getMain(true));
         } else
         {
             //Start Coroutine to slide it back to original position

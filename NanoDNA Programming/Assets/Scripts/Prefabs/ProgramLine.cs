@@ -70,8 +70,8 @@ public class ProgramLine : MonoBehaviour
         //ProgramUI = ProgramUI;
 
         //Set Images
-        UIHelper.setImage(Line.UI, SaveManager.loadPlaySettings().colourScheme.getMain(true));
-        UIHelper.setImage(LineNumberHolder.UI, SaveManager.loadPlaySettings().colourScheme.getSecondary(true));
+        UIHelper.setImage(Line.UI, PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(LineNumberHolder.UI, PlayerSettings.colourScheme.getSecondary(true));
 
     }
 
@@ -79,7 +79,7 @@ public class ProgramLine : MonoBehaviour
     {
         //Set the text to the correct number
 
-        UIHelper.setText(Line.getChild(0).GetChild(0), (Line.UI.GetSiblingIndex() + 1).ToString(), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+        UIHelper.setText(Line.getChild(0).GetChild(0), (Line.UI.GetSiblingIndex() + 1).ToString(), PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 
@@ -136,7 +136,7 @@ public class ProgramLine : MonoBehaviour
                 break;
             case ActionType.Variable:
 
-                if (SaveManager.loadPlaySettings().advancedVariables)
+                if (PlayerSettings.advancedVariables)
                 {
                     ProgramCard = Instantiate(prefab2, ProgramObj.transform);
                 } else
@@ -194,7 +194,7 @@ public class ProgramLine : MonoBehaviour
                 }
                 break;
             case ActionType.Variable:
-                if (SaveManager.loadPlaySettings().advancedVariables)
+                if (PlayerSettings.advancedVariables)
                 {
                     program = Instantiate(prefab2, ProgramObj.transform);
                 }

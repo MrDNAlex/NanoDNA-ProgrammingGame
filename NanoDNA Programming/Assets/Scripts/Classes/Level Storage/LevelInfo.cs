@@ -9,15 +9,20 @@ using DNAStruct;
 //For something to be saved it must be public 
 public class LevelInfo 
 {
+   
    [Header("Edit")]
     public string levelName;
-
+    
     public int maxLine;
     public int maxItems;
 
     public LevelType levelType;
 
     [Header("Automatic")]
+    public string levelPath;
+
+    public LevelIconInfo levelIcon;
+
     public int xMax;
     public int xMin;
     public int yMax;
@@ -69,11 +74,16 @@ public class LevelInfo
         //Get true boundaries
         getTrueCellBoundaries(backgroundTiles);
 
+        //Save Level Icon
+        this.levelIcon = new LevelIconInfo(info.levelIcon.id);
+
+        //Save Level path
+        this.levelPath = info.levelPath;
+
     }
 
     public void createArrayInfo (Tilemap map, List<TileInfo> info)
     {
-      
         //Loop through all the tiles 
 
         for (int xIndex = map.cellBounds.xMin; xIndex < map.cellBounds.xMax; xIndex++)
