@@ -13,6 +13,8 @@ public class SettingsValController : MonoBehaviour
 
     Flex Parent;
 
+    Transform currentPanel;
+
     SettingEditType editType;
     SettingValueType editValue;
 
@@ -51,10 +53,8 @@ public class SettingsValController : MonoBehaviour
         this.editType = editType;
         this.editValue = editValue;
 
-       
         //Load Language
         lang = PlayerSettings.language;
-
 
         setUI();
         setControls();
@@ -76,11 +76,11 @@ public class SettingsValController : MonoBehaviour
 
 
                 //Accent / Background
-                UIHelper.setImage(Parent.getChild(0), PlayerSettings.colourScheme.getAccent());
+                UIHelper.setImage(currentPanel, PlayerSettings.colourScheme.getAccent());
 
 
                 //Main
-                UIHelper.setImage(Parent.getChild(0).GetChild(1), PlayerSettings.colourScheme.getMain());
+                UIHelper.setImage(currentPanel.GetChild(1), PlayerSettings.colourScheme.getMain());
                 break;
         }
     }
@@ -98,6 +98,8 @@ public class SettingsValController : MonoBehaviour
             case SettingEditType.MultiChoice:
 
                 Flex Panel = new Flex(this.transform.GetComponent<RectTransform>(), 1, Parent);
+
+                currentPanel = Panel.UI;
 
                 Flex ExitRow = new Flex(Panel.getChild(0), 1, Panel);
                 Flex ExitBTN = new Flex(ExitRow.getChild(0), 1, ExitRow);
@@ -158,7 +160,7 @@ public class SettingsValController : MonoBehaviour
     {
 
         //Exit Button
-        Parent.getChild(0).GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+       currentPanel.GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
             parent.gameObject.SetActive(false);
 
@@ -170,8 +172,6 @@ public class SettingsValController : MonoBehaviour
 
     public void setGridView(Flex GridView)
     {
-
-
         switch (editValue)
         {
             case SettingValueType.Language:
@@ -196,8 +196,6 @@ public class SettingsValController : MonoBehaviour
                 instantiateDisplayCard("Images/SettingsControllerAssets/Simple", GridView, Simple, 1, 0);
                 break;
         }
-
-
     }
 
     public void instantiateEmpty(Flex parent, int rowIndex)

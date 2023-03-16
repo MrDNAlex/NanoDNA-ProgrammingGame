@@ -60,7 +60,7 @@ public class ProgramCard : MonoBehaviour
         this.action = action;
 
         //Set the action index
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(action, transform.parent.parent.GetSiblingIndex());
+        Scripts.programSection.selectedCharData.program.setAction(action, transform.parent.parent.GetSiblingIndex());
 
         //Actually paste info on the UI
         functionality.setInfo(setCardInfo());

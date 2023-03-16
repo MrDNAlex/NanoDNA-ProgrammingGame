@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DNAMathAnimation;
+using DNAStruct;
 
 public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
@@ -69,7 +70,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
                     if (distance <= 90)
                     {
                         //Change the order of the program actions too
-                        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.SwitchActions(UIObject.GetSiblingIndex(), i);
+                        Scripts.programSection.selectedCharData.program.SwitchActions(UIObject.GetSiblingIndex(), i);
                         //Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.displayProgram(true);
                         
                         //Switch positions
@@ -93,7 +94,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
         //Set Position
         UIObject.localPosition = lastPos;
 
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.displayProgram(true);
+        Scripts.programSection.selectedCharData.displayProgram(true);
 
 
         //Rerender program
@@ -175,7 +176,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
         animating = false;
         trans.localPosition = OGPos;
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection.renderProgram();
+        Scripts.programSection.renderProgram();
     }
 
 

@@ -27,16 +27,16 @@ public class StoreScript : MonoBehaviour
 
     Language lang;
 
-    Scripts allScripts;
+    //Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
 
 
     private void Awake()
     {
-        Camera.main.GetComponent<LevelScript>().allScripts.storeScript = this;
+        Scripts.storeScript = this;
 
-        lang = Camera.main.GetComponent<LevelScript>().lang;
+        lang = PlayerSettings.language;
 
         setUI();
 
@@ -46,7 +46,7 @@ public class StoreScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         StartCoroutine(renderStore(ActionType.Movement));
 
@@ -151,7 +151,14 @@ public class StoreScript : MonoBehaviour
             case ActionType.Logic:
                 return "Prefabs/Programs/Logic";
             case ActionType.Variable:
-                return "Prefabs/Programs/Variable";
+                if (PlayerSettings.advancedVariables)
+                {
+                    return "Prefabs/Programs/Variable/Advanced";
+                } else
+                {
+                    return "Prefabs/Programs/Variable/Simple";
+                }
+                
             case ActionType.Action:
                 return "Prefabs/Programs/Action";
 

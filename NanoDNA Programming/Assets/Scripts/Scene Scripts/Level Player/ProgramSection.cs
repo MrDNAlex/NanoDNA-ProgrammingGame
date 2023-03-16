@@ -35,7 +35,7 @@ public class ProgramSection : MonoBehaviour
     public bool undo;
     bool testRunning;
 
-    public Scripts allScripts;
+    //public Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
 
@@ -46,7 +46,7 @@ public class ProgramSection : MonoBehaviour
 
         flex = setUI();
 
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection = this;
+       Scripts.programSection = this;
 
         progSpeed.onClick.AddListener(editSpeed);
 
@@ -55,11 +55,11 @@ public class ProgramSection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-        lang = allScripts.levelScript.lang;
+        lang = PlayerSettings.language;
 
-        levelType = allScripts.levelManager.info.levelType;
+        levelType = Scripts.levelManager.info.levelType;
 
         testBtn.onClick.AddListener(testProgram);
         saveBtn.onClick.AddListener(delegate
@@ -131,7 +131,7 @@ public class ProgramSection : MonoBehaviour
             testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/Debug");
             //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
 
-            allScripts.levelManager.updateConstraints();
+            Scripts.levelManager.updateConstraints();
 
 
         }
@@ -206,7 +206,7 @@ public class ProgramSection : MonoBehaviour
                     case VariableActionNames.Variable:
 
                         //Update Variable value in program manager
-                        allScripts.programManager.updateVariable(action.varData);
+                        Scripts.programManager.updateVariable(action.varData);
 
                         break;
                 }
@@ -247,7 +247,7 @@ public class ProgramSection : MonoBehaviour
                         }
                         else
                         {
-                            bubbleText.GetComponent<ChatBubble>().setMessage(allScripts.programManager.getVariableValue(action.actData.refID), charRender, action.actData.descriptor);
+                            bubbleText.GetComponent<ChatBubble>().setMessage(Scripts.programManager.getVariableValue(action.actData.refID), charRender, action.actData.descriptor);
                         }
                         break;
                 }
@@ -302,7 +302,7 @@ public class ProgramSection : MonoBehaviour
 
                 //Debug.Log(programHolder);
 
-                Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
+                Flex flex2 = Flex.findChild(programHolder, Scripts.levelScript.Background);
 
                 //Delete Game Objects
                 destroyChildren(programHolder);

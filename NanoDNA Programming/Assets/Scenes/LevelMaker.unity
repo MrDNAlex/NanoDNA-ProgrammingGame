@@ -78365,10 +78365,16 @@ MonoBehaviour:
   path: Levels/Testing
   levelIcon: {fileID: 11400000, guid: 13736c3500b6e554b8610251405ec04f, type: 2}
   level:
-    levelName: Demo
+    levelName:
+      french: "D\xE9mo"
+      english: Demo
+    levelDescription:
+      french: Une Description pour le premier niveau
+      english: A Description for the first level
     maxLine: 5
     maxItems: 0
     levelType: 0
+    levelPath: 
     levelIcon:
       id: 
     xMax: 0

@@ -9,9 +9,7 @@ using DNAMathAnimation;
 
 public class EditValController : MonoBehaviour
 {
-
     //Going to eventually have to check for key words as name 
-
 
     ProgramCardFunctionality func;
 
@@ -25,11 +23,7 @@ public class EditValController : MonoBehaviour
 
     Transform ParentTrans;
 
-    Scripts allScripts;
-
-    // Transform editSelection;
-
-    //Variable var;
+   // Scripts allScripts;
 
     MoveData moveData;
     VariableData varData;
@@ -38,14 +32,13 @@ public class EditValController : MonoBehaviour
     Language lang;
 
     VariableType varType;
-    string value;
+    string value = "";
     bool isPub;
 
     int globalIndex = 0;
 
-    //
-    //
-    //
+    Vector3 OriginalPos;
+
     //Variable
     UIWord customTab = new UIWord("New", "Nouveau");
     UIWord premadeTab = new UIWord("Established", "Établi");
@@ -82,6 +75,7 @@ public class EditValController : MonoBehaviour
 
     public void setPanel(CardInfo info, Transform parent, ProgramCardFunctionality func = null)
     {
+        
         VariableTypes.Add(Text);
         VariableTypes.Add(Number);
         VariableTypes.Add(Decimal);
@@ -94,9 +88,9 @@ public class EditValController : MonoBehaviour
             this.func = func;
         }
 
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-        lang = allScripts.levelScript.lang;
+        lang = PlayerSettings.language;
 
         ParentTrans = parent;
 
@@ -115,14 +109,19 @@ public class EditValController : MonoBehaviour
 
         setControls(info);
 
-        Vector3 currentPos = ParentTrans.localPosition;
+        OriginalPos = ParentTrans.localPosition;
 
-        Vector3 startPos = currentPos + new Vector3(0, -Screen.height, 0);
+        Vector3 startPos = OriginalPos + new Vector3(0, -Screen.height, 0);
 
         ParentTrans.localPosition = startPos;
 
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, currentPos, 150, 1, true));
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, 500, 1, true));
 
+    }
+
+    private void OnDestroy()
+    {
+        ParentTrans.localPosition = OriginalPos;
     }
 
     // Start is called before the first frame update
@@ -248,9 +247,9 @@ public class EditValController : MonoBehaviour
 
                 Holder.setSpacingFlex(0.1f, 1);
 
-              //  Holder.setHorizontalPadding(0.05f, 1, 0.05f, 1);
+                //  Holder.setHorizontalPadding(0.05f, 1, 0.05f, 1);
 
-              //  Holder.setVerticalPadding(0.5f, 1, 0.5f, 1);
+                //  Holder.setVerticalPadding(0.5f, 1, 0.5f, 1);
 
                 Exit.setSquare();
 
@@ -362,7 +361,7 @@ public class EditValController : MonoBehaviour
         Flex GridHolder = new Flex(MakeVariable.getChild(2), 1, MakeVariable);
 
         Flex Row1 = new Flex(GridHolder.getChild(0), 1, GridHolder);
-        
+
         //View and Set
         Flex ViewSet = new Flex(Background.getChild(2), 2, Background);
 
@@ -430,7 +429,7 @@ public class EditValController : MonoBehaviour
                     else
                     {
                         //Check if the parent gameObject is the same as the variables
-                        if (allScripts.programSection.selectedCharData == varData.charData)
+                        if (Scripts.programSection.selectedCharData == varData.charData)
                         {
                             display = true;
                         }
@@ -484,7 +483,6 @@ public class EditValController : MonoBehaviour
                     Holder.getChild(1).GetChild(2).GetChild(1).GetComponent<Text>().text = "";
                 });
             }
-
         }
 
         setGridView(GridHolder);
@@ -509,7 +507,7 @@ public class EditValController : MonoBehaviour
 
             Destroy(this.gameObject);
 
-            allScripts.programManager.updateVariables();
+            Scripts.programManager.updateVariables();
         });
 
         switch (info.editDataType)
@@ -577,13 +575,13 @@ public class EditValController : MonoBehaviour
 
                     func.setInfo(info);
 
-                    allScripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
+                    Scripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
 
                     //Hide object and Destroy
                     ParentTrans.gameObject.SetActive(false);
                     Destroy(this.gameObject);
 
-                    allScripts.programManager.updateVariables();
+                    Scripts.programManager.updateVariables();
 
                 });
 
@@ -621,13 +619,13 @@ public class EditValController : MonoBehaviour
                     func.setInfo(info);
 
                     //Set the action
-                    allScripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
+                    Scripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
 
                     //Hide object and Destroy
                     ParentTrans.gameObject.SetActive(false);
                     Destroy(this.gameObject);
 
-                    allScripts.programManager.updateVariables();
+                    Scripts.programManager.updateVariables();
 
                 });
                 break;
@@ -638,40 +636,38 @@ public class EditValController : MonoBehaviour
     {
         if (PlayerSettings.advancedVariables)
         {
-            Debug.Log("editing Val");
+
             int index = 0;
             switch (info.editDataType)
             {
                 case EditDataType.Value:
-                    index = 3;
+                    index = 2;
                     break;
                 case EditDataType.NewValue:
-                    index = 2;
+                    index = 1;
                     break;
             }
             switch (varType)
             {
                 case VariableType.Text:
                     //Do Nothing
-                    Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = true;
-                    Holder.getChild(index).GetChild(1).GetComponent<Text>().text = "";
+                    Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = true;
+                    Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = "";
                     resetRefID(info.actionType);
                     break;
                 case VariableType.Number:
                     try
                     {
                         int val = int.Parse((string)value);
-                        Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = true;
-                        Holder.getChild(index).GetChild(1).GetComponent<Text>().text = "";
-                        Debug.Log(value);
-                        Debug.Log(varData.value);
+                        Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = true;
+                        Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = "";
                         varData.setData(varData.isPublic, varData.varType, varData.name, varData.value);
                         resetRefID(info.actionType);
                     }
                     catch
                     {
-                        Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = false;
-                        Holder.getChild(index).GetChild(1).GetComponent<Text>().text = error.getWord(lang) + getVarType(varType);
+                        Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = false;
+                        Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = error.getWord(lang) + getVarType(varType);
 
                     }
                     break;
@@ -679,16 +675,15 @@ public class EditValController : MonoBehaviour
                     try
                     {
                         float val = float.Parse((string)value);
-                        Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = true;
-                        Holder.getChild(index).GetChild(1).GetComponent<Text>().text = "";
+                        Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = true;
+                        Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = "";
                         varData.setData(varData.isPublic, varData.varType, varData.name, varData.value);
                         resetRefID(info.actionType);
                     }
                     catch
                     {
-                        Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = false;
-                        Holder.getChild(index).GetChild(1).GetComponent<Text>().text = error.getWord(lang) + getVarType(varType);
-
+                        Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = false;
+                        Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = error.getWord(lang) + getVarType(varType);
                     }
                     break;
                 case VariableType.Bool:
@@ -696,15 +691,15 @@ public class EditValController : MonoBehaviour
                     try
                     {
                         bool val = bool.Parse((string)value);
-                        Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = true;
-                        Holder.getChild(index).GetChild(1).GetComponent<Text>().text = "";
+                        Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = true;
+                        Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = "";
                         varData.setData(varData.isPublic, varData.varType, varData.name, varData.value);
                         resetRefID(info.actionType);
                     }
                     catch
                     {
-                        Holder.getChild(index).GetChild(0).GetComponent<Button>().enabled = false;
-                        Holder.getChild(index).GetChild(1).GetComponent<Text>().text = error.getWord(lang) + getVarType(varType);
+                        Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = false;
+                        Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = error.getWord(lang) + getVarType(varType);
                     }
                     break;
             }
@@ -965,7 +960,7 @@ public class EditValController : MonoBehaviour
                 //Set Info
                 func.setInfo(info);
 
-                allScripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
+                Scripts.programSection.selectedCharData.program.setAction(info.programCard.action, info.progLineIndex);
 
                 //Compile Program
                 //allScripts.programSection.compileProgram();
@@ -975,7 +970,7 @@ public class EditValController : MonoBehaviour
 
                 Destroy(this.gameObject);
 
-                allScripts.programManager.updateVariables();
+               Scripts.programManager.updateVariables();
             });
         }
         else
@@ -1004,7 +999,7 @@ public class EditValController : MonoBehaviour
 
                 Holder.getChild(3).GetChild(1).GetComponent<Text>().text = "";
 
-                allScripts.programManager.updateVariables();
+               Scripts.programManager.updateVariables();
             });
         }
 

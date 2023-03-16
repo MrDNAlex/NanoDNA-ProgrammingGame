@@ -50,12 +50,14 @@ public class LevelSelectionScript : MonoBehaviour
             cardScript.onClick.AddListener(delegate
             {
                 CurrentLevelLoader.path = level.levelPath;
-                CurrentLevelLoader.name = level.levelName;
+                CurrentLevelLoader.name = level.levelName.english;
 
                 //Change the scene
                 Debug.Log("Saved");
                 SceneManager.LoadScene(SceneConversion.GetScene(Scenes.PlayLevel), LoadSceneMode.Single);
             });
+
+            cardScript.setText(level.levelName.getWord(PlayerSettings.language), level.levelDescription.getWord(PlayerSettings.language));
 
             Background.addChild(cardScript.flex);
 
@@ -67,6 +69,10 @@ public class LevelSelectionScript : MonoBehaviour
         Background.setSpacingFlex(0.3f, 1);
 
         Background.setSize(Flex.ScreenSize());
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(Background.UI);
+
+        UIHelper.setImage(Background.UI, PlayerSettings.colourScheme.getMain(true));
     }
 
 

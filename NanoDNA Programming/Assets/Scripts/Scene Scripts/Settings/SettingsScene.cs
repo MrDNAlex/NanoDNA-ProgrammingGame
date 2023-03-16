@@ -126,26 +126,30 @@ public class SettingsScene : MonoBehaviour
     public void SettingFunctionality(int index)
     {
         GameObject gameObj = null;
+        SettingCard setCard = null;
         switch (index)
         {
             case 0:
-
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
 
-                gameObj.GetComponent<SettingCard>().setColourScheme();
+                setCard = gameObj.GetComponent<SettingCard>();
 
-                gameObj.GetComponent<SettingCard>().setInfoButton(Lang.getWord(PlayerSettings.language) + ":", getLang(PlayerSettings.language));
+                setCard.setColourScheme();
 
-                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
+                setCard.setInfoButton(Lang.getWord(PlayerSettings.language) + ":", getLang(PlayerSettings.language));
+
+                setCard.onClick.AddListener(delegate
                 {
-                    infoEditPanel.SetActive(true);
+                    if (infoEditPanel.transform.childCount == 0)
+                    {
+                        infoEditPanel.SetActive(true);
 
-                    destroyChildren(infoEditPanel);
+                        destroyChildren(infoEditPanel);
 
-                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+                        GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
 
-                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.Language, infoEditPanel.transform);
-
+                        panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.Language, infoEditPanel.transform);
+                    }
                 });
 
                 break;
@@ -153,26 +157,30 @@ public class SettingsScene : MonoBehaviour
 
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
 
-                gameObj.GetComponent<SettingCard>().setColourScheme();
+                setCard = gameObj.GetComponent<SettingCard>();
 
-                gameObj.GetComponent<SettingCard>().setInfoButton(Colour.getWord(PlayerSettings.language) + ":", getColour(PlayerSettings.colourScheme.colourScheme));
+                setCard.setColourScheme();
 
-                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
+                setCard.setInfoButton(Colour.getWord(PlayerSettings.language) + ":", getColour(PlayerSettings.colourScheme.colourScheme));
+
+                setCard.onClick.AddListener(delegate
                 {
-                    infoEditPanel.SetActive(true);
+                    if (infoEditPanel.transform.childCount == 0)
+                    {
+                        infoEditPanel.SetActive(true);
 
-                    destroyChildren(infoEditPanel);
+                        destroyChildren(infoEditPanel);
 
-                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+                        GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
 
-                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.ColourScheme, infoEditPanel.transform);
-
+                        panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.ColourScheme, infoEditPanel.transform);
+                    }
                 });
                 break;
             case 2:
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardSlider") as GameObject, content);
 
-                SettingCard setCard = gameObj.GetComponent<SettingCard>();
+                setCard = gameObj.GetComponent<SettingCard>();
 
                 setCard.mainColor = PlayerSettings.colourScheme.getMainTextColor();
 
@@ -194,54 +202,53 @@ public class SettingsScene : MonoBehaviour
                 //Advanced Variables
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
 
-                //
-                //
-                //
+                setCard = gameObj.GetComponent<SettingCard>();
 
-                gameObj.GetComponent<SettingCard>().setColourScheme();
+                setCard.setColourScheme();
 
-                gameObj.GetComponent<SettingCard>().setInfoButton(AdvVaribales.getWord(PlayerSettings.language) + ":", getAdvVariable(PlayerSettings.advancedVariables));
+                setCard.setInfoButton(AdvVaribales.getWord(PlayerSettings.language) + ":", getAdvVariable(PlayerSettings.advancedVariables));
 
-                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
+                setCard.onClick.AddListener(delegate
                 {
-                    infoEditPanel.SetActive(true);
+                    if (infoEditPanel.transform.childCount == 0)
+                    {
+                        infoEditPanel.SetActive(true);
 
-                    destroyChildren(infoEditPanel);
+                        destroyChildren(infoEditPanel);
 
-                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+                        GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
 
-                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.AdvancedVariables, infoEditPanel.transform);
-
+                        panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.AdvancedVariables, infoEditPanel.transform);
+                    }
                 });
-
-
                 break;
-
             default:
 
                 gameObj = Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/SettingCardButton") as GameObject, content);
 
-                gameObj.GetComponent<SettingCard>().setColourScheme();
+                setCard = gameObj.GetComponent<SettingCard>();
 
-                gameObj.GetComponent<SettingCard>().setInfoButton(Lang.getWord(PlayerSettings.language) + ":", getLang(PlayerSettings.language));
+                setCard.setColourScheme();
 
-                gameObj.GetComponent<SettingCard>().onClick.AddListener(delegate
+                setCard.setInfoButton(Lang.getWord(PlayerSettings.language) + ":", getLang(PlayerSettings.language));
+
+                setCard.onClick.AddListener(delegate
                 {
-                    infoEditPanel.SetActive(true);
+                    if (infoEditPanel.transform.childCount == 0)
+                    {
+                        infoEditPanel.SetActive(true);
 
-                    destroyChildren(infoEditPanel);
+                        destroyChildren(infoEditPanel);
 
-                    GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
+                        GameObject panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/SettingsPanel/MultiChoiceSettings") as GameObject, infoEditPanel.transform);
 
-                    panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.Language, infoEditPanel.transform);
-
+                        panel.GetComponent<SettingsValController>().setPanel(SettingEditType.MultiChoice, SettingValueType.Language, infoEditPanel.transform);
+                    }
                 });
-
                 break;
-
         }
 
-        gameObj.GetComponent<SettingCard>().flex.setCustomSize(new Vector2(0, 80));
+        setCard.flex.setCustomSize(new Vector2(0, 80));
 
         content.GetComponent<FlexInfo>().flex.addChild(gameObj.GetComponent<SettingCard>().flex);
     }
@@ -347,7 +354,7 @@ public class SettingsScene : MonoBehaviour
         setLang(PlayerSettings.language);
     }
 
-    
+
 
 
 }

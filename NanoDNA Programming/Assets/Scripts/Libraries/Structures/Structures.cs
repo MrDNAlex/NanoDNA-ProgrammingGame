@@ -189,12 +189,12 @@ namespace DNAStruct
 
     public struct Scripts
     {
-        public LevelScript levelScript;
-        public LevelManager levelManager;
-        public ProgramSection programSection;
-        public MapDrag mapDrag;
-        public StoreScript storeScript;
-        public ProgramManager programManager;
+        public static LevelScript levelScript;
+        public static LevelManager levelManager;
+        public static ProgramSection programSection;
+        public static MapDrag mapDrag;
+        public static StoreScript storeScript;
+        public static ProgramManager programManager;
 
     }
 

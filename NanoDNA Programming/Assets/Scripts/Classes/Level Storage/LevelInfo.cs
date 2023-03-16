@@ -9,9 +9,9 @@ using DNAStruct;
 //For something to be saved it must be public 
 public class LevelInfo 
 {
-   
    [Header("Edit")]
-    public string levelName;
+    public UIWord levelName;
+    public UIWord levelDescription;
     
     public int maxLine;
     public int maxItems;

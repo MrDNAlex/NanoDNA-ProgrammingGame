@@ -16,17 +16,17 @@ public class EndScreen : MonoBehaviour
     public int itemsColl;
     public int totalItems;
 
-    Scripts allScripts;
+    //Scripts allScripts;
 
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-        maxLines = allScripts.levelManager.maxLines;
-        totalItems = allScripts.levelManager.maxItems;
-        linesUsed = allScripts.levelManager.usedLines;
-        itemsColl = allScripts.levelManager.itemsCollect;
+        maxLines = Scripts.levelManager.maxLines;
+        totalItems = Scripts.levelManager.maxItems;
+        linesUsed = Scripts.levelManager.usedLines;
+        itemsColl = Scripts.levelManager.itemsCollect;
 
         setUI();
 

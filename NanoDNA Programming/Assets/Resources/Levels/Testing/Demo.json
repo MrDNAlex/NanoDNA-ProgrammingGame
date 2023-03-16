@@ -1,9 +1,16 @@
 {
-    "levelName": "Demo",
-    "levelPath": "Levels/Testing",
+    "levelName": {
+        "french": "Démo",
+        "english": "Demo"
+    },
+    "levelDescription": {
+        "french": "Une Description pour le premier niveau",
+        "english": "A Description for the first level"
+    },
     "maxLine": 5,
     "maxItems": 3,
     "levelType": 0,
+    "levelPath": "Levels/Testing",
     "levelIcon": {
         "id": "Level1"
     },

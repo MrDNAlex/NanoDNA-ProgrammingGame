@@ -495,7 +495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelFiles:
   - {fileID: 4900000, guid: ef71d93883a1eaa438165646239ffbf1, type: 3}
-  - {fileID: 4900000, guid: ae2a864fdbfccfb49976fdcc23274c7f, type: 3}
+  - {fileID: 4900000, guid: dbde0bc9b845c0946809754fa330628b, type: 3}
   iconLedger: {fileID: 11400000, guid: f072b07843f8a214695f883d1e9161e4, type: 2}
   levelCardPrefab: {fileID: 923752535369558628, guid: 84c281ca0f714674d839aa994802424e, type: 3}
   background: {fileID: 700913546}

@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
     Tilemap decorationMap;
     GameObject charHolder;
 
-    public Scripts allScripts;
+   // public Scripts allScripts;
 
     public int maxLines = 0;
     public int usedLines = 0;
@@ -67,9 +67,9 @@ public class LevelManager : MonoBehaviour
         //Load Info
         info = SaveManager.loadJSON<LevelInfo>(CurrentLevelLoader.path, CurrentLevelLoader.name);
 
-        Camera.main.GetComponent<LevelScript>().allScripts.levelManager = this;
+       Scripts.levelManager = this;
 
-        allScripts.levelManager = this;
+       // allScripts.levelManager = this;
 
         getTileMaps();
 
@@ -79,9 +79,9 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+       // allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-        lang = allScripts.levelScript.lang;
+        lang = PlayerSettings.language;
 
         complete.onClick.AddListener(completeLevel);
 
@@ -99,8 +99,6 @@ public class LevelManager : MonoBehaviour
         //Check all programs, count number of lines, write it down
         //Design something that doesn't use the holder, maybe get access 
         
-        lang = allScripts.levelScript.lang;
-
         //Something in here
         int lines = 0;
 
@@ -148,7 +146,7 @@ public class LevelManager : MonoBehaviour
                 tryComplete = true;
 
                 //Run final program
-                allScripts.programSection.runFinalProgram();
+                Scripts.programSection.runFinalProgram();
             }
         }
         else
@@ -158,7 +156,7 @@ public class LevelManager : MonoBehaviour
             //Stop all coroutines
             StopAllCoroutines();
 
-            allScripts.programSection.StopAllCoroutines();
+           Scripts.programSection.StopAllCoroutines();
 
             //Set all characters to initial position
             foreach (Transform child in charHolder.transform)
@@ -208,9 +206,6 @@ public class LevelManager : MonoBehaviour
         //Set End Goal
         setEndGoal(info.endGoal);
 
-        //Set Other Info
-        allScripts.levelScript.setCamera(info);
-
         maxLines = info.maxLine;
         maxItems = info.maxItems;
 
@@ -225,8 +220,8 @@ public class LevelManager : MonoBehaviour
             if (charHolder.transform.GetChild(index).GetComponent<CharData>() != null)
             {
                 //Set Character
-                allScripts.programSection.selectedCharacter = charHolder.transform.GetChild(index).gameObject;
-                allScripts.programSection.selectedCharData = charHolder.transform.GetChild(index).GetComponent<CharData>();
+                Scripts.programSection.selectedCharacter = charHolder.transform.GetChild(index).gameObject;
+                Scripts.programSection.selectedCharData = charHolder.transform.GetChild(index).GetComponent<CharData>();
 
                 findingChar = false;
             }
@@ -245,8 +240,12 @@ public class LevelManager : MonoBehaviour
             }
            
         }
+
+        //Set Other Info
+        Scripts.levelScript.setCamera(info);
+
         //Reload Program
-        allScripts.programSection.renderProgram();
+        Scripts.programSection.renderProgram();
 
     }
 

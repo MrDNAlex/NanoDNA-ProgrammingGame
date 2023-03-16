@@ -24,7 +24,7 @@ public class ProgramLine : MonoBehaviour
 
     // Flex Program;
 
-    Scripts allScripts;
+   // Scripts allScripts;
 
 
     public void Awake()
@@ -37,7 +37,7 @@ public class ProgramLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         OnDemandRendering.renderFrameInterval = 12;
     }
@@ -90,7 +90,7 @@ public class ProgramLine : MonoBehaviour
         {
             deleteProgramLine(index);
 
-            allScripts.programSection.selectedCharData.displayProgram(true);
+            Scripts.programSection.selectedCharData.displayProgram(true);
 
         });
     }
@@ -115,11 +115,11 @@ public class ProgramLine : MonoBehaviour
     {
         deleteLine();
 
-        Program prog = allScripts.programSection.selectedCharData.program;
+        Program prog = Scripts.programSection.selectedCharData.program;
 
         prog.RemoveLine(index);
 
-        allScripts.levelManager.updateConstraints();
+        Scripts.levelManager.updateConstraints();
 
     }
 
@@ -170,7 +170,7 @@ public class ProgramLine : MonoBehaviour
 
            // Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(card.action, transform.parent.parent.GetSiblingIndex());
 
-            allScripts.levelManager.updateConstraints();
+            Scripts.levelManager.updateConstraints();
         }
     }
 
@@ -232,7 +232,7 @@ public class ProgramLine : MonoBehaviour
             //Make it editable
             card.setEditable();
 
-            allScripts.levelManager.updateConstraints();
+            Scripts.levelManager.updateConstraints();
         }
     }
 

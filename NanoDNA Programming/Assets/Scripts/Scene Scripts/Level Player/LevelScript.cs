@@ -69,13 +69,15 @@ public class LevelScript : MonoBehaviour
 
     Flex Content;
 
-    public Scripts allScripts = new Scripts();
+    //public Scripts allScripts = new Scripts();
 
     private void Awake()
     {
         PlayerSettings.LoadSettings(SaveManager.loadPlaySettings());
-        allScripts.levelScript = this;
+        Scripts.levelScript = this;
         lang = PlayerSettings.language;
+
+        setUI();
     }
 
     //Going to start needing a loading screen I think
@@ -84,15 +86,11 @@ public class LevelScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setUI();
-
         setUIText();
 
         contentTrans = content;
 
         OnDemandRendering.renderFrameInterval = 12;
-
-        //changeLangBtn.onClick.AddListener(langChange);
 
     }
 
@@ -107,7 +105,7 @@ public class LevelScript : MonoBehaviour
 
         Background = new Flex(background, 1);
 
-        Flex Reg1 = new Flex(Background.getChild(0), 1, Background);
+        Flex Reg1 = new Flex(Background.getChild(0), 4f, Background);
         Flex Header = new Flex(Reg1.getChild(0), 1, Reg1);
         Flex List = new Flex(Reg1.getChild(1), 8, Reg1);
         Flex SV = new Flex(List.getChild(0), 1, List);
@@ -119,9 +117,9 @@ public class LevelScript : MonoBehaviour
         Flex InteracName = new Flex(Controls.getChild(1), 4, Controls);
         Flex Save = new Flex(Controls.getChild(2), 1, Controls);
 
-        Flex Scripts = new Flex(Header.getChild(1), 1);
+        Flex ScriptsTabs = new Flex(Header.getChild(1), 1);
 
-        Flex Reg2 = new Flex(Background.getChild(1), 2f, Background);
+        Flex Reg2 = new Flex(Background.getChild(1), 6f, Background);
         MapView = new Flex(Reg2.getChild(0), 2f, Reg2);
 
 
@@ -142,7 +140,7 @@ public class LevelScript : MonoBehaviour
         Flex CompleteLevel = new Flex(Constraints.getChild(2), 1, Constraints);
 
         //Add Children
-        VP.addChild(allScripts.programSection.flex);
+        VP.addChild(Scripts.programSection.flex);
 
         Reg3.addChild(store.GetComponent<StoreScript>().Store);
 
@@ -190,6 +188,8 @@ public class LevelScript : MonoBehaviour
         UIHelper.setImage(Save.UI, PlayerSettings.colourScheme.getAccent());
         UIHelper.setImage(Undo.UI, PlayerSettings.colourScheme.getAccent());
 
+        LayoutRebuilder.ForceRebuildLayoutImmediate(Background.UI);
+
     }
 
     public float orthoSizeCalc(LevelInfo info)
@@ -198,7 +198,10 @@ public class LevelScript : MonoBehaviour
         float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * backgroundMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (backgroundMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
+
+        Debug.Log(MapView.size);
+
+        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (backgroundMap.cellSize.x * ((float)MapView.size.y / (float)MapView.size.x)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
@@ -212,13 +215,9 @@ public class LevelScript : MonoBehaviour
         }
     }
 
- 
-
     public void setCamera(LevelInfo info)
     {
         //Set the Camera Texture size
-
-
         camText.width = (int)MapView.size.x;
         camText.height = (int)MapView.size.y;
 

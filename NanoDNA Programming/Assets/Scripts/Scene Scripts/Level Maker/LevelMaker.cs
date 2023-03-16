@@ -43,11 +43,11 @@ public class LevelMaker : MonoBehaviour
 
        // SaveManager.saveLevel(level.levelName, level);
 
-        SaveManager.deepSave(level.levelName, level);
+        SaveManager.deepSave(level.levelName.english, level);
 
 
         //Asset Path
-        SaveManager.saveJSON(level, "Assets/Resources/" + path, level.levelName);
+        SaveManager.saveJSON(level, "Assets/Resources/" + path, level.levelName.english);
 
 
     }

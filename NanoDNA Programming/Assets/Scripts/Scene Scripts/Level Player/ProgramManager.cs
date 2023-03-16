@@ -14,13 +14,13 @@ public class ProgramManager : MonoBehaviour
     List<VariableData> defaultVariables = new List<VariableData>();
 
     //Make a list for all the OG Variables when loaded
-    Scripts allScripts;
+    //Scripts allScripts;
 
     //Add functions to load in pre existing / global variables from the level
 
     private void Awake()
     {
-        Camera.main.GetComponent<LevelScript>().allScripts.programManager = this;
+        Scripts.programManager = this;
     }
 
     // Start is called before the first frame update
@@ -58,7 +58,7 @@ public class ProgramManager : MonoBehaviour
         defaultVariables.Add(var6);
         defaultVariables.Add(var7);
 
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+       // allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         updateVariables();
     }
@@ -106,7 +106,7 @@ public class ProgramManager : MonoBehaviour
         }
 
         //Loop through all scripts and add all variables
-        foreach (Transform child in allScripts.programSection.charHolder.transform)
+        foreach (Transform child in Scripts.programSection.charHolder.transform)
         {
             if (child.GetComponent<CharData>() != null)
             {

@@ -74,7 +74,6 @@ public class StoreCard : MonoBehaviour
         cardFlex.addChild(Program.GetComponent<ProgramCard>().program);
 
         //Set name
-
         UIHelper.setText(cardFlex.getChild(1), cardFlex.getChild(0).GetComponent<ProgramCard>().cardName.getWord(lang), PlayerSettings.colourScheme.getMainTextColor());
 
     }
