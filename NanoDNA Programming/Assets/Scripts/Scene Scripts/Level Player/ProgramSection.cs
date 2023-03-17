@@ -193,9 +193,7 @@ public class ProgramSection : MonoBehaviour
                 }
 
                 break;
-            case ActionType.Math:
-
-                break;
+            
             case ActionType.Logic:
 
                 break;
@@ -437,9 +435,7 @@ public class ProgramSection : MonoBehaviour
                         break;
                 }
                 break;
-            case ActionType.Math:
-
-                break;
+            
             case ActionType.Logic:
 
                 break;

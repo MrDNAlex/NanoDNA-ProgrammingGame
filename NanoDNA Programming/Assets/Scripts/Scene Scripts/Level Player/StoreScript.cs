@@ -12,7 +12,7 @@ using DNASaveSystem;
 public class StoreScript : MonoBehaviour
 {
     public Flex Store;
-    public int storeNum = 4;
+    //public int storeNum = 3;
 
     [SerializeField] GameObject storeSection;
 
@@ -39,8 +39,6 @@ public class StoreScript : MonoBehaviour
         lang = PlayerSettings.language;
 
         setUI();
-
-
     }
 
     // Start is called before the first frame update
@@ -83,7 +81,6 @@ public class StoreScript : MonoBehaviour
         Content.setSpacingFlex(0.1f, 1);
 
         setImage(StoreHeader.UI, PlayerSettings.colourScheme.getSecondary(true));
-
     }
 
     public Flex storeSecBtn(ActionType tag)
@@ -94,7 +91,7 @@ public class StoreScript : MonoBehaviour
 
         //Set Info
         storeBTN.setText(UIwords.getStoreTitle(tag, lang));
-        storeBTN.setImage();
+        storeBTN.setImage(tag);
 
         storeBTN.actionType = tag;
 
@@ -117,7 +114,7 @@ public class StoreScript : MonoBehaviour
         GridView.deleteAllChildren();
 
         //Instantiate storeCard
-        Object[] storeItems = Resources.LoadAll(folderPaths(tag));
+        Object[] storeItems = ProgramPrefabs.LoadAllPrefabs(tag);
 
         foreach (Object obj in storeItems)
         {
@@ -137,33 +134,6 @@ public class StoreScript : MonoBehaviour
         {
             //Safe to delete
             Destroy(child.gameObject);
-        }
-    }
-
-    public string folderPaths(ActionType tag)
-    {
-        switch (tag)
-        {
-            case ActionType.Movement:
-                return "Prefabs/Programs/Movement";
-            case ActionType.Math:
-                return "Prefabs/Programs/Math";
-            case ActionType.Logic:
-                return "Prefabs/Programs/Logic";
-            case ActionType.Variable:
-                if (PlayerSettings.advancedVariables)
-                {
-                    return "Prefabs/Programs/Variable/Advanced";
-                } else
-                {
-                    return "Prefabs/Programs/Variable/Simple";
-                }
-                
-            case ActionType.Action:
-                return "Prefabs/Programs/Action";
-
-            default:
-                return "";
         }
     }
 

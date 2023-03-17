@@ -78116,7 +78116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
       propertyPath: program.list.Array.data[3].actionType
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
       propertyPath: program.list.Array.data[0].movementName

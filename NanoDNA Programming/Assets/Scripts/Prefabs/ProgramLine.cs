@@ -24,7 +24,7 @@ public class ProgramLine : MonoBehaviour
 
     // Flex Program;
 
-   // Scripts allScripts;
+    // Scripts allScripts;
 
 
     public void Awake()
@@ -128,33 +128,27 @@ public class ProgramLine : MonoBehaviour
     {
         //Exapnd this later
         deleteLine();
-        GameObject ProgramCard = null;
-        switch (info.actionType)
-        {
-            case ActionType.Movement:
-                ProgramCard = Instantiate(prefab1, ProgramObj.transform);
-                break;
-            case ActionType.Variable:
 
-                if (PlayerSettings.advancedVariables)
-                {
-                    ProgramCard = Instantiate(prefab2, ProgramObj.transform);
-                } else
-                {
-                    ProgramCard = Instantiate(simpVar, ProgramObj.transform);
-                }
-               
-                break;
-            case ActionType.Action:
-                ProgramCard = Instantiate(prefab3, ProgramObj.transform);
-                break;
+        GameObject program = null;
+
+        ProgramPrefabs.InstanceSearch search = new ProgramPrefabs.InstanceSearch();
+
+        search.setSearch(info);
+
+        ProgramPrefabs prefabs = new ProgramPrefabs();
+
+        GameObject inst = prefabs.getPrefab(search);
+
+        if (inst != null)
+        {
+            program = Instantiate(inst, ProgramObj.transform);
         }
 
-        if (ProgramCard != null)
+        if (program != null)
         {
-            ProgramCard card = ProgramCard.GetComponent<ProgramCard>();
+            ProgramCard card = program.GetComponent<ProgramCard>();
 
-            ProgramCard.name += transform.GetSiblingIndex();
+            program.name += transform.GetSiblingIndex();
 
             ProgramUI.addChild(card.program);
 
@@ -162,13 +156,15 @@ public class ProgramLine : MonoBehaviour
 
             Line.setSize(Line.size);
 
+            Destroy(program.GetComponent<StoreDrag>());
+
             card.progLine = transform;
 
-            ProgramCard.AddComponent<DeleteIndentDrag>();
+            program.AddComponent<DeleteIndentDrag>();
 
             card.setEditable();
 
-           // Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(card.action, transform.parent.parent.GetSiblingIndex());
+            card.setInfo(card.action);
 
             Scripts.levelManager.updateConstraints();
         }
@@ -181,31 +177,17 @@ public class ProgramLine : MonoBehaviour
 
         GameObject program = null;
 
-        //Edit this later
-        switch (action.actionType)
-        {
-            case ActionType.Movement:
+        ProgramPrefabs.InstanceSearch search = new ProgramPrefabs.InstanceSearch();
 
-                switch (action.movementName)
-                {
-                    case MovementActionNames.Move:
-                        program = Instantiate(prefab1, ProgramObj.transform);
-                        break;
-                }
-                break;
-            case ActionType.Variable:
-                if (PlayerSettings.advancedVariables)
-                {
-                    program = Instantiate(prefab2, ProgramObj.transform);
-                }
-                else
-                {
-                   program = Instantiate(simpVar, ProgramObj.transform);
-                }
-                break;
-            default:
-                Debug.Log(action);
-                break;
+        search.setSearch(action);
+
+        ProgramPrefabs prefabs = new ProgramPrefabs();
+
+        GameObject inst = prefabs.getPrefab(search);
+
+        if (inst != null)
+        {
+            program = Instantiate(inst, ProgramObj.transform);
         }
 
         if (program != null)
@@ -222,6 +204,8 @@ public class ProgramLine : MonoBehaviour
 
             //Set size of the component
             Line.setSize(Line.size);
+
+            Destroy(program.GetComponent<StoreDrag>());
 
             //Add the indent and delete Drag script
             program.AddComponent<DeleteIndentDrag>();
@@ -255,12 +239,5 @@ public class ProgramLine : MonoBehaviour
             }
         }
     }
-
-    
-
-
-
-
-
 
 }

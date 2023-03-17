@@ -68,14 +68,14 @@ public class Program
                     default:
                         return true;
                 }
-            case ActionType.Math:
-                switch (action.mathName)
-                {
-                    case MathActionNames.None:
-                        return false;
-                    default:
-                        return true;
-                }
+            //case ActionType.Math:
+              //  switch (action.mathName)
+               // {
+               //     case MathActionNames.None:
+               //         return false;
+                //    default:
+                //        return true;
+               // }
             case ActionType.Logic:
                 switch (action.logicName)
                 {
@@ -112,6 +112,17 @@ public class Program
        // Debug.Log("Set Action: " + action.dispDetailedAction() + " " + index);
 
         List<ProgramAction> prog = list;
+
+
+
+        /*
+        foreach (ProgramAction act in prog)
+        {
+            Debug.Log(act.dispDetailedAction());
+        }
+
+        Debug.Log(index);
+        */
 
         list.RemoveAt(index);
         list.Insert(index, action);

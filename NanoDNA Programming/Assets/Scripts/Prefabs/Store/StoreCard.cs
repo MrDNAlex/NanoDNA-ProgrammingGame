@@ -56,10 +56,8 @@ public class StoreCard : MonoBehaviour
         cardFlex.addChild(Name);
 
         cardFlex.setSpacingFlex(0.3f, 1);
-
     }
 
-    
     public void setStoreCard (GameObject prog)
     {
         //Instantiate Object
@@ -68,7 +66,7 @@ public class StoreCard : MonoBehaviour
         //Make it the first Child
         Program.transform.SetSiblingIndex(0);
 
-        Program.AddComponent<DragController2>();
+        //Program.AddComponent<DragController2>();
 
         //Add the child 
         cardFlex.addChild(Program.GetComponent<ProgramCard>().program);
@@ -77,22 +75,4 @@ public class StoreCard : MonoBehaviour
         UIHelper.setText(cardFlex.getChild(1), cardFlex.getChild(0).GetComponent<ProgramCard>().cardName.getWord(lang), PlayerSettings.colourScheme.getMainTextColor());
 
     }
-    
-
-    /*
-    public void setStoreCard (GameObject prog)
-    {
-        //Instantiate Object
-        Program = Instantiate(prog, card.transform);
-
-        //Make it the first Child
-        Program.transform.SetSiblingIndex(0);
-
-        cardFlex.addChild(Program.GetComponent<StoreCardDragInfo>().flex);
-
-        //Set name
-        UIHelper.setText(cardFlex.getChild(1), cardFlex.getChild(0).GetComponent<StoreCardDragInfo>().cardName.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getMainTextColor());
-
-    }
-    */
 }

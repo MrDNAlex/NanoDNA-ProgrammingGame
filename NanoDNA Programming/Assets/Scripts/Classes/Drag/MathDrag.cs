@@ -7,32 +7,41 @@ using DNAStruct;
 using UnityEngine.Rendering;
 using DNAMathAnimation;
 
-
-public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class MathDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    Vector3 OGpos;
-    
-    Vector3 lastPos;
-    //Transform lastParent;
-    Vector3 newPos;
 
-    Vector3 curGlobPos;
-    Vector3 curLocPos;
+    Vector3 OGpos;
+
+    Vector3 lastPos;
+    Vector3 newPos;
 
     CardInfo info;
 
     // Start is called before the first frame update
     void Start()
     {
-        OGpos = transform.position;
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         // lastChildIndex = UIObject.GetSiblingIndex();
-       // Debug.Log("Begin: " +transform.localPosition);
+        // Debug.Log("Begin: " +transform.localPosition);
         lastPos = transform.localPosition;
         newPos = transform.localPosition;
+
+
+        //Adapt this to the math type program cards
+
+
+
+
 
         info = new CardInfo();
 
@@ -50,23 +59,13 @@ public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-       // Debug.Log("Drag: " + transform.localPosition);
-
         //Get the new Position
         newPos = new Vector3(newPos.x + eventData.delta.x, newPos.y + eventData.delta.y, 0);
         transform.localPosition = newPos;
 
-        curGlobPos = transform.position;
-        curLocPos = transform.localPosition;
-
         RectTransform content = Camera.main.GetComponent<LevelScript>().contentTrans;
 
-       // Debug.Log(transform.position);
-      //  Debug.Log(transform.localPosition);
-        
-       // Debug.Log(transform);
-
-        for (int i = 0; i < content.childCount; i ++)
+        for (int i = 0; i < content.childCount; i++)
         {
             Transform child = content.GetChild(i);
 
@@ -75,7 +74,8 @@ public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, I
             if (mouse.mouseOver)
             {
                 child.GetComponent<Image>().color = Color.red;
-            } else
+            }
+            else
             {
                 child.GetComponent<Image>().color = Color.white;
             }
@@ -88,22 +88,18 @@ public class DragController2 : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
         for (int i = 0; i < content.childCount; i++)
         {
-           
             Transform child = content.GetChild(i);
             MouseOverDetect mouse = content.GetChild(i).GetChild(1).GetComponent<MouseOverDetect>();
 
             if (mouse.mouseOver)
             {
                 child.GetComponent<ProgramLine>().addProgram(info, transform);
-
             }
-
         }
-       
+
         //So the glitch is being caused by the text for lines being used updating, it updates all the position of the UI, but it looks like we can hide this glitch by making this animation faster
-       // StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 300, 0, false));
+        // StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 300, 0, false));
 
         StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, 300, 0, false));
-
     }
 }

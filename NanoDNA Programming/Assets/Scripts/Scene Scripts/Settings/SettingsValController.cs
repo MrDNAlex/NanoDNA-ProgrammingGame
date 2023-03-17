@@ -142,7 +142,7 @@ public class SettingsValController : MonoBehaviour
                 //Set gridview
                 setGridView(Grid);
 
-                Parent.setSize(new Vector2(1000, 700));
+                Parent.setSize(new Vector2(Screen.height * 0.7f * 1.3f, Screen.height * 0.7f));
 
                 Row1.UI.GetComponent<HorizontalLayoutGroup>().spacing = 20;
 

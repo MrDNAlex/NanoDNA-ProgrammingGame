@@ -807,6 +807,7 @@ GameObject:
   - component: {fileID: 6694659673159544509}
   - component: {fileID: 346588033968808526}
   - component: {fileID: -2310885167832216146}
+  - component: {fileID: 3001961925073130743}
   m_Layer: 0
   m_Name: AdvancedVariable
   m_TagString: Untagged
@@ -914,7 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionType: 3
+  actionType: 2
   cardName:
     french: Variable
     english: Variable
@@ -926,7 +927,7 @@ MonoBehaviour:
   progLine: {fileID: 0}
   indent: 0
   action:
-    actionType: 3
+    actionType: 2
     movementName: 0
     mathName: 0
     logicName: 0
@@ -976,6 +977,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3001961925073130743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849765539173945905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcd3a5c75f51d974e8a8f78d409b226c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6993912430497903501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,9 +1059,9 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 60
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

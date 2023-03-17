@@ -181,7 +181,7 @@
                             }
                         },
                         {
-                            "actionType": 3,
+                            "actionType": 2,
                             "movementName": 0,
                             "mathName": 0,
                             "logicName": 0,
@@ -847,7 +847,7 @@
                                 }
                             },
                             {
-                                "actionType": 3,
+                                "actionType": 2,
                                 "movementName": 0,
                                 "mathName": 0,
                                 "logicName": 0,

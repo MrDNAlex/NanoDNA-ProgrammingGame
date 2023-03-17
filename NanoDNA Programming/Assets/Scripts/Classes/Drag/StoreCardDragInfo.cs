@@ -38,8 +38,8 @@ public class StoreCardDragInfo : MonoBehaviour
                 return getMovementPath();
             case ActionType.Logic:
                 return null;
-            case ActionType.Math:
-                return null;
+           // case ActionType.Math:
+            //    return null;
             case ActionType.Variable:
                 return getVariablePath();
             case ActionType.Action:

@@ -96,8 +96,8 @@ public class ProgramAction
             case ActionType.Movement:
                 str = actionType + " " + movementName;
                 break;
-            case ActionType.Math:
-                str = actionType + " " + mathName;
+            //case ActionType.Math:
+              //  str = actionType + " " + mathName;
                 break;
             case ActionType.Logic:
                 str = actionType + " " + logicName;
@@ -130,8 +130,8 @@ public class ProgramAction
                 }
                
                 break;
-            case ActionType.Math:
-                str = actionType + " " + mathName;
+           // case ActionType.Math:
+             //   str = actionType + " " + mathName;
                 break;
             case ActionType.Logic:
                 str = actionType + " " + logicName;

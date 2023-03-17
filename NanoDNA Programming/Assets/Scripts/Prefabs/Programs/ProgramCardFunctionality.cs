@@ -11,7 +11,7 @@ public class ProgramCardFunctionality
 
     Flex Program;
 
-   // Scripts allScripts;
+    // Scripts allScripts;
 
     Language lang;
 
@@ -27,7 +27,7 @@ public class ProgramCardFunctionality
     {
         //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-       // playSettings = SaveManager.loadPlaySettings();
+        // playSettings = SaveManager.loadPlaySettings();
         lang = PlayerSettings.language;
     }
 
@@ -42,8 +42,6 @@ public class ProgramCardFunctionality
         {
             case ActionType.Movement:
                 return setUIMovement(info);
-            case ActionType.Math:
-                return setUIMovement(info);
 
             case ActionType.Logic:
                 return setUIMovement(info);
@@ -52,7 +50,7 @@ public class ProgramCardFunctionality
                 return setUIVariables(info);
 
             case ActionType.Action:
-               // Debug.Log("Here");
+                // Debug.Log("Here");
                 return setUIActions(info);
 
             default:
@@ -88,10 +86,37 @@ public class ProgramCardFunctionality
         return Program;
     }
 
+   // public Flex setUIMath (CardInfo info)
+   // {
+
+        //Maybe remove this and make it so that you click a button, it spawns a EditValuePanel, and have it multichoice, pick the operation. This would be a lot easier
+
+        //Because the type of math operations are
+
+        //Row 1
+        //Addition
+        //subtraction
+        //Multiplication
+        //Division
+
+        //Row 2
+        //Round
+        //Modulus 
+
+        //Row 3?
+        //One special command where you can pick even more unique function (sin, cos, tan etc)
+
+
+       
+   // }
+
     public Flex setUIVariables(CardInfo info)
     {
+        Flex VarName;
+        Flex VarSign;
         switch (info.variableName)
         {
+
             case VariableActionNames.Variable:
 
                 //Flex Variable Init
@@ -101,20 +126,19 @@ public class ProgramCardFunctionality
                 {
                     Flex PublicAndType = new Flex(Program.getChild(0), 0.5f, Program);
 
-                    Debug.Log(Program.getChild(0).name);
-
                     Flex Public = new Flex(PublicAndType.getChild(0), 1, PublicAndType);
                     Flex VarType = new Flex(PublicAndType.getChild(1), 1, PublicAndType);
 
-                    Flex VarName = new Flex(Program.getChild(1), 1, Program);
-                    Flex VarSign = new Flex(Program.getChild(2), 0.5f, Program);
+                    VarName = new Flex(Program.getChild(1), 1, Program);
+                    VarSign = new Flex(Program.getChild(2), 0.5f, Program);
                     Flex VarValue = new Flex(Program.getChild(3), 1, Program);
 
                     PublicAndType.setSpacingFlex(0.05f, 1);
-                } else
+                }
+                else
                 {
-                    Flex VarName = new Flex(Program.getChild(0), 1, Program);
-                    Flex VarSign = new Flex(Program.getChild(1), 0.5f, Program);
+                    VarName = new Flex(Program.getChild(0), 1, Program);
+                    VarSign = new Flex(Program.getChild(1), 0.5f, Program);
                     Flex VarValue = new Flex(Program.getChild(2), 1, Program);
                 }
 
@@ -122,6 +146,21 @@ public class ProgramCardFunctionality
 
                 Program.setAllPadSame(0.3f, 1);
 
+                break;
+            case VariableActionNames.MathVariable:
+
+                //Flex Variable Init
+                Program = new Flex(info.rectTrans, 2);
+
+                VarName = new Flex(Program.getChild(0), 0.5f, Program);
+                VarSign = new Flex(Program.getChild(1), 0.5f, Program);
+
+                //Section that will hold it's own Math Program
+                Flex MathHolder = new Flex(Program.getChild(2), 2, Program);
+
+                Program.setSpacingFlex(0.5f, 1);
+
+                Program.setAllPadSame(0.3f, 1);
                 break;
         }
         return Program;
@@ -166,8 +205,8 @@ public class ProgramCardFunctionality
 
                 setInfoMovement(info);
                 break;
-            case ActionType.Math:
-                break;
+          //  case ActionType.Math:
+            //    break;
             case ActionType.Logic:
                 break;
             case ActionType.Variable:
@@ -315,7 +354,8 @@ public class ProgramCardFunctionality
                             UIHelper.setText(info.transform.GetChild(3).GetChild(0), info.action.varData.value, PlayerSettings.colourScheme.getBlackTextColor());
                         }
                     }
-                } else
+                }
+                else
                 {
 
                     //Simple Variable
@@ -328,7 +368,7 @@ public class ProgramCardFunctionality
                     {
 
                         //Set the value to the name of the reference variable
-                        UIHelper.setText(info.transform.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+                        UIHelper.setText(info.transform.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
 
                         path = "unity_builtin_extra/UISprite";
 
@@ -370,11 +410,40 @@ public class ProgramCardFunctionality
                         }
                     }
                 }
+                break;
+            case VariableActionNames.MathVariable:
 
-               
+                //Make sure it can only get a reference
+
+                //Set the box collider
+                info.transform.GetChild(2).gameObject.AddComponent<BoxCollider2D>();
+
+                info.transform.GetChild(2).GetComponent<BoxCollider2D>().size = info.transform.GetChild(2).GetComponent<FlexInfo>().flex.size;
+
+
+                if (info.action.varData.refID != 0)
+                {
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+                } 
+                else
+                {
+                    //Get the first variable that can possible be grabbed and set the 
+                    List<VariableData> varData = Scripts.programManager.getVariables(VariableType.Number);
+
+                    info.action.varData = varData[0];
+
+                    info.action.varData.refID = varData[0].id;
+
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+                }
+
+
+
+
+                //Check the math operation/data variable, set the type
+
                 break;
         }
-
     }
 
     public void setInfoAction(CardInfo info)
@@ -427,8 +496,8 @@ public class ProgramCardFunctionality
 
                 setActionMovement(info);
                 break;
-            case ActionType.Math:
-                break;
+          //  case ActionType.Math:
+           //     break;
             case ActionType.Logic:
                 break;
             case ActionType.Variable:
@@ -456,7 +525,7 @@ public class ProgramCardFunctionality
                 //Direction
                 info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                    if (noPanelOpen())
                     {
                         //Set Panel Type
                         info.editDataType = EditDataType.Multichoice;
@@ -483,10 +552,9 @@ public class ProgramCardFunctionality
                     }
                 });
 
-
                 info.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                    if (noPanelOpen())
                     {
                         //Set Panel Type
                         info.editDataType = EditDataType.Value;
@@ -533,7 +601,7 @@ public class ProgramCardFunctionality
                     //Public Local
                     info.transform.GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                        if (noPanelOpen())
                         {
                             //Set Panel Type
                             info.editDataType = EditDataType.Multichoice;
@@ -553,13 +621,13 @@ public class ProgramCardFunctionality
                             GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
                             direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-                        }   
+                        }
                     });
 
                     //Variable Type
                     info.transform.GetChild(0).GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                        if (noPanelOpen())
                         {
                             //Set Panel Type
                             info.editDataType = EditDataType.Multichoice;
@@ -582,7 +650,8 @@ public class ProgramCardFunctionality
                         }
                     });
 
-                } else
+                }
+                else
                 {
                     offset = 0;
                 }
@@ -590,7 +659,7 @@ public class ProgramCardFunctionality
                 //Name
                 info.transform.GetChild(0 + offset).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                    if (noPanelOpen())
                     {
                         //Set Panel Type
                         info.editDataType = EditDataType.NewValue;
@@ -616,7 +685,7 @@ public class ProgramCardFunctionality
                 //Value
                 info.transform.GetChild(2 + offset).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                    if (noPanelOpen())
                     {
                         //Set Editable Variable Type
                         info.varType = info.action.varData.varType;
@@ -658,6 +727,64 @@ public class ProgramCardFunctionality
                 });
 
                 break;
+
+            case VariableActionNames.MathVariable:
+
+                info.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    if (noPanelOpen())
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Variable;
+
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Text;
+
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Name;
+
+                        //Get the panel
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                        panel.SetActive(true);
+
+                        destroyChildren(panel);
+
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/VariableList") as GameObject, panel.transform);
+
+                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
+
+                });
+
+                info.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    if (noPanelOpen())
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Multichoice;
+
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Number;
+
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.MathOperation;
+
+                        //Get the panel
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                        panel.SetActive(true);
+
+                        destroyChildren(panel);
+
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+
+                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
+                });
+
+
+                break;
         }
     }
 
@@ -672,7 +799,7 @@ public class ProgramCardFunctionality
 
                 info.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                    if (noPanelOpen())
                     {
                         //Yell, Talk, Whipser
                         //Set Panel Type
@@ -698,7 +825,7 @@ public class ProgramCardFunctionality
 
                 info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+                    if (noPanelOpen())
                     {
                         //Message
 
@@ -744,11 +871,10 @@ public class ProgramCardFunctionality
                 return createVariableAction(info);
             case ActionType.Action:
                 return createActionAction(info);
-
             default:
+                Debug.Log(info.actionType);
                 Debug.Log("Here");
                 return null;
-
         }
 
     }
@@ -776,8 +902,9 @@ public class ProgramCardFunctionality
             case VariableActionNames.Variable:
 
                 return new ProgramAction(info, info.action.varData);
+            case VariableActionNames.MathVariable:
+                return new ProgramAction(info, info.action.varData);
             default:
-                Debug.Log("Here");
                 return null;
         }
     }
@@ -790,11 +917,10 @@ public class ProgramCardFunctionality
             case ActionActionNames.Speak:
                 return new ProgramAction(info, info.action.actData);
             default:
-                Debug.Log("Here");
+               
                 return null;
         }
     }
-
 
     //
     //Converters
@@ -867,7 +993,18 @@ public class ProgramCardFunctionality
         }
     }
 
-   
+    bool noPanelOpen ()
+    {
+        if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+
 
 
 }

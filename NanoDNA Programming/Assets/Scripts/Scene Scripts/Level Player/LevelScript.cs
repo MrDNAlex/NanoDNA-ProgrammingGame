@@ -61,7 +61,6 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Button changeLangBtn;
 
-
     public Flex Background;
     public Flex MapView;
 
@@ -164,7 +163,6 @@ public class LevelScript : MonoBehaviour
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
         //Calculate leftover height, and fix the size of the Zoom slider
-
         Buttons.UI.GetComponent<VerticalLayoutGroup>().spacing = 5;
         Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
 
@@ -198,8 +196,6 @@ public class LevelScript : MonoBehaviour
         float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * backgroundMap.cellSize.y);
 
         //Fit Horizontally
-
-        Debug.Log(MapView.size);
 
         float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (backgroundMap.cellSize.x * ((float)MapView.size.y / (float)MapView.size.x)));
 

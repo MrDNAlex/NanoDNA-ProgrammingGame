@@ -418,6 +418,7 @@ GameObject:
   - component: {fileID: 6694659673159544509}
   - component: {fileID: 346588033968808526}
   - component: {fileID: 8864324988612070715}
+  - component: {fileID: 7283597946464869421}
   m_Layer: 0
   m_Name: Speak
   m_TagString: Untagged
@@ -523,7 +524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionType: 4
+  actionType: 3
   cardName:
     french: Dire
     english: Say
@@ -535,7 +536,7 @@ MonoBehaviour:
   progLine: {fileID: 0}
   indent: 0
   action:
-    actionType: 4
+    actionType: 3
     movementName: 0
     mathName: 0
     logicName: 0
@@ -585,3 +586,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7283597946464869421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849765539173945905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcd3a5c75f51d974e8a8f78d409b226c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

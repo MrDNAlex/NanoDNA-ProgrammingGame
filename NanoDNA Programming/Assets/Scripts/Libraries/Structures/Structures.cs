@@ -96,7 +96,6 @@ namespace DNAStruct
     public enum ActionType
     {
         Movement,
-        Math,
         Logic,
         Variable,
         Action
@@ -111,6 +110,10 @@ namespace DNAStruct
     public enum MathActionNames
     {
         None,
+        Addition,
+        Subtraction, 
+        Multiplication,
+        Division
     }
 
     public enum LogicActionNames
@@ -122,6 +125,7 @@ namespace DNAStruct
     {
         None,
         Variable,
+        MathVariable,
 
     }
 
@@ -138,7 +142,7 @@ namespace DNAStruct
         Value,
         NewValue,
         Multichoice,
-
+        Variable,
     }
 
     public enum ValueEditType
@@ -150,7 +154,9 @@ namespace DNAStruct
         Public,
         Bool,
         Speak,
-        VariableSmartAssign
+        VariableSmartAssign, 
+        MathOperation,
+        LogicOperation,
 
     }
 
@@ -160,7 +166,7 @@ namespace DNAStruct
         Number,
         Decimal,
         Bool,
-        SmartAssign
+       
     }
 
     public enum ActionDescriptor
@@ -258,8 +264,6 @@ namespace DNAStruct
             }
 
         }
-
-
     }
 
     [System.Serializable]
@@ -288,8 +292,6 @@ namespace DNAStruct
             {
                 case ActionType.Movement:
                     return movement.getWord(lang);
-                case ActionType.Math:
-                    return math.getWord(lang);
                 case ActionType.Logic:
                     return logic.getWord(lang);
                 case ActionType.Variable:
