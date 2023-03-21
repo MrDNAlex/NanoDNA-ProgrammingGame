@@ -166,7 +166,18 @@ namespace DNAStruct
         Number,
         Decimal,
         Bool,
+
        
+    }
+
+    public enum MathTypes
+    {
+        None,
+        Addition, 
+        Subtraction, 
+        Multiplication, 
+        Division, 
+        Round,
     }
 
     public enum ActionDescriptor
@@ -330,6 +341,8 @@ namespace DNAStruct
         public CharData charData;
         public int id;
         public int refID;
+        public MathTypes mathType;
+        
 
         public VariableData(bool pub, VariableType varType, string name, string value)
         {

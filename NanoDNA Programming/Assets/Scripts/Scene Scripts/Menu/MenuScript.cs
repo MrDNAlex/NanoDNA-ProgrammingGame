@@ -33,6 +33,7 @@ public class MenuScript : MonoBehaviour
         setUI();
         setFunctionality();
         setLang();
+
     }
 
     // Update is called once per frame
@@ -124,3 +125,4 @@ public class MenuScript : MonoBehaviour
     }
 
 }
+

@@ -152,13 +152,13 @@ public class ProgramCardFunctionality
                 //Flex Variable Init
                 Program = new Flex(info.rectTrans, 2);
 
-                VarName = new Flex(Program.getChild(0), 0.5f, Program);
+                VarName = new Flex(Program.getChild(0), 1f, Program);
                 VarSign = new Flex(Program.getChild(1), 0.5f, Program);
 
                 //Section that will hold it's own Math Program
                 Flex MathHolder = new Flex(Program.getChild(2), 2, Program);
 
-                Program.setSpacingFlex(0.5f, 1);
+                Program.setSpacingFlex(0.3f, 1);
 
                 Program.setAllPadSame(0.3f, 1);
                 break;
@@ -435,6 +435,26 @@ public class ProgramCardFunctionality
                     info.action.varData.refID = varData[0].id;
 
                     UIHelper.setText(info.transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+                }
+
+                //Spawn the math block
+
+                switch (info.action.varData.mathType)
+                {
+                    case MathTypes.None:
+
+                        //Delete if there are 
+
+                        break;
+                    case MathTypes.Addition:
+
+                        GameObject math = GameObject.Instantiate(Resources.Load("Prefabs/MathOperations/Addition") as GameObject, Program.getChild(2));
+
+                        Flex flex = math.GetComponent<ProgramCard>().program;
+
+
+
+                        break;
                 }
 
 

@@ -70,6 +70,12 @@ public class EditValController : MonoBehaviour
 
     UIWord EntText = new UIWord("Enter Text...", "Entrez du Texte...");
 
+    UIWord Addition = new UIWord("Addition", "Addition");
+    UIWord Subtraction = new UIWord("Subtraction", "Soustraction");
+    UIWord Multiplication = new UIWord("Multiplication", "Multiplication");
+    UIWord Division = new UIWord("Division", "Division");
+
+
     List<UIWord> VariableTypes = new List<UIWord>();
 
 
@@ -226,6 +232,7 @@ public class EditValController : MonoBehaviour
                     GridView.addChild(GridRow1);
 
                     GridRow1.setSpacingFlex(0.2f, 1);
+                    GridRow1.UI.GetComponent<HorizontalLayoutGroup>().spacing = 10;
                 }
                 else
                 {
@@ -239,6 +246,9 @@ public class EditValController : MonoBehaviour
                     GridView.addChild(GridRow3);
                     // GridView.addChild(GridRow3);
 
+                    GridRow1.UI.GetComponent<HorizontalLayoutGroup>().spacing = 10;
+                    GridRow2.UI.GetComponent<HorizontalLayoutGroup>().spacing = 10;
+                    GridRow3.UI.GetComponent<HorizontalLayoutGroup>().spacing = 10;
                     GridRow1.setSpacingFlex(0.2f, 1);
                     GridRow2.setSpacingFlex(0.2f, 1);
                     GridRow3.setSpacingFlex(0.2f, 1);
@@ -268,6 +278,8 @@ public class EditValController : MonoBehaviour
 
                 Parent.setSize(new Vector2(Screen.height * 0.7f * 1.3f, Screen.height * 0.7f));
 
+
+                GridRow1.UI.GetComponent<HorizontalLayoutGroup>().spacing = 10;
 
                 break;
 
@@ -937,6 +949,33 @@ public class EditValController : MonoBehaviour
                                 break;
                         }
                         break;
+                    case VariableActionNames.MathVariable:
+
+                        switch (info.valEditType)
+                        {
+                            case ValueEditType.Name:
+                                info.action.varData.name = value.ToString();
+                                break;
+                            case ValueEditType.MathOperation:
+
+                                switch (index)
+                                {
+                                    case 0:
+                                        info.action.varData.mathType = MathTypes.Addition;
+                                        break;
+                                    case 1:
+                                        info.action.varData.mathType = MathTypes.Subtraction;
+                                        break;
+                                    case 2:
+                                        info.action.varData.mathType = MathTypes.Multiplication;
+                                        break;
+                                    case 3:
+                                        info.action.varData.mathType = MathTypes.Division;
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
                 }
                 break;
             case ActionType.Action:
@@ -1011,6 +1050,8 @@ public class EditValController : MonoBehaviour
 
                 //Set data
                 setData(index);
+
+                Debug.Log(info.action.varData.mathType);
 
                 //Create and set the Action
                 info.programCard.action = func.createAction(info);
@@ -1151,6 +1192,14 @@ public class EditValController : MonoBehaviour
 
                 //Yell
                 instantiateDisplayCard("Images/EditControllerAssets/Yell", parent, Yell, 2, 0);
+
+                break;
+            case ValueEditType.MathOperation:
+
+                instantiateDisplayCard("Images/EditControllerAssets/Addition", parent, Addition, 0, 0);
+                instantiateDisplayCard("Images/EditControllerAssets/Subtraction", parent, Subtraction, 1, 0);
+                instantiateDisplayCard("Images/EditControllerAssets/Multiplication", parent, Multiplication, 2, 0);
+                instantiateDisplayCard("Images/EditControllerAssets/Division", parent, Division, 3, 0);
 
                 break;
         }
