@@ -42,8 +42,6 @@ public class CharData : MonoBehaviour
         this.program = info.program;
         this.programStates = info.programStates;
         this.initPos = info.initPos;
-        
-
     }
 
     public ProgramAction getAction (int index)
@@ -72,7 +70,6 @@ public class CharData : MonoBehaviour
             {
                 Debug.Log(i + ": " + program.list[i].dispAction());
             }
-            
         }
     }
 
@@ -128,8 +125,5 @@ public class CharData : MonoBehaviour
     {
         charID = Random.Range(0, 1000000);
     }
-
-
-
 
 }

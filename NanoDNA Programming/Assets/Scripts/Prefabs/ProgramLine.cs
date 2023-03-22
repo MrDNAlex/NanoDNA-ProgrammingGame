@@ -37,8 +37,6 @@ public class ProgramLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-
         OnDemandRendering.renderFrameInterval = 12;
     }
 
@@ -48,7 +46,7 @@ public class ProgramLine : MonoBehaviour
 
     }
 
-    public void setUI()
+    void setUI()
     {
         //Define all the Flex components
         Line = new Flex(background, 1);
@@ -164,8 +162,6 @@ public class ProgramLine : MonoBehaviour
 
             card.setEditable();
 
-            card.setInfo(card.action);
-
             Scripts.levelManager.updateConstraints();
         }
     }
@@ -190,6 +186,7 @@ public class ProgramLine : MonoBehaviour
             program = Instantiate(inst, ProgramObj.transform);
         }
 
+
         if (program != null)
         {
             ProgramCard card = program.GetComponent<ProgramCard>();
@@ -210,10 +207,8 @@ public class ProgramLine : MonoBehaviour
             //Add the indent and delete Drag script
             program.AddComponent<DeleteIndentDrag>();
 
-            //Set Info
-            card.setInfo(action);
+            card.getAction(action);
 
-            //Make it editable
             card.setEditable();
 
             Scripts.levelManager.updateConstraints();

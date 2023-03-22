@@ -13,19 +13,17 @@ public class ProgramPrefabs
 
         public MovementActionNames moveName;
         public LogicActionNames logicName;
-        public MathActionNames mathName;
         public VariableActionNames varName;
         public ActionActionNames actionName;
 
         public void setSearch (ProgramCard progCard)
         {
-            this.type = progCard.actionType;
+            this.type = progCard.actionInfo.actionType;
 
-            this.moveName = progCard.movementName;
-            this.logicName = progCard.logicName;
-            this.mathName = progCard.mathName;
-            this.varName = progCard.variableName;
-            this.actionName = progCard.actionName;
+            this.moveName = progCard.actionInfo.movementName;
+            this.logicName = progCard.actionInfo.logicName;
+            this.varName = progCard.actionInfo.variableName;
+            this.actionName = progCard.actionInfo.actionName;
         }
 
         public void setSearch(ProgramAction action)
@@ -34,7 +32,6 @@ public class ProgramPrefabs
 
             this.moveName = action.movementName;
             this.logicName = action.logicName;
-            this.mathName = action.mathName;
             this.varName = action.variableName;
             this.actionName = action.actionName;
         }
@@ -45,7 +42,6 @@ public class ProgramPrefabs
 
             this.moveName = info.movementName;
             this.logicName = info.logicName;
-            this.mathName = info.mathName;
             this.varName = info.variableName;
             this.actionName = info.actionName;
         }
@@ -58,10 +54,10 @@ public class ProgramPrefabs
 
         MovementActionNames moveName;
         LogicActionNames logicName;
-        MathActionNames mathName;
         VariableActionNames varName;
         ActionActionNames actionName;
 
+        public GameObject obj;
 
         public void setInstance (string path)
         {
@@ -71,13 +67,12 @@ public class ProgramPrefabs
 
             this.path = path;
 
-            this.type = progCard.actionType;
+            this.type = progCard.actionInfo.actionType;
 
-            this.moveName = progCard.movementName;
-            this.logicName = progCard.logicName;
-            this.mathName = progCard.mathName;
-            this.varName = progCard.variableName;
-            this.actionName = progCard.actionName;
+            this.moveName = progCard.actionInfo.movementName;
+            this.logicName = progCard.actionInfo.logicName;
+            this.varName = progCard.actionInfo.variableName;
+            this.actionName = progCard.actionInfo.actionName;
 
             //Maybe we don't need this
             /*
@@ -98,6 +93,25 @@ public class ProgramPrefabs
             */
         }
 
+        public void setInstance(GameObject obj)
+        {
+            this.obj = obj;
+
+            ProgramCard progCard = obj.GetComponent<ProgramCard>();
+
+            //this.path = path;
+
+            this.type = progCard.actionInfo.actionType;
+
+            this.moveName = progCard.actionInfo.movementName;
+            this.logicName = progCard.actionInfo.logicName;
+            this.varName = progCard.actionInfo.variableName;
+            this.actionName = progCard.actionInfo.actionName;
+
+        }
+
+
+
         public bool isInstance (InstanceSearch search)
         {
             if (this.type == search.type)
@@ -108,10 +122,6 @@ public class ProgramPrefabs
                     return true;
                 }
                 else if (this.logicName == search.logicName && search.logicName != LogicActionNames.None)
-                {
-                    return true;
-                }
-                else if (this.mathName == search.mathName && search.mathName != MathActionNames.None)
                 {
                     return true;
                 }
@@ -134,8 +144,6 @@ public class ProgramPrefabs
         }
     }
 
-
-
     //
     //
     //
@@ -153,17 +161,34 @@ public class ProgramPrefabs
         List<ActionType> tags = new List<ActionType>();
         tags.Add(ActionType.Movement);
         tags.Add(ActionType.Logic);
-       // tags.Add(ActionType.Math);
         tags.Add(ActionType.Variable);
         tags.Add(ActionType.Action);
 
+
+        //Do a resource.loadall. save the path that it got those things from and then 
+
+
         foreach (ActionType tag in tags)
         {
-            DirectoryInfo dir = new DirectoryInfo("Assets/Resources/" + folderPaths(tag));
+            //DirectoryInfo dir = new DirectoryInfo("Assets/Resources/" + folderPaths(tag));
 
+            GameObject[] objects = Resources.LoadAll<GameObject>(folderPaths(tag));
+
+            foreach (GameObject obj in objects)
+            {
+                ProgramInstance instance = new ProgramInstance();
+
+                instance.setInstance(obj);
+
+                programs.Add(instance);
+            }
+
+            //Scripts.levelScript.LiveDebug(dir.FullName);
+            /*
             foreach (var file in dir.GetFiles())
             {
-               // Debug.Log(file.FullName);
+                Scripts.levelScript.LiveDebug("Getting Files");
+                // Debug.Log(file.FullName);
 
                 if (!file.FullName.Contains(".meta"))
                 {
@@ -175,9 +200,12 @@ public class ProgramPrefabs
 
                     instance.setInstance(path);
 
+                    Scripts.levelScript.LiveDebug(path);
+
                     programs.Add(instance);
                 }
             }
+            */
         }
     }
 
@@ -214,12 +242,13 @@ public class ProgramPrefabs
 
     public GameObject getPrefab (InstanceSearch search)
     {
+       // Debug.Log("Get Prefab");
         GameObject obj = null;
         foreach (ProgramInstance inst in programs)
         {
             if (inst.isInstance(search))
             {
-                obj = Resources.Load(inst.path) as GameObject;
+                obj = inst.obj;
                // Debug.Log("Obj " +obj);
             } 
         }

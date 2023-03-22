@@ -568,7 +568,7 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(dir, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                     //   direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
                 });
 
@@ -597,7 +597,7 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(dir, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                       // direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
                 });
 
@@ -640,7 +640,7 @@ public class ProgramCardFunctionality
 
                             GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                            direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                          //  direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                         }
                     });
 
@@ -666,7 +666,7 @@ public class ProgramCardFunctionality
 
                             GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                            direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                            //direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                         }
                     });
 
@@ -698,7 +698,7 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/NewValue") as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                      //  direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
                 });
 
@@ -742,7 +742,7 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    //    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
                 });
 
@@ -772,7 +772,7 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/VariableList") as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                     //   direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
 
                 });
@@ -799,7 +799,7 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                      //  direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
                 });
 
@@ -839,7 +839,7 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                       // direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
                 });
 
@@ -868,12 +868,11 @@ public class ProgramCardFunctionality
 
                         GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                       // direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
                 });
                 break;
         }
-
     }
 
     //

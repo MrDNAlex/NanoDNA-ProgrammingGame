@@ -34,13 +34,12 @@ public class StoreDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
         //Get the info from the StoreCardDragInfo
 
-        info.actionType = transform.GetComponent<ProgramCard>().actionType;
+        info.actionType = transform.GetComponent<ProgramCard>().actionInfo.actionType;
 
-        info.movementName = transform.GetComponent<ProgramCard>().movementName;
-        info.mathName = transform.GetComponent<ProgramCard>().mathName;
-        info.logicName = transform.GetComponent<ProgramCard>().logicName;
-        info.variableName = transform.GetComponent<ProgramCard>().variableName;
-        info.actionName = transform.GetComponent<ProgramCard>().actionName;
+        info.movementName = transform.GetComponent<ProgramCard>().actionInfo.movementName;
+        info.logicName = transform.GetComponent<ProgramCard>().actionInfo.logicName;
+        info.variableName = transform.GetComponent<ProgramCard>().actionInfo.variableName;
+        info.actionName = transform.GetComponent<ProgramCard>().actionInfo.actionName;
 
     }
 

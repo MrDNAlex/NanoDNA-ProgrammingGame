@@ -63,12 +63,12 @@ namespace DNAStruct
 
 
         public MovementActionNames movementName;
-        public MathActionNames mathName;
+        //public Math mathName;
         public LogicActionNames logicName;
         public VariableActionNames variableName;
         public ActionActionNames actionName;
 
-        public EditDataType editDataType;
+       
 
         //Program Related Stuff
         public Flex flex;
@@ -82,6 +82,8 @@ namespace DNAStruct
 
 
         public GameObject panel;
+
+        public EditDataType editDataType;
 
         public VariableType varType;
 
@@ -107,7 +109,7 @@ namespace DNAStruct
         Move,
     }
 
-    public enum MathActionNames
+    public enum MathOperationTypes
     {
         None,
         Addition,
@@ -138,7 +140,6 @@ namespace DNAStruct
 
     public enum EditDataType
     {
-        Direction,
         Value,
         NewValue,
         Multichoice,
@@ -215,7 +216,6 @@ namespace DNAStruct
 
     }
 
-
     //
     //Level Type
     //
@@ -226,9 +226,6 @@ namespace DNAStruct
         SideView,
 
     }
-
-
-
 
     public enum Language
     {
@@ -402,9 +399,18 @@ namespace DNAStruct
 
     }
 
+    [System.Serializable]
+    public class MathOperationData
+    {
+        public string value1;
+        public int refID1;
 
+        public string value2;
+        public int refID2;
 
-
+        public MathOperationTypes type;
+        public VariableType varType;
+    }
 
     //Settings Data
 
@@ -448,7 +454,6 @@ namespace DNAStruct
         public ActionType actionType;
 
         public MovementActionNames movementName;
-        public MathActionNames mathName;
         public LogicActionNames logicName;
         public VariableActionNames variableName;
         public ActionActionNames actionName;

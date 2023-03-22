@@ -170,8 +170,8 @@ GameObject:
   - component: {fileID: 8423651774546658438}
   - component: {fileID: 7302720516070642181}
   - component: {fileID: 2078390660496095775}
-  - component: {fileID: 1624962518424202651}
   - component: {fileID: 6444335727604168645}
+  - component: {fileID: 6494871972775401633}
   m_Layer: 5
   m_Name: MultiChoice
   m_TagString: Untagged
@@ -235,18 +235,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1624962518424202651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3807269362486419563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93572fc0c3c0b704fa897a905ff35223, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6444335727604168645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,6 +265,121 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6494871972775401633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3807269362486419563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e76524f1ded3234a85146e3ec05ad4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveData:
+    dir: 0
+    value: 
+    refID: 0
+  varData:
+    isPublic: 0
+    varType: 0
+    name: 
+    value: 
+    charData: {fileID: 0}
+    id: 0
+    refID: 0
+    mathType: 0
+  actData:
+    actionName: 0
+    descriptor: 0
+    data: 
+    character: {fileID: 0}
+    refID: 0
+  varType: 0
+  value: 
+  isPub: 0
+  globalIndex: 0
+  OriginalPos: {x: 0, y: 0, z: 0}
+  customTab:
+    french: Nouveau
+    english: New
+  premadeTab:
+    french: "\xC9tabli"
+    english: Established
+  variable:
+    french: Variables
+    english: Variables
+  newVariable:
+    french: Nouvelle Variable
+    english: New Variable
+  setbtn:
+    french: "D\xE9finer"
+    english: Set
+  error:
+    french: 'Erreur : La variable n''est pas du type '
+    english: 'Error : The variable inputted is not of the type '
+  Text:
+    french: Texte
+    english: Text
+  Number:
+    french: Nombre
+    english: Number
+  Decimal:
+    french: Decimale
+    english: Decimal
+  Bool:
+    french: "Bool\xE9en"
+    english: Boolean
+  Public:
+    french: Publique
+    english: Public
+  Private:
+    french: "Priv\xE9e"
+    english: Private
+  True:
+    french: Vrai
+    english: True
+  False:
+    french: Faux
+    english: False
+  Up:
+    french: Haut
+    english: Up
+  Left:
+    french: Gauche
+    english: Left
+  Right:
+    french: Droite
+    english: Right
+  Down:
+    french: Bas
+    english: Down
+  Whisper:
+    french: Chuchote
+    english: Whisper
+  Talk:
+    french: Dit
+    english: Talk
+  Yell:
+    french: Crie
+    english: Yell
+  EntText:
+    french: Entrez du Texte...
+    english: Enter Text...
+  Addition:
+    french: Addition
+    english: Addition
+  Subtraction:
+    french: Soustraction
+    english: Subtraction
+  Multiplication:
+    french: Multiplication
+    english: Multiplication
+  Division:
+    french: Division
+    english: Division
+  VariableTypes: []
 --- !u!1 &5158031217779072482
 GameObject:
   m_ObjectHideFlags: 0

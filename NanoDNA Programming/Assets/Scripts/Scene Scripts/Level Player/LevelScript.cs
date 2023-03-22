@@ -55,7 +55,7 @@ public class LevelScript : MonoBehaviour
     [SerializeField] TileBase tile;
 
     [SerializeField] Text resize;
-    [SerializeField] Text debug;
+    [SerializeField]public Text debug;
     [SerializeField] Text complete;
     [SerializeField] Text save;
 
@@ -276,6 +276,11 @@ public class LevelScript : MonoBehaviour
 
         UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
 
+    }
+
+    public void LiveDebug (string str)
+    {
+      debug.text = str;
     }
 
 }

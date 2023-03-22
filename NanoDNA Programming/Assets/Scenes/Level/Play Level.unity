@@ -3754,7 +3754,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c4b71d92ff23444491882eb26f0a31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  storeNum: 4
   storeSection: {fileID: 330988772233574108, guid: 779433d5b1467574c847d35c46f79e1d, type: 3}
   storeCard: {fileID: 3237715990226463739, guid: 2ec48f8a8457a3e4f8d3fb730d1ee5a1, type: 3}
   storeCardInfo: {fileID: 3237715990226463739, guid: b691bfd8fa3b11b4b894e45c5ac621dd, type: 3}
@@ -4030,26 +4029,10 @@ MonoBehaviour:
   backgroundMap: {fileID: 1881562961}
   tile: {fileID: 11400000, guid: 3a6bf15aea8388c47b4c3eb538f7973c, type: 2}
   resize: {fileID: 0}
-  debug: {fileID: 0}
+  debug: {fileID: 50809219}
   complete: {fileID: 1221393417}
   save: {fileID: 380952685}
   changeLangBtn: {fileID: 746715376}
-  playerSettings:
-    language: 0
-    volume: 0
-    colourScheme:
-      colourScheme: 0
-      MainS: 
-      SecondaryS: 
-      AccentS: 
-      MainC: 
-      SecondaryC: 
-      AccentC: 
-      textColorMain: {r: 0, g: 0, b: 0, a: 0}
-      textColorAccent: {r: 0, g: 0, b: 0, a: 0}
-      textColorBlack: {r: 0, g: 0, b: 0, a: 0}
-      path: 
-    advancedVariables: 0
 --- !u!114 &1453692407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4071,10 +4054,18 @@ MonoBehaviour:
   endGoalPrefab: {fileID: 6102789913578057497, guid: 428b232344f892b4e8088812b4d8ac56, type: 3}
   constraints: {fileID: 1302882784}
   info:
-    levelName: 
+    levelName:
+      french: 
+      english: 
+    levelDescription:
+      french: 
+      english: 
     maxLine: 0
     maxItems: 0
     levelType: 0
+    levelPath: 
+    levelIcon:
+      id: 
     xMax: 0
     xMin: 0
     yMax: 0

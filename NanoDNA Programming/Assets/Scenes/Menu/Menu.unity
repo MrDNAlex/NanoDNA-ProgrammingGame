@@ -539,43 +539,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dc017fa2f05d04f9c9dc9f0b69def0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionType: 0
-  cardName:
-    french: 
-    english: 
-  movementName: 0
-  mathName: 0
-  logicName: 0
-  variableName: 0
-  actionName: 0
-  progLine: {fileID: 0}
-  indent: 0
-  action:
-    actionType: 0
-    movementName: 0
-    mathName: 0
-    logicName: 0
-    variableName: 0
-    actionName: 0
-    moveData:
-      dir: 0
-      value: 
-      refID: 0
-    varData:
-      isPublic: 0
-      varType: 0
-      name: 
-      value: 
-      charData: {fileID: 0}
-      id: 0
-      refID: 0
-      mathType: 0
-    actData:
-      actionName: 0
-      descriptor: 0
-      data: 
-      character: {fileID: 0}
-      refID: 0
 --- !u!4 &698596075
 Transform:
   m_ObjectHideFlags: 0
@@ -1366,4 +1329,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menu: {fileID: 608754580}
-  test: {fileID: 698596075}

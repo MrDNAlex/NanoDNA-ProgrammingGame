@@ -805,9 +805,9 @@ GameObject:
   - component: {fileID: 7413223862108152932}
   - component: {fileID: 8560346913178200967}
   - component: {fileID: 6694659673159544509}
-  - component: {fileID: 346588033968808526}
   - component: {fileID: -2310885167832216146}
   - component: {fileID: 3001961925073130743}
+  - component: {fileID: 618083967753174603}
   m_Layer: 0
   m_Name: AdvancedVariable
   m_TagString: Untagged
@@ -903,54 +903,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &346588033968808526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6849765539173945905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionType: 2
-  cardName:
-    french: Variable
-    english: Variable
-  movementName: 0
-  mathName: 0
-  logicName: 0
-  variableName: 1
-  actionName: 0
-  progLine: {fileID: 0}
-  indent: 0
-  action:
-    actionType: 2
-    movementName: 0
-    mathName: 0
-    logicName: 0
-    variableName: 1
-    actionName: 0
-    moveData:
-      dir: 0
-      value: 0
-      refID: 0
-    varData:
-      isPublic: 0
-      varType: 0
-      name: 
-      value: 
-      charData: {fileID: 0}
-      id: 0
-      refID: 0
-    actData:
-      actionName: 0
-      descriptor: 0
-      data: 
-      character: {fileID: 0}
-      refID: 0
 --- !u!61 &-2310885167832216146
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -989,6 +941,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd3a5c75f51d974e8a8f78d409b226c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &618083967753174603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849765539173945905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d563c5aecf738c44a04f31f3704097d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionInfo:
+    actionType: 2
+    movementName: 0
+    mathName: 0
+    logicName: 0
+    variableName: 1
+    actionName: 0
+  actionType: 2
+  cardName:
+    french: 
+    english: 
+  movementName: 0
+  mathName: 0
+  logicName: 0
+  variableName: 1
+  actionName: 0
+  progLine: {fileID: 0}
+  rectTrans: {fileID: 0}
+  indent: 0
+  lineIndex: 0
+  action:
+    actionType: 2
+    movementName: 0
+    mathName: 0
+    logicName: 0
+    variableName: 1
+    actionName: 0
+    moveData:
+      dir: 0
+      value: 
+      refID: 0
+    varData:
+      isPublic: 1
+      varType: 0
+      name: newVar
+      value: hello
+      charData: {fileID: 0}
+      id: 0
+      refID: 0
+      mathType: 0
+    actData:
+      actionName: 0
+      descriptor: 0
+      data: 
+      character: {fileID: 0}
+      refID: 0
 --- !u!1 &6993912430497903501
 GameObject:
   m_ObjectHideFlags: 0

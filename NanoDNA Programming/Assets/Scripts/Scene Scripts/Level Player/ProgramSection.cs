@@ -46,7 +46,7 @@ public class ProgramSection : MonoBehaviour
 
         flex = setUI();
 
-       Scripts.programSection = this;
+        Scripts.programSection = this;
 
         progSpeed.onClick.AddListener(editSpeed);
 
@@ -65,7 +65,7 @@ public class ProgramSection : MonoBehaviour
         saveBtn.onClick.AddListener(delegate
         {
             selectedCharData.displayProgram(true);
-            });
+        });
         //undoBtn.onClick.AddListener(undoProgram);
 
         testRunning = false;
@@ -74,6 +74,11 @@ public class ProgramSection : MonoBehaviour
 
         UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor());
 
+    }
+
+    public void setAction(ProgramAction action, int index)
+    {
+        selectedCharData.program.setAction(action, index);
     }
 
     public Flex setUI()
@@ -137,7 +142,7 @@ public class ProgramSection : MonoBehaviour
         }
         else
         {
-           
+
             foreach (Transform child in charHolder.transform)
             {
                 if (child.GetComponent<CharData>() != null)
@@ -147,7 +152,7 @@ public class ProgramSection : MonoBehaviour
                     //Decompose the program into more basic parts
                     for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
                     {
-                       // Debug.Log(selectedCharData.program.list[i].dispDetailedAction());
+                        // Debug.Log(selectedCharData.program.list[i].dispDetailedAction());
                         decompose(selectedCharData.program.list[i], program);
                     }
 
@@ -193,7 +198,7 @@ public class ProgramSection : MonoBehaviour
                 }
 
                 break;
-            
+
             case ActionType.Logic:
 
                 break;
@@ -216,6 +221,7 @@ public class ProgramSection : MonoBehaviour
                     case ActionActionNames.Speak:
 
                         //Delete all speak children first
+
                         destroyChildren(action.actData.character.gameObject);
 
                         string path = "Prefabs/Actions/Talk";
@@ -291,7 +297,7 @@ public class ProgramSection : MonoBehaviour
         {
             CharData data = selectedCharData;
 
-           // data.displayProgram(true);
+            // data.displayProgram(true);
 
             //Delete program Child
             for (int i = 0; i < transform.childCount; i++)
@@ -435,7 +441,7 @@ public class ProgramSection : MonoBehaviour
                         break;
                 }
                 break;
-            
+
             case ActionType.Logic:
 
                 break;
