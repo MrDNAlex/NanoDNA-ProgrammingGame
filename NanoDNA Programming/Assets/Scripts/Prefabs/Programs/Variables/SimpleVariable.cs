@@ -49,14 +49,14 @@ public class SimpleVariable : ProgramCard, IProgramCard
         //Simple Variable
         Texture2D image;
 
-        UIHelper.setText(transform.GetChild(0).GetChild(0), action.varData.name, PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(0).GetChild(0), action.varActData.name, PlayerSettings.colourScheme.getBlackTextColor());
 
         //Check if type is bool, set image in that cases
-        if (action.varData.refID != 0)
+        if (action.varActData.setData.refID != 0)
         {
 
             //Set the value to the name of the reference variable
-            UIHelper.setText(transform.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(action.varActData.setData.refID), PlayerSettings.colourScheme.getBlackTextColor());
 
             path = "unity_builtin_extra/UISprite";
 
@@ -68,9 +68,9 @@ public class SimpleVariable : ProgramCard, IProgramCard
         else
         {
 
-            if (action.varData.varType == VariableType.Bool)
+            if (action.varActData.setData.varType == VariableType.Bool)
             {
-                if (action.varData.value == "true")
+                if (action.varActData.setData.value == "true")
                 {
                     path = "Images/EditControllerAssets/True";
                 }
@@ -94,7 +94,7 @@ public class SimpleVariable : ProgramCard, IProgramCard
 
                 transform.GetChild(2).GetComponent<Button>().image.sprite = null;
 
-                UIHelper.setText(transform.GetChild(2).GetChild(0), action.varData.value, PlayerSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(transform.GetChild(2).GetChild(0), action.varActData.setData.value, PlayerSettings.colourScheme.getBlackTextColor());
             }
         }
     }
@@ -130,7 +130,7 @@ public class SimpleVariable : ProgramCard, IProgramCard
             if (noPanelOpen())
             {
                 //Set Editable Variable Type
-                panelInfo.varType = action.varData.varType;
+                panelInfo.varType = action.varActData.setData.varType;
 
                 //Set Panel Type
                 panelInfo.editDataType = EditDataType.Value;
@@ -160,6 +160,6 @@ public class SimpleVariable : ProgramCard, IProgramCard
 
     public ProgramAction createAction()
     {
-        return new ProgramAction(actionInfo, action.varData);
+        return new ProgramAction(actionInfo, action.varActData);
     }
 }

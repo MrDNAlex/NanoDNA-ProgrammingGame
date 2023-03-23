@@ -22,7 +22,7 @@ public class ProgramAction
     //Maybe have a data type for all ActionTypes
 
     public MoveData moveData = new MoveData();
-    public VariableData varData = new VariableData();
+    public VariableActionData varActData = new VariableActionData();
     public ActionData actData = new ActionData();
 
 
@@ -50,7 +50,7 @@ public class ProgramAction
         this.moveData = data;
     }
 
-    public ProgramAction(CardInfo info, VariableData data)
+    public ProgramAction(CardInfo info, VariableActionData data)
     {
 
         this.actionType = info.actionType;
@@ -60,10 +60,10 @@ public class ProgramAction
         this.variableName = info.variableName;
         this.actionName = info.actionName;
 
-        this.varData = data;
+        this.varActData = data;
     }
 
-    public ProgramAction(ProgramCard.ActionInfo info, VariableData data)
+    public ProgramAction(ProgramCard.ActionInfo info, VariableActionData data)
     {
 
         this.actionType = info.actionType;
@@ -72,7 +72,7 @@ public class ProgramAction
         this.variableName = info.variableName;
         this.actionName = info.actionName;
 
-        this.varData = data;
+        this.varActData = data;
     }
 
     public ProgramAction(CardInfo info, ActionData data)
@@ -165,7 +165,19 @@ public class ProgramAction
                 str = actionType + " " + logicName;
                 break;
             case ActionType.Variable:
-                str = actionType + " " + variableName + " "+ varData.isPublic + " " + varData.varType + " " + varData.name + " " + varData.value;
+
+                switch (varActData.actionType)
+                {
+                    case VariableActionType.Set:
+                        str = actionType + " " + variableName + " " + varActData.setData.isPublic + " " + varActData.setData.varType + " " + varActData.name+ " " + varActData.setData.value;
+                        break;
+                    case VariableActionType.ChangeVal:
+
+                        str = actionType + " " + variableName + " " + varActData.mathData.operationType + " " + varActData.mathData.value1 + " and " + varActData.mathData.value2 + "(" + varActData.mathData.varType + ")"; 
+                        break;
+                }
+
+               
                 break;
             case ActionType.Action:
                 str = actionType + " " + actionName;

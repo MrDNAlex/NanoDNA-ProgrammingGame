@@ -42,7 +42,7 @@ public class ValueValController : EditValController
         varType = progCard.panelInfo.varType;
 
         //Copy existing Data
-        varData = progCard.action.varData;
+        varActData = progCard.action.varActData;
 
         moveData = progCard.action.moveData;
 
@@ -183,7 +183,7 @@ public class ValueValController : EditValController
 
             if (PlayerSettings.advancedVariables)
             {
-                if (varData.name != this.varData.name)
+                if (varData.name != this.varActData.name)
                 {
                     if (varData.isPublic)
                     {
@@ -227,12 +227,12 @@ public class ValueValController : EditValController
                             break;
 
                         case ActionType.Variable:
-                            this.varData.refID = variable.GetComponent<ValueDisp>().varData.id;
-                            this.varData.value = variable.GetComponent<ValueDisp>().varData.name;
+                            this.varActData.setData.refID = variable.GetComponent<ValueDisp>().varData.id;
+                            this.varActData.setData.value = variable.GetComponent<ValueDisp>().varData.name;
                             this.value = variable.GetComponent<ValueDisp>().varData.name;
                             if (!PlayerSettings.advancedVariables)
                             {
-                                this.varData.isPublic = true;
+                                this.varActData.setData.isPublic = true;
                             }
                             break;
                         case ActionType.Action:
@@ -347,7 +347,7 @@ public class ValueValController : EditValController
         Holder.getChild(1).GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
             //Set Var Data
-            progCard.action.varData = varData;
+            progCard.action.varActData = varActData;
 
             //Set data
             setData(globalIndex);
@@ -451,6 +451,7 @@ public class ValueValController : EditValController
                 instantiateDisplayCard("Images/EditControllerAssets/Yell", parent, LangDictionary.Yell, 2, 0);
 
                 break;
+                /*
             case ValueEditType.MathOperation:
 
                 instantiateDisplayCard("Images/EditControllerAssets/Addition", parent, LangDictionary.Addition, 0, 0);
@@ -459,6 +460,7 @@ public class ValueValController : EditValController
                 instantiateDisplayCard("Images/EditControllerAssets/Division", parent, LangDictionary.Division, 3, 0);
 
                 break;
+                */
 
         }
     }
@@ -482,13 +484,13 @@ public class ValueValController : EditValController
 
             if (index == 0)
             {
-                varData.refID = 0;
-                varData.value = "true";
+                varActData.setData.refID = 0;
+                varActData.setData.value = "true";
             }
             else
             {
-                varData.refID = 0;
-                varData.value = "false";
+                varActData.setData.refID = 0;
+                varActData.setData.value = "false";
             }
 
             globalIndex = index;

@@ -23,7 +23,7 @@ public class EditValController : MonoBehaviour
     public ProgramCard progCard;
 
     public MoveData moveData;
-    public VariableData varData;
+    public VariableActionData varActData;
     public ActionData actData;
 
     public Language lang;
@@ -78,7 +78,7 @@ public class EditValController : MonoBehaviour
         }
     }
 
-    public static void genPanel (MathOperations card)
+    public static void genPanel (MathOperations card, int valueIndex)
     {
         GameObject panelParent = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
@@ -89,6 +89,8 @@ public class EditValController : MonoBehaviour
         GameObject panel;
 
         panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MathValue") as GameObject, panelParent.transform);
+
+        panel.GetComponent<MathValueValController>().valueIndex = valueIndex;
 
         panel.GetComponent<MathValueValController>().setPanel(panelParent.transform, card);
     }
@@ -139,7 +141,7 @@ public class EditValController : MonoBehaviour
                 try
                 {
                     bool val = bool.Parse((string)value);
-                    varData.setData(true, VariableType.Bool, varData.name, varData.value);
+                    varActData.setVarData(true, VariableType.Bool, varActData.name, varActData.setData.value);
                     resetRefID(actionInfo.actionType);
                     Debug.Log("Var type is Bool");
                 }
@@ -149,8 +151,8 @@ public class EditValController : MonoBehaviour
                     try
                     {
                         int val = int.Parse((string)value);
-                        Debug.Log(varData.value);
-                        varData.setData(true, VariableType.Number, varData.name, varData.value);
+
+                        varActData.setVarData(true, VariableType.Number, varActData.name, varActData.setData.value);
 
                         resetRefID(actionInfo.actionType);
                         Debug.Log("Var type is Integer");
@@ -161,14 +163,14 @@ public class EditValController : MonoBehaviour
                         try
                         {
                             float val = float.Parse((string)value);
-                            varData.setData(true, VariableType.Decimal, varData.name, varData.value);
+                            varActData.setVarData(true, VariableType.Decimal, varActData.name, varActData.setData.value);
                             resetRefID(actionInfo.actionType);
                             Debug.Log("Var type is Decimal");
                         }
                         catch
                         {
                             //Default to Text
-                            varData.setData(true, VariableType.Text, varData.name, varData.value);
+                            varActData.setVarData(true, VariableType.Text, varActData.name, varActData.setData.value);
                             resetRefID(actionInfo.actionType);
                             Debug.Log("Var type is Text");
                         }
@@ -191,7 +193,8 @@ public class EditValController : MonoBehaviour
                             int val = int.Parse((string)value);
                             Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = true;
                             Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = "";
-                            varData.setData(varData.isPublic, varData.varType, varData.name, varData.value);
+                            varActData.setVarData(varActData.setData.isPublic, varActData.setData.varType, varActData.name, varActData.setData.value);
+
                             resetRefID(actionInfo.actionType);
                         }
                         catch
@@ -207,7 +210,7 @@ public class EditValController : MonoBehaviour
                             float val = float.Parse((string)value);
                             Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = true;
                             Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = "";
-                            varData.setData(varData.isPublic, varData.varType, varData.name, varData.value);
+                            varActData.setVarData(varActData.setData.isPublic, varActData.setData.varType, varActData.name, varActData.setData.value);
                             resetRefID(actionInfo.actionType);
                         }
                         catch
@@ -223,7 +226,7 @@ public class EditValController : MonoBehaviour
                             bool val = bool.Parse((string)value);
                             Holder.getChild(1).GetChild(index).GetChild(0).GetComponent<Button>().enabled = true;
                             Holder.getChild(1).GetChild(index).GetChild(1).GetComponent<Text>().text = "";
-                            varData.setData(varData.isPublic, varData.varType, varData.name, varData.value);
+                            varActData.setVarData(varActData.setData.isPublic, varActData.setData.varType, varActData.name, varActData.setData.value);
                             resetRefID(actionInfo.actionType);
                         }
                         catch
@@ -273,26 +276,26 @@ public class EditValController : MonoBehaviour
                             case ValueEditType.Name:
 
                                 //Set Value
-                                progCard.action.varData.name = value.ToString();
+                                progCard.action.varActData.name = value.ToString();
 
                                 break;
                             case ValueEditType.Value:
 
                                 //Set Value
-                                progCard.action.varData.value = value.ToString();
+                                progCard.action.varActData.setData.value = value.ToString();
 
                                 break;
                             case ValueEditType.VariableType:
 
-                                progCard.action.varData.varType = GridViewVarType(index);
+                                progCard.action.varActData.setData.varType = GridViewVarType(index);
 
-                                if (progCard.action.varData.varType == VariableType.Bool)
+                                if (progCard.action.varActData.setData.varType == VariableType.Bool)
                                 {
-                                    progCard.action.varData.value = "false";
+                                    progCard.action.varActData.setData.value = "false";
                                 }
                                 else
                                 {
-                                    progCard.action.varData.value = "";
+                                    progCard.action.varActData.setData.value = "";
                                 }
 
                                 break;
@@ -300,55 +303,68 @@ public class EditValController : MonoBehaviour
 
                                 if (index == 0)
                                 {
-                                    progCard.action.varData.isPublic = true;
+                                    progCard.action.varActData.setData.isPublic = true;
                                 }
                                 else
                                 {
-                                    progCard.action.varData.isPublic = false;
+                                    progCard.action.varActData.setData.isPublic = false;
                                 }
                                 break;
                             case ValueEditType.Bool:
                                 if (index == 0)
                                 {
-                                    progCard.action.varData.value = "true";
+                                    progCard.action.varActData.setData.value = "true";
                                 }
                                 else
                                 {
-                                    progCard.action.varData.value = "false";
+                                    progCard.action.varActData.setData.value = "false";
                                 }
                                 break;
 
                             case ValueEditType.VariableSmartAssign:
                                 //Set Value
-                                progCard.action.varData.value = value.ToString();
+                                progCard.action.varActData.setData.value = value.ToString();
                                 break;
                         }
                         break;
-                    case VariableActionNames.MathVariable:
+                    case VariableActionNames.MathAddition:
 
                         switch (panelInfo.valEditType)
                         {
                             case ValueEditType.Name:
-                                progCard.action.varData.name = value.ToString();
+                                progCard.action.varActData.name = value.ToString();
                                 break;
+
+                            //Add a versions for value 1 and value 2
+
+                            case ValueEditType.Value1:
+                                progCard.action.varActData.mathData.value1 = value.ToString();
+                                break;
+
+                            case ValueEditType.Value2:
+                                progCard.action.varActData.mathData.value2 = value.ToString();
+                                break;
+
+                                /*
                             case ValueEditType.MathOperation:
 
                                 switch (index)
                                 {
                                     case 0:
-                                        progCard.action.varData.mathType = MathTypes.Addition;
+                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Addition;
                                         break;
                                     case 1:
-                                        progCard.action.varData.mathType = MathTypes.Subtraction;
+                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Subtraction;
                                         break;
                                     case 2:
-                                        progCard.action.varData.mathType = MathTypes.Multiplication;
+                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Multiplication;
                                         break;
                                     case 3:
-                                        progCard.action.varData.mathType = MathTypes.Division;
+                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Division;
                                         break;
                                 }
                                 break;
+                                */
                         }
                         break;
                 }
@@ -463,7 +479,7 @@ public class EditValController : MonoBehaviour
                 moveData.refID = 0;
                 break;
             case ActionType.Variable:
-                varData.refID = 0;
+                varActData.setData.refID = 0;
                 break;
             case ActionType.Action:
                 actData.refID = 0;

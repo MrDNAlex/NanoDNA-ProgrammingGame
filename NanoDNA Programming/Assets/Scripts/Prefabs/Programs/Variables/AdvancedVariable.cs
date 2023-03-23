@@ -54,7 +54,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
     {
         string path = "";
         //Check if public or local
-        if (action.varData.isPublic)
+        if (action.varActData.setData.isPublic)
         {
             //Public
             // Debug.Log("Public Path");
@@ -74,7 +74,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
         transform.GetChild(0).GetChild(0).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
         //Variable Type
-        path = getVarTypeImage(action.varData.varType);
+        path = getVarTypeImage(action.varActData.setData.varType);
 
         image = Resources.Load(path) as Texture2D;
 
@@ -82,14 +82,14 @@ public class AdvancedVariable : ProgramCard, IProgramCard
 
         UIHelper.setText(transform.GetChild(0).GetChild(1).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor());
 
-        UIHelper.setText(transform.GetChild(1).GetChild(0), action.varData.name, PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(1).GetChild(0), action.varActData.name, PlayerSettings.colourScheme.getBlackTextColor());
 
         //Check if type is bool, set image in that cases
-        if (action.varData.refID != 0)
+        if (action.varActData.setData.refID != 0)
         {
 
             //Set the value to the name of the reference variable
-            UIHelper.setText(transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.varActData.setData.refID), PlayerSettings.colourScheme.getBlackTextColor());
 
             path = "unity_builtin_extra/UISprite";
 
@@ -101,9 +101,9 @@ public class AdvancedVariable : ProgramCard, IProgramCard
         else
         {
 
-            if (action.varData.varType == VariableType.Bool)
+            if (action.varActData.setData.varType == VariableType.Bool)
             {
-                if (action.varData.value == "true")
+                if (action.varActData.setData.value == "true")
                 {
                     path = "Images/EditControllerAssets/True";
                 }
@@ -127,7 +127,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
 
                 transform.GetChild(3).GetComponent<Button>().image.sprite = null;
 
-                UIHelper.setText(transform.GetChild(3).GetChild(0), action.varData.value, PlayerSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(transform.GetChild(3).GetChild(0), action.varActData.setData.value, PlayerSettings.colourScheme.getBlackTextColor());
             }
         }
     }
@@ -150,7 +150,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
                 panelInfo.editDataType = EditDataType.Multichoice;
 
                 //Set Editable Variable Type
-                panelInfo.varType = action.varData.varType;
+                panelInfo.varType = action.varActData.setData.varType;
 
                 //Set the Data type it will change
                 panelInfo.valEditType = ValueEditType.Public;
@@ -168,7 +168,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
                 panelInfo.editDataType = EditDataType.Multichoice;
 
                 //Set Editable Variable Type
-                panelInfo.varType = action.varData.varType;
+                panelInfo.varType = action.varActData.setData.varType;
 
                 //Set the Data type it will change
                 panelInfo.valEditType = ValueEditType.VariableType;
@@ -201,7 +201,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
             if (noPanelOpen())
             {
                 //Set Editable Variable Type
-                panelInfo.varType = action.varData.varType;
+                panelInfo.varType = action.varActData.setData.varType;
 
                 //Set Panel Type
                 panelInfo.editDataType = EditDataType.Value;
@@ -231,6 +231,6 @@ public class AdvancedVariable : ProgramCard, IProgramCard
 
     public ProgramAction createAction()
     {
-        return new ProgramAction(actionInfo, action.varData);
+        return new ProgramAction(actionInfo, action.varActData);
     }
 }

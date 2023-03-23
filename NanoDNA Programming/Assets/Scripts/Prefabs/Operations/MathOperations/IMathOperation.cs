@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IMathOperation
 {
-   
+   public void setAction();
+
+    public void setInfo();
 }

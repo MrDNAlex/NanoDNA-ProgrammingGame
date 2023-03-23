@@ -78163,6 +78163,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
+      propertyPath: program.list.Array.data[3].varActData.name
+      value: someName
+      objectReference: {fileID: 0}
+    - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
       propertyPath: program.list.Array.data[3].varData.varType
       value: 0
       objectReference: {fileID: 0}
@@ -78171,8 +78175,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
+      propertyPath: program.list.Array.data[3].varActData.newVar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
       propertyPath: program.list.Array.data[3].varData.declareVal
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
+      propertyPath: program.list.Array.data[3].varActData.setData.value
+      value: hello
+      objectReference: {fileID: 0}
+    - target: {fileID: 585623047914093168, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
+      propertyPath: program.list.Array.data[3].varActData.setData.isPublic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 621384238187512200, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
       propertyPath: m_Sprite

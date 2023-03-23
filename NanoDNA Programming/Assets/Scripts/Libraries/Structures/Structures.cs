@@ -127,7 +127,8 @@ namespace DNAStruct
     {
         None,
         Variable,
-        MathVariable,
+        MathAddition,
+
 
     }
 
@@ -156,7 +157,9 @@ namespace DNAStruct
         Bool,
         Speak,
         VariableSmartAssign, 
-        MathOperation,
+        Value1, 
+        Value2,
+      //  MathOperation,
         LogicOperation,
 
     }
@@ -171,16 +174,7 @@ namespace DNAStruct
        
     }
 
-    public enum MathTypes
-    {
-        None,
-        Addition, 
-        Subtraction, 
-        Multiplication, 
-        Division, 
-        Round,
-    }
-
+   
     public enum ActionDescriptor
     {
         Yell,
@@ -324,9 +318,141 @@ namespace DNAStruct
         public int refID;
     }
 
+    public enum VariableActionType
+    {
+        Set, 
+        ChangeVal,
+
+
+    }
+
+    [System.Serializable]
+    public class VariableActionData
+    {
+        [System.Serializable]
+        public struct VariableSetData
+        {
+            public bool isPublic;
+            public VariableType varType;
+            //public string name;
+            public string value;
+            public CharData charData;
+            public int id;
+            public int refID;
+
+            
+
+            public void setParent(CharData parentData)
+            {
+                this.charData = parentData;
+            }
+
+            public void setID(int id)
+            {
+                this.id = id;
+            }
+
+            public void setValue(string value)
+            {
+
+                this.value = value;
+
+            }
+
+            public void setRefID (int refID)
+            {
+                this.refID = refID;
+            }
+
+           
+        }
+        [System.Serializable]
+        public struct VariableMathData
+        {
+            public string value1;
+            public string value2;
+
+            public int refID1;
+            public int refID2;
+
+            public VariableType varType;
+            public MathOperationTypes operationType;
+
+
+            public void setValue (string value, int index)
+            {
+                if (index == 0)
+                {
+                    this.value1 = value;
+                } else
+                {
+                    this.value2 = value;
+                }
+            }
+
+            public void setRefID (int refID, int index)
+            {
+                if (index == 0)
+                {
+                    this.refID1 = refID;
+                }
+                else
+                {
+                    this.refID2 = refID;
+                }
+            }
+        }
+
+
+        //Edit stuff
+
+        public bool newVar;
+        public string name;
+        public int refID;
+        public VariableActionType actionType;
+
+        //Variable for the set Data
+        public VariableSetData setData;
+        //Variable for math data
+        public VariableMathData mathData;
+
+        public VariableActionData ()
+        {
+
+        }
+
+        public VariableData getVarData()
+        {
+            VariableData data = new VariableData();
+
+            data.isPublic = setData.isPublic;
+
+            data.varType = setData.varType;
+            data.name = name;
+            data.value = setData.value;
+            data.id = setData.id;
+            data.refID = setData.refID;
+            data.varType = setData.varType;
+            data.charData = setData.charData;
+
+            return data;
+        }
+
+        public void setVarData(bool pub, VariableType varType, string name, string value)
+        {
+            this.setData.isPublic = pub;
+            this.setData.varType = varType;
+            this.name = name;
+            this.setData.value = value;
+
+        }
+
+    }
+    
     //
     //Variable Data
     //
+    
     [System.Serializable]
     public class VariableData
     {
@@ -338,7 +464,7 @@ namespace DNAStruct
         public CharData charData;
         public int id;
         public int refID;
-        public MathTypes mathType;
+        //public MathTypes mathType;
         
 
         public VariableData(bool pub, VariableType varType, string name, string value)
@@ -380,6 +506,7 @@ namespace DNAStruct
 
         }
     }
+    
 
     [System.Serializable]
     public class ActionData

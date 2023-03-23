@@ -30,7 +30,7 @@ public class ProgramCardFunctionality
         // playSettings = SaveManager.loadPlaySettings();
         lang = PlayerSettings.language;
     }
-
+    /*
     //
     //Set UI
     //
@@ -58,6 +58,8 @@ public class ProgramCardFunctionality
                 return setUIMovement(info);
         }
     }
+
+    
 
     public Flex setUIMovement(CardInfo info)
     {
@@ -875,6 +877,7 @@ public class ProgramCardFunctionality
         }
     }
 
+    
     //
     //Create Action
     //
@@ -940,6 +943,7 @@ public class ProgramCardFunctionality
                 return null;
         }
     }
+    */
 
     //
     //Converters

@@ -485,19 +485,12 @@ MonoBehaviour:
   actionInfo:
     actionType: 2
     movementName: 0
-    mathName: 0
     logicName: 0
-    variableName: 2
+    variableName: 0
     actionName: 0
-  actionType: 2
   cardName:
     french: 
     english: 
-  movementName: 0
-  mathName: 0
-  logicName: 0
-  variableName: 2
-  actionName: 0
   progLine: {fileID: 0}
   rectTrans: {fileID: 0}
   indent: 0
@@ -505,23 +498,32 @@ MonoBehaviour:
   action:
     actionType: 2
     movementName: 0
-    mathName: 0
     logicName: 0
-    variableName: 2
+    variableName: 0
     actionName: 0
     moveData:
       dir: 0
       value: 
       refID: 0
-    varData:
-      isPublic: 0
-      varType: 0
+    varActData:
+      newVar: 0
       name: 
-      value: 
-      charData: {fileID: 0}
-      id: 0
       refID: 0
-      mathType: 0
+      actionType: 0
+      setData:
+        isPublic: 0
+        varType: 0
+        value: 
+        charData: {fileID: 0}
+        id: 0
+        refID: 0
+      mathData:
+        value1: 
+        value2: 
+        refID1: 0
+        refID2: 0
+        varType: 0
+        operationType: 0
     actData:
       actionName: 0
       descriptor: 0

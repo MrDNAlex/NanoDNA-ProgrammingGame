@@ -10,16 +10,16 @@ public class AdditionOperation : MathOperations, IMathOperation
 
     private void Awake()
     {
+        IOperation = this;
         getReferences();
         setUI();
+        Debug.Log("Awake");
     }
 
     // Start is called before the first frame update
     void Start()
     {
         setInfo();
-        setAction();
-
     }
 
     // Update is called once per frame
@@ -27,7 +27,6 @@ public class AdditionOperation : MathOperations, IMathOperation
     {
        
     }
-
 
     void setUI ()
     {
@@ -74,11 +73,13 @@ public class AdditionOperation : MathOperations, IMathOperation
     {
        // action = createAction();
 
-        //Direction
+        //Value 1
         transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
+            //Debug.Log("Click");
             if (noPanelOpen())
             {
+                //Debug.Log("Panel not open");
                 //Set Panel Type
                 panelInfo.editDataType = EditDataType.Value;
 
@@ -88,12 +89,11 @@ public class AdditionOperation : MathOperations, IMathOperation
                 //Set the Data type it will change
                 panelInfo.valEditType = ValueEditType.Value;
 
-                operationInfo.varType = VariableType.Number;
-
-                EditValController.genPanel(this);
+                EditValController.genPanel(this, 0);
             }
         });
 
+        //Value 2
         transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
         {
             if (noPanelOpen())
@@ -107,9 +107,7 @@ public class AdditionOperation : MathOperations, IMathOperation
                 //Set the Data type it will change
                 panelInfo.valEditType = ValueEditType.Value;
 
-                operationInfo.varType = VariableType.Number;
-
-                EditValController.genPanel(this);
+                EditValController.genPanel(this, 1);
             }
         });
     }

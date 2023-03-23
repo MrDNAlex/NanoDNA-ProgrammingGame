@@ -42,7 +42,7 @@ public class NewValueValController : EditValController
         varType = progCard.panelInfo.varType;
 
         //Copy existing Data
-        varData = progCard.action.varData;
+        varActData = progCard.action.varActData;
 
         moveData = progCard.action.moveData;
 
@@ -168,7 +168,7 @@ public class NewValueValController : EditValController
         {
 
             //Set Var Data
-            progCard.action.varData = varData;
+            progCard.action.varActData = varActData;
 
             //Set Data
             setData(0);

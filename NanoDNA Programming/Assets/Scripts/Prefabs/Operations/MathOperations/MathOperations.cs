@@ -31,6 +31,16 @@ public class MathOperations : MonoBehaviour
         
     }
 
+    public void setVarType (VariableType varType)
+    {
+        this.operationInfo.varType = varType;
+    }
+
+    public void setEditable ()
+    {
+        IOperation.setAction();
+    }
+
     public bool noPanelOpen()
     {
         if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)

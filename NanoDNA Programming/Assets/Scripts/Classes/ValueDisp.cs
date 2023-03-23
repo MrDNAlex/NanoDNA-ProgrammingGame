@@ -87,6 +87,8 @@ public class ValueDisp : MonoBehaviour
         {
             UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor());
 
+           // Debug.Log(varData.value);
+
             UIHelper.setText(transform.GetChild(1), varData.value.ToString(), PlayerSettings.colourScheme.getBlackTextColor());
 
             this.varData = varData;

@@ -40,7 +40,7 @@ public class VariableValController : EditValController
         varType = progCard.panelInfo.varType;
 
         //Copy existing Data
-        varData = progCard.action.varData;
+        varActData = progCard.action.varActData;
 
         moveData = progCard.action.moveData;
 
@@ -50,7 +50,7 @@ public class VariableValController : EditValController
 
         setColours();
 
-        setControls(progCard.panelInfo);
+        setControls();
 
         OriginalPos = ParentTrans.localPosition;
 
@@ -125,7 +125,7 @@ public class VariableValController : EditValController
             bool display = false;
 
 
-            if (varData.name != this.varData.name)
+            if (varData.name != this.varActData.name)
             {
                 if (varData.isPublic)
                 {
@@ -165,12 +165,12 @@ public class VariableValController : EditValController
                             break;
 
                         case ActionType.Variable:
-                            this.varData.refID = variable.GetComponent<ValueDisp>().varData.id;
-                            this.varData.value = variable.GetComponent<ValueDisp>().varData.name;
+                            this.varActData.refID = variable.GetComponent<ValueDisp>().varData.id;
+                           // this.varActData.setData.value = variable.GetComponent<ValueDisp>().varData.name;
                             this.value = variable.GetComponent<ValueDisp>().varData.name;
                             if (!PlayerSettings.advancedVariables)
                             {
-                                this.varData.isPublic = true;
+                                this.varActData.setData.isPublic = true;
                             }
                             break;
                         case ActionType.Action:
@@ -180,6 +180,8 @@ public class VariableValController : EditValController
                             break;
 
                     }
+
+                    Scripts.programManager.displayAllVariables();
 
                     Holder.getChild(1).GetChild(1).GetChild(1).GetComponent<Text>().text = "";
                 });
@@ -198,7 +200,7 @@ public class VariableValController : EditValController
         UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor());
     }
 
-    void setControls(ProgramCard.PanelInfo info)
+    void setControls()
     {
         setText();
 
@@ -221,7 +223,7 @@ public class VariableValController : EditValController
         Holder.getChild(1).GetChild(1).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
             //Set Var Data
-            progCard.action.varData = varData;
+            progCard.action.varActData = varActData;
 
             //Set data
             setData(globalIndex);

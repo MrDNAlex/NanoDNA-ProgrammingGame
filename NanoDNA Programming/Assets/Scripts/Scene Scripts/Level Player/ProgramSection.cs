@@ -209,7 +209,7 @@ public class ProgramSection : MonoBehaviour
                     case VariableActionNames.Variable:
 
                         //Update Variable value in program manager
-                        Scripts.programManager.updateVariable(action.varData);
+                        Scripts.programManager.updateVariable(action.varActData);
 
                         break;
                 }

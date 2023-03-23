@@ -56,32 +56,35 @@ public class MathVariable : ProgramCard, IProgramCard
         transform.GetChild(2).GetComponent<BoxCollider2D>().size = transform.GetChild(2).GetComponent<FlexInfo>().flex.size;
 
 
-        if (action.varData.refID != 0)
+        if (action.varActData.refID != 0)
         {
-            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
         }
         else
         {
             //Get the first variable that can possible be grabbed and set the 
             List<VariableData> varData = Scripts.programManager.getVariables(VariableType.Number);
 
-            action.varData = varData[0];
+            //action.varActData = varData[0];
 
-            action.varData.refID = varData[0].id;
+            action.varActData.refID = varData[0].id;
 
-            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
         }
 
         //Spawn the math block
 
-        switch (action.varData.mathType)
+        destroyChildren(program.getChild(2).gameObject);
+        program.getChild(2).GetComponent<FlexInfo>().flex.deleteAllChildren();
+
+        switch (action.varActData.mathData.operationType)
         {
-            case MathTypes.None:
+            case MathOperationTypes.None:
 
                 //Delete if there are any present
 
                 break;
-            case MathTypes.Addition:
+            case MathOperationTypes.Addition:
                 GameObject math = GameObject.Instantiate(Resources.Load("Prefabs/MathOperations/Addition") as GameObject, program.getChild(2));
 
                 Flex flex = math.GetComponent<MathOperations>().flex;
@@ -89,6 +92,9 @@ public class MathVariable : ProgramCard, IProgramCard
                 program.getChild(2).GetComponent<FlexInfo>().flex.addChild(flex);
 
                 program.setSize(program.size);
+
+                math.GetComponent<MathOperations>().setEditable();
+
                 break;
         }
     }
@@ -127,7 +133,7 @@ public class MathVariable : ProgramCard, IProgramCard
                 panelInfo.varType = VariableType.Number;
 
                 //Set the Data type it will change
-                panelInfo.valEditType = ValueEditType.MathOperation;
+            //    panelInfo.valEditType = ValueEditType.MathOperation;
 
                 EditValController.genPanel(this);
             }
@@ -136,7 +142,7 @@ public class MathVariable : ProgramCard, IProgramCard
 
     public ProgramAction createAction()
     {
-        return new ProgramAction(actionInfo, action.varData);
+        return new ProgramAction(actionInfo, action.varActData);
     }
 
 }

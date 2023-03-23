@@ -45,7 +45,7 @@ public class MultiChoiceValController : EditValController
         varType = progCard.panelInfo.varType;
 
         //Copy existing Data
-        varData = progCard.action.varData;
+        varActData = progCard.action.varActData;
 
         moveData = progCard.action.moveData;
 
@@ -253,6 +253,7 @@ public class MultiChoiceValController : EditValController
                 instantiateDisplayCard("Images/EditControllerAssets/Yell", parent, LangDictionary.Yell, 2, 0);
 
                 break;
+                /*
             case ValueEditType.MathOperation:
 
                 instantiateDisplayCard("Images/EditControllerAssets/Addition", parent, LangDictionary.Addition, 0, 0);
@@ -260,6 +261,7 @@ public class MultiChoiceValController : EditValController
                 instantiateDisplayCard("Images/EditControllerAssets/Multiplication", parent, LangDictionary.Multiplication, 2, 0);
                 instantiateDisplayCard("Images/EditControllerAssets/Division", parent, LangDictionary.Division, 3, 0);
                 break;
+                */
 
         }
     }
@@ -280,7 +282,7 @@ public class MultiChoiceValController : EditValController
             valDisp.GetComponent<Button>().onClick.AddListener(delegate
             {
                 //Set Var Data
-                progCard.action.varData = varData;
+                progCard.action.varActData = varActData;
 
                 //Set data
                 setData(index);

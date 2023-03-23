@@ -117,17 +117,20 @@ public class ProgramManager : MonoBehaviour
                 {
                     if (action.actionType == ActionType.Variable)
                     {
-                        //Debug.Log("Variable");
-                        //Debug.Log(action.dispDetailedAction());
-                        if (action.varData.id == 0)
+                        if (action.variableName == VariableActionNames.Variable)
                         {
-                            //Gen new ID
-                            action.varData.setID(genUniqueID());
+                            //Debug.Log("Variable");
+                            //Debug.Log(action.dispDetailedAction());
+                            if (action.varActData.setData.id == 0)
+                            {
+                                //Gen new ID
+                                action.varActData.setData.setID(genUniqueID());
+                            }
+
+                            action.varActData.setData.setParent(child.GetComponent<CharData>());
+
+                            allVariables.Add(action.varActData.getVarData());
                         }
-
-                        action.varData.setParent(child.GetComponent<CharData>());
-
-                        allVariables.Add(action.varData);
                     }
                 }
             }
@@ -174,34 +177,31 @@ public class ProgramManager : MonoBehaviour
         return verdict;
     }
 
-    public void updateVariable(VariableData data)
+    public void updateVariable(VariableActionData data)
     {
         //Search for same ID
 
         for (int i = 0; i < allVariables.Count; i++)
         {
-            if (allVariables[i].id == data.id)
+            if (allVariables[i].id == data.setData.id)
             {
                 //Check if they have a reference ID
 
                 if (allVariables[i].refID == 0)
                 {
                     //Not referencing
-                    allVariables[i].setValue(data.value);
+                    allVariables[i].setValue(data.setData.value);
                 }
                 else
                 {
                     //Search for the Ref ID
                     //Debug.Log(allVariables[i].value);
                     allVariables[i].setValue(allVariables.Find(val => val.id == data.refID).value);
-                    data.setValue(allVariables.Find(val => val.id == data.refID).value);
+                    data.setData.setValue(allVariables.Find(val => val.id == data.refID).value);
                     // Debug.Log(allVariables[i].value);
 
                     // Debug.Log(allVariables.Find(val => val.id == data.refID).value);
                     // Debug.Log("Value Updated");
-
-
-
                 }
             }
         }
@@ -226,6 +226,16 @@ public class ProgramManager : MonoBehaviour
     public string getVariableValue(int refID)
     {
         return allVariables.Find(val => val.id == refID).value;
+    }
+
+    public VariableType getVariableType (int refID)
+    {
+        return allVariables.Find(val => val.id == refID).varType;
+    }
+
+    public VariableType getVariableType(VariableData data)
+    {
+        return allVariables.Find(val => val.id == data.refID).varType;
     }
 
 }

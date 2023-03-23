@@ -12,6 +12,8 @@ public class MathValueValController : ValueValController
     public MathOperationData operationInfo;
     public MathOperations operationCard;
 
+    public int valueIndex;
+
     //Determine which number we are editing
 
 
@@ -67,52 +69,6 @@ public class MathValueValController : ValueValController
 
         StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, 200, 1, true));
     }
-
-    /*
-    public void setPanel(Transform parent, ProgramCard progCard)
-    {
-        VariableTypes.Add(LangDictionary.Text);
-        VariableTypes.Add(LangDictionary.Number);
-        VariableTypes.Add(LangDictionary.Decimal);
-        VariableTypes.Add(LangDictionary.Bool);
-
-        this.panelInfo = progCard.panelInfo;
-        this.actionInfo = progCard.actionInfo;
-
-        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-
-        this.progCard = progCard;
-
-        lang = PlayerSettings.language;
-
-        ParentTrans = parent;
-
-        varType = progCard.panelInfo.varType;
-
-        //Copy existing Data
-        varData = progCard.action.varData;
-
-        moveData = progCard.action.moveData;
-
-        actData = progCard.action.actData;
-
-        setUI();
-
-        setColours();
-
-        setControls(progCard.panelInfo);
-
-        OriginalPos = ParentTrans.localPosition;
-
-        Vector3 startPos = OriginalPos + new Vector3(0, -Screen.height, 0);
-
-        ParentTrans.localPosition = startPos;
-
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, 200, 1, true));
-
-
-    }
-    */
 
     void setColours()
     {
@@ -225,7 +181,7 @@ public class MathValueValController : ValueValController
             bool display = false;
 
 
-            if (varData.name != this.varData.name)
+            if (varData.name != this.varActData.name)
             {
                 if (varData.isPublic)
                 {
@@ -268,12 +224,12 @@ public class MathValueValController : ValueValController
                             break;
 
                         case ActionType.Variable:
-                            this.varData.refID = variable.GetComponent<ValueDisp>().varData.id;
-                            this.varData.value = variable.GetComponent<ValueDisp>().varData.name;
+                            this.varActData.setData.refID = variable.GetComponent<ValueDisp>().varData.id;
+                            this.varActData.setData.value = variable.GetComponent<ValueDisp>().varData.name;
                             this.value = variable.GetComponent<ValueDisp>().varData.name;
                             if (!PlayerSettings.advancedVariables)
                             {
-                                this.varData.isPublic = true;
+                                this.varActData.setData.isPublic = true;
                             }
                             break;
                         case ActionType.Action:
@@ -390,8 +346,13 @@ public class MathValueValController : ValueValController
 
             //Edit how we update things
 
+            //operationCard.operationInfo = m
 
 
+            ParentTrans.gameObject.SetActive(false);
+            Destroy(this.gameObject);
+
+            Scripts.programManager.updateVariables();
 
             /*
             //Set Var Data
@@ -500,6 +461,7 @@ public class MathValueValController : ValueValController
                 instantiateDisplayCard("Images/EditControllerAssets/Yell", parent, LangDictionary.Yell, 2, 0);
 
                 break;
+                /*
             case ValueEditType.MathOperation:
 
                 instantiateDisplayCard("Images/EditControllerAssets/Addition", parent, LangDictionary.Addition, 0, 0);
@@ -508,6 +470,7 @@ public class MathValueValController : ValueValController
                 instantiateDisplayCard("Images/EditControllerAssets/Division", parent, LangDictionary.Division, 3, 0);
 
                 break;
+                */
 
         }
     }
@@ -531,13 +494,13 @@ public class MathValueValController : ValueValController
 
             if (index == 0)
             {
-                varData.refID = 0;
-                varData.value = "true";
+                varActData.setData.refID = 0;
+                varActData.setData.value = "true";
             }
             else
             {
-                varData.refID = 0;
-                varData.value = "false";
+                varActData.setData.refID = 0;
+                varActData.setData.value = "false";
             }
 
             globalIndex = index;

@@ -84,7 +84,6 @@
                         {
                             "actionType": 0,
                             "movementName": 1,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -93,16 +92,29 @@
                                 "value": "2",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -117,7 +129,6 @@
                         {
                             "actionType": 0,
                             "movementName": 1,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -126,16 +137,29 @@
                                 "value": "2",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -150,7 +174,6 @@
                         {
                             "actionType": 0,
                             "movementName": 1,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -159,16 +182,29 @@
                                 "value": "5",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -183,7 +219,6 @@
                         {
                             "actionType": 2,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 1,
                             "actionName": 0,
@@ -192,16 +227,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": true,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": true,
                                 "name": "someName",
-                                "value": "hello",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": true,
+                                    "varType": 0,
+                                    "value": "hello",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -216,7 +264,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -225,16 +272,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -249,7 +309,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -258,16 +317,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -282,7 +354,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -291,16 +362,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -315,7 +399,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -324,16 +407,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -348,7 +444,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -357,16 +452,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -381,7 +489,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -390,16 +497,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -414,7 +534,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -423,16 +542,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -447,7 +579,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -456,16 +587,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -480,7 +624,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -489,16 +632,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -513,7 +669,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -522,16 +677,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -546,7 +714,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -555,16 +722,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -579,7 +759,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -588,16 +767,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -612,7 +804,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -621,16 +812,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -645,7 +849,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -654,16 +857,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -678,7 +894,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -687,16 +902,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -711,7 +939,6 @@
                         {
                             "actionType": 0,
                             "movementName": 0,
-                            "mathName": 0,
                             "logicName": 0,
                             "variableName": 0,
                             "actionName": 0,
@@ -720,16 +947,29 @@
                                 "value": "",
                                 "refID": 0
                             },
-                            "varData": {
-                                "isPublic": false,
-                                "varType": 0,
+                            "varActData": {
+                                "newVar": false,
                                 "name": "",
-                                "value": "",
-                                "charData": {
-                                    "instanceID": 0
+                                "refID": 0,
+                                "actionType": 0,
+                                "setData": {
+                                    "isPublic": false,
+                                    "varType": 0,
+                                    "value": "",
+                                    "charData": {
+                                        "instanceID": 0
+                                    },
+                                    "id": 0,
+                                    "refID": 0
                                 },
-                                "id": 0,
-                                "refID": 0
+                                "mathData": {
+                                    "value1": "",
+                                    "value2": "",
+                                    "refID1": 0,
+                                    "refID2": 0,
+                                    "varType": 0,
+                                    "operationType": 0
+                                }
                             },
                             "actData": {
                                 "actionName": 0,
@@ -750,7 +990,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 1,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -759,16 +998,29 @@
                                     "value": "2",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -783,7 +1035,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 1,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -792,16 +1043,29 @@
                                     "value": "2",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -816,7 +1080,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 1,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -825,16 +1088,29 @@
                                     "value": "5",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -849,7 +1125,6 @@
                             {
                                 "actionType": 2,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 1,
                                 "actionName": 0,
@@ -858,16 +1133,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": true,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": true,
                                     "name": "someName",
-                                    "value": "hello",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": true,
+                                        "varType": 0,
+                                        "value": "hello",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -882,7 +1170,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -891,16 +1178,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -915,7 +1215,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -924,16 +1223,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -948,7 +1260,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -957,16 +1268,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -981,7 +1305,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -990,16 +1313,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1014,7 +1350,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1023,16 +1358,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1047,7 +1395,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1056,16 +1403,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1080,7 +1440,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1089,16 +1448,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1113,7 +1485,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1122,16 +1493,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1146,7 +1530,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1155,16 +1538,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1179,7 +1575,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1188,16 +1583,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1212,7 +1620,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1221,16 +1628,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1245,7 +1665,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1254,16 +1673,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1278,7 +1710,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1287,16 +1718,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1311,7 +1755,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1320,16 +1763,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1344,7 +1800,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1353,16 +1808,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,
@@ -1377,7 +1845,6 @@
                             {
                                 "actionType": 0,
                                 "movementName": 0,
-                                "mathName": 0,
                                 "logicName": 0,
                                 "variableName": 0,
                                 "actionName": 0,
@@ -1386,16 +1853,29 @@
                                     "value": "",
                                     "refID": 0
                                 },
-                                "varData": {
-                                    "isPublic": false,
-                                    "varType": 0,
+                                "varActData": {
+                                    "newVar": false,
                                     "name": "",
-                                    "value": "",
-                                    "charData": {
-                                        "instanceID": 0
+                                    "refID": 0,
+                                    "actionType": 0,
+                                    "setData": {
+                                        "isPublic": false,
+                                        "varType": 0,
+                                        "value": "",
+                                        "charData": {
+                                            "instanceID": 0
+                                        },
+                                        "id": 0,
+                                        "refID": 0
                                     },
-                                    "id": 0,
-                                    "refID": 0
+                                    "mathData": {
+                                        "value1": "",
+                                        "value2": "",
+                                        "refID1": 0,
+                                        "refID2": 0,
+                                        "varType": 0,
+                                        "operationType": 0
+                                    }
                                 },
                                 "actData": {
                                     "actionName": 0,

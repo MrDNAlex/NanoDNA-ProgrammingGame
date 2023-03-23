@@ -37,12 +37,6 @@ public class ProgramCard : MonoBehaviour
     //public ActionType actionType;
     public UIWord cardName;
 
-   // public MovementActionNames movementName;
-   // public MathActionNames mathName;
-   // public LogicActionNames logicName;
-   // public VariableActionNames variableName;
-   // public ActionActionNames actionName;
-
     public Flex program;
     public Transform progLine;
     public RectTransform rectTrans;
