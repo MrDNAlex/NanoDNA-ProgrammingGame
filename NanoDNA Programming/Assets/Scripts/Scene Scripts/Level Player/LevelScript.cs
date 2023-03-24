@@ -134,7 +134,7 @@ public class LevelScript : MonoBehaviour
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f, Reg2);
 
-        Flex Constraints = new Flex(Reg3.getChild(1), 1f, Reg3);
+        Flex Constraints = new Flex(Reg3.getChild(0), 1f, Reg3);
 
         Flex CollectedItems = new Flex(Constraints.getChild(0), 1, Constraints);
         Flex LinesUsed = new Flex(Constraints.getChild(1), 1, Constraints);
@@ -185,7 +185,9 @@ public class LevelScript : MonoBehaviour
         UIHelper.setImage(Zoom.UI.GetChild(1).GetChild(0), PlayerSettings.colourScheme.getSecondary());
         UIHelper.setImage(Zoom.UI.GetChild(2).GetChild(0), PlayerSettings.colourScheme.getAccent());
 
-        UIHelper.setImage(Reg3.getChild(0).GetChild(1), PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(1).GetChild(1).GetChild(0).GetChild(0), PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(1).GetChild(1), PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(1).GetChild(1).GetChild(0), PlayerSettings.colourScheme.getMain(true));
 
         UIHelper.setImage(CompleteLevel.UI, PlayerSettings.colourScheme.getAccent());
 

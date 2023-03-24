@@ -27,6 +27,8 @@ public class StoreScript : MonoBehaviour
 
     Language lang;
 
+    
+
     //Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
@@ -56,20 +58,17 @@ public class StoreScript : MonoBehaviour
     {
         Store = new Flex(transform.GetComponent<RectTransform>(), 4f);
 
-        StoreHeader = new Flex(Store.getChild(0), 1);
+        StoreHeader = new Flex(Store.getChild(0), 1, Store);
 
-        Flex VP = new Flex(StoreHeader.getChild(0), 1);
+        Flex VP = new Flex(StoreHeader.getChild(0), 1, StoreHeader);
 
-        Content = new Flex(VP.getChild(0), 1);
+        Content = new Flex(VP.getChild(0), 1, VP);
 
-        GridView = new Flex(Store.getChild(1), 5);
+        Flex SV = new Flex(Store.getChild(1), 5, Store);
 
-        Store.addChild(StoreHeader);
-        Store.addChild(GridView);
+        Flex GridVP = new Flex(SV.getChild(0), 1, SV);
 
-        StoreHeader.addChild(VP);
-
-        VP.addChild(Content);
+        GridView = new Flex(GridVP.getChild(0), 1, GridVP);
 
         Content.setChildMultiW(300);
 
@@ -113,6 +112,8 @@ public class StoreScript : MonoBehaviour
 
         GridView.deleteAllChildren();
 
+        GridView.UI.GetComponent<GridLayoutGroup>().cellSize = new Vector2((GridView.size.x / 3) - GridView.UI.GetComponent<GridLayoutGroup>().spacing.x, ((GridView.size.x / 3) - GridView.UI.GetComponent<GridLayoutGroup>().spacing.x) /1.5f);
+
         //Instantiate storeCard
         Object[] storeItems = ProgramPrefabs.LoadAllPrefabs(tag);
 
@@ -125,6 +126,8 @@ public class StoreScript : MonoBehaviour
             card.GetComponent<StoreCard>().cardFlex.setSize(GridView.UI.GetComponent<GridLayoutGroup>().cellSize);
             yield return null;
         }
+
+        //GridView.setSize(GridView.size);
     }
 
     public void destroyChildren(GameObject Obj)
