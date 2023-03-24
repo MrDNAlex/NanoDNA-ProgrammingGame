@@ -234,7 +234,21 @@ public class ValueValController : EditValController
                             {
                                 this.varActData.setData.isPublic = true;
                             }
-                            break;
+
+                            //In the event that it is a math operation
+                            if (panelInfo.valEditType == ValueEditType.Value1)
+                            {
+                                this.varActData.mathData.refID1 = variable.GetComponent<ValueDisp>().varData.id;
+                                this.varActData.mathData.value1 = variable.GetComponent<ValueDisp>().varData.name;
+                            }
+                            else if (panelInfo.valEditType == ValueEditType.Value2)
+                            {
+                                this.varActData.mathData.refID2 = variable.GetComponent<ValueDisp>().varData.id;
+                                this.varActData.mathData.value2 = variable.GetComponent<ValueDisp>().varData.name;
+                            }
+
+
+                                break;
                         case ActionType.Action:
                             this.actData.refID = variable.GetComponent<ValueDisp>().varData.id;
                             this.actData.data = variable.GetComponent<ValueDisp>().varData.name;

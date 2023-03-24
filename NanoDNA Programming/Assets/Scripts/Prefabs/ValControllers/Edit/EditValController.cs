@@ -254,6 +254,7 @@ public class EditValController : MonoBehaviour
                             case ValueEditType.Value:
                                 //Get Direction
                                 progCard.action.moveData.value = value;
+                                progCard.action.moveData.refID = moveData.refID;
                                 break;
                             case ValueEditType.Direction:
                                 progCard.action.moveData.dir = indexToDir(index);
@@ -345,26 +346,6 @@ public class EditValController : MonoBehaviour
                                 progCard.action.varActData.mathData.value2 = value.ToString();
                                 break;
 
-                                /*
-                            case ValueEditType.MathOperation:
-
-                                switch (index)
-                                {
-                                    case 0:
-                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Addition;
-                                        break;
-                                    case 1:
-                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Subtraction;
-                                        break;
-                                    case 2:
-                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Multiplication;
-                                        break;
-                                    case 3:
-                                        progCard.action.varActData.mathData.operationType = MathOperationTypes.Division;
-                                        break;
-                                }
-                                break;
-                                */
                         }
                         break;
                 }
@@ -476,10 +457,20 @@ public class EditValController : MonoBehaviour
         switch (type)
         {
             case ActionType.Movement:
+                Debug.Log("Here");
                 moveData.refID = 0;
                 break;
             case ActionType.Variable:
-                varActData.setData.refID = 0;
+                if (panelInfo.valEditType == ValueEditType.Value1)
+                {
+                    varActData.mathData.refID1 = 0;
+                } else if (panelInfo.valEditType == ValueEditType.Value2)
+                {
+                    varActData.mathData.refID2 = 0;
+                } else
+                {
+                    varActData.setData.refID = 0;
+                }
                 break;
             case ActionType.Action:
                 actData.refID = 0;

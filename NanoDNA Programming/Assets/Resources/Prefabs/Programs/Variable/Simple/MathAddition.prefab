@@ -694,8 +694,8 @@ MonoBehaviour:
     variableName: 2
     actionName: 0
   cardName:
-    french: 
-    english: 
+    french: Addition
+    english: Addition
   progLine: {fileID: 0}
   rectTrans: {fileID: 0}
   indent: 0

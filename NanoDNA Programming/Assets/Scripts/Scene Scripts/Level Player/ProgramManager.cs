@@ -180,7 +180,7 @@ public class ProgramManager : MonoBehaviour
     public void updateVariable(VariableActionData data)
     {
         //Search for same ID
-
+      //  Debug.Log(data.setData.id);
         for (int i = 0; i < allVariables.Count; i++)
         {
             if (allVariables[i].id == data.setData.id)
@@ -189,22 +189,23 @@ public class ProgramManager : MonoBehaviour
 
                 if (allVariables[i].refID == 0)
                 {
+                  //  Debug.Log("Here");
                     //Not referencing
                     allVariables[i].setValue(data.setData.value);
                 }
                 else
                 {
+                 //   Debug.Log("Here");
                     //Search for the Ref ID
-                    //Debug.Log(allVariables[i].value);
-                    allVariables[i].setValue(allVariables.Find(val => val.id == data.refID).value);
-                    data.setData.setValue(allVariables.Find(val => val.id == data.refID).value);
-                    // Debug.Log(allVariables[i].value);
-
-                    // Debug.Log(allVariables.Find(val => val.id == data.refID).value);
-                    // Debug.Log("Value Updated");
+                    allVariables[i].setValue(allVariables.Find(val => val.id == data.setData.refID).value);
+                    data.setData.setValue(allVariables.Find(val => val.id == data.setData.refID).value);
                 }
             }
         }
+    }
+
+    public void updateVariable ()
+    {
 
     }
 
@@ -225,7 +226,14 @@ public class ProgramManager : MonoBehaviour
 
     public string getVariableValue(int refID)
     {
-        return allVariables.Find(val => val.id == refID).value;
+        if (allVariables.Find(val => val.id == refID).refID != 0)
+        {
+            Debug.Log("Deep");
+            return getVariableValue(allVariables.Find(val => val.id == refID).refID);
+        } else
+        {
+            return allVariables.Find(val => val.id == refID).value;
+        }
     }
 
     public VariableType getVariableType (int refID)

@@ -64,6 +64,8 @@ public class SimpleVariable : ProgramCard, IProgramCard
 
             transform.GetChild(2).GetComponent<Button>().image.sprite = null;
 
+            action.varActData.setData.varType = Scripts.programManager.getVariableType(action.varActData.setData.refID);
+
         }
         else
         {

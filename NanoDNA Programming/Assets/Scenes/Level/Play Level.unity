@@ -4023,6 +4023,7 @@ MonoBehaviour:
   prefab2: {fileID: 3237715990226463739, guid: 2ec48f8a8457a3e4f8d3fb730d1ee5a1, type: 3}
   Variable: {fileID: 6849765539173945905, guid: e62678bfdf228354ea1aded334001160, type: 3}
   contentTrans: {fileID: 0}
+  camMaterial: {fileID: 2100000, guid: bbaac9fc8104c1c49a21fc9641a2d67a, type: 2}
   camText: {fileID: 8400000, guid: a0d7f9c589a91da42b8681a6864e7d44, type: 2}
   Cam2: {fileID: 1442243283}
   voidMap: {fileID: 776171412}

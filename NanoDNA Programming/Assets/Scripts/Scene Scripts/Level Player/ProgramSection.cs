@@ -55,8 +55,6 @@ public class ProgramSection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-
         lang = PlayerSettings.language;
 
         levelType = Scripts.levelManager.info.levelType;
@@ -85,12 +83,9 @@ public class ProgramSection : MonoBehaviour
     {
         Flex Content = new Flex(GetComponent<RectTransform>(), 1);
 
-        //Content.setChildMultiH(175);
-
         Content.setChildMultiH((Screen.height * 0.9f) / 6);
 
         //Add all the programLine Children
-
         addChildren(Content);
 
         return Content;
@@ -103,10 +98,8 @@ public class ProgramSection : MonoBehaviour
             GameObject programLine = Instantiate(progLine, parent.UI);
 
             parent.addChild(programLine.GetComponent<ProgramLine>().Line);
-
         }
     }
-
 
     public void testProgram()
     {
@@ -121,14 +114,12 @@ public class ProgramSection : MonoBehaviour
                 if (child.GetComponent<CharData>() != null)
                 {
                     child.localPosition = child.GetComponent<CharData>().initPos;
-
                 }
                 else
                 {
                     //Make interactive appear again
                     child.gameObject.SetActive(true);
                 }
-
             }
 
             testRunning = false;
@@ -137,37 +128,128 @@ public class ProgramSection : MonoBehaviour
             //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
 
             Scripts.levelManager.updateConstraints();
-
-
         }
         else
         {
-
             foreach (Transform child in charHolder.transform)
             {
                 if (child.GetComponent<CharData>() != null)
                 {
-                    Program program = new Program(false);
-
-                    //Decompose the program into more basic parts
-                    for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
-                    {
-                        // Debug.Log(selectedCharData.program.list[i].dispDetailedAction());
-                        decompose(selectedCharData.program.list[i], program);
-                    }
-
-                    StartCoroutine(runProgram(child.gameObject, program));
-
-                    child.GetComponent<CharData>().displayProgram(true);
-
+                    StartCoroutine(runCharProgram(child.GetComponent<CharData>()));
                 }
             }
 
             testRunning = true;
 
             testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/DebugActive");
-            //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
         }
+    }
+
+    public IEnumerator runCharProgram(CharData data)
+    {
+        for (int i = 0; i < data.program.list.Count; i++)
+        {
+            Program program = new Program(false);
+
+            decompose(data.program.list[i], program);
+
+            for (int j = 0; j < program.list.Count; j++)
+            {
+                readAction(data.gameObject, program.list[j]);
+                //This works
+                if (program.list[j].actionType != ActionType.Variable)
+                {
+                    yield return new WaitForSeconds(1f / speedDivider);
+                }
+            }
+        }
+        Camera.main.GetComponent<ProgramManager>().displayAllVariables();
+    }
+
+    public string getUpdatedMathValue(ProgramAction action)
+    {
+        string val1 = "";
+        string val2 = "";
+        string calcVal = "";
+
+        //Get Values
+        if (action.varActData.mathData.refID1 != 0)
+        {
+            val1 = Scripts.programManager.getVariableValue(action.varActData.mathData.refID1);
+        }
+        else
+        {
+            val1 = action.varActData.mathData.value1;
+        }
+
+        if (action.varActData.mathData.refID2 != 0)
+        {
+            val2 = Scripts.programManager.getVariableValue(action.varActData.mathData.refID2);
+        }
+        else
+        {
+            val2 = action.varActData.mathData.value2;
+        }
+
+        return applyMath(val1, val2, action);
+    }
+
+    public string applyMath(string val1, string val2, ProgramAction action)
+    {
+        string value = "";
+
+        switch (action.variableName)
+        {
+            case VariableActionNames.MathAddition:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) + int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) + float.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Text:
+                        value = (val1 + val2);
+                        break;
+                }
+                break;
+            case VariableActionNames.MathSubtraction:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) - int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) - float.Parse(val2)).ToString();
+                        break;
+                }
+                break;
+            case VariableActionNames.MathMultiplication:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) * int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) * float.Parse(val2)).ToString();
+                        break;
+                }
+                break;
+            case VariableActionNames.MathDivision:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) / int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) / float.Parse(val2)).ToString();
+                        break;
+                }
+                break;
+        }
+
+        return value;
     }
 
     public void readAction(GameObject character, ProgramAction action)
@@ -204,12 +286,58 @@ public class ProgramSection : MonoBehaviour
                 break;
             case ActionType.Variable:
 
+                VariableActionData varUpdate = new VariableActionData();
+                string val = "";
+
                 switch (action.variableName)
                 {
                     case VariableActionNames.Variable:
 
                         //Update Variable value in program manager
                         Scripts.programManager.updateVariable(action.varActData);
+
+                        break;
+                    case VariableActionNames.MathAddition:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action);
+
+                        Debug.Log("Val: " + val);
+
+                        Scripts.programManager.updateVariable(varUpdate);
+
+                        break;
+
+                    case VariableActionNames.MathSubtraction:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action);
+
+                        Debug.Log("Val: " + val);
+
+                        Scripts.programManager.updateVariable(varUpdate);
+
+                        break;
+
+                    case VariableActionNames.MathMultiplication:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action);
+
+                        Debug.Log("Val: " + val);
+
+                        Scripts.programManager.updateVariable(varUpdate);
+
+                        break;
+
+                    case VariableActionNames.MathDivision:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action);
+
+                        Debug.Log("Val: " + val);
+
+                        Scripts.programManager.updateVariable(varUpdate);
 
                         break;
                 }
@@ -280,11 +408,13 @@ public class ProgramSection : MonoBehaviour
     {
         if (action.moveData.refID != 0)
         {
+            // Debug.Log("Hi");
             //Convert 
             return int.Parse(Camera.main.GetComponent<ProgramManager>().getVariableValue(action.moveData.refID));
         }
         else
         {
+            //  Debug.Log("Hello");
             return int.Parse(action.moveData.value);
         }
     }
@@ -435,6 +565,7 @@ public class ProgramSection : MonoBehaviour
 
                             newAction.moveData.value = "1";
                             newAction.moveData.dir = action.moveData.dir;
+                            //newAction.moveData.refID = action.moveData.refID;
 
                             program.list.Add(newAction);
                         }
@@ -446,7 +577,6 @@ public class ProgramSection : MonoBehaviour
 
                 break;
             case ActionType.Variable:
-
                 program.list.Add(action);
                 break;
             case ActionType.Action:
@@ -457,10 +587,7 @@ public class ProgramSection : MonoBehaviour
                         program.list.Add(action);
                         break;
                 }
-
-
                 break;
-
         }
     }
 
@@ -481,21 +608,11 @@ public class ProgramSection : MonoBehaviour
 
     public void runFinalProgram()
     {
-        // allScripts.programSection.compileProgram();
-
         foreach (Transform child in charHolder.transform)
         {
-            Program program = new Program(false);
-
             if (child.GetComponent<CharData>() != null)
             {
-                //Decompose the program into more basic parts
-                for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
-                {
-                    decompose(child.GetComponent<CharData>().program.list[i], program);
-                }
-
-                StartCoroutine(runProgram(child.gameObject, program));
+                StartCoroutine(runCharProgram(child.GetComponent<CharData>()));
             }
         }
     }
@@ -503,8 +620,6 @@ public class ProgramSection : MonoBehaviour
     public void reload()
     {
         lang = Camera.main.GetComponent<LevelScript>().lang;
-
-        // flex = setUI();
     }
 
     void editSpeed()

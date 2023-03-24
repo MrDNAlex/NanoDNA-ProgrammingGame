@@ -128,6 +128,10 @@ namespace DNAStruct
         None,
         Variable,
         MathAddition,
+        MathSubtraction,
+        MathMultiplication,
+        MathDivision,
+
 
 
     }

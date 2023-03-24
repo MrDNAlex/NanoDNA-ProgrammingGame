@@ -42,6 +42,8 @@ public class LevelScript : MonoBehaviour
 
     public RectTransform contentTrans;
 
+    [SerializeField] Material camMaterial;
+
     [SerializeField] Texture camText;
 
     [SerializeField] Camera Cam2;
@@ -162,6 +164,10 @@ public class LevelScript : MonoBehaviour
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
+        MapView.setSize(new Vector2(MapView.size.x, MapView.size.x * ((float)Screen.height/ Screen.width)));
+
+        Reg3.setSize(new Vector2(Reg3.size.x, Screen.height - MapView.size.y));
+
         //Calculate leftover height, and fix the size of the Zoom slider
         Buttons.UI.GetComponent<VerticalLayoutGroup>().spacing = 5;
         Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
@@ -213,15 +219,18 @@ public class LevelScript : MonoBehaviour
 
     public void setCamera(LevelInfo info)
     {
+        RenderTexture text = new RenderTexture(new RenderTextureDescriptor((int)MapView.size.x, (int)MapView.size.y));
+
         //Set the Camera Texture size
-        camText.width = (int)MapView.size.x;
-        camText.height = (int)MapView.size.y;
+
+        Cam2.targetTexture = text;
+
+        camMaterial.mainTexture = text;
 
         //Set the Orthographic size
         Cam2.orthographicSize = orthoSizeCalc(info);
 
         //Set Backgroud position
-
         //Get center position
         Vector3 pos = (voidMap.CellToWorld(getCenter(info, true)) + voidMap.CellToWorld(getCenter(info, false))) / 2;
 
