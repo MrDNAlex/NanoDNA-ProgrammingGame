@@ -5,6 +5,7 @@ using FlexUI;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DNAStruct;
+using DNAMathAnimation;
 
 public class EndScreen : MonoBehaviour
 {
@@ -15,6 +16,17 @@ public class EndScreen : MonoBehaviour
     public int linesUsed;
     public int itemsColl;
     public int totalItems;
+
+    UIWord ItemCollected = new UIWord("Items Collected", "Item Collecté");
+    UIWord LinesUsed = new UIWord("Lines Used", "Ligne Utilisé");
+    UIWord Result = new UIWord("Results", "Résultats");
+    UIWord Finish = new UIWord("Finish", "Finir");
+
+    Vector3 OriginalPos;
+
+    Language lang = PlayerSettings.language;
+
+   
 
     //Scripts allScripts;
 
@@ -32,7 +44,16 @@ public class EndScreen : MonoBehaviour
 
         setText();
 
-        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FinishLevel);
+        OriginalPos = endScreen.UI.localPosition;
+
+        Vector3 startPos = OriginalPos + new Vector3(0, -Screen.height, 0);
+
+        endScreen.UI.localPosition = startPos;
+
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(endScreen.UI, OriginalPos, 200, 1, true));
+
+        
+        transform.GetChild(2).GetComponent<Button>().onClick.AddListener(FinishLevel);
     }
 
     // Update is called once per frame
@@ -47,28 +68,36 @@ public class EndScreen : MonoBehaviour
         endScreen = new Flex(transform.GetComponent<RectTransform>(), 1);
 
 
-        Flex Title = new Flex(endScreen.getChild(0), 2);
+        Flex Title = new Flex(endScreen.getChild(0), 2, endScreen);
 
-        Flex items = new Flex(endScreen.getChild(1), 3);
-        Flex lines = new Flex(endScreen.getChild(2), 3);
+        Flex Holder = new Flex(endScreen.getChild(1), 6, endScreen);
 
-        Flex Finish = new Flex(endScreen.getChild(3), 2);
+        Flex items = new Flex(Holder.getChild(0), 1, Holder);
+        Flex lines = new Flex(Holder.getChild(1), 1, Holder);
 
-        endScreen.addChild(Title);
-        endScreen.addChild(items);
-        endScreen.addChild(lines);
-        endScreen.addChild(Finish);
+        Flex Finish = new Flex(endScreen.getChild(2), 2, endScreen);
 
-
-        endScreen.setSpacingFlex(2, 1);
+        endScreen.setSpacingFlex(1f, 1);
 
         Title.setSelfHorizontalPadding(1, 1, 1, 1);
 
-        endScreen.setAllPadSame(0.1f, 1);
+        Holder.setAllPadSame(0.1f, 1);
+
+        Holder.setSpacingFlex(0.5f, 1);
+
+        endScreen.setHorizontalPadding(0.1f, 1, 0.1f, 1);
 
         Finish.setSelfHorizontalPadding(1, 1, 1, 1);
 
+        endScreen.setVerticalPadding(1f, 1, 1f, 1);
+
         endScreen.setSize(new Vector2(Screen.width * 0.7f, Screen.height * 0.8f));
+
+
+        UIHelper.setImage(endScreen.UI, PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(Finish.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Holder.UI, PlayerSettings.colourScheme.getSecondary());
+
 
     }
 
@@ -81,9 +110,17 @@ public class EndScreen : MonoBehaviour
     public void setText()
     {
 
-        transform.GetChild(1).GetComponent<Text>().text = "Items Collected: " + itemsColl + " / " + totalItems;
+        string itemCollected = ItemCollected.getWord(lang) + ": " + itemsColl + "/" + totalItems;
 
-        transform.GetChild(2).GetComponent<Text>().text = "Lines Used: " + linesUsed + " / " + maxLines;
+        string lineUsed = LinesUsed.getWord(lang) + ": " + +linesUsed + " / " + maxLines;
+
+        UIHelper.setText(transform.GetChild(0), Result.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+
+        UIHelper.setText(transform.GetChild(1).GetChild(0), itemCollected, PlayerSettings.colourScheme.getBlackTextColor());
+
+        UIHelper.setText(transform.GetChild(1).GetChild(1), lineUsed, PlayerSettings.colourScheme.getBlackTextColor());
+
+        UIHelper.setText(transform.GetChild(2).GetChild(0), Finish.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
 
 
     }

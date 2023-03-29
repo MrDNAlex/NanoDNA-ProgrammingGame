@@ -18,10 +18,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField] TileLedger Tileledger;
     [SerializeField] InteractableLedger interacLedger;
     [SerializeField] EndLedger endLedger;
+    [SerializeField] SensorLedger sensorLedger;
 
     [SerializeField] GameObject charPrefab;
     [SerializeField] GameObject interacPrefab;
     [SerializeField] GameObject endGoalPrefab;
+    [SerializeField] GameObject soundSensorPrefab;
 
     [SerializeField] GameObject constraints;
 
@@ -69,8 +71,6 @@ public class LevelManager : MonoBehaviour
 
        Scripts.levelManager = this;
 
-       // allScripts.levelManager = this;
-
         getTileMaps();
 
         getConstraints();
@@ -79,8 +79,6 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-
         lang = PlayerSettings.language;
 
         complete.onClick.AddListener(completeLevel);
@@ -100,17 +98,17 @@ public class LevelManager : MonoBehaviour
         //Design something that doesn't use the holder, maybe get access 
         
         //Something in here
-        int lines = 0;
+        //int lines = 0;
 
         //Update Lines used
         usedLines = 0;
 
         foreach (CharData data in charData)
         {
-            lines += data.program.getLength();
+            usedLines += data.program.getLength();
         }
 
-        UIHelper.setText(linesUsed.transform, lines + "/" + maxLines + " " + UIwords.used.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(linesUsed.transform, usedLines + "/" + maxLines + " " + UIwords.used.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
 
         //Update Collectibles
         itemsCollect = 0;
@@ -203,11 +201,15 @@ public class LevelManager : MonoBehaviour
         //Set Interactables
         setInteractables(info.interacInfo);
 
+        setSensors(info.sensorInfo);
+
         //Set End Goal
         setEndGoal(info.endGoal);
 
         maxLines = info.maxLine;
         maxItems = info.maxItems;
+
+        Scripts.programManager.addLevelVariables(info.levelVariables);
 
         updateConstraints();
         // yield return null;
@@ -320,6 +322,25 @@ public class LevelManager : MonoBehaviour
 
         //Set Size
         endGoal.GetComponent<BoxCollider>().size = info.data.size;
+    }
+
+    public void setSensors (List<SensorInfo> info)
+    {
+        foreach (SensorInfo sens in info)
+        {
+            //Switch case for type of sensor
+            GameObject sensor = null;
+            switch (sens.data.type)
+            {
+                case LevelSensor.SensorType.SoundSensor:
+                    sensor = Instantiate(soundSensorPrefab, charHolder.transform);
+                    break;
+            }
+
+            sensor.GetComponent<LevelSensor>().iSensor.setInfo(sens.data);
+
+            sensor.GetComponent<SpriteRenderer>().sprite = sensorLedger.sensors.Find(s => s.id == sens.id).sprite;
+        }
     }
 
     public void finishLevel()

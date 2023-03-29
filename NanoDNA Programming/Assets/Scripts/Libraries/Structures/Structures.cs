@@ -461,6 +461,9 @@ namespace DNAStruct
     public class VariableData
     {
         public bool isPublic;
+        public bool isLevelVariable;
+        //Determines if the true value can be read/added to all variables
+        public bool isActivated;
         public VariableType varType;
         public string name;
         public string value;
@@ -468,6 +471,8 @@ namespace DNAStruct
         public CharData charData;
         public int id;
         public int refID;
+
+
         //public MathTypes mathType;
         
 

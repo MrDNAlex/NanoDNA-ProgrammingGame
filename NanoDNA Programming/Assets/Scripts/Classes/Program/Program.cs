@@ -136,8 +136,20 @@ public class Program
         list.RemoveAt(index2);
         list.Insert(index2, action1);
 
-        Scripts.programSection.transform.GetChild(index1).GetChild(1).GetChild(0).GetComponent<ProgramCard>().getLineNumber();
-        Scripts.programSection.transform.GetChild(index2).GetChild(1).GetChild(0).GetComponent<ProgramCard>().getLineNumber();
+        //Check if the card even exists
+
+        if (Scripts.programSection.transform.GetChild(index1).GetChild(1).childCount > 0)
+        {
+            Scripts.programSection.transform.GetChild(index1).GetChild(1).GetChild(0).GetComponent<ProgramCard>().getLineNumber();
+        }
+
+        if (Scripts.programSection.transform.GetChild(index2).GetChild(1).childCount > 0)
+        {
+            Scripts.programSection.transform.GetChild(index2).GetChild(1).GetChild(0).GetComponent<ProgramCard>().getLineNumber();
+        }
+
+      
+        
 
 
 

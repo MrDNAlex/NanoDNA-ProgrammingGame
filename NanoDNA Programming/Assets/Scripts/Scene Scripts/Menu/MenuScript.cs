@@ -112,7 +112,7 @@ public class MenuScript : MonoBehaviour
     public void setLang ()
     {
         //Title
-        UIHelper.setText(menu.GetChild(0).GetChild(0), TitleWord, PlayerSettings.colourScheme.getMainTextColor());
+        UIHelper.setText(menu.GetChild(0).GetChild(0), TitleWord, PlayerSettings.colourScheme.getBlackTextColor());
 
         //Start
         UIHelper.setText(menu.GetChild(0).GetChild(1).GetChild(0), StartWord, PlayerSettings.colourScheme.getAccentTextColor());

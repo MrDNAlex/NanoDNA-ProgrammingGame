@@ -10,4 +10,9 @@ public class LevelIconLedger: ScriptableObject
 
     public bool validate;
 
+    private void OnValidate()
+    {
+        Object[] idk = Resources.FindObjectsOfTypeAll(typeof(LevelIconInstance));
+    }
+
 }

@@ -36,7 +36,7 @@ public class CharData : MonoBehaviour
         OnDemandRendering.renderFrameInterval = 12;
     }
 
-    public CharData (CharDataInfo info)
+    public CharData(CharDataInfo info)
     {
         this.name = info.name;
         this.program = info.program;
@@ -44,64 +44,63 @@ public class CharData : MonoBehaviour
         this.initPos = info.initPos;
     }
 
-    public ProgramAction getAction (int index)
+    public ProgramAction getAction(int index)
     {
         if ((program.list.Count - 1) < index)
         {
             //Doesn't exist
             return ProgramAction.empty();
-        } else
+        }
+        else
         {
             //Does exist
             return program.list[index];
         }
     }
 
-    public void displayProgram (bool detailed = false)
+    public void displayProgram(bool detailed = false)
     {
-       // Debug.Log(program.list.Count);
+        // Debug.Log(program.list.Count);
 
         for (int i = 0; i < program.list.Count; i++)
         {
             if (detailed)
             {
-                Debug.Log(i + ": " + program.list[i].dispDetailedAction());
-            } else
+                Debug.Log((i + 1) + ": " + program.list[i].dispDetailedAction());
+            }
+            else
             {
-                Debug.Log(i + ": " + program.list[i].dispAction());
+                Debug.Log((i + 1) + ": " + program.list[i].dispAction());
             }
         }
     }
 
-    public void addPastState (Program program)
+    public void addPastState(Program program)
     {
         List<Program> states = new List<Program>();
 
-       
-            states.Add(program);
+        states.Add(program);
 
-            int stateNum;
+        int stateNum;
 
-            if (programStates.Count <= 20)
-            {
-                stateNum = programStates.Count;
-            }
-            else
-            {
-                stateNum = 20;
-            }
+        if (programStates.Count <= 20)
+        {
+            stateNum = programStates.Count;
+        }
+        else
+        {
+            stateNum = 20;
+        }
 
-            for (int i = 0; i < stateNum; i++)
-            {
-                states.Add(programStates[i]);
-            }
+        for (int i = 0; i < stateNum; i++)
+        {
+            states.Add(programStates[i]);
+        }
 
-            programStates = states;
-        
-
+        programStates = states;
     }
 
-    public Program undoState ()
+    public Program undoState()
     {
         //Grab last state
         Program newState = programStates[0];
@@ -114,14 +113,14 @@ public class CharData : MonoBehaviour
 
     //Create a function that adds a new program action, it then calls to update program length
 
-    public void addAction (ProgramAction action)
+    public void addAction(ProgramAction action)
     {
         program.list.Add(action);
 
         program.updateLength();
     }
 
-    void genID ()
+    void genID()
     {
         charID = Random.Range(0, 1000000);
     }

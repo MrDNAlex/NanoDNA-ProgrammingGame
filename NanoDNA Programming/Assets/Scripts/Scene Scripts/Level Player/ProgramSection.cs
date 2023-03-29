@@ -17,7 +17,6 @@ public class ProgramSection : MonoBehaviour
     public GameObject selectedCharacter;
     public CharData selectedCharData;
 
-
     public int maxLineNum = 20;
 
     [SerializeField] GameObject progLine;
@@ -38,6 +37,8 @@ public class ProgramSection : MonoBehaviour
     //public Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
+
+    public ProgramVirtualBox virtualBox;
 
     Language lang;
 
@@ -131,6 +132,9 @@ public class ProgramSection : MonoBehaviour
         }
         else
         {
+
+            virtualBox = new ProgramVirtualBox(Scripts.programManager.getVars());
+
             foreach (Transform child in charHolder.transform)
             {
                 if (child.GetComponent<CharData>() != null)
@@ -151,11 +155,11 @@ public class ProgramSection : MonoBehaviour
         {
             Program program = new Program(false);
 
-            decompose(data.program.list[i], program);
+            decompose(data.program.list[i], program, virtualBox);
 
             for (int j = 0; j < program.list.Count; j++)
             {
-                readAction(data.gameObject, program.list[j]);
+                readAction(data.gameObject, program.list[j], virtualBox);
                 //This works
                 if (program.list[j].actionType != ActionType.Variable)
                 {
@@ -163,10 +167,10 @@ public class ProgramSection : MonoBehaviour
                 }
             }
         }
-        Camera.main.GetComponent<ProgramManager>().displayAllVariables();
+       virtualBox.displayAllVariables();
     }
 
-    public string getUpdatedMathValue(ProgramAction action)
+    public string getUpdatedMathValue(ProgramAction action, ProgramVirtualBox virtualBox)
     {
         string val1 = "";
         string val2 = "";
@@ -175,7 +179,7 @@ public class ProgramSection : MonoBehaviour
         //Get Values
         if (action.varActData.mathData.refID1 != 0)
         {
-            val1 = Scripts.programManager.getVariableValue(action.varActData.mathData.refID1);
+            val1 = virtualBox.getVariableValue(action.varActData.mathData.refID1);
         }
         else
         {
@@ -184,7 +188,7 @@ public class ProgramSection : MonoBehaviour
 
         if (action.varActData.mathData.refID2 != 0)
         {
-            val2 = Scripts.programManager.getVariableValue(action.varActData.mathData.refID2);
+            val2 = virtualBox.getVariableValue(action.varActData.mathData.refID2);
         }
         else
         {
@@ -252,7 +256,7 @@ public class ProgramSection : MonoBehaviour
         return value;
     }
 
-    public void readAction(GameObject character, ProgramAction action)
+    public void readAction(GameObject character, ProgramAction action, ProgramVirtualBox virtualBox)
     {
         switch (action.actionType)
         {
@@ -263,7 +267,7 @@ public class ProgramSection : MonoBehaviour
                     case MovementActionNames.Move:
 
                         //Calculate next position
-                        Vector3 nextPos = character.transform.position + actionToMovement(action);
+                        Vector3 nextPos = character.transform.position + actionToMovement(action, virtualBox);
 
                         //Check if the tile in that position exists
                         if (obstacles.GetTile(obstacles.WorldToCell(nextPos)) == null)
@@ -278,9 +282,7 @@ public class ProgramSection : MonoBehaviour
 
                         break;
                 }
-
                 break;
-
             case ActionType.Logic:
 
                 break;
@@ -294,50 +296,50 @@ public class ProgramSection : MonoBehaviour
                     case VariableActionNames.Variable:
 
                         //Update Variable value in program manager
-                        Scripts.programManager.updateVariable(action.varActData);
+                        virtualBox.updateVariable(action.varActData);
 
                         break;
                     case VariableActionNames.MathAddition:
 
                         varUpdate.setData.id = action.varActData.refID;
-                        varUpdate.setData.value = getUpdatedMathValue(action);
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
 
                         Debug.Log("Val: " + val);
 
-                        Scripts.programManager.updateVariable(varUpdate);
+                        virtualBox.updateVariable(varUpdate);
 
                         break;
 
                     case VariableActionNames.MathSubtraction:
 
                         varUpdate.setData.id = action.varActData.refID;
-                        varUpdate.setData.value = getUpdatedMathValue(action);
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
 
                         Debug.Log("Val: " + val);
 
-                        Scripts.programManager.updateVariable(varUpdate);
+                        virtualBox.updateVariable(varUpdate);
 
                         break;
 
                     case VariableActionNames.MathMultiplication:
 
                         varUpdate.setData.id = action.varActData.refID;
-                        varUpdate.setData.value = getUpdatedMathValue(action);
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
 
                         Debug.Log("Val: " + val);
 
-                        Scripts.programManager.updateVariable(varUpdate);
+                        virtualBox.updateVariable(varUpdate);
 
                         break;
 
                     case VariableActionNames.MathDivision:
 
                         varUpdate.setData.id = action.varActData.refID;
-                        varUpdate.setData.value = getUpdatedMathValue(action);
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
 
                         Debug.Log("Val: " + val);
 
-                        Scripts.programManager.updateVariable(varUpdate);
+                        virtualBox.updateVariable(varUpdate);
 
                         break;
                 }
@@ -387,30 +389,30 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public Vector3 actionToMovement(ProgramAction action)
+    public Vector3 actionToMovement(ProgramAction action, ProgramVirtualBox virtualBox)
     {
         switch (action.moveData.dir)
         {
             case Direction.Up:
-                return new Vector3(0, getMovementVal(action), 0);
+                return new Vector3(0, getMovementVal(action, virtualBox), 0);
             case Direction.Down:
-                return new Vector3(0, -1 * getMovementVal(action), 0);
+                return new Vector3(0, -1 * getMovementVal(action, virtualBox), 0);
             case Direction.Left:
-                return new Vector3(-1 * getMovementVal(action), 0, 0);
+                return new Vector3(-1 * getMovementVal(action, virtualBox), 0, 0);
             case Direction.Right:
-                return new Vector3(getMovementVal(action), 0, 0);
+                return new Vector3(getMovementVal(action, virtualBox), 0, 0);
             default:
-                return new Vector3(0, getMovementVal(action), 0);
+                return new Vector3(0, getMovementVal(action, virtualBox), 0);
         }
     }
 
-    public int getMovementVal(ProgramAction action)
+    public int getMovementVal(ProgramAction action, ProgramVirtualBox virtualBox)
     {
         if (action.moveData.refID != 0)
         {
             // Debug.Log("Hi");
             //Convert 
-            return int.Parse(Camera.main.GetComponent<ProgramManager>().getVariableValue(action.moveData.refID));
+            return int.Parse(virtualBox.getVariableValue(action.moveData.refID));
         }
         else
         {
@@ -536,14 +538,14 @@ public class ProgramSection : MonoBehaviour
     {
         for (int i = 0; i < program.list.Count; i++)
         {
-            readAction(character, program.list[i]);
+            readAction(character, program.list[i], virtualBox);
             yield return new WaitForSeconds(1f / speedDivider);
         }
 
         Camera.main.GetComponent<ProgramManager>().displayAllVariables();
     }
 
-    public void decompose(ProgramAction action, Program program)
+    public void decompose(ProgramAction action, Program program, ProgramVirtualBox virtualBox)
     {
         //Make this more Complex probably
 
@@ -557,7 +559,7 @@ public class ProgramSection : MonoBehaviour
                 {
                     case MovementActionNames.Move:
 
-                        for (int i = 0; i < getMovementVal(action); i++)
+                        for (int i = 0; i < getMovementVal(action, virtualBox); i++)
                         {
                             ProgramAction newAction = new ProgramAction();
 

@@ -160,7 +160,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         Vector2 mouse = Input.mousePosition;
 
-        float x = mouse.x - Mathf.Abs(transform.GetComponent<RectTransform>().rect.x);
+        float x = mouse.x - (Screen.width - Scripts.levelScript.MapView.size.x);
         float y = mouse.y - Screen.height;
 
         float normalX = x / transform.GetComponent<RectTransform>().sizeDelta.x;

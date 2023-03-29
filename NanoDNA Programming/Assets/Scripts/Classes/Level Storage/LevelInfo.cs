@@ -18,6 +18,8 @@ public class LevelInfo
 
     public LevelType levelType;
 
+    public List<VariableData> levelVariables = new List<VariableData>();
+
     [Header("Automatic")]
     public string levelPath;
 
@@ -28,7 +30,10 @@ public class LevelInfo
     public int yMax;
     public int yMin;
 
+    //Convert this to a list for multiple end conditions?
     public EndInfo endGoal;
+
+    public List<SensorInfo> sensorInfo = new List<SensorInfo>();
 
     public List<InteractableInfo> interacInfo = new List<InteractableInfo>();
 
@@ -44,7 +49,6 @@ public class LevelInfo
     public LevelInfo ()
     {
         //Do Nothing
-
     }
 
     //Add an array or list for characters and interactables
@@ -70,6 +74,9 @@ public class LevelInfo
 
         //Create end goal
         createEndGoal(info.charHolder);
+
+        //Create list of sensors
+        createSensorArrayInfo(info.charHolder);
 
         //Get true boundaries
         getTrueCellBoundaries(backgroundTiles);
@@ -145,6 +152,18 @@ public class LevelInfo
             if (child.GetComponent<EndData>() != null)
             {
                 endGoal = new EndInfo(new EndDataInfo(child.GetComponent<EndData>()), child.GetComponent<SpriteRenderer>().sprite.name);
+            }
+        }
+    }
+
+    public void createSensorArrayInfo (GameObject charHolder)
+    {
+        foreach (Transform child in charHolder.transform)
+        {
+            if (child.GetComponent<LevelSensor>() != null)
+            {
+                sensorInfo.Add(new SensorInfo(new SensorDataInfo(child.GetComponent<LevelSensor>()), child.GetComponent<SpriteRenderer>().sprite.name));
+
             }
         }
     }
