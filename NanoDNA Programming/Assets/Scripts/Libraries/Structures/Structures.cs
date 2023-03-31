@@ -6,9 +6,46 @@ using UnityEngine.Tilemaps;
 
 namespace DNAStruct
 {
+
+    [System.Serializable]
+    public struct SavedPlayerSettings
+    {
+        public Language language;
+        public int volume;
+        public ColourPaletteStorage colourScheme;
+        public bool advancedVariables;
+
+        public static SavedPlayerSettings CreateNewSettings ()
+        {
+            SavedPlayerSettings settings = new SavedPlayerSettings();
+
+            settings.language = Language.English;
+            settings.volume = 50;
+            settings.advancedVariables = false;
+            settings.colourScheme = new ColourPaletteStorage("Images/UIDesigns/Palettes/Palette 1");
+            
+            settings.colourScheme.textColorMain = Color.white;
+            settings.colourScheme.textColorAccent = Color.black;
+
+            return settings;
+        }
+    }
+
+    [System.Serializable]
+    public struct CurrentLevelLoader
+    {
+        public static string path;
+        public static string name;
+    }
+
+
     [System.Serializable]
     public struct LevelMakerInfo
     {
+        public LevelIconInstance levelIcon;
+        //From After Resource path
+        public string levelPath;
+
         public Tilemap voidMap;
         public Tilemap backgroundMap;
         public Tilemap obstacleMap;
@@ -16,9 +53,7 @@ namespace DNAStruct
         public GameObject charHolder;
 
         public int maxLines;
-
     }
-
 
     public struct CardInfo
     {
@@ -28,12 +63,12 @@ namespace DNAStruct
 
 
         public MovementActionNames movementName;
-        public MathActionNames mathName;
+        //public Math mathName;
         public LogicActionNames logicName;
         public VariableActionNames variableName;
         public ActionActionNames actionName;
 
-        public EditDataType editDataType;
+       
 
         //Program Related Stuff
         public Flex flex;
@@ -48,12 +83,13 @@ namespace DNAStruct
 
         public GameObject panel;
 
+        public EditDataType editDataType;
+
         public VariableType varType;
 
         public ValueEditType valEditType;
 
         public int progLineIndex;
-
     }
 
     //
@@ -62,7 +98,6 @@ namespace DNAStruct
     public enum ActionType
     {
         Movement,
-        Math,
         Logic,
         Variable,
         Action
@@ -72,12 +107,15 @@ namespace DNAStruct
     {
         None,
         Move,
-
     }
 
-    public enum MathActionNames
+    public enum MathOperationTypes
     {
         None,
+        Addition,
+        Subtraction, 
+        Multiplication,
+        Division
     }
 
     public enum LogicActionNames
@@ -89,6 +127,12 @@ namespace DNAStruct
     {
         None,
         Variable,
+        MathAddition,
+        MathSubtraction,
+        MathMultiplication,
+        MathDivision,
+
+
 
     }
 
@@ -101,11 +145,10 @@ namespace DNAStruct
 
     public enum EditDataType
     {
-        Direction,
         Value,
         NewValue,
         Multichoice,
-
+        Variable,
     }
 
     public enum ValueEditType
@@ -117,7 +160,11 @@ namespace DNAStruct
         Public,
         Bool,
         Speak,
-        VariableSmartAssign
+        VariableSmartAssign, 
+        Value1, 
+        Value2,
+      //  MathOperation,
+        LogicOperation,
 
     }
 
@@ -127,9 +174,11 @@ namespace DNAStruct
         Number,
         Decimal,
         Bool,
-        SmartAssign
+
+       
     }
 
+   
     public enum ActionDescriptor
     {
         Yell,
@@ -156,15 +205,14 @@ namespace DNAStruct
 
     public struct Scripts
     {
-        public LevelScript levelScript;
-        public LevelManager levelManager;
-        public ProgramSection programSection;
-        public MapDrag mapDrag;
-        public StoreScript storeScript;
-        public ProgramManager programManager;
+        public static LevelScript levelScript;
+        public static LevelManager levelManager;
+        public static ProgramSection programSection;
+        public static MapDrag mapDrag;
+        public static StoreScript storeScript;
+        public static ProgramManager programManager;
 
     }
-
 
     //
     //Level Type
@@ -176,9 +224,6 @@ namespace DNAStruct
         SideView,
 
     }
-
-
-
 
     public enum Language
     {
@@ -225,8 +270,6 @@ namespace DNAStruct
             }
 
         }
-
-
     }
 
     [System.Serializable]
@@ -255,8 +298,6 @@ namespace DNAStruct
             {
                 case ActionType.Movement:
                     return movement.getWord(lang);
-                case ActionType.Math:
-                    return math.getWord(lang);
                 case ActionType.Logic:
                     return logic.getWord(lang);
                 case ActionType.Variable:
@@ -281,13 +322,148 @@ namespace DNAStruct
         public int refID;
     }
 
+    public enum VariableActionType
+    {
+        Set, 
+        ChangeVal,
+
+
+    }
+
+    [System.Serializable]
+    public class VariableActionData
+    {
+        [System.Serializable]
+        public struct VariableSetData
+        {
+            public bool isPublic;
+            public VariableType varType;
+            //public string name;
+            public string value;
+            public CharData charData;
+            public int id;
+            public int refID;
+
+            
+
+            public void setParent(CharData parentData)
+            {
+                this.charData = parentData;
+            }
+
+            public void setID(int id)
+            {
+                this.id = id;
+            }
+
+            public void setValue(string value)
+            {
+
+                this.value = value;
+
+            }
+
+            public void setRefID (int refID)
+            {
+                this.refID = refID;
+            }
+
+           
+        }
+        [System.Serializable]
+        public struct VariableMathData
+        {
+            public string value1;
+            public string value2;
+
+            public int refID1;
+            public int refID2;
+
+            public VariableType varType;
+            public MathOperationTypes operationType;
+
+
+            public void setValue (string value, int index)
+            {
+                if (index == 0)
+                {
+                    this.value1 = value;
+                } else
+                {
+                    this.value2 = value;
+                }
+            }
+
+            public void setRefID (int refID, int index)
+            {
+                if (index == 0)
+                {
+                    this.refID1 = refID;
+                }
+                else
+                {
+                    this.refID2 = refID;
+                }
+            }
+        }
+
+
+        //Edit stuff
+
+        public bool newVar;
+        public string name;
+        public int refID;
+        public VariableActionType actionType;
+
+        //Variable for the set Data
+        public VariableSetData setData;
+        //Variable for math data
+        public VariableMathData mathData;
+
+        public VariableActionData ()
+        {
+
+        }
+
+        public VariableData getVarData()
+        {
+            VariableData data = new VariableData();
+
+            data.isPublic = setData.isPublic;
+
+            data.varType = setData.varType;
+            data.name = name;
+            data.value = setData.value;
+            data.id = setData.id;
+            data.refID = setData.refID;
+            data.varType = setData.varType;
+            data.charData = setData.charData;
+
+            return data;
+        }
+
+        public void setVarData(bool pub, VariableType varType, string name, string value)
+        {
+            this.setData.isPublic = pub;
+            this.setData.varType = varType;
+            this.name = name;
+            this.setData.value = value;
+
+        }
+
+    }
+    
     //
     //Variable Data
     //
+    
     [System.Serializable]
     public class VariableData
     {
         public bool isPublic;
+        public bool isLevelVariable;
+        //Determines if the true value can be read/added to all variables
+        public bool isActivated;
         public VariableType varType;
         public string name;
         public string value;
@@ -295,6 +471,10 @@ namespace DNAStruct
         public CharData charData;
         public int id;
         public int refID;
+
+
+        //public MathTypes mathType;
+        
 
         public VariableData(bool pub, VariableType varType, string name, string value)
         {
@@ -335,6 +515,7 @@ namespace DNAStruct
 
         }
     }
+    
 
     [System.Serializable]
     public class ActionData
@@ -354,9 +535,18 @@ namespace DNAStruct
 
     }
 
+    [System.Serializable]
+    public class MathOperationData
+    {
+        public string value1;
+        public int refID1;
 
+        public string value2;
+        public int refID2;
 
-
+        public MathOperationTypes type;
+        public VariableType varType;
+    }
 
     //Settings Data
 
@@ -400,7 +590,6 @@ namespace DNAStruct
         public ActionType actionType;
 
         public MovementActionNames movementName;
-        public MathActionNames mathName;
         public LogicActionNames logicName;
         public VariableActionNames variableName;
         public ActionActionNames actionName;

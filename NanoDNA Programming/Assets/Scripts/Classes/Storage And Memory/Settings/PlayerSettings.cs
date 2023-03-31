@@ -2,46 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DNAStruct;
+using DNASaveSystem;
 
 
 [System.Serializable]
 public class PlayerSettings
 {
 
-    public Language language;
-    public int volume;
-    //public SettingColourScheme colourScheme;
-    public ColourPaletteStorage colourScheme;
-    public bool advancedVariables;
+    public static Language language;
+    public static int volume;
+    public static ColourPaletteStorage colourScheme;
+    public static bool advancedVariables;
     
-    public PlayerSettings (Language lang = Language.English)
+
+    public PlayerSettings ()
     {
-        //Set Default settings
-
-        this.language = lang;
-        this.volume = 50;
-        this.colourScheme = new ColourPaletteStorage("Images/UIDesigns/Palettes/Palette 1");
-
+        //Create Default settings
     }
 
-    public void setLanguage (Language lang)
+    public static void setColourScheme (SettingColourScheme colour, string path)
     {
-        this.language = lang;
+        PlayerSettings.colourScheme = new ColourPaletteStorage(path);
+        PlayerSettings.colourScheme.colourScheme = colour;
+
+        return;
     }
 
-    public void setVolume (int volume)
+    public static void LoadSettings (SavedPlayerSettings settings)
     {
-        this.volume = volume;
+        PlayerSettings.language = settings.language;
+        PlayerSettings.volume = settings.volume;
+        PlayerSettings.advancedVariables = settings.advancedVariables;
+        PlayerSettings.colourScheme = settings.colourScheme;
     }
 
-    public void setColourScheme (SettingColourScheme colour, string path)
+    public static SavedPlayerSettings CreateSave ()
     {
-        colourScheme = new ColourPaletteStorage(path);
-        colourScheme.colourScheme = colour;
+        SavedPlayerSettings save = new SavedPlayerSettings();
+
+        save.language = PlayerSettings.language;
+        save.colourScheme = PlayerSettings.colourScheme;
+        save.advancedVariables = PlayerSettings.advancedVariables;
+        save.volume = PlayerSettings.volume;
+
+        return save;
     }
 
-  
-
-
-  
 }

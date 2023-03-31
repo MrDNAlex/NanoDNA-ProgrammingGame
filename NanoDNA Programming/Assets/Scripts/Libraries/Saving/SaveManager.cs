@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using DNAStruct;
 
 namespace DNASaveSystem
 {
@@ -45,10 +46,9 @@ namespace DNASaveSystem
 
         }
 
-        public static void savePlaySettings (PlayerSettings playSettings)
+        public static void savePlaySettings (SavedPlayerSettings playSettings)
         {
             var dir = commonPath + "/" + "PlaySettings" + ".json";
-
 
             string jsonData = JsonUtility.ToJson(playSettings, true);
 
@@ -57,7 +57,7 @@ namespace DNASaveSystem
             File.WriteAllText(dir, jsonData);
         }
 
-        public static PlayerSettings loadPlaySettings ()
+        public static SavedPlayerSettings loadPlaySettings ()
         {
             //This function loads the save named into the currently used save file
 
@@ -70,12 +70,19 @@ namespace DNASaveSystem
                 //Extract JSON Data
                 jsonData = File.ReadAllText(path);
                 //Debug.Log(jsonData);
-                return JsonUtility.FromJson<PlayerSettings>(jsonData);
+                return JsonUtility.FromJson<SavedPlayerSettings>(jsonData);
             }
             else
             {
                 Debug.Log("Doesn't exist");
-                return null;
+
+                Debug.Log("Creating new Settings");
+
+                SavedPlayerSettings newSettings = SavedPlayerSettings.CreateNewSettings();
+
+                SaveManager.savePlaySettings(newSettings);
+
+                return newSettings;
             }
 
         }
@@ -144,9 +151,14 @@ namespace DNASaveSystem
             return JsonUtility.FromJson<Type>(json.text);
         }
 
+        public static LevelInfo LoadLevelFromFile (TextAsset text)
+        {
+            return JsonUtility.FromJson<LevelInfo>(text.text);
+        }
+
         public static void saveJSON (object json,string path, string name)
         {
-            Debug.Log(json);
+            //Debug.Log(json);
 
             var dir = path + "/" + name + "." + "json";
 

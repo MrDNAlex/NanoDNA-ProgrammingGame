@@ -14,7 +14,7 @@ public class ProgramAction
     public ActionType actionType;
 
     public MovementActionNames movementName;
-    public MathActionNames mathName;
+    //public MathActionNames mathName;
     public LogicActionNames logicName;
     public VariableActionNames variableName;
     public ActionActionNames actionName;
@@ -22,7 +22,7 @@ public class ProgramAction
     //Maybe have a data type for all ActionTypes
 
     public MoveData moveData = new MoveData();
-    public VariableData varData = new VariableData();
+    public VariableActionData varActData = new VariableActionData();
     public ActionData actData = new ActionData();
 
 
@@ -31,7 +31,7 @@ public class ProgramAction
     {
         this.actionType = info.actionType;
         this.movementName = info.movementName;
-        this.mathName = info.mathName;
+        //this.mathName = info.mathName;
         this.logicName = info.logicName;
         this.variableName = info.variableName;
         this.actionName = info.actionName;
@@ -39,17 +39,40 @@ public class ProgramAction
         this.moveData = data;
     }
 
-    public ProgramAction(CardInfo info, VariableData data)
+    public ProgramAction(ProgramCard.ActionInfo info, MoveData data)
     {
-
         this.actionType = info.actionType;
         this.movementName = info.movementName;
-        this.mathName = info.mathName;
         this.logicName = info.logicName;
         this.variableName = info.variableName;
         this.actionName = info.actionName;
 
-        this.varData = data;
+        this.moveData = data;
+    }
+
+    public ProgramAction(CardInfo info, VariableActionData data)
+    {
+
+        this.actionType = info.actionType;
+        this.movementName = info.movementName;
+       // this.mathName = info.mathName;
+        this.logicName = info.logicName;
+        this.variableName = info.variableName;
+        this.actionName = info.actionName;
+
+        this.varActData = data;
+    }
+
+    public ProgramAction(ProgramCard.ActionInfo info, VariableActionData data)
+    {
+
+        this.actionType = info.actionType;
+        this.movementName = info.movementName;
+        this.logicName = info.logicName;
+        this.variableName = info.variableName;
+        this.actionName = info.actionName;
+
+        this.varActData = data;
     }
 
     public ProgramAction(CardInfo info, ActionData data)
@@ -57,7 +80,7 @@ public class ProgramAction
 
         this.actionType = info.actionType;
         this.movementName = info.movementName;
-        this.mathName = info.mathName;
+        //this.mathName = info.mathName;
         this.logicName = info.logicName;
         this.variableName = info.variableName;
         this.actionName = info.actionName;
@@ -65,27 +88,32 @@ public class ProgramAction
         this.actData = data;
     }
 
+    public ProgramAction(ProgramCard.ActionInfo info, ActionData data)
+    {
+
+        this.actionType = info.actionType;
+        this.movementName = info.movementName;
+        this.logicName = info.logicName;
+        this.variableName = info.variableName;
+        this.actionName = info.actionName;
+
+        this.actData = data;
+
+        this.actData.character = Scripts.programSection.selectedCharacter.transform;
+    }
+
     public ProgramAction ()
     {
         //Creates an Empty Program
         this.actionType = ActionType.Movement;
         this.movementName = MovementActionNames.None;
-        this.mathName = MathActionNames.None;
+        //this.mathName = MathActionNames.None;
         this.logicName = LogicActionNames.None;
         this.variableName = VariableActionNames.None;
         this.actionName = ActionActionNames.None;
         this.moveData = new MoveData();
 
     }
-
-    /*
-    public ProgramAction (string type, string dir, int value)
-    {
-        this.type = type;
-        this.dir = dir;
-        this.value = value;
-    }
-    */
 
     public string dispAction ()
     {
@@ -96,8 +124,8 @@ public class ProgramAction
             case ActionType.Movement:
                 str = actionType + " " + movementName;
                 break;
-            case ActionType.Math:
-                str = actionType + " " + mathName;
+            //case ActionType.Math:
+              //  str = actionType + " " + mathName;
                 break;
             case ActionType.Logic:
                 str = actionType + " " + logicName;
@@ -130,14 +158,26 @@ public class ProgramAction
                 }
                
                 break;
-            case ActionType.Math:
-                str = actionType + " " + mathName;
+           // case ActionType.Math:
+             //   str = actionType + " " + mathName;
                 break;
             case ActionType.Logic:
                 str = actionType + " " + logicName;
                 break;
             case ActionType.Variable:
-                str = actionType + " " + variableName + " "+ varData.isPublic + " " + varData.varType + " " + varData.name + " " + varData.value;
+
+                switch (varActData.actionType)
+                {
+                    case VariableActionType.Set:
+                        str = actionType + " " + variableName + " " + varActData.setData.isPublic + " " + varActData.setData.varType + " " + varActData.name+ " " + varActData.setData.value;
+                        break;
+                    case VariableActionType.ChangeVal:
+
+                        str = actionType + " " + variableName + " " + varActData.mathData.operationType + " " + varActData.mathData.value1 + " and " + varActData.mathData.value2 + "(" + varActData.mathData.varType + ")"; 
+                        break;
+                }
+
+               
                 break;
             case ActionType.Action:
                 str = actionType + " " + actionName;

@@ -394,8 +394,8 @@ MonoBehaviour:
     m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 40
+    m_MinSize: 10
+    m_MaxSize: 60
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -415,7 +415,8 @@ GameObject:
   - component: {fileID: 6380200507187299437}
   - component: {fileID: 822691314091239528}
   - component: {fileID: 3497862695777829894}
-  - component: {fileID: 7720614945227396249}
+  - component: {fileID: 1299116185640775756}
+  - component: {fileID: 7389925230002861090}
   m_Layer: 0
   m_Name: Movement
   m_TagString: Untagged
@@ -510,7 +511,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7720614945227396249
+--- !u!114 &1299116185640775756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -519,7 +520,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8138498152997489336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d53f667f3c2a1439eda396c9d756b3, type: 3}
+  m_Script: {fileID: 11500000, guid: dcd3a5c75f51d974e8a8f78d409b226c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7389925230002861090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138498152997489336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db39387c3da0556448e27c5421d45937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   actionType: 0
@@ -532,10 +545,12 @@ MonoBehaviour:
   variableName: 0
   actionName: 0
   progLine: {fileID: 0}
+  rectTrans: {fileID: 0}
   indent: 0
+  lineIndex: 0
   action:
     actionType: 0
-    movementName: 0
+    movementName: 1
     mathName: 0
     logicName: 0
     variableName: 0
@@ -552,9 +567,17 @@ MonoBehaviour:
       charData: {fileID: 0}
       id: 0
       refID: 0
+      mathType: 0
     actData:
       actionName: 0
       descriptor: 0
       data: 
       character: {fileID: 0}
       refID: 0
+  actionInfo:
+    actionType: 0
+    movementName: 1
+    mathName: 0
+    logicName: 0
+    variableName: 0
+    actionName: 0

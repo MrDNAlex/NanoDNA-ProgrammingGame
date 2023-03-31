@@ -29,7 +29,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     float maxOrthoSize;
     float minOrthoSize;
 
-    public Scripts allScripts;
+    //public Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
 
@@ -38,7 +38,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     private void Awake()
     {
-        Camera.main.GetComponent<LevelScript>().allScripts.mapDrag = this;
+        Scripts.mapDrag = this;
 
         lang = Camera.main.GetComponent<LevelScript>().lang;
     }
@@ -54,11 +54,11 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     void Start()
     {
 
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         orthoSize = Cam.orthographicSize;
 
-        maxOrthoSize = allScripts.levelScript.orthoSizeCalc(allScripts.levelManager.info)*2;
+        maxOrthoSize = Scripts.levelScript.orthoSizeCalc(Scripts.levelManager.info)*2;
         minOrthoSize = maxOrthoSize / 10;
 
         zoomSlide.value = 0.5f;
@@ -92,10 +92,10 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             {
                 Debug.Log("Right Click");
 
-                allScripts.programSection.selectedCharacter = rayHit.collider.gameObject;
-                allScripts.programSection.selectedCharData = rayHit.collider.GetComponent<CharData>();
+                Scripts.programSection.selectedCharacter = rayHit.collider.gameObject;
+                Scripts.programSection.selectedCharData = rayHit.collider.GetComponent<CharData>();
 
-                allScripts.programSection.renderProgram();
+                Scripts.programSection.renderProgram();
 
                // sec.updateOGPos();
 
@@ -160,7 +160,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         Vector2 mouse = Input.mousePosition;
 
-        float x = mouse.x - Mathf.Abs(transform.GetComponent<RectTransform>().rect.x);
+        float x = mouse.x - (Screen.width - Scripts.levelScript.MapView.size.x);
         float y = mouse.y - Screen.height;
 
         float normalX = x / transform.GetComponent<RectTransform>().sizeDelta.x;
@@ -174,13 +174,12 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         // Debug.Log(new Vector2(normalX * 1920, 1080 * (1 + normalY)));
 
-        return new Vector2(normalX * allScripts.levelScript.MapView.size.x, allScripts.levelScript.MapView.size.y * (1 + normalY));
+        return new Vector2(normalX * Scripts.levelScript.MapView.size.x, Scripts.levelScript.MapView.size.y * (1 + normalY));
 
     }
 
     public float zoomCalc (float value)
     {
-     
         float slope = (minOrthoSize - maxOrthoSize) / (1);
 
         float intercept = maxOrthoSize;
@@ -224,7 +223,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     public void ResizeCam()
     {
 
-        Cam.orthographicSize = orthoSizeCalc(allScripts.levelManager.info);
+        Cam.orthographicSize = orthoSizeCalc(Scripts.levelManager.info);
         Cam.transform.position = Vector3.zero;
     }
 
@@ -234,7 +233,7 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * BackAndMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (BackAndMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
+        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (BackAndMap.cellSize.x * ((float)Scripts.levelScript.MapView.size.y / (float)Scripts.levelScript.MapView.size.x)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
@@ -257,11 +256,11 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         zoomSlide.onValueChanged.RemoveAllListeners();
         resize.onClick.RemoveAllListeners();
 
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         orthoSize = Cam.orthographicSize;
 
-        maxOrthoSize = allScripts.levelScript.orthoSizeCalc(allScripts.levelManager.info) * 2;
+        maxOrthoSize = Scripts.levelScript.orthoSizeCalc(Scripts.levelManager.info) * 2;
         minOrthoSize = maxOrthoSize / 10;
 
         zoomSlide.value = 0.5f;

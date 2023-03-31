@@ -42,6 +42,8 @@ public class LevelScript : MonoBehaviour
 
     public RectTransform contentTrans;
 
+    [SerializeField] Material camMaterial;
+
     [SerializeField] Texture camText;
 
     [SerializeField] Camera Cam2;
@@ -55,12 +57,11 @@ public class LevelScript : MonoBehaviour
     [SerializeField] TileBase tile;
 
     [SerializeField] Text resize;
-    [SerializeField] Text debug;
+    [SerializeField]public Text debug;
     [SerializeField] Text complete;
     [SerializeField] Text save;
 
     [SerializeField] Button changeLangBtn;
-
 
     public Flex Background;
     public Flex MapView;
@@ -69,15 +70,15 @@ public class LevelScript : MonoBehaviour
 
     Flex Content;
 
-    public Scripts allScripts = new Scripts();
-
-    public PlayerSettings playerSettings;
+    //public Scripts allScripts = new Scripts();
 
     private void Awake()
     {
-        allScripts.levelScript = this;
-        playerSettings = SaveManager.loadPlaySettings();
-        lang = playerSettings.language;
+        PlayerSettings.LoadSettings(SaveManager.loadPlaySettings());
+        Scripts.levelScript = this;
+        lang = PlayerSettings.language;
+
+        setUI();
     }
 
     //Going to start needing a loading screen I think
@@ -86,15 +87,11 @@ public class LevelScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setUI();
-
         setUIText();
 
         contentTrans = content;
 
         OnDemandRendering.renderFrameInterval = 12;
-
-        //changeLangBtn.onClick.AddListener(langChange);
 
     }
 
@@ -109,7 +106,7 @@ public class LevelScript : MonoBehaviour
 
         Background = new Flex(background, 1);
 
-        Flex Reg1 = new Flex(Background.getChild(0), 1, Background);
+        Flex Reg1 = new Flex(Background.getChild(0), 4f, Background);
         Flex Header = new Flex(Reg1.getChild(0), 1, Reg1);
         Flex List = new Flex(Reg1.getChild(1), 8, Reg1);
         Flex SV = new Flex(List.getChild(0), 1, List);
@@ -121,9 +118,9 @@ public class LevelScript : MonoBehaviour
         Flex InteracName = new Flex(Controls.getChild(1), 4, Controls);
         Flex Save = new Flex(Controls.getChild(2), 1, Controls);
 
-        Flex Scripts = new Flex(Header.getChild(1), 1);
+        Flex ScriptsTabs = new Flex(Header.getChild(1), 1);
 
-        Flex Reg2 = new Flex(Background.getChild(1), 2f, Background);
+        Flex Reg2 = new Flex(Background.getChild(1), 6f, Background);
         MapView = new Flex(Reg2.getChild(0), 2f, Reg2);
 
 
@@ -137,14 +134,14 @@ public class LevelScript : MonoBehaviour
 
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f, Reg2);
 
-        Flex Constraints = new Flex(Reg3.getChild(1), 1f, Reg3);
+        Flex Constraints = new Flex(Reg3.getChild(0), 1f, Reg3);
 
         Flex CollectedItems = new Flex(Constraints.getChild(0), 1, Constraints);
         Flex LinesUsed = new Flex(Constraints.getChild(1), 1, Constraints);
         Flex CompleteLevel = new Flex(Constraints.getChild(2), 1, Constraints);
 
         //Add Children
-        VP.addChild(allScripts.programSection.flex);
+        VP.addChild(Scripts.programSection.flex);
 
         Reg3.addChild(store.GetComponent<StoreScript>().Store);
 
@@ -167,30 +164,37 @@ public class LevelScript : MonoBehaviour
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
-        //Calculate leftover height, and fix the size of the Zoom slider
+        MapView.setSize(new Vector2(MapView.size.x, MapView.size.x * ((float)Screen.height/ Screen.width)));
 
+        Reg3.setSize(new Vector2(Reg3.size.x, Screen.height - MapView.size.y));
+
+        //Calculate leftover height, and fix the size of the Zoom slider
         Buttons.UI.GetComponent<VerticalLayoutGroup>().spacing = 5;
         Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
 
         //Set Images
-        UIHelper.setImage(Header.UI, playerSettings.colourScheme.getSecondary(true));
-        UIHelper.setImage(Constraints.UI, playerSettings.colourScheme.getSecondary(true));
-        UIHelper.setImage(List.UI, playerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Header.UI, PlayerSettings.colourScheme.getSecondary(true));
+        UIHelper.setImage(Constraints.UI, PlayerSettings.colourScheme.getSecondary(true));
+        UIHelper.setImage(List.UI, PlayerSettings.colourScheme.getMain(true));
 
-        UIHelper.setImage(ProgSpeed.UI, playerSettings.colourScheme.getMain());
-        UIHelper.setImage(Resize.UI, playerSettings.colourScheme.getMain());
-        UIHelper.setImage(DebugBTN.UI, playerSettings.colourScheme.getMain());
+        UIHelper.setImage(ProgSpeed.UI, PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(Resize.UI, PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(DebugBTN.UI, PlayerSettings.colourScheme.getMain());
 
-        UIHelper.setImage(Zoom.UI.GetChild(0), playerSettings.colourScheme.getMain());
-        UIHelper.setImage(Zoom.UI.GetChild(1).GetChild(0), playerSettings.colourScheme.getSecondary());
-        UIHelper.setImage(Zoom.UI.GetChild(2).GetChild(0), playerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Zoom.UI.GetChild(0), PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(Zoom.UI.GetChild(1).GetChild(0), PlayerSettings.colourScheme.getSecondary());
+        UIHelper.setImage(Zoom.UI.GetChild(2).GetChild(0), PlayerSettings.colourScheme.getAccent());
 
-        UIHelper.setImage(Reg3.getChild(0).GetChild(1), playerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(1).GetChild(1).GetChild(0).GetChild(0), PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(1).GetChild(1), PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(1).GetChild(1).GetChild(0), PlayerSettings.colourScheme.getMain(true));
 
-        UIHelper.setImage(CompleteLevel.UI, playerSettings.colourScheme.getAccent());
+        UIHelper.setImage(CompleteLevel.UI, PlayerSettings.colourScheme.getAccent());
 
-        UIHelper.setImage(Save.UI, playerSettings.colourScheme.getAccent());
-        UIHelper.setImage(Undo.UI, playerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Save.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Undo.UI, PlayerSettings.colourScheme.getAccent());
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(Background.UI);
 
     }
 
@@ -200,7 +204,8 @@ public class LevelScript : MonoBehaviour
         float vertOrthoSize = ((float)((info.yMax - info.yMin) + 1) / 2 * backgroundMap.cellSize.y);
 
         //Fit Horizontally
-        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (backgroundMap.cellSize.x * ((float)Screen.height / (float)Screen.width)));
+
+        float horOrthoSize = ((float)((info.xMax - info.yMin) + 1) / 2 * (backgroundMap.cellSize.x * ((float)MapView.size.y / (float)MapView.size.x)));
 
         if (vertOrthoSize >= horOrthoSize)
         {
@@ -214,21 +219,20 @@ public class LevelScript : MonoBehaviour
         }
     }
 
- 
-
     public void setCamera(LevelInfo info)
     {
+        RenderTexture text = new RenderTexture(new RenderTextureDescriptor((int)MapView.size.x, (int)MapView.size.y));
+
         //Set the Camera Texture size
 
+        Cam2.targetTexture = text;
 
-        camText.width = (int)MapView.size.x;
-        camText.height = (int)MapView.size.y;
+        camMaterial.mainTexture = text;
 
         //Set the Orthographic size
         Cam2.orthographicSize = orthoSizeCalc(info);
 
         //Set Backgroud position
-
         //Get center position
         Vector3 pos = (voidMap.CellToWorld(getCenter(info, true)) + voidMap.CellToWorld(getCenter(info, false))) / 2;
 
@@ -279,10 +283,15 @@ public class LevelScript : MonoBehaviour
 
    public void setUIText ()
     {
-        UIHelper.setText(complete.transform, UIwords.complete, playerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(complete.transform, UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
 
-        UIHelper.setText(save.transform, UIwords.save, playerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
 
+    }
+
+    public void LiveDebug (string str)
+    {
+      debug.text = str;
     }
 
 }

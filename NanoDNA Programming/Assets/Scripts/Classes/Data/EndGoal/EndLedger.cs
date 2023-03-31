@@ -12,7 +12,6 @@ public class EndLedger : ScriptableObject
 
     private void OnValidate()
     {
-
-
+        Object[] idk = Resources.FindObjectsOfTypeAll(typeof(EndInstance));
     }
 }

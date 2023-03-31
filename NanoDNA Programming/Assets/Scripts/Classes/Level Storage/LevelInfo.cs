@@ -10,20 +10,30 @@ using DNAStruct;
 public class LevelInfo 
 {
    [Header("Edit")]
-    public string levelName;
-
+    public UIWord levelName;
+    public UIWord levelDescription;
+    
     public int maxLine;
     public int maxItems;
 
     public LevelType levelType;
 
+    public List<VariableData> levelVariables = new List<VariableData>();
+
     [Header("Automatic")]
+    public string levelPath;
+
+    public LevelIconInfo levelIcon;
+
     public int xMax;
     public int xMin;
     public int yMax;
     public int yMin;
 
+    //Convert this to a list for multiple end conditions?
     public EndInfo endGoal;
+
+    public List<SensorInfo> sensorInfo = new List<SensorInfo>();
 
     public List<InteractableInfo> interacInfo = new List<InteractableInfo>();
 
@@ -39,7 +49,6 @@ public class LevelInfo
     public LevelInfo ()
     {
         //Do Nothing
-
     }
 
     //Add an array or list for characters and interactables
@@ -66,14 +75,22 @@ public class LevelInfo
         //Create end goal
         createEndGoal(info.charHolder);
 
+        //Create list of sensors
+        createSensorArrayInfo(info.charHolder);
+
         //Get true boundaries
         getTrueCellBoundaries(backgroundTiles);
+
+        //Save Level Icon
+        this.levelIcon = new LevelIconInfo(info.levelIcon.id);
+
+        //Save Level path
+        this.levelPath = info.levelPath;
 
     }
 
     public void createArrayInfo (Tilemap map, List<TileInfo> info)
     {
-      
         //Loop through all the tiles 
 
         for (int xIndex = map.cellBounds.xMin; xIndex < map.cellBounds.xMax; xIndex++)
@@ -135,6 +152,18 @@ public class LevelInfo
             if (child.GetComponent<EndData>() != null)
             {
                 endGoal = new EndInfo(new EndDataInfo(child.GetComponent<EndData>()), child.GetComponent<SpriteRenderer>().sprite.name);
+            }
+        }
+    }
+
+    public void createSensorArrayInfo (GameObject charHolder)
+    {
+        foreach (Transform child in charHolder.transform)
+        {
+            if (child.GetComponent<LevelSensor>() != null)
+            {
+                sensorInfo.Add(new SensorInfo(new SensorDataInfo(child.GetComponent<LevelSensor>()), child.GetComponent<SpriteRenderer>().sprite.name));
+
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DNAMathAnimation;
+using DNAStruct;
 
 public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
@@ -21,13 +22,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
     private void Update()
     {
-        /*
-        if (!animating && updateRender)
-        {
-            Camera.main.GetComponent<LevelScript>().allScripts.programSection.renderProgram();
-            updateRender = false;
-        }
-        */
+       
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -44,14 +39,9 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     {
 
         //Maybe add a timer for an animation? That will fix the glitchyness
-
         //Get the new Position
         newPos = new Vector3(newPos.x, newPos.y + eventData.delta.y, 0);
         UIObject.localPosition = newPos;
-
-
-        //Debug.Log(transform.position);
-
 
         //Loop through all other children.
         if (!animating)
@@ -66,20 +56,16 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
                     float distance = Vector3.Distance(UIObject.localPosition, iChild.localPosition);
 
                     //Check if it's within distance threshold
-                    if (distance <= 90)
+                    if (distance <= iChild.GetComponent<RectTransform>().sizeDelta.y/2)
                     {
                         //Change the order of the program actions too
-                        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.SwitchActions(UIObject.GetSiblingIndex(), i);
-                        //Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.displayProgram(true);
-                        
+                        Scripts.programSection.selectedCharData.program.SwitchActions(UIObject.GetSiblingIndex(), i);
                         //Switch positions
                         Vector3 iPos = iChild.localPosition;
 
                         animating = true;
                         updateRender = true;
                         StartCoroutine(animateCosinusoidalRelocationLocal(iChild, lastPos, 100, 1, true, true, UIObject.GetSiblingIndex()));
-                        //iChild.localPosition = lastPos;
-                        //UIObject.SetSiblingIndex(iChild.GetSiblingIndex());
                         lastPos = iPos;
 
                     }
@@ -93,7 +79,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
         //Set Position
         UIObject.localPosition = lastPos;
 
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.displayProgram(true);
+        Scripts.programSection.selectedCharData.displayProgram(true);
 
 
         //Rerender program
@@ -175,8 +161,6 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
         animating = false;
         trans.localPosition = OGPos;
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection.renderProgram();
+        Scripts.programSection.renderProgram();
     }
-
-
 }

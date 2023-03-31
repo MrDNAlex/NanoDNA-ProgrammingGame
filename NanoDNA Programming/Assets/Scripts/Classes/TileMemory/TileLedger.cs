@@ -13,7 +13,9 @@ public class TileLedger : ScriptableObject
 
     public bool validate;
 
-  
+    private void OnValidate()
+    {
+        Object[] idk = Resources.FindObjectsOfTypeAll(typeof(TileInstance));
+    }
 
-   
 }

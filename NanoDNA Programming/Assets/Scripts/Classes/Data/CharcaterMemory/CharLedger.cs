@@ -9,9 +9,13 @@ using UnityEditor;
 [CreateAssetMenu]
 public class CharLedger : ScriptableObject
 {
-
     public List<CharInstance> chars;
 
     public bool validate;
+
+    private void OnValidate()
+    {
+        Object[] idk = Resources.FindObjectsOfTypeAll(typeof(CharInstance));
+    }
 
 }

@@ -24,7 +24,7 @@ public class ProgramLine : MonoBehaviour
 
     // Flex Program;
 
-    Scripts allScripts;
+    // Scripts allScripts;
 
 
     public void Awake()
@@ -37,8 +37,6 @@ public class ProgramLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-
         OnDemandRendering.renderFrameInterval = 12;
     }
 
@@ -48,7 +46,7 @@ public class ProgramLine : MonoBehaviour
 
     }
 
-    public void setUI()
+    void setUI()
     {
         //Define all the Flex components
         Line = new Flex(background, 1);
@@ -70,8 +68,8 @@ public class ProgramLine : MonoBehaviour
         //ProgramUI = ProgramUI;
 
         //Set Images
-        UIHelper.setImage(Line.UI, SaveManager.loadPlaySettings().colourScheme.getMain(true));
-        UIHelper.setImage(LineNumberHolder.UI, SaveManager.loadPlaySettings().colourScheme.getSecondary(true));
+        UIHelper.setImage(Line.UI, PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(LineNumberHolder.UI, PlayerSettings.colourScheme.getSecondary(true));
 
     }
 
@@ -79,7 +77,7 @@ public class ProgramLine : MonoBehaviour
     {
         //Set the text to the correct number
 
-        UIHelper.setText(Line.getChild(0).GetChild(0), (Line.UI.GetSiblingIndex() + 1).ToString(), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+        UIHelper.setText(Line.getChild(0).GetChild(0), (Line.UI.GetSiblingIndex() + 1).ToString(), PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 
@@ -90,7 +88,7 @@ public class ProgramLine : MonoBehaviour
         {
             deleteProgramLine(index);
 
-            allScripts.programSection.selectedCharData.displayProgram(true);
+            Scripts.programSection.selectedCharData.displayProgram(true);
 
         });
     }
@@ -115,11 +113,11 @@ public class ProgramLine : MonoBehaviour
     {
         deleteLine();
 
-        Program prog = allScripts.programSection.selectedCharData.program;
+        Program prog = Scripts.programSection.selectedCharData.program;
 
         prog.RemoveLine(index);
 
-        allScripts.levelManager.updateConstraints();
+        Scripts.levelManager.updateConstraints();
 
     }
 
@@ -128,33 +126,27 @@ public class ProgramLine : MonoBehaviour
     {
         //Exapnd this later
         deleteLine();
-        GameObject ProgramCard = null;
-        switch (info.actionType)
-        {
-            case ActionType.Movement:
-                ProgramCard = Instantiate(prefab1, ProgramObj.transform);
-                break;
-            case ActionType.Variable:
 
-                if (SaveManager.loadPlaySettings().advancedVariables)
-                {
-                    ProgramCard = Instantiate(prefab2, ProgramObj.transform);
-                } else
-                {
-                    ProgramCard = Instantiate(simpVar, ProgramObj.transform);
-                }
-               
-                break;
-            case ActionType.Action:
-                ProgramCard = Instantiate(prefab3, ProgramObj.transform);
-                break;
+        GameObject program = null;
+
+        ProgramPrefabs.InstanceSearch search = new ProgramPrefabs.InstanceSearch();
+
+        search.setSearch(info);
+
+        ProgramPrefabs prefabs = new ProgramPrefabs();
+
+        GameObject inst = prefabs.getPrefab(search);
+
+        if (inst != null)
+        {
+            program = Instantiate(inst, ProgramObj.transform);
         }
 
-        if (ProgramCard != null)
+        if (program != null)
         {
-            ProgramCard card = ProgramCard.GetComponent<ProgramCard>();
+            ProgramCard card = program.GetComponent<ProgramCard>();
 
-            ProgramCard.name += transform.GetSiblingIndex();
+            program.name += transform.GetSiblingIndex();
 
             ProgramUI.addChild(card.program);
 
@@ -162,15 +154,15 @@ public class ProgramLine : MonoBehaviour
 
             Line.setSize(Line.size);
 
+            Destroy(program.GetComponent<StoreDrag>());
+
             card.progLine = transform;
 
-            ProgramCard.AddComponent<DeleteIndentDrag>();
+            program.AddComponent<DeleteIndentDrag>();
 
             card.setEditable();
 
-           // Camera.main.GetComponent<LevelScript>().allScripts.programSection.selectedCharData.program.setAction(card.action, transform.parent.parent.GetSiblingIndex());
-
-            allScripts.levelManager.updateConstraints();
+            Scripts.levelManager.updateConstraints();
         }
     }
 
@@ -181,32 +173,19 @@ public class ProgramLine : MonoBehaviour
 
         GameObject program = null;
 
-        //Edit this later
-        switch (action.actionType)
-        {
-            case ActionType.Movement:
+        ProgramPrefabs.InstanceSearch search = new ProgramPrefabs.InstanceSearch();
 
-                switch (action.movementName)
-                {
-                    case MovementActionNames.Move:
-                        program = Instantiate(prefab1, ProgramObj.transform);
-                        break;
-                }
-                break;
-            case ActionType.Variable:
-                if (SaveManager.loadPlaySettings().advancedVariables)
-                {
-                    program = Instantiate(prefab2, ProgramObj.transform);
-                }
-                else
-                {
-                   program = Instantiate(simpVar, ProgramObj.transform);
-                }
-                break;
-            default:
-                Debug.Log(action);
-                break;
+        search.setSearch(action);
+
+        ProgramPrefabs prefabs = new ProgramPrefabs();
+
+        GameObject inst = prefabs.getPrefab(search);
+
+        if (inst != null)
+        {
+            program = Instantiate(inst, ProgramObj.transform);
         }
+
 
         if (program != null)
         {
@@ -223,16 +202,16 @@ public class ProgramLine : MonoBehaviour
             //Set size of the component
             Line.setSize(Line.size);
 
+            Destroy(program.GetComponent<StoreDrag>());
+
             //Add the indent and delete Drag script
             program.AddComponent<DeleteIndentDrag>();
 
-            //Set Info
-            card.setInfo(action);
+            card.getAction(action);
 
-            //Make it editable
             card.setEditable();
 
-            allScripts.levelManager.updateConstraints();
+            Scripts.levelManager.updateConstraints();
         }
     }
 
@@ -255,12 +234,5 @@ public class ProgramLine : MonoBehaviour
             }
         }
     }
-
-    
-
-
-
-
-
 
 }

@@ -13,12 +13,12 @@ public class SettingsValController : MonoBehaviour
 
     Flex Parent;
 
+    Transform currentPanel;
+
     SettingEditType editType;
     SettingValueType editValue;
 
     Language lang;
-
-    PlayerSettings playSettings;
 
     UIWord English = new UIWord("English", "Anglais");
     UIWord French = new UIWord("French", "Français");
@@ -47,18 +47,14 @@ public class SettingsValController : MonoBehaviour
 
     }
 
-    public void setPanel(SettingEditType editType, SettingValueType editValue, Transform parent, PlayerSettings playSettings)
+    public void setPanel(SettingEditType editType, SettingValueType editValue, Transform parent)
     {
         this.parent = parent;
         this.editType = editType;
         this.editValue = editValue;
 
-        //Load the playerSettings from the right folder
-        this.playSettings = playSettings;
-
         //Load Language
-        lang = playSettings.language;
-
+        lang = PlayerSettings.language;
 
         setUI();
         setControls();
@@ -80,11 +76,11 @@ public class SettingsValController : MonoBehaviour
 
 
                 //Accent / Background
-                UIHelper.setImage(Parent.getChild(0), playSettings.colourScheme.getAccent());
+                UIHelper.setImage(currentPanel, PlayerSettings.colourScheme.getAccent());
 
 
                 //Main
-                UIHelper.setImage(Parent.getChild(0).GetChild(1), playSettings.colourScheme.getMain());
+                UIHelper.setImage(currentPanel.GetChild(1), PlayerSettings.colourScheme.getMain());
                 break;
         }
     }
@@ -102,6 +98,8 @@ public class SettingsValController : MonoBehaviour
             case SettingEditType.MultiChoice:
 
                 Flex Panel = new Flex(this.transform.GetComponent<RectTransform>(), 1, Parent);
+
+                currentPanel = Panel.UI;
 
                 Flex ExitRow = new Flex(Panel.getChild(0), 1, Panel);
                 Flex ExitBTN = new Flex(ExitRow.getChild(0), 1, ExitRow);
@@ -144,7 +142,7 @@ public class SettingsValController : MonoBehaviour
                 //Set gridview
                 setGridView(Grid);
 
-                Parent.setSize(new Vector2(1000, 700));
+                Parent.setSize(new Vector2(Screen.height * 0.7f * 1.3f, Screen.height * 0.7f));
 
                 Row1.UI.GetComponent<HorizontalLayoutGroup>().spacing = 20;
 
@@ -162,7 +160,7 @@ public class SettingsValController : MonoBehaviour
     {
 
         //Exit Button
-        Parent.getChild(0).GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+       currentPanel.GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
             parent.gameObject.SetActive(false);
 
@@ -174,8 +172,6 @@ public class SettingsValController : MonoBehaviour
 
     public void setGridView(Flex GridView)
     {
-
-
         switch (editValue)
         {
             case SettingValueType.Language:
@@ -200,8 +196,6 @@ public class SettingsValController : MonoBehaviour
                 instantiateDisplayCard("Images/SettingsControllerAssets/Simple", GridView, Simple, 1, 0);
                 break;
         }
-
-
     }
 
     public void instantiateEmpty(Flex parent, int rowIndex)
@@ -222,11 +216,11 @@ public class SettingsValController : MonoBehaviour
 
         GameObject valDisp = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDispCard") as GameObject, parent.UI.GetChild(rowIndex).transform);
 
-        UIHelper.setText(valDisp.transform.GetChild(1), word.getWord(lang), playSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(valDisp.transform.GetChild(1), word.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
 
         valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-        UIHelper.setImage(valDisp.transform, playSettings.colourScheme.getSecondary());
+        UIHelper.setImage(valDisp.transform, PlayerSettings.colourScheme.getSecondary());
 
         valDisp.GetComponent<Button>().onClick.AddListener(delegate
         {
@@ -234,7 +228,7 @@ public class SettingsValController : MonoBehaviour
             //Edit the settings
             setData(index);
 
-            Camera.main.GetComponent<SettingsScene>().updateSettings(playSettings);
+            Camera.main.GetComponent<SettingsScene>().updateSettings();
 
             this.parent.gameObject.SetActive(false);
 
@@ -260,10 +254,10 @@ public class SettingsValController : MonoBehaviour
                 switch (index)
                 {
                     case 0:
-                        playSettings.setLanguage(Language.English);
+                        PlayerSettings.language = Language.English;
                         break;
                     case 1:
-                        playSettings.setLanguage(Language.French);
+                        PlayerSettings.language = Language.French;
                         break;
                 }
 
@@ -274,45 +268,45 @@ public class SettingsValController : MonoBehaviour
                 switch (index)
                 {
                     case 0:
-                        playSettings.setColourScheme(SettingColourScheme.Col1, "Images/UIDesigns/Palettes/Palette 1");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col1, "Images/UIDesigns/Palettes/Palette 1");
 
-                        playSettings.colourScheme.textColorMain = white;
-                        playSettings.colourScheme.textColorAccent = black; //Try black
+                        PlayerSettings.colourScheme.textColorMain = white;
+                        PlayerSettings.colourScheme.textColorAccent = black; //Try black
 
                         break;
                     case 1:
-                        playSettings.setColourScheme(SettingColourScheme.Col2, "Images/UIDesigns/Palettes/Palette 2");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col2, "Images/UIDesigns/Palettes/Palette 2");
 
 
 
-                        playSettings.colourScheme.textColorMain = white;
-                        playSettings.colourScheme.textColorAccent = black;
+                        PlayerSettings.colourScheme.textColorMain = white;
+                        PlayerSettings.colourScheme.textColorAccent = black;
                         break;
                     case 2:
-                        playSettings.setColourScheme(SettingColourScheme.Col3, "Images/UIDesigns/Palettes/Palette 3");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col3, "Images/UIDesigns/Palettes/Palette 3");
 
-                        playSettings.colourScheme.textColorMain = Color.black;
-                        playSettings.colourScheme.textColorAccent = Color.black;
+                        PlayerSettings.colourScheme.textColorMain = Color.black;
+                        PlayerSettings.colourScheme.textColorAccent = Color.black;
 
                         break;
                     case 3:
-                        playSettings.setColourScheme(SettingColourScheme.Col4, "Images/UIDesigns/Palettes/Palette 4");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col4, "Images/UIDesigns/Palettes/Palette 4");
 
-                        playSettings.colourScheme.textColorMain = Color.white;
-                        playSettings.colourScheme.textColorAccent = Color.black;
+                        PlayerSettings.colourScheme.textColorMain = Color.white;
+                        PlayerSettings.colourScheme.textColorAccent = Color.black;
 
                         break;
                     case 4:
-                        playSettings.setColourScheme(SettingColourScheme.Col5, "Images/UIDesigns/Palettes/Palette 5");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col5, "Images/UIDesigns/Palettes/Palette 5");
                         break;
                     case 5:
-                        playSettings.setColourScheme(SettingColourScheme.Col6, "Images/UIDesigns/Palettes/Palette 6");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col6, "Images/UIDesigns/Palettes/Palette 6");
                         break;
                     case 6:
-                        playSettings.setColourScheme(SettingColourScheme.Col7, "Images/UIDesigns/Palettes/Palette 7");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col7, "Images/UIDesigns/Palettes/Palette 7");
                         break;
                     case 7:
-                        playSettings.setColourScheme(SettingColourScheme.Col8, "Images/UIDesigns/Palettes/Palette 8");
+                        PlayerSettings.setColourScheme(SettingColourScheme.Col8, "Images/UIDesigns/Palettes/Palette 8");
                         break;
                 }
                 break;
@@ -322,10 +316,10 @@ public class SettingsValController : MonoBehaviour
                 switch (index)
                 {
                     case 0:
-                        playSettings.advancedVariables = true;
+                        PlayerSettings.advancedVariables = true;
                         break;
                     case 1:
-                        playSettings.advancedVariables = false;
+                        PlayerSettings.advancedVariables = false;
                         break;
                 }
 

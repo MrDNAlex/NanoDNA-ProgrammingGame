@@ -16,7 +16,6 @@ public class EndData : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
        
-
         if (other.gameObject.GetComponent<CharData>() != null)
         {
             //Run a function

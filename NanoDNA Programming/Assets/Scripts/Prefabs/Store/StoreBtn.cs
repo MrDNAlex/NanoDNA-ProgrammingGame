@@ -43,29 +43,36 @@ public class StoreBtn : MonoBehaviour
 
     public void setText (string text)
     {
-        UIHelper.setText(flex.getChild(0).GetChild(0), text, SaveManager.loadPlaySettings().colourScheme.getBlackTextColor());
+        UIHelper.setText(flex.getChild(0).GetChild(0), text, PlayerSettings.colourScheme.getBlackTextColor());
     }
 
-    public void setImage ()
+    public void setImage (ActionType tag)
     {
         string path = "";
-        switch (this.transform.GetSiblingIndex())
+
+        switch (tag)
         {
-            case 0:
+            case  ActionType.Movement:
                 path = "Images/UIDesigns/StoreSections/Movement";
                 break;
-            case 1:
-                path = "Images/UIDesigns/StoreSections/Math";
-                break;
-            case 2:
+            // case 1:
+            //   path = "Images/UIDesigns/StoreSections/Math";
+            //  break;
+            case ActionType.Logic:
                 path = "Images/UIDesigns/StoreSections/Logic";
                 break;
-            case 3:
+            case ActionType.Variable:
                 path = "Images/UIDesigns/StoreSections/Variable";
                 break;
-            case 4:
+            case ActionType.Action:
                 path = "Images/UIDesigns/StoreSections/Action";
                 break;
+        }
+
+
+        switch (this.transform.GetSiblingIndex())
+        {
+            
         }
 
         UIHelper.setImage(flex.getChild(0), path);

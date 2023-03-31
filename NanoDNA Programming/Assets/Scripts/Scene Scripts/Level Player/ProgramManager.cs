@@ -5,27 +5,49 @@ using DNAStruct;
 
 public class ProgramManager : MonoBehaviour
 {
+    public struct ProgramVariables
+    {
+       public List<VariableData> allVariables;
+       public List<VariableData> levelVariables;
+       public List<VariableData> sensorVariables;
 
+        public void setVars (ProgramManager manager)
+        {
+            this.allVariables = manager.allVariables;
+            this.levelVariables = manager.levelVariables;
+            this.sensorVariables = manager.sensorVariables;
+        }
+
+    }
     //Make 2 lists?
 
     //List for all variables
     List<VariableData> allVariables = new List<VariableData>();
 
-    List<VariableData> defaultVariables = new List<VariableData>();
+    List<VariableData> levelVariables = new List<VariableData>();
 
-    //Make a list for all the OG Variables when loaded
-    Scripts allScripts;
+    List<VariableData> sensorVariables = new List<VariableData>();
 
-    //Add functions to load in pre existing / global variables from the level
+    //List<VariableData> defaultVariables = new List<VariableData>();
+
+    //
+    //
+    //
+
+    //All variables that the player can access
+    //
+    //Alright so tomorrow / later tonight we redesign the program section to make a copy of all these variables and we update the value of variables on the fly, start off with a reference and once it's called we update the value to 
+    //
 
     private void Awake()
     {
-        Camera.main.GetComponent<LevelScript>().allScripts.programManager = this;
+        Scripts.programManager = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        /*
         VariableData var1 = new VariableData();
         VariableData var2 = new VariableData();
         VariableData var3 = new VariableData();
@@ -50,15 +72,17 @@ public class ProgramManager : MonoBehaviour
         var6.setID(genUniqueID());
         var7.setID(genUniqueID());
 
-        defaultVariables.Add(var1);
-        defaultVariables.Add(var2);
-        defaultVariables.Add(var3);
-        defaultVariables.Add(var4);
-        defaultVariables.Add(var5);
-        defaultVariables.Add(var6);
-        defaultVariables.Add(var7);
 
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        levelVariables.Add(var1);
+        levelVariables.Add(var2);
+        levelVariables.Add(var3);
+        levelVariables.Add(var4);
+        levelVariables.Add(var5);
+        levelVariables.Add(var6);
+        levelVariables.Add(var7);
+        */
+
+        // allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
         updateVariables();
     }
@@ -67,6 +91,88 @@ public class ProgramManager : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public ProgramVariables getVars ()
+    {
+        ProgramVariables vars = new ProgramVariables();
+
+        vars.setVars(this);
+
+        return vars;
+    }
+
+    public void addLevelVariables(List<VariableData> vars)
+    {
+        foreach (VariableData var in vars)
+        {
+            addLevelVariable(var);
+        }
+    }
+
+    public void addLevelVariable(VariableData var)
+    {
+        if (var.id == 0)
+        {
+            var.setID(genUniqueID());
+        }
+        levelVariables.Add(var);
+    }
+
+    public void addSensorVariables(List<VariableData> vars)
+    {
+        foreach (VariableData var in vars)
+        {
+            addSensorVariable(var);
+        }
+
+        displayAllSensorVariables();
+    }
+
+    public void addSensorVariable(VariableData var)
+    {
+        Debug.Log(var.id);
+        if (var.id == 0)
+        {
+            var.setID(genUniqueID());
+        }
+        sensorVariables.Add(var);
+
+    }
+
+    public void updateSensorVariable(int id, string value)
+    {
+        foreach (VariableData var in sensorVariables)
+        {
+            if (var.id == id)
+            {
+                var.value = value;
+            }
+        }
+    }
+
+    public void activateSensorVariable (int id)
+    {
+        foreach (VariableData var in sensorVariables)
+        {
+            if (var.id == id)
+            {
+                Debug.Log("Activated Variable: " + var.name);
+                var.isActivated = true;
+            }
+        }
+    }
+
+    public void deactivateSensorVariable(int id)
+    {
+        foreach (VariableData var in sensorVariables)
+        {
+            if (var.id == id)
+            {
+                Debug.Log("Deactivated Variable: " + var.name);
+                var.isActivated = false;
+            }
+        }
     }
 
     public List<VariableData> getVariables(VariableType varType)
@@ -94,19 +200,72 @@ public class ProgramManager : MonoBehaviour
         return list;
     }
 
+   
+
     public void updateVariables()
     {
         //Delete allVariables
         allVariables = new List<VariableData>();
 
-        //Add default variables first
-        foreach (VariableData var in defaultVariables)
+
+        
+        foreach (VariableData var in sensorVariables)
         {
-            allVariables.Add(var);
+            if (var.isLevelVariable == false)
+            {
+                if (var.isActivated)
+                {
+                   // displayAllSensorVariables();
+                   // Debug.Log("Add Activated");
+                    allVariables.Add(var);
+                   // displayVariable(var);
+                } else
+                {
+                  //  Debug.Log("Edit");
+                    VariableData edVar = new VariableData();
+
+                    //Make a shallow copy
+                    edVar.isPublic = var.isPublic;
+                    edVar.name = var.name;
+                    edVar.varType = var.varType;
+                   // edVar.value = var.value;
+                    edVar.id = var.id;
+                   // edVar.isPublic = var.isPublic;
+                    //edVar.isPublic = var.isPublic;
+
+
+                    switch (edVar.varType)
+                    {
+                        case VariableType.Text:
+                            edVar.setValue("");
+                            break;
+                        case VariableType.Number:
+                            edVar.setValue("0");
+                            break;
+                        case VariableType.Decimal:
+                            edVar.setValue("0.0");
+                            break;
+                        case VariableType.Bool:
+                            edVar.setValue("false");
+                            break;
+                    }
+                    allVariables.Add(edVar);
+                    //displayVariable(edVar);
+                }
+            }  
+        }
+
+        //Add default variables first
+        foreach (VariableData var in levelVariables)
+        {
+            if (var.isLevelVariable == false)
+            {
+                allVariables.Add(var);
+            }
         }
 
         //Loop through all scripts and add all variables
-        foreach (Transform child in allScripts.programSection.charHolder.transform)
+        foreach (Transform child in Scripts.programSection.charHolder.transform)
         {
             if (child.GetComponent<CharData>() != null)
             {
@@ -117,22 +276,25 @@ public class ProgramManager : MonoBehaviour
                 {
                     if (action.actionType == ActionType.Variable)
                     {
-                        //Debug.Log("Variable");
-                        //Debug.Log(action.dispDetailedAction());
-                        if (action.varData.id == 0)
+                        if (action.variableName == VariableActionNames.Variable)
                         {
-                            //Gen new ID
-                            action.varData.setID(genUniqueID());
+                            //Debug.Log("Variable");
+                            //Debug.Log(action.dispDetailedAction());
+                            if (action.varActData.setData.id == 0)
+                            {
+                                //Gen new ID
+                                action.varActData.setData.setID(genUniqueID());
+                            }
+
+                            action.varActData.setData.setParent(child.GetComponent<CharData>());
+
+                            allVariables.Add(action.varActData.getVarData());
                         }
-
-                        action.varData.setParent(child.GetComponent<CharData>());
-
-                        allVariables.Add(action.varData);
                     }
                 }
             }
         }
-        //displayAllVariables();
+       // displayAllVariables();
     }
 
     public void displayAllVariables()
@@ -143,9 +305,21 @@ public class ProgramManager : MonoBehaviour
         }
     }
 
+    public void displayAllSensorVariables()
+    {
+        foreach (VariableData data in sensorVariables)
+        {
+            Debug.Log("Variable Type: " + data.varType + " Name: " + data.name + " Value:" + data.value + " ID: " + data.id + " REFID: " + data.refID);
+        }
+    }
+
+    public void displayVariable (VariableData data)
+    {
+        Debug.Log("Variable Type: " + data.varType + " Name: " + data.name + " Value:" + data.value + " ID: " + data.id + " REFID: " + data.refID);
+    }
+
     public int genUniqueID()
     {
-
         int rngID = 0;
 
         bool sameID = true;
@@ -157,7 +331,6 @@ public class ProgramManager : MonoBehaviour
             sameID = isSameID(rngID);
         }
         return rngID;
-
     }
 
     public bool isSameID(int id)
@@ -170,42 +343,34 @@ public class ProgramManager : MonoBehaviour
                 verdict = true;
             }
         }
-
         return verdict;
     }
 
-    public void updateVariable(VariableData data)
+    public void updateVariable(VariableActionData data)
     {
         //Search for same ID
-
+        //  Debug.Log(data.setData.id);
         for (int i = 0; i < allVariables.Count; i++)
         {
-            if (allVariables[i].id == data.id)
+            if (allVariables[i].id == data.setData.id)
             {
                 //Check if they have a reference ID
 
                 if (allVariables[i].refID == 0)
                 {
+                    //  Debug.Log("Here");
                     //Not referencing
-                    allVariables[i].setValue(data.value);
+                    allVariables[i].setValue(data.setData.value);
                 }
                 else
                 {
+                    //   Debug.Log("Here");
                     //Search for the Ref ID
-                    //Debug.Log(allVariables[i].value);
-                    allVariables[i].setValue(allVariables.Find(val => val.id == data.refID).value);
-                    data.setValue(allVariables.Find(val => val.id == data.refID).value);
-                    // Debug.Log(allVariables[i].value);
-
-                    // Debug.Log(allVariables.Find(val => val.id == data.refID).value);
-                    // Debug.Log("Value Updated");
-
-
-
+                    allVariables[i].setValue(allVariables.Find(val => val.id == data.setData.refID).value);
+                    data.setData.setValue(allVariables.Find(val => val.id == data.setData.refID).value);
                 }
             }
         }
-
     }
 
     public string getVariableName(VariableData data)
@@ -225,7 +390,24 @@ public class ProgramManager : MonoBehaviour
 
     public string getVariableValue(int refID)
     {
-        return allVariables.Find(val => val.id == refID).value;
+        if (allVariables.Find(val => val.id == refID).refID != 0)
+        {
+            Debug.Log("Deep");
+            return getVariableValue(allVariables.Find(val => val.id == refID).refID);
+        }
+        else
+        {
+            return allVariables.Find(val => val.id == refID).value;
+        }
     }
 
+    public VariableType getVariableType(int refID)
+    {
+        return allVariables.Find(val => val.id == refID).varType;
+    }
+
+    public VariableType getVariableType(VariableData data)
+    {
+        return allVariables.Find(val => val.id == data.refID).varType;
+    }
 }

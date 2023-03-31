@@ -8,16 +8,22 @@ using UnityEngine.Tilemaps;
 
 public class LevelManager : MonoBehaviour
 {
+
+    //Level Loader
+   // https://www.youtube.com/watch?v=OmobsXZSRKo
+
     //Try and Compress this section
 
     [SerializeField] CharLedger charLedger;
     [SerializeField] TileLedger Tileledger;
     [SerializeField] InteractableLedger interacLedger;
     [SerializeField] EndLedger endLedger;
+    [SerializeField] SensorLedger sensorLedger;
 
     [SerializeField] GameObject charPrefab;
     [SerializeField] GameObject interacPrefab;
     [SerializeField] GameObject endGoalPrefab;
+    [SerializeField] GameObject soundSensorPrefab;
 
     [SerializeField] GameObject constraints;
 
@@ -39,7 +45,7 @@ public class LevelManager : MonoBehaviour
     Tilemap decorationMap;
     GameObject charHolder;
 
-    public Scripts allScripts;
+   // public Scripts allScripts;
 
     public int maxLines = 0;
     public int usedLines = 0;
@@ -58,12 +64,12 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        //Get the levelInfo
+        
         //Load Info
-        info = SaveManager.loadJSON<LevelInfo>("Levels/Testing", "Demo");
+        info = SaveManager.loadJSON<LevelInfo>(CurrentLevelLoader.path, CurrentLevelLoader.name);
 
-        Camera.main.GetComponent<LevelScript>().allScripts.levelManager = this;
-
-        allScripts.levelManager = this;
+       Scripts.levelManager = this;
 
         getTileMaps();
 
@@ -73,9 +79,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-
-        lang = allScripts.levelScript.lang;
+        lang = PlayerSettings.language;
 
         complete.onClick.AddListener(completeLevel);
 
@@ -93,20 +97,18 @@ public class LevelManager : MonoBehaviour
         //Check all programs, count number of lines, write it down
         //Design something that doesn't use the holder, maybe get access 
         
-        lang = allScripts.levelScript.lang;
-
         //Something in here
-        int lines = 0;
+        //int lines = 0;
 
         //Update Lines used
         usedLines = 0;
 
         foreach (CharData data in charData)
         {
-            lines += data.program.getLength();
+            usedLines += data.program.getLength();
         }
 
-        UIHelper.setText(linesUsed.transform, lines + "/" + maxLines + " " + UIwords.used.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+        UIHelper.setText(linesUsed.transform, usedLines + "/" + maxLines + " " + UIwords.used.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
 
         //Update Collectibles
         itemsCollect = 0;
@@ -121,7 +123,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-        UIHelper.setText(collectedItems.transform, itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang), SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+        UIHelper.setText(collectedItems.transform, itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 
@@ -142,7 +144,7 @@ public class LevelManager : MonoBehaviour
                 tryComplete = true;
 
                 //Run final program
-                allScripts.programSection.runFinalProgram();
+                Scripts.programSection.runFinalProgram();
             }
         }
         else
@@ -152,7 +154,7 @@ public class LevelManager : MonoBehaviour
             //Stop all coroutines
             StopAllCoroutines();
 
-            allScripts.programSection.StopAllCoroutines();
+           Scripts.programSection.StopAllCoroutines();
 
             //Set all characters to initial position
             foreach (Transform child in charHolder.transform)
@@ -168,7 +170,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-            UIHelper.setText(complete.transform.GetChild(0), UIwords.complete, SaveManager.loadPlaySettings().colourScheme.getAccentTextColor());
+            UIHelper.setText(complete.transform.GetChild(0), UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
 
             updateConstraints();
         }
@@ -199,14 +201,15 @@ public class LevelManager : MonoBehaviour
         //Set Interactables
         setInteractables(info.interacInfo);
 
+        setSensors(info.sensorInfo);
+
         //Set End Goal
         setEndGoal(info.endGoal);
 
-        //Set Other Info
-        allScripts.levelScript.setCamera(info);
-
         maxLines = info.maxLine;
         maxItems = info.maxItems;
+
+        Scripts.programManager.addLevelVariables(info.levelVariables);
 
         updateConstraints();
         // yield return null;
@@ -219,8 +222,8 @@ public class LevelManager : MonoBehaviour
             if (charHolder.transform.GetChild(index).GetComponent<CharData>() != null)
             {
                 //Set Character
-                allScripts.programSection.selectedCharacter = charHolder.transform.GetChild(index).gameObject;
-                allScripts.programSection.selectedCharData = charHolder.transform.GetChild(index).GetComponent<CharData>();
+                Scripts.programSection.selectedCharacter = charHolder.transform.GetChild(index).gameObject;
+                Scripts.programSection.selectedCharData = charHolder.transform.GetChild(index).GetComponent<CharData>();
 
                 findingChar = false;
             }
@@ -239,8 +242,12 @@ public class LevelManager : MonoBehaviour
             }
            
         }
+
+        //Set Other Info
+        Scripts.levelScript.setCamera(info);
+
         //Reload Program
-        allScripts.programSection.renderProgram();
+        Scripts.programSection.renderProgram();
 
     }
 
@@ -315,6 +322,25 @@ public class LevelManager : MonoBehaviour
 
         //Set Size
         endGoal.GetComponent<BoxCollider>().size = info.data.size;
+    }
+
+    public void setSensors (List<SensorInfo> info)
+    {
+        foreach (SensorInfo sens in info)
+        {
+            //Switch case for type of sensor
+            GameObject sensor = null;
+            switch (sens.data.type)
+            {
+                case LevelSensor.SensorType.SoundSensor:
+                    sensor = Instantiate(soundSensorPrefab, charHolder.transform);
+                    break;
+            }
+
+            sensor.GetComponent<LevelSensor>().iSensor.setInfo(sens.data);
+
+            sensor.GetComponent<SpriteRenderer>().sprite = sensorLedger.sensors.Find(s => s.id == sens.id).sprite;
+        }
     }
 
     public void finishLevel()

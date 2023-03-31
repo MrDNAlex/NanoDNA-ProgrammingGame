@@ -17,7 +17,6 @@ public class ProgramSection : MonoBehaviour
     public GameObject selectedCharacter;
     public CharData selectedCharData;
 
-
     public int maxLineNum = 20;
 
     [SerializeField] GameObject progLine;
@@ -35,9 +34,11 @@ public class ProgramSection : MonoBehaviour
     public bool undo;
     bool testRunning;
 
-    public Scripts allScripts;
+    //public Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
+
+    public ProgramVirtualBox virtualBox;
 
     Language lang;
 
@@ -46,7 +47,7 @@ public class ProgramSection : MonoBehaviour
 
         flex = setUI();
 
-        Camera.main.GetComponent<LevelScript>().allScripts.programSection = this;
+        Scripts.programSection = this;
 
         progSpeed.onClick.AddListener(editSpeed);
 
@@ -55,37 +56,37 @@ public class ProgramSection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        lang = PlayerSettings.language;
 
-        lang = allScripts.levelScript.lang;
-
-        levelType = allScripts.levelManager.info.levelType;
+        levelType = Scripts.levelManager.info.levelType;
 
         testBtn.onClick.AddListener(testProgram);
         saveBtn.onClick.AddListener(delegate
         {
             selectedCharData.displayProgram(true);
-            });
+        });
         //undoBtn.onClick.AddListener(undoProgram);
 
         testRunning = false;
 
         OnDemandRendering.renderFrameInterval = 12;
 
-        UIHelper.setText(progSpeed.transform.GetChild(0), "x1", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
+        UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor());
 
+    }
+
+    public void setAction(ProgramAction action, int index)
+    {
+        selectedCharData.program.setAction(action, index);
     }
 
     public Flex setUI()
     {
         Flex Content = new Flex(GetComponent<RectTransform>(), 1);
 
-        //Content.setChildMultiH(175);
-
         Content.setChildMultiH((Screen.height * 0.9f) / 6);
 
         //Add all the programLine Children
-
         addChildren(Content);
 
         return Content;
@@ -98,10 +99,8 @@ public class ProgramSection : MonoBehaviour
             GameObject programLine = Instantiate(progLine, parent.UI);
 
             parent.addChild(programLine.GetComponent<ProgramLine>().Line);
-
         }
     }
-
 
     public void testProgram()
     {
@@ -116,14 +115,12 @@ public class ProgramSection : MonoBehaviour
                 if (child.GetComponent<CharData>() != null)
                 {
                     child.localPosition = child.GetComponent<CharData>().initPos;
-
                 }
                 else
                 {
                     //Make interactive appear again
                     child.gameObject.SetActive(true);
                 }
-
             }
 
             testRunning = false;
@@ -131,41 +128,135 @@ public class ProgramSection : MonoBehaviour
             testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/Debug");
             //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
 
-            allScripts.levelManager.updateConstraints();
-
-
+            Scripts.levelManager.updateConstraints();
         }
         else
         {
-           
+
+            virtualBox = new ProgramVirtualBox(Scripts.programManager.getVars());
+
             foreach (Transform child in charHolder.transform)
             {
                 if (child.GetComponent<CharData>() != null)
                 {
-                    Program program = new Program(false);
-
-                    //Decompose the program into more basic parts
-                    for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
-                    {
-                       // Debug.Log(selectedCharData.program.list[i].dispDetailedAction());
-                        decompose(selectedCharData.program.list[i], program);
-                    }
-
-                    StartCoroutine(runProgram(child.gameObject, program));
-
-                    child.GetComponent<CharData>().displayProgram(true);
-
+                    StartCoroutine(runCharProgram(child.GetComponent<CharData>()));
                 }
             }
 
             testRunning = true;
 
             testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/DebugActive");
-            //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
         }
     }
 
-    public void readAction(GameObject character, ProgramAction action)
+    public IEnumerator runCharProgram(CharData data)
+    {
+        for (int i = 0; i < data.program.list.Count; i++)
+        {
+            Program program = new Program(false);
+
+            decompose(data.program.list[i], program, virtualBox);
+
+            for (int j = 0; j < program.list.Count; j++)
+            {
+                readAction(data.gameObject, program.list[j], virtualBox);
+                //This works
+                if (program.list[j].actionType != ActionType.Variable)
+                {
+                    yield return new WaitForSeconds(1f / speedDivider);
+                }
+            }
+        }
+       virtualBox.displayAllVariables();
+    }
+
+    public string getUpdatedMathValue(ProgramAction action, ProgramVirtualBox virtualBox)
+    {
+        string val1 = "";
+        string val2 = "";
+        string calcVal = "";
+
+        //Get Values
+        if (action.varActData.mathData.refID1 != 0)
+        {
+            val1 = virtualBox.getVariableValue(action.varActData.mathData.refID1);
+        }
+        else
+        {
+            val1 = action.varActData.mathData.value1;
+        }
+
+        if (action.varActData.mathData.refID2 != 0)
+        {
+            val2 = virtualBox.getVariableValue(action.varActData.mathData.refID2);
+        }
+        else
+        {
+            val2 = action.varActData.mathData.value2;
+        }
+
+        return applyMath(val1, val2, action);
+    }
+
+    public string applyMath(string val1, string val2, ProgramAction action)
+    {
+        string value = "";
+
+        switch (action.variableName)
+        {
+            case VariableActionNames.MathAddition:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) + int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) + float.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Text:
+                        value = (val1 + val2);
+                        break;
+                }
+                break;
+            case VariableActionNames.MathSubtraction:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) - int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) - float.Parse(val2)).ToString();
+                        break;
+                }
+                break;
+            case VariableActionNames.MathMultiplication:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) * int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) * float.Parse(val2)).ToString();
+                        break;
+                }
+                break;
+            case VariableActionNames.MathDivision:
+                switch (action.varActData.mathData.varType)
+                {
+                    case VariableType.Number:
+                        value = (int.Parse(val1) / int.Parse(val2)).ToString();
+                        break;
+                    case VariableType.Decimal:
+                        value = (float.Parse(val1) / float.Parse(val2)).ToString();
+                        break;
+                }
+                break;
+        }
+
+        return value;
+    }
+
+    public void readAction(GameObject character, ProgramAction action, ProgramVirtualBox virtualBox)
     {
         switch (action.actionType)
         {
@@ -176,7 +267,7 @@ public class ProgramSection : MonoBehaviour
                     case MovementActionNames.Move:
 
                         //Calculate next position
-                        Vector3 nextPos = character.transform.position + actionToMovement(action);
+                        Vector3 nextPos = character.transform.position + actionToMovement(action, virtualBox);
 
                         //Check if the tile in that position exists
                         if (obstacles.GetTile(obstacles.WorldToCell(nextPos)) == null)
@@ -191,22 +282,64 @@ public class ProgramSection : MonoBehaviour
 
                         break;
                 }
-
-                break;
-            case ActionType.Math:
-
                 break;
             case ActionType.Logic:
 
                 break;
             case ActionType.Variable:
 
+                VariableActionData varUpdate = new VariableActionData();
+                string val = "";
+
                 switch (action.variableName)
                 {
                     case VariableActionNames.Variable:
 
                         //Update Variable value in program manager
-                        allScripts.programManager.updateVariable(action.varData);
+                        virtualBox.updateVariable(action.varActData);
+
+                        break;
+                    case VariableActionNames.MathAddition:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
+
+                        Debug.Log("Val: " + val);
+
+                        virtualBox.updateVariable(varUpdate);
+
+                        break;
+
+                    case VariableActionNames.MathSubtraction:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
+
+                        Debug.Log("Val: " + val);
+
+                        virtualBox.updateVariable(varUpdate);
+
+                        break;
+
+                    case VariableActionNames.MathMultiplication:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
+
+                        Debug.Log("Val: " + val);
+
+                        virtualBox.updateVariable(varUpdate);
+
+                        break;
+
+                    case VariableActionNames.MathDivision:
+
+                        varUpdate.setData.id = action.varActData.refID;
+                        varUpdate.setData.value = getUpdatedMathValue(action, virtualBox);
+
+                        Debug.Log("Val: " + val);
+
+                        virtualBox.updateVariable(varUpdate);
 
                         break;
                 }
@@ -218,6 +351,7 @@ public class ProgramSection : MonoBehaviour
                     case ActionActionNames.Speak:
 
                         //Delete all speak children first
+
                         destroyChildren(action.actData.character.gameObject);
 
                         string path = "Prefabs/Actions/Talk";
@@ -247,7 +381,7 @@ public class ProgramSection : MonoBehaviour
                         }
                         else
                         {
-                            bubbleText.GetComponent<ChatBubble>().setMessage(allScripts.programManager.getVariableValue(action.actData.refID), charRender, action.actData.descriptor);
+                            bubbleText.GetComponent<ChatBubble>().setMessage(Scripts.programManager.getVariableValue(action.actData.refID), charRender, action.actData.descriptor);
                         }
                         break;
                 }
@@ -255,45 +389,47 @@ public class ProgramSection : MonoBehaviour
         }
     }
 
-    public Vector3 actionToMovement(ProgramAction action)
+    public Vector3 actionToMovement(ProgramAction action, ProgramVirtualBox virtualBox)
     {
         switch (action.moveData.dir)
         {
             case Direction.Up:
-                return new Vector3(0, getMovementVal(action), 0);
+                return new Vector3(0, getMovementVal(action, virtualBox), 0);
             case Direction.Down:
-                return new Vector3(0, -1 * getMovementVal(action), 0);
+                return new Vector3(0, -1 * getMovementVal(action, virtualBox), 0);
             case Direction.Left:
-                return new Vector3(-1 * getMovementVal(action), 0, 0);
+                return new Vector3(-1 * getMovementVal(action, virtualBox), 0, 0);
             case Direction.Right:
-                return new Vector3(getMovementVal(action), 0, 0);
+                return new Vector3(getMovementVal(action, virtualBox), 0, 0);
             default:
-                return new Vector3(0, getMovementVal(action), 0);
+                return new Vector3(0, getMovementVal(action, virtualBox), 0);
         }
     }
 
-    public int getMovementVal(ProgramAction action)
+    public int getMovementVal(ProgramAction action, ProgramVirtualBox virtualBox)
     {
         if (action.moveData.refID != 0)
         {
+            // Debug.Log("Hi");
             //Convert 
-            return int.Parse(Camera.main.GetComponent<ProgramManager>().getVariableValue(action.moveData.refID));
+            return int.Parse(virtualBox.getVariableValue(action.moveData.refID));
         }
         else
         {
+            //  Debug.Log("Hello");
             return int.Parse(action.moveData.value);
         }
     }
 
     public void renderProgram()
     {
-        UIHelper.setText(nameHeader.transform, selectedCharData.name, allScripts.levelScript.playerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(nameHeader.transform, selectedCharData.name, PlayerSettings.colourScheme.getAccentTextColor());
 
         if (selectedCharData != null)
         {
             CharData data = selectedCharData;
 
-           // data.displayProgram(true);
+            // data.displayProgram(true);
 
             //Delete program Child
             for (int i = 0; i < transform.childCount; i++)
@@ -302,7 +438,7 @@ public class ProgramSection : MonoBehaviour
 
                 //Debug.Log(programHolder);
 
-                Flex flex2 = Flex.findChild(programHolder, allScripts.levelScript.Background);
+                Flex flex2 = Flex.findChild(programHolder, Scripts.levelScript.Background);
 
                 //Delete Game Objects
                 destroyChildren(programHolder);
@@ -402,14 +538,14 @@ public class ProgramSection : MonoBehaviour
     {
         for (int i = 0; i < program.list.Count; i++)
         {
-            readAction(character, program.list[i]);
+            readAction(character, program.list[i], virtualBox);
             yield return new WaitForSeconds(1f / speedDivider);
         }
 
         Camera.main.GetComponent<ProgramManager>().displayAllVariables();
     }
 
-    public void decompose(ProgramAction action, Program program)
+    public void decompose(ProgramAction action, Program program, ProgramVirtualBox virtualBox)
     {
         //Make this more Complex probably
 
@@ -423,7 +559,7 @@ public class ProgramSection : MonoBehaviour
                 {
                     case MovementActionNames.Move:
 
-                        for (int i = 0; i < getMovementVal(action); i++)
+                        for (int i = 0; i < getMovementVal(action, virtualBox); i++)
                         {
                             ProgramAction newAction = new ProgramAction();
 
@@ -431,20 +567,18 @@ public class ProgramSection : MonoBehaviour
 
                             newAction.moveData.value = "1";
                             newAction.moveData.dir = action.moveData.dir;
+                            //newAction.moveData.refID = action.moveData.refID;
 
                             program.list.Add(newAction);
                         }
                         break;
                 }
                 break;
-            case ActionType.Math:
 
-                break;
             case ActionType.Logic:
 
                 break;
             case ActionType.Variable:
-
                 program.list.Add(action);
                 break;
             case ActionType.Action:
@@ -455,10 +589,7 @@ public class ProgramSection : MonoBehaviour
                         program.list.Add(action);
                         break;
                 }
-
-
                 break;
-
         }
     }
 
@@ -479,21 +610,11 @@ public class ProgramSection : MonoBehaviour
 
     public void runFinalProgram()
     {
-        // allScripts.programSection.compileProgram();
-
         foreach (Transform child in charHolder.transform)
         {
-            Program program = new Program(false);
-
             if (child.GetComponent<CharData>() != null)
             {
-                //Decompose the program into more basic parts
-                for (int i = 0; i < child.GetComponent<CharData>().program.list.Count; i++)
-                {
-                    decompose(child.GetComponent<CharData>().program.list[i], program);
-                }
-
-                StartCoroutine(runProgram(child.gameObject, program));
+                StartCoroutine(runCharProgram(child.GetComponent<CharData>()));
             }
         }
     }
@@ -501,8 +622,6 @@ public class ProgramSection : MonoBehaviour
     public void reload()
     {
         lang = Camera.main.GetComponent<LevelScript>().lang;
-
-        // flex = setUI();
     }
 
     void editSpeed()
@@ -511,22 +630,22 @@ public class ProgramSection : MonoBehaviour
         {
             case ProgramSpeed.Op1:
                 speed = ProgramSpeed.Op2;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x2", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x2", PlayerSettings.colourScheme.getMainTextColor());
                 speedDivider = 2;
                 break;
             case ProgramSpeed.Op2:
                 speed = ProgramSpeed.Op3;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x4", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x4", PlayerSettings.colourScheme.getMainTextColor());
                 speedDivider = 4;
                 break;
             case ProgramSpeed.Op3:
                 speed = ProgramSpeed.Op4;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x8", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x8", PlayerSettings.colourScheme.getMainTextColor());
                 speedDivider = 8;
                 break;
             case ProgramSpeed.Op4:
                 speed = ProgramSpeed.Op1;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x1", allScripts.levelScript.playerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor());
                 speedDivider = 1;
                 break;
         }

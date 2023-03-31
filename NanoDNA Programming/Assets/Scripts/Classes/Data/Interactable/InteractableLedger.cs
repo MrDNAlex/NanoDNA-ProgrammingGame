@@ -12,5 +12,8 @@ public class InteractableLedger : ScriptableObject
 
     public bool validate;
 
-
+    private void OnValidate()
+    {
+        Object[] idk = Resources.FindObjectsOfTypeAll(typeof(InteractableInstance));
+    }
 }

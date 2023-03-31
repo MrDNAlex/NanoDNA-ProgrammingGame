@@ -68,14 +68,6 @@ public class Program
                     default:
                         return true;
                 }
-            case ActionType.Math:
-                switch (action.mathName)
-                {
-                    case MathActionNames.None:
-                        return false;
-                    default:
-                        return true;
-                }
             case ActionType.Logic:
                 switch (action.logicName)
                 {
@@ -109,8 +101,7 @@ public class Program
 
     public void setAction(ProgramAction action, int index)
     {
-       // Debug.Log("Set Action: " + action.dispDetailedAction() + " " + index);
-
+       
         List<ProgramAction> prog = list;
 
         list.RemoveAt(index);
@@ -144,6 +135,21 @@ public class Program
 
         list.RemoveAt(index2);
         list.Insert(index2, action1);
+
+        //Check if the card even exists
+
+        if (Scripts.programSection.transform.GetChild(index1).GetChild(1).childCount > 0)
+        {
+            Scripts.programSection.transform.GetChild(index1).GetChild(1).GetChild(0).GetComponent<ProgramCard>().getLineNumber();
+        }
+
+        if (Scripts.programSection.transform.GetChild(index2).GetChild(1).childCount > 0)
+        {
+            Scripts.programSection.transform.GetChild(index2).GetChild(1).GetChild(0).GetComponent<ProgramCard>().getLineNumber();
+        }
+
+      
+        
 
 
 

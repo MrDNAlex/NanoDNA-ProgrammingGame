@@ -12,8 +12,8 @@ namespace DNAScenes
         Start = 1,
         Settings = 3,
         PlayLevel = 4,
+        SelectLevel,
 
-        
     }
 
     public class SceneConversion
@@ -34,6 +34,9 @@ namespace DNAScenes
                     break;
                 case Scenes.PlayLevel:
                     sceneName = "Play Level";
+                    break;
+                case Scenes.SelectLevel:
+                    sceneName = "LevelSelect";
                     break;
                 default:
                     break;

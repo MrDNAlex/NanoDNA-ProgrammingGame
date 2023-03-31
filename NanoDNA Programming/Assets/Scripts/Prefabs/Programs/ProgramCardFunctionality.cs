@@ -11,11 +11,9 @@ public class ProgramCardFunctionality
 
     Flex Program;
 
-    Scripts allScripts;
+    // Scripts allScripts;
 
     Language lang;
-
-    PlayerSettings playSettings;
 
     //Var Types
     UIWord Text = new UIWord("Text", "Texte");
@@ -27,12 +25,12 @@ public class ProgramCardFunctionality
 
     public ProgramCardFunctionality()
     {
-        allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
 
-        playSettings = SaveManager.loadPlaySettings();
-        lang = playSettings.language;
+        // playSettings = SaveManager.loadPlaySettings();
+        lang = PlayerSettings.language;
     }
-
+    /*
     //
     //Set UI
     //
@@ -44,8 +42,6 @@ public class ProgramCardFunctionality
         {
             case ActionType.Movement:
                 return setUIMovement(info);
-            case ActionType.Math:
-                return setUIMovement(info);
 
             case ActionType.Logic:
                 return setUIMovement(info);
@@ -54,7 +50,7 @@ public class ProgramCardFunctionality
                 return setUIVariables(info);
 
             case ActionType.Action:
-               // Debug.Log("Here");
+                // Debug.Log("Here");
                 return setUIActions(info);
 
             default:
@@ -62,6 +58,8 @@ public class ProgramCardFunctionality
                 return setUIMovement(info);
         }
     }
+
+    
 
     public Flex setUIMovement(CardInfo info)
     {
@@ -90,33 +88,59 @@ public class ProgramCardFunctionality
         return Program;
     }
 
+   // public Flex setUIMath (CardInfo info)
+   // {
+
+        //Maybe remove this and make it so that you click a button, it spawns a EditValuePanel, and have it multichoice, pick the operation. This would be a lot easier
+
+        //Because the type of math operations are
+
+        //Row 1
+        //Addition
+        //subtraction
+        //Multiplication
+        //Division
+
+        //Row 2
+        //Round
+        //Modulus 
+
+        //Row 3?
+        //One special command where you can pick even more unique function (sin, cos, tan etc)
+
+
+       
+   // }
+
     public Flex setUIVariables(CardInfo info)
     {
+        Flex VarName;
+        Flex VarSign;
         switch (info.variableName)
         {
+
             case VariableActionNames.Variable:
 
                 //Flex Variable Init
                 Program = new Flex(info.rectTrans, 2);
 
-                if (playSettings.advancedVariables)
+                if (PlayerSettings.advancedVariables)
                 {
                     Flex PublicAndType = new Flex(Program.getChild(0), 0.5f, Program);
-
-                    Debug.Log(Program.getChild(0).name);
 
                     Flex Public = new Flex(PublicAndType.getChild(0), 1, PublicAndType);
                     Flex VarType = new Flex(PublicAndType.getChild(1), 1, PublicAndType);
 
-                    Flex VarName = new Flex(Program.getChild(1), 1, Program);
-                    Flex VarSign = new Flex(Program.getChild(2), 0.5f, Program);
+                    VarName = new Flex(Program.getChild(1), 1, Program);
+                    VarSign = new Flex(Program.getChild(2), 0.5f, Program);
                     Flex VarValue = new Flex(Program.getChild(3), 1, Program);
 
                     PublicAndType.setSpacingFlex(0.05f, 1);
-                } else
+                }
+                else
                 {
-                    Flex VarName = new Flex(Program.getChild(0), 1, Program);
-                    Flex VarSign = new Flex(Program.getChild(1), 0.5f, Program);
+                    VarName = new Flex(Program.getChild(0), 1, Program);
+                    VarSign = new Flex(Program.getChild(1), 0.5f, Program);
                     Flex VarValue = new Flex(Program.getChild(2), 1, Program);
                 }
 
@@ -124,6 +148,21 @@ public class ProgramCardFunctionality
 
                 Program.setAllPadSame(0.3f, 1);
 
+                break;
+            case VariableActionNames.MathVariable:
+
+                //Flex Variable Init
+                Program = new Flex(info.rectTrans, 2);
+
+                VarName = new Flex(Program.getChild(0), 1f, Program);
+                VarSign = new Flex(Program.getChild(1), 0.5f, Program);
+
+                //Section that will hold it's own Math Program
+                Flex MathHolder = new Flex(Program.getChild(2), 2, Program);
+
+                Program.setSpacingFlex(0.3f, 1);
+
+                Program.setAllPadSame(0.3f, 1);
                 break;
         }
         return Program;
@@ -168,8 +207,8 @@ public class ProgramCardFunctionality
 
                 setInfoMovement(info);
                 break;
-            case ActionType.Math:
-                break;
+          //  case ActionType.Math:
+            //    break;
             case ActionType.Logic:
                 break;
             case ActionType.Variable:
@@ -214,14 +253,14 @@ public class ProgramCardFunctionality
 
                 if (info.action.moveData.refID != 0)
                 {
-                    UIHelper.setText(info.rectTrans.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.moveData.refID), playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.rectTrans.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.moveData.refID), PlayerSettings.colourScheme.getBlackTextColor());
                 }
                 else
                 {
-                    UIHelper.setText(info.rectTrans.GetChild(2).GetChild(0), info.action.moveData.value, playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.rectTrans.GetChild(2).GetChild(0), info.action.moveData.value, PlayerSettings.colourScheme.getBlackTextColor());
                 }
 
-                UIHelper.setText(info.rectTrans.GetChild(0), Move, playSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(info.rectTrans.GetChild(0), Move, PlayerSettings.colourScheme.getBlackTextColor());
 
                 //
                 //Implement reference ID
@@ -238,7 +277,7 @@ public class ProgramCardFunctionality
         {
             case VariableActionNames.Variable:
 
-                if (playSettings.advancedVariables)
+                if (PlayerSettings.advancedVariables)
                 {
                     //Check if public or local
                     if (info.action.varData.isPublic)
@@ -267,16 +306,16 @@ public class ProgramCardFunctionality
 
                     info.transform.GetChild(0).GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                    UIHelper.setText(info.transform.GetChild(0).GetChild(1).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(1).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor());
 
-                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.varData.name, PlayerSettings.colourScheme.getBlackTextColor());
 
                     //Check if type is bool, set image in that cases
                     if (info.action.varData.refID != 0)
                     {
 
                         //Set the value to the name of the reference variable
-                        UIHelper.setText(info.transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
+                        UIHelper.setText(info.transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
 
                         path = "unity_builtin_extra/UISprite";
 
@@ -303,7 +342,7 @@ public class ProgramCardFunctionality
 
                             info.transform.GetChild(3).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                            UIHelper.setText(info.transform.GetChild(3).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+                            UIHelper.setText(info.transform.GetChild(3).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor());
 
                         }
                         else
@@ -314,23 +353,24 @@ public class ProgramCardFunctionality
 
                             info.transform.GetChild(3).GetComponent<Button>().image.sprite = null;
 
-                            UIHelper.setText(info.transform.GetChild(3).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
+                            UIHelper.setText(info.transform.GetChild(3).GetChild(0), info.action.varData.value, PlayerSettings.colourScheme.getBlackTextColor());
                         }
                     }
-                } else
+                }
+                else
                 {
 
                     //Simple Variable
                     Texture2D image;
 
-                    UIHelper.setText(info.transform.GetChild(0).GetChild(0), info.action.varData.name, playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(0), info.action.varData.name, PlayerSettings.colourScheme.getBlackTextColor());
 
                     //Check if type is bool, set image in that cases
                     if (info.action.varData.refID != 0)
                     {
 
                         //Set the value to the name of the reference variable
-                        UIHelper.setText(info.transform.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.varData), playSettings.colourScheme.getBlackTextColor());
+                        UIHelper.setText(info.transform.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
 
                         path = "unity_builtin_extra/UISprite";
 
@@ -357,7 +397,7 @@ public class ProgramCardFunctionality
 
                             info.transform.GetChild(2).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                            UIHelper.setText(info.transform.GetChild(2).GetChild(0), "", playSettings.colourScheme.getBlackTextColor());
+                            UIHelper.setText(info.transform.GetChild(2).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor());
 
                         }
                         else
@@ -368,15 +408,64 @@ public class ProgramCardFunctionality
 
                             info.transform.GetChild(2).GetComponent<Button>().image.sprite = null;
 
-                            UIHelper.setText(info.transform.GetChild(2).GetChild(0), info.action.varData.value, playSettings.colourScheme.getBlackTextColor());
+                            UIHelper.setText(info.transform.GetChild(2).GetChild(0), info.action.varData.value, PlayerSettings.colourScheme.getBlackTextColor());
                         }
                     }
                 }
+                break;
+            case VariableActionNames.MathVariable:
 
-               
+                //Make sure it can only get a reference
+
+                //Set the box collider
+                info.transform.GetChild(2).gameObject.AddComponent<BoxCollider2D>();
+
+                info.transform.GetChild(2).GetComponent<BoxCollider2D>().size = info.transform.GetChild(2).GetComponent<FlexInfo>().flex.size;
+
+
+                if (info.action.varData.refID != 0)
+                {
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+                } 
+                else
+                {
+                    //Get the first variable that can possible be grabbed and set the 
+                    List<VariableData> varData = Scripts.programManager.getVariables(VariableType.Number);
+
+                    info.action.varData = varData[0];
+
+                    info.action.varData.refID = varData[0].id;
+
+                    UIHelper.setText(info.transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(info.action.varData), PlayerSettings.colourScheme.getBlackTextColor());
+                }
+
+                //Spawn the math block
+
+                switch (info.action.varData.mathType)
+                {
+                    case MathTypes.None:
+
+                        //Delete if there are 
+
+                        break;
+                    case MathTypes.Addition:
+
+                        GameObject math = GameObject.Instantiate(Resources.Load("Prefabs/MathOperations/Addition") as GameObject, Program.getChild(2));
+
+                        Flex flex = math.GetComponent<ProgramCard>().program;
+
+
+
+                        break;
+                }
+
+
+
+
+                //Check the math operation/data variable, set the type
+
                 break;
         }
-
     }
 
     public void setInfoAction(CardInfo info)
@@ -406,11 +495,11 @@ public class ProgramCardFunctionality
                 if (info.action.actData.refID != 0)
                 {
                     //Make it equal to reference
-                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.actData.refID), playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(info.action.actData.refID), PlayerSettings.colourScheme.getBlackTextColor());
                 }
                 else
                 {
-                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.actData.data, playSettings.colourScheme.getBlackTextColor());
+                    UIHelper.setText(info.transform.GetChild(1).GetChild(0), info.action.actData.data, PlayerSettings.colourScheme.getBlackTextColor());
                 }
                 break;
         }
@@ -429,8 +518,8 @@ public class ProgramCardFunctionality
 
                 setActionMovement(info);
                 break;
-            case ActionType.Math:
-                break;
+          //  case ActionType.Math:
+           //     break;
             case ActionType.Logic:
                 break;
             case ActionType.Variable:
@@ -458,59 +547,60 @@ public class ProgramCardFunctionality
                 //Direction
                 info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    
-                    //Set Panel Type
-                    info.editDataType = EditDataType.Multichoice;
+                    if (noPanelOpen())
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Multichoice;
 
-                    //Set Editable Variable Type
-                    info.varType = VariableType.Number;
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Number;
 
-                    //Set the Data type it will change
-                    info.valEditType = ValueEditType.Direction;
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Direction;
 
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                    panel.SetActive(true);
+                        panel.SetActive(true);
 
-                    destroyChildren(panel);
+                        destroyChildren(panel);
 
-                    // GameObject dir1 = Resources.Load<GameObject>("Prefabs/EditPanels/Direction.prefab") as GameObject;
+                        // GameObject dir1 = Resources.Load<GameObject>("Prefabs/EditPanels/Direction.prefab") as GameObject;
 
-                    GameObject dir = Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject;
+                        GameObject dir = Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject;
 
-                    GameObject direction = GameObject.Instantiate(dir, panel.transform);
+                        GameObject direction = GameObject.Instantiate(dir, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-
+                     //   direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
                 });
-
 
                 info.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    
-                    //Set Panel Type
-                    info.editDataType = EditDataType.Value;
+                    if (noPanelOpen())
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Value;
 
-                    //Set Editable Variable Type
-                    info.varType = VariableType.Number;
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Number;
 
-                    //Set the Data type it will change
-                    info.valEditType = ValueEditType.Value;
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Value;
 
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                    panel.SetActive(true);
+                        panel.SetActive(true);
 
-                    destroyChildren(panel);
+                        destroyChildren(panel);
 
-                    // GameObject dir1 = Resources.Load<GameObject>("Prefabs/EditPanels/Direction.prefab") as GameObject;
+                        // GameObject dir1 = Resources.Load<GameObject>("Prefabs/EditPanels/Direction.prefab") as GameObject;
 
-                    GameObject dir = Resources.Load("Prefabs/EditPanels/Value") as GameObject;
+                        GameObject dir = Resources.Load("Prefabs/EditPanels/Value") as GameObject;
 
-                    GameObject direction = GameObject.Instantiate(dir, panel.transform);
+                        GameObject direction = GameObject.Instantiate(dir, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-
+                       // direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
                 });
 
                 break;
@@ -526,57 +616,64 @@ public class ProgramCardFunctionality
                 info.programCard.action = createAction(info);
                 int offset = 0;
 
-                if (playSettings.advancedVariables)
+                if (PlayerSettings.advancedVariables)
                 {
                     offset = 1;
 
                     //Public Local
                     info.transform.GetChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        //Set Panel Type
-                        info.editDataType = EditDataType.Multichoice;
+                        if (noPanelOpen())
+                        {
+                            //Set Panel Type
+                            info.editDataType = EditDataType.Multichoice;
 
-                        //Set Editable Variable Type
-                        info.varType = info.action.varData.varType;
+                            //Set Editable Variable Type
+                            info.varType = info.action.varData.varType;
 
-                        //Set the Data type it will change
-                        info.valEditType = ValueEditType.Public;
+                            //Set the Data type it will change
+                            info.valEditType = ValueEditType.Public;
 
-                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                            GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                        panel.SetActive(true);
+                            panel.SetActive(true);
 
-                        destroyChildren(panel);
+                            destroyChildren(panel);
 
-                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+                            GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                          //  direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                        }
                     });
 
                     //Variable Type
                     info.transform.GetChild(0).GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        //Set Panel Type
-                        info.editDataType = EditDataType.Multichoice;
+                        if (noPanelOpen())
+                        {
+                            //Set Panel Type
+                            info.editDataType = EditDataType.Multichoice;
 
-                        //Set Editable Variable Type
-                        info.varType = info.action.varData.varType;
+                            //Set Editable Variable Type
+                            info.varType = info.action.varData.varType;
 
-                        //Set the Data type it will change
-                        info.valEditType = ValueEditType.VariableType;
+                            //Set the Data type it will change
+                            info.valEditType = ValueEditType.VariableType;
 
-                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                            GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                        panel.SetActive(true);
+                            panel.SetActive(true);
 
-                        destroyChildren(panel);
+                            destroyChildren(panel);
 
-                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+                            GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                        direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                            //direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                        }
                     });
 
-                } else
+                }
+                else
                 {
                     offset = 0;
                 }
@@ -584,67 +681,130 @@ public class ProgramCardFunctionality
                 //Name
                 info.transform.GetChild(0 + offset).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    //Set Panel Type
-                    info.editDataType = EditDataType.NewValue;
+                    if (noPanelOpen())
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.NewValue;
 
-                    //Set Editable Variable Type
-                    info.varType = VariableType.Text;
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Text;
 
-                    //Set the Data type it will change
-                    info.valEditType = ValueEditType.Name;
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Name;
 
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                    panel.SetActive(true);
+                        panel.SetActive(true);
 
-                    destroyChildren(panel);
+                        destroyChildren(panel);
 
-                    GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/NewValue") as GameObject, panel.transform);
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/NewValue") as GameObject, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
-
-
+                      //  direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
                 });
 
                 //Value
                 info.transform.GetChild(2 + offset).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    //Set Editable Variable Type
-                    info.varType = info.action.varData.varType;
-
-                    //Set Panel Type
-                    info.editDataType = EditDataType.Value;
-
-                    if (playSettings.advancedVariables)
+                    if (noPanelOpen())
                     {
-                        if (info.varType == VariableType.Bool)
+                        //Set Editable Variable Type
+                        info.varType = info.action.varData.varType;
+
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Value;
+
+                        if (PlayerSettings.advancedVariables)
                         {
-                            //Set the Data type it will change
-                            info.valEditType = ValueEditType.Bool;
+                            if (info.varType == VariableType.Bool)
+                            {
+                                //Set the Data type it will change
+                                info.valEditType = ValueEditType.Bool;
+                            }
+                            else
+                            {
+                                //Set the Data type it will change
+                                info.valEditType = ValueEditType.Value;
+                            }
                         }
                         else
                         {
-                            //Set the Data type it will change
-                            info.valEditType = ValueEditType.Value;
+                            info.valEditType = ValueEditType.VariableSmartAssign;
                         }
-                    } else
+
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                        panel.SetActive(true);
+
+                        destroyChildren(panel);
+
+                        string path = "";
+                        path = "Prefabs/EditPanels/Value";
+
+                        GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
+
+                    //    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
+                });
+
+                break;
+
+            case VariableActionNames.MathVariable:
+
+                info.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    if (noPanelOpen())
                     {
-                        info.valEditType = ValueEditType.VariableSmartAssign;
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Variable;
+
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Text;
+
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Name;
+
+                        //Get the panel
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                        panel.SetActive(true);
+
+                        destroyChildren(panel);
+
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/VariableList") as GameObject, panel.transform);
+
+                     //   direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                     }
 
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
-
-                    panel.SetActive(true);
-
-                    destroyChildren(panel);
-
-                    string path = "";
-                    path = "Prefabs/EditPanels/Value";
-
-                    GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
-
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
                 });
+
+                info.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    if (noPanelOpen())
+                    {
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Multichoice;
+
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Number;
+
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.MathOperation;
+
+                        //Get the panel
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+
+                        panel.SetActive(true);
+
+                        destroyChildren(panel);
+
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+
+                      //  direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
+                });
+
 
                 break;
         }
@@ -661,57 +821,63 @@ public class ProgramCardFunctionality
 
                 info.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    //Yell, Talk, Whipser
-                    //Set Panel Type
-                    info.editDataType = EditDataType.Multichoice;
+                    if (noPanelOpen())
+                    {
+                        //Yell, Talk, Whipser
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Multichoice;
 
-                    //Set Editable Variable Type
-                    info.varType = VariableType.Number;
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Number;
 
-                    //Set the Data type it will change
-                    info.valEditType = ValueEditType.Speak;
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Speak;
 
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                    panel.SetActive(true);
+                        panel.SetActive(true);
 
-                    destroyChildren(panel);
+                        destroyChildren(panel);
 
-                    GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
+                        GameObject direction = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/MultiChoice") as GameObject, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                       // direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
                 });
 
                 info.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate
                 {
-                    //Message
+                    if (noPanelOpen())
+                    {
+                        //Message
 
-                    //Set Editable Variable Type
-                    info.varType = VariableType.Text;
+                        //Set Editable Variable Type
+                        info.varType = VariableType.Text;
 
-                    //Set Panel Type
-                    info.editDataType = EditDataType.Value;
+                        //Set Panel Type
+                        info.editDataType = EditDataType.Value;
 
-                    //Set the Data type it will change
-                    info.valEditType = ValueEditType.Value;
+                        //Set the Data type it will change
+                        info.valEditType = ValueEditType.Value;
 
-                    GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
+                        GameObject panel = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
-                    panel.SetActive(true);
+                        panel.SetActive(true);
 
-                    destroyChildren(panel);
+                        destroyChildren(panel);
 
-                    string path = "Prefabs/EditPanels/Value";
+                        string path = "Prefabs/EditPanels/Value";
 
-                    GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
+                        GameObject direction = GameObject.Instantiate(Resources.Load(path) as GameObject, panel.transform);
 
-                    direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                       // direction.GetComponent<EditValController>().setPanel(info, panel.transform, this);
+                    }
                 });
                 break;
         }
-
     }
 
+    
     //
     //Create Action
     //
@@ -727,11 +893,10 @@ public class ProgramCardFunctionality
                 return createVariableAction(info);
             case ActionType.Action:
                 return createActionAction(info);
-
             default:
+                Debug.Log(info.actionType);
                 Debug.Log("Here");
                 return null;
-
         }
 
     }
@@ -759,25 +924,26 @@ public class ProgramCardFunctionality
             case VariableActionNames.Variable:
 
                 return new ProgramAction(info, info.action.varData);
+            case VariableActionNames.MathVariable:
+                return new ProgramAction(info, info.action.varData);
             default:
-                Debug.Log("Here");
                 return null;
         }
     }
 
     public ProgramAction createActionAction(CardInfo info)
     {
-        info.action.actData.character = allScripts.programSection.selectedCharacter.transform;
+        info.action.actData.character = Scripts.programSection.selectedCharacter.transform;
         switch (info.actionName)
         {
             case ActionActionNames.Speak:
                 return new ProgramAction(info, info.action.actData);
             default:
-                Debug.Log("Here");
+               
                 return null;
         }
     }
-
+    */
 
     //
     //Converters
@@ -850,7 +1016,18 @@ public class ProgramCardFunctionality
         }
     }
 
-   
+    bool noPanelOpen ()
+    {
+        if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+
 
 
 }

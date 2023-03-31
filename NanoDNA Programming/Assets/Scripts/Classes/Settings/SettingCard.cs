@@ -78,13 +78,13 @@ public class SettingCard : MonoBehaviour
 
     }
 
-    public void setColourScheme(PlayerSettings playSettings)
+    public void setColourScheme()
     {
-        this.mainColor = playSettings.colourScheme.getMainTextColor();
+        this.mainColor = PlayerSettings.colourScheme.getMainTextColor();
 
-        this.accentColor = playSettings.colourScheme.getAccentTextColor();
+        this.accentColor = PlayerSettings.colourScheme.getAccentTextColor();
 
-        UIHelper.setImage(flex.getChild(1), playSettings.colourScheme.getAccent());
+        UIHelper.setImage(flex.getChild(1), PlayerSettings.colourScheme.getAccent());
     }
 
     public void setInfoButton(string name, string value)

@@ -14,8 +14,5 @@ public class TileInfo
     {
         this.id = id;
         this.position = pos;
-
-     
     }
-
 }
