@@ -61,10 +61,10 @@ public class ProgramSection : MonoBehaviour
         levelType = Scripts.levelManager.info.levelType;
 
         testBtn.onClick.AddListener(testProgram);
-        saveBtn.onClick.AddListener(delegate
-        {
-            selectedCharData.displayProgram(true);
-        });
+       // saveBtn.onClick.AddListener(delegate
+      //  {
+       //     selectedCharData.displayProgram(true);
+       // });
         //undoBtn.onClick.AddListener(undoProgram);
 
         testRunning = false;

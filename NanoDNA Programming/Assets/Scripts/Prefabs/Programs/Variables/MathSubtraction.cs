@@ -65,7 +65,10 @@ public class MathSubtraction : ProgramCard, IProgramCard
 
             //action.varActData = varData[0];
 
-            action.varActData.refID = varData[0].id;
+            if (varData.Count > 0)
+            {
+                action.varActData.refID = varData[0].id;
+            }
 
             UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
 

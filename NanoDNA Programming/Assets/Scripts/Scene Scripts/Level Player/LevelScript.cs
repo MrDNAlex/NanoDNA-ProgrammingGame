@@ -52,12 +52,12 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] Tilemap voidMap;
     [SerializeField] Tilemap backgroundMap;
-  
+
 
     [SerializeField] TileBase tile;
 
     [SerializeField] Text resize;
-    [SerializeField]public Text debug;
+    [SerializeField] public Text debug;
     [SerializeField] Text complete;
     [SerializeField] Text save;
 
@@ -114,9 +114,9 @@ public class LevelScript : MonoBehaviour
 
         Flex Controls = new Flex(Header.getChild(0), 1.5f, Header);
 
-        Flex Undo = new Flex(Controls.getChild(0), 1, Controls);
-        Flex InteracName = new Flex(Controls.getChild(1), 4, Controls);
-        Flex Save = new Flex(Controls.getChild(2), 1, Controls);
+        // Flex Undo = new Flex(Controls.getChild(0), 1, Controls);
+        Flex InteracName = new Flex(Controls.getChild(0), 4, Controls);
+        // Flex Save = new Flex(Controls.getChild(2), 1, Controls);
 
         Flex ScriptsTabs = new Flex(Header.getChild(1), 1);
 
@@ -136,9 +136,21 @@ public class LevelScript : MonoBehaviour
 
         Flex Constraints = new Flex(Reg3.getChild(0), 1f, Reg3);
 
-        Flex CollectedItems = new Flex(Constraints.getChild(0), 1, Constraints);
-        Flex LinesUsed = new Flex(Constraints.getChild(1), 1, Constraints);
-        Flex CompleteLevel = new Flex(Constraints.getChild(2), 1, Constraints);
+
+        Flex ProgressHolder = new Flex(Constraints.getChild(0), 2, Constraints);
+
+        Flex CollectedHolder = new Flex(ProgressHolder.getChild(0), 1, ProgressHolder);
+        Flex CollectedBackground = new Flex(CollectedHolder.getChild(0), 1, CollectedHolder);
+        Flex CollectedIcon = new Flex(CollectedBackground.getChild(0), 1, CollectedBackground);
+        Flex CollectedProgressBar = new Flex(CollectedHolder.getChild(1), 2f, CollectedHolder);
+
+        Flex UsedHolder = new Flex(ProgressHolder.getChild(1), 1, ProgressHolder);
+        Flex UsedBackground = new Flex(UsedHolder.getChild(0), 1, UsedHolder);
+        Flex UsedIcon = new Flex(UsedBackground.getChild(0), 1, UsedBackground);
+        Flex UsedProgressBar = new Flex(UsedHolder.getChild(1), 2f, UsedHolder);
+
+
+        Flex CompleteLevel = new Flex(Constraints.getChild(1), 1, Constraints);
 
         //Add Children
         VP.addChild(Scripts.programSection.flex);
@@ -149,28 +161,51 @@ public class LevelScript : MonoBehaviour
         MapView.setVerticalPadding(0.02f, 1, 0.02f, 1);
 
         UIHolder.setSpacingFlex(0.2f, 1);
-        
+
+        //Squares
         ProgSpeed.setSquare();
         Resize.setSquare();
         DebugBTN.setSquare();
 
+
+
+        CollectedBackground.setAllPadSame(0.1f, 1);
+        UsedBackground.setAllPadSame(0.1f, 1);
+
+        CollectedHolder.setSpacingFlex(0.2f, 1);
+        UsedHolder.setSpacingFlex(0.2f, 1);
+
+        CollectedIcon.setSquare();
+        UsedIcon.setSquare();
+
         Buttons.setSpacingFlex(0.3f, 1);
 
-        Controls.setSpacingFlex(0.5f, 1);
+        ProgressHolder.setSpacingFlex(0.1f, 1);
+
+        //  Controls.setSpacingFlex(0.5f, 1);
         Controls.setAllPadSame(0.1f, 1);
 
         //Constraints and Abilities 
         Constraints.setAllPadSame(0.1f, 1);
+        Constraints.setSpacingFlex(0.2f, 1);
+
+        //Calculate leftover height, and fix the size of the Zoom slider
 
         Background.setSize(new Vector2(Screen.width, Screen.height));
 
-        MapView.setSize(new Vector2(MapView.size.x, MapView.size.x * ((float)Screen.height/ Screen.width)));
+        MapView.setSize(new Vector2(MapView.size.x, MapView.size.x * ((float)Screen.height / Screen.width)));
 
         Reg3.setSize(new Vector2(Reg3.size.x, Screen.height - MapView.size.y));
 
-        //Calculate leftover height, and fix the size of the Zoom slider
         Buttons.UI.GetComponent<VerticalLayoutGroup>().spacing = 5;
         Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
+
+        CollectedBackground.setSize(new Vector2(CollectedBackground.size.x, CollectedBackground.size.x));
+        UsedBackground.setSize(new Vector2(UsedBackground.size.x, UsedBackground.size.x));
+
+        CollectedProgressBar.setSize(new Vector2(CollectedProgressBar.size.x, CollectedHolder.size.y - 10 - CollectedHolder.size.x));
+        UsedProgressBar.setSize(new Vector2(UsedProgressBar.size.x, UsedHolder.size.y - 10 - UsedHolder.size.x));
+
 
         //Set Images
         UIHelper.setImage(Header.UI, PlayerSettings.colourScheme.getSecondary(true));
@@ -186,13 +221,20 @@ public class LevelScript : MonoBehaviour
         UIHelper.setImage(Zoom.UI.GetChild(2).GetChild(0), PlayerSettings.colourScheme.getAccent());
 
         UIHelper.setImage(Reg3.getChild(1).GetChild(1).GetChild(0).GetChild(0), PlayerSettings.colourScheme.getMain(true));
-        UIHelper.setImage(Reg3.getChild(1).GetChild(1), PlayerSettings.colourScheme.getMain(true));
         UIHelper.setImage(Reg3.getChild(1).GetChild(1).GetChild(0), PlayerSettings.colourScheme.getMain(true));
+        UIHelper.setImage(Reg3.getChild(1).GetChild(1), PlayerSettings.colourScheme.getMain(true));
 
         UIHelper.setImage(CompleteLevel.UI, PlayerSettings.colourScheme.getAccent());
 
-        UIHelper.setImage(Save.UI, PlayerSettings.colourScheme.getAccent());
-        UIHelper.setImage(Undo.UI, PlayerSettings.colourScheme.getAccent());
+        //UIHelper.setImage(Save.UI, PlayerSettings.colourScheme.getAccent());
+        // UIHelper.setImage(Undo.UI, PlayerSettings.colourScheme.getAccent());
+
+        UIHelper.setImage(UsedBackground.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(CollectedBackground.UI, PlayerSettings.colourScheme.getAccent());
+
+        //Set background
+        UIHelper.setImage(UsedProgressBar.getChild(0), PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(CollectedProgressBar.getChild(0), PlayerSettings.colourScheme.getMain());
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(Background.UI);
 
@@ -281,17 +323,17 @@ public class LevelScript : MonoBehaviour
         }
     }
 
-   public void setUIText ()
+    public void setUIText()
     {
         UIHelper.setText(complete.transform, UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
 
-        UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
+      //  UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 
-    public void LiveDebug (string str)
+    public void LiveDebug(string str)
     {
-      debug.text = str;
+        debug.text = str;
     }
 
 }
