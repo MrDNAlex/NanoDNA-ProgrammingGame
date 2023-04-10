@@ -39,7 +39,7 @@ public class ProgramLine : MonoBehaviour
     void Start()
     {
         ProgramUI.UI.GetComponent<BoxCollider2D>().size = ProgramUI.size;
-        OnDemandRendering.renderFrameInterval = 12;
+      
     }
 
     // Update is called once per frame

@@ -32,8 +32,6 @@ public class CharData : MonoBehaviour
     public void Start()
     {
         programStates.Add(program);
-
-        OnDemandRendering.renderFrameInterval = 12;
     }
 
     public CharData(CharDataInfo info)

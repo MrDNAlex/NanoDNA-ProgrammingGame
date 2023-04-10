@@ -91,7 +91,6 @@ public class LevelScript : MonoBehaviour
 
         contentTrans = content;
 
-        OnDemandRendering.renderFrameInterval = 12;
 
     }
 

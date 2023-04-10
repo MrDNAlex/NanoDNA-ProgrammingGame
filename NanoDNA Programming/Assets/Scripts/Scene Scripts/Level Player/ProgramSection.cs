@@ -69,7 +69,6 @@ public class ProgramSection : MonoBehaviour
 
         testRunning = false;
 
-        OnDemandRendering.renderFrameInterval = 12;
 
         UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor());
 
@@ -84,7 +83,7 @@ public class ProgramSection : MonoBehaviour
     {
         Flex Content = new Flex(GetComponent<RectTransform>(), 1);
 
-        Content.setChildMultiH((Screen.height * 0.9f) / 5);
+        Content.setChildMultiH((Screen.height * 0.9f) / 5.5f);
 
         //Add all the programLine Children
         addChildren(Content);
