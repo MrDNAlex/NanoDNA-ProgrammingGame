@@ -50,7 +50,7 @@ public class StoreScript : MonoBehaviour
 
         StartCoroutine(renderStore(ActionType.Movement));
 
-        OnDemandRendering.renderFrameInterval = 12;
+       
     }
 
     //Buttons get a 200 pixel multi
