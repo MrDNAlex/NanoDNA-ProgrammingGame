@@ -7,6 +7,7 @@ using DNASaveSystem;
 using UnityEngine.UI;
 using DNAScenes;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class MenuScript : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class MenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         PlayerSettings.LoadSettings(SaveManager.loadPlaySettings());
 
         lang = PlayerSettings.language;
