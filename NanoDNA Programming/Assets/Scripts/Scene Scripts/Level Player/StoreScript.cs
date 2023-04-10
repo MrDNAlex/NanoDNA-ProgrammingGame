@@ -70,7 +70,14 @@ public class StoreScript : MonoBehaviour
 
         GridView = new Flex(GridVP.getChild(0), 1, GridVP);
 
-        Content.setChildMultiW(300);
+      //  GridVP.setAllPadSame(0.02f, 1);
+        GridVP.setHorizontalPadding(0.02f, 1, 0.02f, 1);
+        GridVP.setVerticalPadding(0.04f, 1, 0.04f, 1);
+
+        //GridView.setSelfHorizontalPadding(0.02f, 1, 0.02f, 1);
+       // GridView.setSelfVerticalPadding(0.02f, 1, 0.02f, 1);
+
+        Content.setChildMultiW(400);
 
         foreach (ActionType tag in System.Enum.GetValues(typeof(ActionType)))
         {
@@ -112,7 +119,7 @@ public class StoreScript : MonoBehaviour
 
         GridView.deleteAllChildren();
 
-        GridView.UI.GetComponent<GridLayoutGroup>().cellSize = new Vector2((GridView.size.x / 3) - GridView.UI.GetComponent<GridLayoutGroup>().spacing.x, ((GridView.size.x / 3) - GridView.UI.GetComponent<GridLayoutGroup>().spacing.x) /1.5f);
+        GridView.UI.GetComponent<GridLayoutGroup>().cellSize = new Vector2(((GridView.size.x - (GridView.UI.GetComponent<GridLayoutGroup>().spacing.x * 2)) / 3) , ((GridView.size.x / 3) - GridView.UI.GetComponent<GridLayoutGroup>().spacing.x) /1.5f);
 
         //Instantiate storeCard
         Object[] storeItems = ProgramPrefabs.LoadAllPrefabs(tag);

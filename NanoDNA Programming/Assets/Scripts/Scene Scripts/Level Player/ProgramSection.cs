@@ -61,10 +61,10 @@ public class ProgramSection : MonoBehaviour
         levelType = Scripts.levelManager.info.levelType;
 
         testBtn.onClick.AddListener(testProgram);
-        saveBtn.onClick.AddListener(delegate
-        {
-            selectedCharData.displayProgram(true);
-        });
+       // saveBtn.onClick.AddListener(delegate
+      //  {
+       //     selectedCharData.displayProgram(true);
+       // });
         //undoBtn.onClick.AddListener(undoProgram);
 
         testRunning = false;
@@ -84,7 +84,7 @@ public class ProgramSection : MonoBehaviour
     {
         Flex Content = new Flex(GetComponent<RectTransform>(), 1);
 
-        Content.setChildMultiH((Screen.height * 0.9f) / 6);
+        Content.setChildMultiH((Screen.height * 0.9f) / 5);
 
         //Add all the programLine Children
         addChildren(Content);

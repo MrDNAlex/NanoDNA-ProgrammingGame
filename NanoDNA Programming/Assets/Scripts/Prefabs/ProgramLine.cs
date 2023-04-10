@@ -6,6 +6,7 @@ using FlexUI;
 using DNAStruct;
 using UnityEngine.Rendering;
 using DNASaveSystem;
+using DNAMathAnimation;
 
 public class ProgramLine : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class ProgramLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ProgramUI.UI.GetComponent<BoxCollider2D>().size = ProgramUI.size;
         OnDemandRendering.renderFrameInterval = 12;
     }
 
@@ -70,7 +72,6 @@ public class ProgramLine : MonoBehaviour
         //Set Images
         UIHelper.setImage(Line.UI, PlayerSettings.colourScheme.getMain(true));
         UIHelper.setImage(LineNumberHolder.UI, PlayerSettings.colourScheme.getSecondary(true));
-
     }
 
     public void setNumber()
@@ -111,11 +112,18 @@ public class ProgramLine : MonoBehaviour
 
     public void deleteProgramLine(int index)
     {
-        deleteLine();
-
         Program prog = Scripts.programSection.selectedCharData.program;
 
+        Debug.Log(index);
+
         prog.RemoveLine(index);
+
+
+        StartCoroutine(delLineAnim());
+
+        //Delete Line
+
+       // deleteLine();
 
         Scripts.levelManager.updateConstraints();
 
@@ -234,5 +242,20 @@ public class ProgramLine : MonoBehaviour
             }
         }
     }
+
+    
+    public IEnumerator delLineAnim ()
+    {
+
+        //Animate
+
+        yield return StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(ProgramUI.UI.GetChild(0), new Vector3(-1f * ProgramUI.UI.GetChild(0).GetComponent<RectTransform>().sizeDelta.x, 0, 0), 200, 0, true));
+
+       // yield return new WaitUntil();
+
+        deleteLine();
+
+    }
+    
 
 }

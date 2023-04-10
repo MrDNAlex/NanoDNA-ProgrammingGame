@@ -63,9 +63,10 @@ public class MathAddition : ProgramCard, IProgramCard
             //Get the first variable that can possible be grabbed and set the 
             List<VariableData> varData = Scripts.programManager.getVariables(VariableType.Number);
 
-            //action.varActData = varData[0];
-
-            action.varActData.refID = varData[0].id;
+            if (varData.Count > 0)
+            {
+                action.varActData.refID = varData[0].id;
+            }
 
             UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
 

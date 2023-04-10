@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DNAMathAnimation
 {
-    public class DNAMathAnim 
+    public class DNAMathAnim
     {
 
         public enum Axis
@@ -12,14 +13,17 @@ namespace DNAMathAnimation
             //Replace the index with the axis
             All,
             x,
-            y, 
-            z, 
+            y,
+            z,
         }
 
         //Alright Well I can't tell what is happening 
 
         //Maybe pass initial position inside and keep calling it and stack the additions?
 
+        //
+        //Relocation
+        //
 
         //Add this to a animation 
         public static IEnumerator animateLinearRelocationLocal(Transform trans, Vector3 OGPos, int frameCount, int index, bool singleAxis)
@@ -120,7 +124,7 @@ namespace DNAMathAnimation
             {
                 As = new Vector3(calcSinAmplitude(OGPos.x - trans.localPosition.x, B, frameCount), calcSinAmplitude(OGPos.y - trans.localPosition.y, B, frameCount), calcSinAmplitude(OGPos.z - trans.localPosition.z, B, frameCount));
             }
-           
+
             for (int i = 0; i < frameCount; i++)
             {
                 if (singleAxis)
@@ -162,7 +166,7 @@ namespace DNAMathAnimation
             Vector3 fullAdd = Vector3.zero;
 
             //Length coefficient
-            float B = (Mathf.PI) / (frameCount*2);
+            float B = (Mathf.PI) / (frameCount * 2);
             //Amplitude
             float A = 0;
             Vector3 As = Vector3.zero;
@@ -218,8 +222,8 @@ namespace DNAMathAnimation
             trans.localPosition = OGPos;
 
         }
-        
-        public static IEnumerator animateReboundRelocationLocal (Transform trans, Vector3 OGPos, int frameCount, int index, bool singleAxis)
+
+        public static IEnumerator animateReboundRelocationLocal(Transform trans, Vector3 OGPos, int frameCount, int index, bool singleAxis)
         {
             Vector3 startPos = trans.localPosition;
             Vector3 fullAdd = Vector3.zero;
@@ -233,7 +237,7 @@ namespace DNAMathAnimation
                 switch (index)
                 {
                     case 0:
-                        
+
                         A = calcReboundAmplitude(OGPos.x - trans.localPosition.x, frameCount);
                         break;
                     case 1:
@@ -280,8 +284,130 @@ namespace DNAMathAnimation
             trans.localPosition = OGPos;
 
         }
-        
-        public static float calcReboundAmplitude (float total,float finalTime)
+
+        //
+        //Increment Number/Timer
+        //
+
+        public static IEnumerator animateLinearSliderFill(Slider slider, float final, int frameCount)
+        {
+            Debug.Log("Hello");
+
+            float change = final - slider.value;
+
+            float slope = (float)(change) / frameCount;
+
+            float addition = 0;
+            float startVal = slider.value;
+
+            for (int i = 0; i < frameCount; i++)
+            {
+                addition = addition + slope;
+
+                slider.value = startVal + addition;
+                yield return null;
+            }
+
+            slider.value = final;
+        }
+
+        public static IEnumerator animateSineSliderFill(Slider slider, float final, int frameCount)
+        {
+            float change = final - slider.value;
+
+            //Length coefficient
+            float B = (Mathf.PI) / (frameCount);
+
+            //Amplitude
+            float A = 0;
+
+            //Get Amplittude
+            A = calcSinAmplitude(change, B, frameCount);
+
+            float addition = 0;
+            float startVal = slider.value;
+
+            for (int i = 0; i < frameCount; i++)
+            {
+                addition = addition + sinEQ(A, B, 0, 0, i);
+
+                slider.value = startVal + addition;
+                yield return null;
+            }
+
+            slider.value = final;
+
+        }
+
+        public static IEnumerator animateCosineSliderFill(Slider slider, float final, int frameCount)
+        {
+            float change = final - slider.value;
+
+            //Length coefficient
+            float B = (Mathf.PI) / (frameCount * 2);
+
+            //Amplitude
+            float A = 0;
+
+            //Get Amplittude
+            A = calcCosAmplitude(change, B, frameCount);
+
+            float addition = 0;
+            float startVal = slider.value;
+
+            for (int i = 0; i < frameCount; i++)
+            {
+                addition = addition + cosEQ(A, B, 0, 0, i);
+
+                slider.value = startVal + addition;
+                yield return null;
+            }
+
+            slider.value = final;
+
+        }
+
+        //Shake
+
+        public static IEnumerator animateShake(Transform trans, int frameCount)
+        {
+            //Let's do 5 cycles of a sinusoidal eq
+
+            //Length coefficient
+            float B = (2f * Mathf.PI) / (frameCount / 5);
+            //Amplitude
+            float A = 0;
+           
+            Vector3 startPos = trans.localPosition;
+         
+            //Movement of 10 pixels? and 10 degrees? 
+
+            float xMov = 0;
+            float yMov = 0;
+            float rot = 0;
+
+
+            A = calcSinAmplitude(120, (Mathf.PI) / frameCount, frameCount);
+           // rotA = calcCosAmplitude(40, (Mathf.PI) / (frameCount * 2), frameCount);
+
+            //As = new Vector3(, calcSinAmplitude(10, B, frameCount), calcSinAmplitude(10, B, frameCount));
+
+            for (int i = 0; i < frameCount; i++)
+            {
+
+                xMov = xMov + sinEQ(A, B, 30, 0, i);
+                yMov = yMov + sinEQ(A, B, 60, 0, i);
+             
+                trans.localPosition = startPos + new Vector3(xMov, yMov, 0);
+             
+                yield return null;
+            }
+
+            trans.localPosition = startPos;
+           
+        }
+
+        public static float calcReboundAmplitude(float total, float finalTime)
         {
             float a = 1;
             float b = -0.97222f;
@@ -295,12 +421,12 @@ namespace DNAMathAnimation
             return total / intFun;
         }
 
-        public static float getPolInt (float coef, float pow, float T, float j)
+        public static float getPolInt(float coef, float pow, float T, float j)
         {
             return (coef * Mathf.Pow(T, pow)) / (pow * Mathf.Pow(j, pow - 1));
         }
-        
-        public static float reboundEQ (float A, float P, float x)
+
+        public static float reboundEQ(float A, float P, float x)
         {
             float a = 1;
             float b = -0.97222f;
@@ -309,7 +435,7 @@ namespace DNAMathAnimation
             float e = 9.027777777f;
 
             //P is the period/total time of the function
-            return A*(a + b * Mathf.Pow(x / P, 1) + c * Mathf.Pow(x / P, 2) + d * Mathf.Pow(x / P, 3) + e * Mathf.Pow(x / P, 4));
+            return A * (a + b * Mathf.Pow(x / P, 1) + c * Mathf.Pow(x / P, 2) + d * Mathf.Pow(x / P, 3) + e * Mathf.Pow(x / P, 4));
         }
 
 
@@ -325,12 +451,12 @@ namespace DNAMathAnimation
 
         public static float sinEQ(float A, float B, float C, float D, float x)
         {
-            return A * Mathf.Sin(B * (x + C)) + D;
+            return A * Mathf.Sin((B * x) + C) + D;
         }
 
         public static float cosEQ(float A, float B, float C, float D, float x)
         {
-            return A * Mathf.Cos(B * (x + C)) + D;
+            return A * Mathf.Cos((B *x) + C) + D;
         }
 
 

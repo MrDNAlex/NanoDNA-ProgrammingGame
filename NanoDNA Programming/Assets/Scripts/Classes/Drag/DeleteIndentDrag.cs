@@ -60,7 +60,7 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
         //Display colour
         if (dist.x >= GetComponent<RectTransform>().sizeDelta.x * (0.75f))
         {
-            UIHelper.setImage(transform.parent.parent, "Images/UIDesigns/Delete");
+            UIHelper.setImage(transform.parent.parent, "Images/UIDesigns/DelColor");
         } else
         {
             UIHelper.setImage(transform.parent.parent, PlayerSettings.colourScheme.getMain(true));
@@ -75,7 +75,7 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
         {
             //Delete the line
             //StartCoroutine(transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().delLines());
-            transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteProgramLine(transform.GetSiblingIndex());
+            transform.GetComponent<ProgramCard>().progLine.GetComponent<ProgramLine>().deleteProgramLine(transform.parent.parent.GetSiblingIndex());
 
             UIHelper.setImage(transform.parent.parent, PlayerSettings.colourScheme.getMain(true));
         } else

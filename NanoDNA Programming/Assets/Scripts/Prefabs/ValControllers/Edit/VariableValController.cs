@@ -110,6 +110,8 @@ public class VariableValController : EditValController
 
         ViewSetHolder.setHorizontalPadding(0.1f, 1, 0.1f, 1);
 
+        Content.setChildMultiH(100);
+
         //Add Variables to Content
         //Loop through
 

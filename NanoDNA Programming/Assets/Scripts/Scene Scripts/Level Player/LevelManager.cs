@@ -5,12 +5,13 @@ using DNAStruct;
 using DNASaveSystem;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using DNAMathAnimation;
 
 public class LevelManager : MonoBehaviour
 {
 
     //Level Loader
-   // https://www.youtube.com/watch?v=OmobsXZSRKo
+    // https://www.youtube.com/watch?v=OmobsXZSRKo
 
     //Try and Compress this section
 
@@ -26,6 +27,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject soundSensorPrefab;
 
     [SerializeField] GameObject constraints;
+
+    [SerializeField] ProgressBar collectedProgress;
+    [SerializeField] ProgressBar usedProgress;
+
+    [SerializeField] Transform usedLineLength;
 
     public LevelInfo info;
 
@@ -45,7 +51,7 @@ public class LevelManager : MonoBehaviour
     Tilemap decorationMap;
     GameObject charHolder;
 
-   // public Scripts allScripts;
+    // public Scripts allScripts;
 
     public int maxLines = 0;
     public int usedLines = 0;
@@ -65,11 +71,11 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         //Get the levelInfo
-        
+
         //Load Info
         info = SaveManager.loadJSON<LevelInfo>(CurrentLevelLoader.path, CurrentLevelLoader.name);
 
-       Scripts.levelManager = this;
+        Scripts.levelManager = this;
 
         getTileMaps();
 
@@ -96,7 +102,7 @@ public class LevelManager : MonoBehaviour
     {
         //Check all programs, count number of lines, write it down
         //Design something that doesn't use the holder, maybe get access 
-        
+
         //Something in here
         //int lines = 0;
 
@@ -108,7 +114,9 @@ public class LevelManager : MonoBehaviour
             usedLines += data.program.getLength();
         }
 
-        UIHelper.setText(linesUsed.transform, usedLines + "/" + maxLines + " " + UIwords.used.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
+        usedProgress.setValue(usedLines);
+
+        //  UIHelper.setText(linesUsed.transform, usedLines + "/" + maxLines + " " + UIwords.used.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
 
         //Update Collectibles
         itemsCollect = 0;
@@ -123,7 +131,9 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-        UIHelper.setText(collectedItems.transform, itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
+
+        collectedProgress.setValue(itemsCollect);
+        // UIHelper.setText(collectedItems.transform, itemsCollect + "/" + maxItems + " " + UIwords.collected.getWord(lang), PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 
@@ -136,6 +146,11 @@ public class LevelManager : MonoBehaviour
             {
                 //send error message
                 Debug.Log("Your program is too long!");
+
+                StartCoroutine(DNAMathAnim.animateShake(usedLineLength, 500));
+
+                //Spawn Text box
+
             }
             else
             {
@@ -154,7 +169,7 @@ public class LevelManager : MonoBehaviour
             //Stop all coroutines
             StopAllCoroutines();
 
-           Scripts.programSection.StopAllCoroutines();
+            Scripts.programSection.StopAllCoroutines();
 
             //Set all characters to initial position
             foreach (Transform child in charHolder.transform)
@@ -201,6 +216,7 @@ public class LevelManager : MonoBehaviour
         //Set Interactables
         setInteractables(info.interacInfo);
 
+        //Set sensors
         setSensors(info.sensorInfo);
 
         //Set End Goal
@@ -208,6 +224,12 @@ public class LevelManager : MonoBehaviour
 
         maxLines = info.maxLine;
         maxItems = info.maxItems;
+
+        collectedProgress.initProgressBar(maxItems);
+        usedProgress.initProgressBar(maxLines + 1);
+
+        //Item Icon
+        usedLineLength.parent.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite = interacLedger.sprites.Find(c => c.id == info.interacInfo[0].id).sprite;
 
         Scripts.programManager.addLevelVariables(info.levelVariables);
 
@@ -235,12 +257,12 @@ public class LevelManager : MonoBehaviour
 
         foreach (Transform child in charHolder.transform)
         {
-          
+
             if (child.GetComponent<CharData>() != null)
             {
                 charData.Add(child.GetComponent<CharData>());
             }
-           
+
         }
 
         //Set Other Info
@@ -324,7 +346,7 @@ public class LevelManager : MonoBehaviour
         endGoal.GetComponent<BoxCollider>().size = info.data.size;
     }
 
-    public void setSensors (List<SensorInfo> info)
+    public void setSensors(List<SensorInfo> info)
     {
         foreach (SensorInfo sens in info)
         {
@@ -366,11 +388,11 @@ public class LevelManager : MonoBehaviour
 
     void getConstraints()
     {
-        collectedItems = constraints.transform.GetChild(0).GetComponent<Text>();
+        // collectedItems = constraints.transform.GetChild(0).GetComponent<Text>();
 
-        linesUsed = constraints.transform.GetChild(1).GetComponent<Text>();
+        // linesUsed = constraints.transform.GetChild(1).GetComponent<Text>();
 
-        complete = constraints.transform.GetChild(2).GetComponent<Button>();
+        complete = constraints.transform.GetChild(1).GetComponent<Button>();
     }
 
 }
