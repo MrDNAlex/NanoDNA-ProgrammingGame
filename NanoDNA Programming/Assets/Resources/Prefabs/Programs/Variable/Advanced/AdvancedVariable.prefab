@@ -808,6 +808,7 @@ GameObject:
   - component: {fileID: -2310885167832216146}
   - component: {fileID: 3001961925073130743}
   - component: {fileID: 618083967753174603}
+  - component: {fileID: 4298650199010095021}
   m_Layer: 0
   m_Name: AdvancedVariable
   m_TagString: Untagged
@@ -956,19 +957,12 @@ MonoBehaviour:
   actionInfo:
     actionType: 2
     movementName: 0
-    mathName: 0
     logicName: 0
     variableName: 1
     actionName: 0
-  actionType: 2
   cardName:
     french: 
     english: 
-  movementName: 0
-  mathName: 0
-  logicName: 0
-  variableName: 1
-  actionName: 0
   progLine: {fileID: 0}
   rectTrans: {fileID: 0}
   indent: 0
@@ -976,7 +970,6 @@ MonoBehaviour:
   action:
     actionType: 2
     movementName: 0
-    mathName: 0
     logicName: 0
     variableName: 1
     actionName: 0
@@ -984,21 +977,43 @@ MonoBehaviour:
       dir: 0
       value: 
       refID: 0
-    varData:
-      isPublic: 1
-      varType: 0
-      name: newVar
-      value: hello
-      charData: {fileID: 0}
-      id: 0
+    varActData:
+      newVar: 0
+      name: 
       refID: 0
-      mathType: 0
+      actionType: 0
+      setData:
+        isPublic: 0
+        varType: 0
+        value: 
+        charData: {fileID: 0}
+        id: 0
+        refID: 0
+      mathData:
+        value1: 
+        value2: 
+        refID1: 0
+        refID2: 0
+        varType: 0
+        operationType: 0
     actData:
       actionName: 0
       descriptor: 0
       data: 
       character: {fileID: 0}
       refID: 0
+--- !u!225 &4298650199010095021
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849765539173945905}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6993912430497903501
 GameObject:
   m_ObjectHideFlags: 0

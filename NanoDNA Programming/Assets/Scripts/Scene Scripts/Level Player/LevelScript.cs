@@ -114,9 +114,15 @@ public class LevelScript : MonoBehaviour
 
         Flex Controls = new Flex(Header.getChild(0), 1.5f, Header);
 
-        // Flex Undo = new Flex(Controls.getChild(0), 1, Controls);
-        Flex InteracName = new Flex(Controls.getChild(0), 4, Controls);
-        // Flex Save = new Flex(Controls.getChild(2), 1, Controls);
+        Flex ControlHolder = new Flex(Controls.getChild(0), 1, Controls);
+
+        Flex ExitButton = new Flex(ControlHolder.getChild(0), 1, ControlHolder);
+        Flex ExitImage = new Flex(ExitButton.getChild(0), 1, ExitButton);
+
+        Flex InteracName = new Flex(ControlHolder.getChild(1), 4, ControlHolder);
+
+        Flex InfoButton = new Flex(ControlHolder.getChild(2), 1, ControlHolder);
+        Flex InfoImage = new Flex(InfoButton.getChild(0), 1, InfoButton);
 
         Flex ScriptsTabs = new Flex(Header.getChild(1), 1);
 
@@ -131,11 +137,10 @@ public class LevelScript : MonoBehaviour
         Flex ProgSpeed = new Flex(Buttons.getChild(0), 1, Buttons);
         Flex Resize = new Flex(Buttons.getChild(1), 1, Buttons);
         Flex DebugBTN = new Flex(Buttons.getChild(2), 1, Buttons);
-
+        
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f, Reg2);
 
         Flex Constraints = new Flex(Reg3.getChild(0), 1f, Reg3);
-
 
         Flex ProgressHolder = new Flex(Constraints.getChild(0), 2, Constraints);
 
@@ -149,7 +154,6 @@ public class LevelScript : MonoBehaviour
         Flex UsedIcon = new Flex(UsedBackground.getChild(0), 1, UsedBackground);
         Flex UsedProgressBar = new Flex(UsedHolder.getChild(1), 2f, UsedHolder);
 
-
         Flex CompleteLevel = new Flex(Constraints.getChild(1), 1, Constraints);
 
         //Add Children
@@ -157,7 +161,7 @@ public class LevelScript : MonoBehaviour
 
         Reg3.addChild(store.GetComponent<StoreScript>().Store);
 
-        MapView.setHorizontalPadding(12, 1, 0, 1);
+        MapView.setHorizontalPadding(11, 1, 0, 1);
         MapView.setVerticalPadding(0.02f, 1, 0.02f, 1);
 
         UIHolder.setSpacingFlex(0.2f, 1);
@@ -166,8 +170,6 @@ public class LevelScript : MonoBehaviour
         ProgSpeed.setSquare();
         Resize.setSquare();
         DebugBTN.setSquare();
-
-
 
         CollectedBackground.setAllPadSame(0.1f, 1);
         UsedBackground.setAllPadSame(0.1f, 1);
@@ -183,7 +185,9 @@ public class LevelScript : MonoBehaviour
         ProgressHolder.setSpacingFlex(0.1f, 1);
 
         //  Controls.setSpacingFlex(0.5f, 1);
-        Controls.setAllPadSame(0.1f, 1);
+       //Controls.setAllPadSame(0.1f, 1);
+        Controls.setHorizontalPadding(0.02f, 1, 0.02f, 1);
+        Controls.setVerticalPadding(0.1f, 1, 0.1f, 1);
 
         //Constraints and Abilities 
         Constraints.setAllPadSame(0.1f, 1);
@@ -206,8 +210,17 @@ public class LevelScript : MonoBehaviour
         CollectedProgressBar.setSize(new Vector2(CollectedProgressBar.size.x, CollectedHolder.size.y - 10 - CollectedHolder.size.x));
         UsedProgressBar.setSize(new Vector2(UsedProgressBar.size.x, UsedHolder.size.y - 10 - UsedHolder.size.x));
 
+        ExitButton.setSize(new Vector2(ExitButton.size.y, ExitButton.size.y));
+        InfoButton.setSize(new Vector2(InfoButton.size.y, InfoButton.size.y));
+
+        InteracName.setSize(new Vector2(ControlHolder.size.x - (ControlHolder.size.y * 2) + (ControlHolder.size.y - ExitButton.size.y), InteracName.size.y));
+
 
         //Set Images
+
+        UIHelper.setImage(ExitButton.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(InfoButton.UI, PlayerSettings.colourScheme.getAccent());
+
         UIHelper.setImage(Header.UI, PlayerSettings.colourScheme.getSecondary(true));
         UIHelper.setImage(Constraints.UI, PlayerSettings.colourScheme.getSecondary(true));
         UIHelper.setImage(List.UI, PlayerSettings.colourScheme.getMain(true));
@@ -232,9 +245,14 @@ public class LevelScript : MonoBehaviour
         UIHelper.setImage(UsedBackground.UI, PlayerSettings.colourScheme.getAccent());
         UIHelper.setImage(CollectedBackground.UI, PlayerSettings.colourScheme.getAccent());
 
+        UIHelper.setImage(UsedProgressBar.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(CollectedProgressBar.UI, PlayerSettings.colourScheme.getAccent());
+
         //Set background
         UIHelper.setImage(UsedProgressBar.getChild(0), PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(UsedProgressBar.getChild(1), PlayerSettings.colourScheme.getMain());
         UIHelper.setImage(CollectedProgressBar.getChild(0), PlayerSettings.colourScheme.getMain());
+        UIHelper.setImage(CollectedProgressBar.getChild(1), PlayerSettings.colourScheme.getMain());
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(Background.UI);
 

@@ -419,6 +419,7 @@ GameObject:
   - component: {fileID: 8864324988612070715}
   - component: {fileID: 7283597946464869421}
   - component: {fileID: 6194282846656232886}
+  - component: {fileID: 98392263530980161}
   m_Layer: 0
   m_Name: Speak
   m_TagString: Untagged
@@ -565,7 +566,6 @@ MonoBehaviour:
   actionInfo:
     actionType: 3
     movementName: 0
-    mathName: 0
     logicName: 0
     variableName: 0
     actionName: 1
@@ -579,7 +579,6 @@ MonoBehaviour:
   action:
     actionType: 3
     movementName: 0
-    mathName: 0
     logicName: 0
     variableName: 0
     actionName: 1
@@ -587,18 +586,40 @@ MonoBehaviour:
       dir: 0
       value: 
       refID: 0
-    varData:
-      isPublic: 0
-      varType: 0
+    varActData:
+      newVar: 0
       name: 
-      value: 
-      charData: {fileID: 0}
-      id: 0
       refID: 0
-      mathType: 0
+      actionType: 0
+      setData:
+        isPublic: 0
+        varType: 0
+        value: 
+        charData: {fileID: 0}
+        id: 0
+        refID: 0
+      mathData:
+        value1: 
+        value2: 
+        refID1: 0
+        refID2: 0
+        varType: 0
+        operationType: 0
     actData:
       actionName: 0
       descriptor: 0
       data: 
       character: {fileID: 0}
       refID: 0
+--- !u!225 &98392263530980161
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849765539173945905}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

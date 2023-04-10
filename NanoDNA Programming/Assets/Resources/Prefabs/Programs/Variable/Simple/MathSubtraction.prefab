@@ -541,6 +541,7 @@ GameObject:
   - component: {fileID: -2310885167832216146}
   - component: {fileID: 5157576286947501022}
   - component: {fileID: 4174486723315620076}
+  - component: {fileID: 6003602430701510039}
   m_Layer: 0
   m_Name: MathSubtraction
   m_TagString: Untagged
@@ -735,6 +736,18 @@ MonoBehaviour:
       data: 
       character: {fileID: 0}
       refID: 0
+--- !u!225 &6003602430701510039
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849765539173945905}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7862957227738174024
 GameObject:
   m_ObjectHideFlags: 0
