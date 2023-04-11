@@ -17,6 +17,19 @@ namespace DNAMathAnimation
             z,
         }
 
+        public static int getFrameNumber (float elapsedTime)
+        {
+            if (Application.targetFrameRate == -1)
+            {
+                //Choose 60 
+                return Mathf.FloorToInt(60 * elapsedTime);
+            } else
+            {
+                return Mathf.FloorToInt(Application.targetFrameRate * elapsedTime);
+            }
+           
+        }
+
         //Alright Well I can't tell what is happening 
 
         //Maybe pass initial position inside and keep calling it and stack the additions?

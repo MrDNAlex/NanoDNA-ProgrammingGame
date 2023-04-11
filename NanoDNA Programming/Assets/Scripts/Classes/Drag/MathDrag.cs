@@ -95,6 +95,6 @@ public class MathDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         //So the glitch is being caused by the text for lines being used updating, it updates all the position of the UI, but it looks like we can hide this glitch by making this animation faster
         // StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 300, 0, false));
 
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, 300, 0, false));
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, DNAMathAnim.getFrameNumber(2.5f), 0, false));
     }
 }

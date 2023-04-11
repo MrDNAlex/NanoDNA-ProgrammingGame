@@ -249,7 +249,7 @@ public class ProgramLine : MonoBehaviour
 
         //Animate
 
-        yield return StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(ProgramUI.UI.GetChild(0), new Vector3(-1f * ProgramUI.UI.GetChild(0).GetComponent<RectTransform>().sizeDelta.x, 0, 0), 200, 0, true));
+        yield return StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(ProgramUI.UI.GetChild(0), new Vector3(-1f * ProgramUI.UI.GetChild(0).GetComponent<RectTransform>().sizeDelta.x, 0, 0), DNAMathAnim.getFrameNumber(1.5f), 0, true));
 
        // yield return new WaitUntil();
 

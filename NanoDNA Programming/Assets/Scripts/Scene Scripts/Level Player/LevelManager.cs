@@ -147,7 +147,7 @@ public class LevelManager : MonoBehaviour
                 //send error message
                 Debug.Log("Your program is too long!");
 
-                StartCoroutine(DNAMathAnim.animateShake(usedLineLength, 500));
+                StartCoroutine(DNAMathAnim.animateShake(usedLineLength, DNAMathAnim.getFrameNumber(3f)));
 
                 //Spawn Text box
 

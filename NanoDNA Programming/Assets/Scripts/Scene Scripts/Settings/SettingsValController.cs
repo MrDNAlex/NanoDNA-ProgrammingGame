@@ -65,7 +65,7 @@ public class SettingsValController : MonoBehaviour
 
         parent.localPosition = startPos;
 
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(parent, currentPos, 150, 1, true));
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(parent, currentPos, DNAMathAnim.getFrameNumber(1f), 1, true));
     }
 
     void setColour()

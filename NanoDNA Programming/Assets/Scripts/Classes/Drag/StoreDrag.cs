@@ -101,14 +101,13 @@ public class StoreDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         }
 
         //So the glitch is being caused by the text for lines being used updating, it updates all the position of the UI, but it looks like we can hide this glitch by making this animation faster
-        // StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(transform, lastPos, 300, 0, false));
 
         StartCoroutine(animateReturn());
     }
 
     IEnumerator animateReturn ()
     {
-        yield return StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(copy.transform, lastPos, 300, 0, false));
+        yield return StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(copy.transform, lastPos, DNAMathAnim.getFrameNumber(2.5f), 0, false));
         Destroy(copy);
         transform.GetComponent<CanvasGroup>().alpha = 1;
     }
