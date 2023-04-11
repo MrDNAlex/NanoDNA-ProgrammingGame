@@ -52,6 +52,8 @@ public class SettingsScene : MonoBehaviour
     void Start()
     {
 
+        Application.targetFrameRate = 60;
+
         //Create a default
         PlayerSettings.LoadSettings(SaveManager.loadPlaySettings());
 

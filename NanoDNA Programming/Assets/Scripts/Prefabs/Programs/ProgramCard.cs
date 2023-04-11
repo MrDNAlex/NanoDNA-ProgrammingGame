@@ -66,7 +66,6 @@ public class ProgramCard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OnDemandRendering.renderFrameInterval = 12;
         
     }
 

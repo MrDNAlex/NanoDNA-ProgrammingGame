@@ -26,7 +26,6 @@ public class StoreBtn : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OnDemandRendering.renderFrameInterval = 12;
     }
 
     public void setUI ()

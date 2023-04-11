@@ -25,7 +25,6 @@ public class MouseOverDetect : MonoBehaviour
     
     private void Awake()
     {
-        OnDemandRendering.renderFrameInterval = 12;
     }
 
     void Start()
