@@ -89,13 +89,13 @@ public class ProgressBar : MonoBehaviour
                 slider.value = value;
                 break;
             case FillType.Linear:
-                StartCoroutine(DNAMathAnim.animateLinearSliderFill(slider, value, 200));
+                StartCoroutine(DNAMathAnim.animateLinearSliderFill(slider, value, DNAMathAnim.getFrameNumber(1)));
                 break;
             case FillType.Sinusoidal:
-                StartCoroutine(DNAMathAnim.animateSineSliderFill(slider, value, 200));
+                StartCoroutine(DNAMathAnim.animateSineSliderFill(slider, value, DNAMathAnim.getFrameNumber(1)));
                 break;
             case FillType.Cosinusoidal:
-                StartCoroutine(DNAMathAnim.animateCosineSliderFill(slider, value, 200));
+                StartCoroutine(DNAMathAnim.animateCosineSliderFill(slider, value, DNAMathAnim.getFrameNumber(1)));
                 break;
         }
 

@@ -65,7 +65,7 @@ public class DragController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
                         animating = true;
                         updateRender = true;
-                        StartCoroutine(animateCosinusoidalRelocationLocal(iChild, lastPos, 100, 1, true, true, UIObject.GetSiblingIndex()));
+                        StartCoroutine(animateCosinusoidalRelocationLocal(iChild, lastPos, DNAMathAnim.getFrameNumber(1), 1, true, true, UIObject.GetSiblingIndex()));
                         lastPos = iPos;
 
                     }
