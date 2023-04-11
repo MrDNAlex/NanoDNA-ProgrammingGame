@@ -107,7 +107,7 @@ public class StoreDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     IEnumerator animateReturn ()
     {
-        yield return StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(copy.transform, lastPos, DNAMathAnim.getFrameNumber(2.5f), 0, false));
+        yield return StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(copy.transform, lastPos, DNAMathAnim.getFrameNumber(1f), 0, false));
         Destroy(copy);
         transform.GetComponent<CanvasGroup>().alpha = 1;
     }

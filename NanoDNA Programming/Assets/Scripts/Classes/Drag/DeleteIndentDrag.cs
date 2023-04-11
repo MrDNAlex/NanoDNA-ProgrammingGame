@@ -86,7 +86,7 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
             {
                 transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.setSize(transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.size);
 
-                StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, DNAMathAnim.getFrameNumber(1.5f), 0, false));
+                StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, DNAMathAnim.getFrameNumber(1f), 0, false));
             }
         }
     }
