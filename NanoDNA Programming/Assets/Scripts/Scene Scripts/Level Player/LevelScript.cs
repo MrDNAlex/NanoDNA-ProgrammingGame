@@ -74,6 +74,9 @@ public class LevelScript : MonoBehaviour
 
     private void Awake()
     {
+
+        Application.targetFrameRate = 60;
+
         PlayerSettings.LoadSettings(SaveManager.loadPlaySettings());
         Scripts.levelScript = this;
         lang = PlayerSettings.language;
