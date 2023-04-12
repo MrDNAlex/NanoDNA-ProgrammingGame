@@ -52,19 +52,19 @@ public class StoreBtn : MonoBehaviour
         switch (tag)
         {
             case  ActionType.Movement:
-                path = "Images/UIDesigns/StoreSections/Movement";
+                path = "Images/UIDesigns/StoreSections/MoveTab";
                 break;
             // case 1:
             //   path = "Images/UIDesigns/StoreSections/Math";
             //  break;
             case ActionType.Logic:
-                path = "Images/UIDesigns/StoreSections/Logic";
+                path = "Images/UIDesigns/StoreSections/LogicTab";
                 break;
             case ActionType.Variable:
-                path = "Images/UIDesigns/StoreSections/Variable";
+                path = "Images/UIDesigns/StoreSections/VariableTab";
                 break;
             case ActionType.Action:
-                path = "Images/UIDesigns/StoreSections/Action";
+                path = "Images/UIDesigns/StoreSections/ActionTab";
                 break;
         }
 

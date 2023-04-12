@@ -84,7 +84,7 @@ public class StoreScript : MonoBehaviour
             Content.addChild(storeSecBtn(tag));
         }
 
-        Content.setSpacingFlex(0.1f, 1);
+       // Content.setSpacingFlex(0.1f, 1);
 
         setImage(StoreHeader.UI, PlayerSettings.colourScheme.getSecondary(true));
     }

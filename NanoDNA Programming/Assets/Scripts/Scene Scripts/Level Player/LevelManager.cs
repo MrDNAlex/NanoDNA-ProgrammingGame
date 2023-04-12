@@ -57,6 +57,7 @@ public class LevelManager : MonoBehaviour
     public int usedLines = 0;
     public int maxItems = 0;
     public int itemsCollect = 0;
+    public bool inCompleteArea;
 
     bool tryComplete;
 
@@ -137,59 +138,77 @@ public class LevelManager : MonoBehaviour
 
     }
 
-    public void completeLevel()
+    public bool noPanelOpen()
     {
-        //Check if max line num is exceeded
-        if (tryComplete == false)
+        if (Camera.main.transform.GetChild(0).GetChild(2).childCount == 0)
         {
-            if (usedLines > maxLines)
-            {
-                //send error message
-                Debug.Log("Your program is too long!");
-
-                StartCoroutine(DNAMathAnim.animateShake(usedLineLength, DNAMathAnim.getFrameNumber(1.5f)));
-
-                //Spawn Text box
-
-            }
-            else
-            {
-                complete.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
-
-                tryComplete = true;
-
-                //Run final program
-                Scripts.programSection.runFinalProgram();
-            }
+            return true;
         }
         else
         {
-            tryComplete = false;
+            return false;
+        }
+    }
 
-            //Stop all coroutines
-            StopAllCoroutines();
-
-            Scripts.programSection.StopAllCoroutines();
-
-            //Set all characters to initial position
-            foreach (Transform child in charHolder.transform)
+    public void completeLevel()
+    {
+        if (noPanelOpen())
+        {
+            //Check if max line num is exceeded
+            if (tryComplete == false)
             {
-                if (child.GetComponent<CharData>() != null)
+                if (usedLines > maxLines)
                 {
-                    child.localPosition = child.GetComponent<CharData>().initPos;
+                    //send error message
+                    Debug.Log("Your program is too long!");
+
+                    StartCoroutine(DNAMathAnim.animateShake(usedLineLength, DNAMathAnim.getFrameNumber(1f)));
+
+                    //Spawn Text box
+
                 }
                 else
                 {
-                    //Make interactive appear again
-                    child.gameObject.SetActive(true);
+                    //complete.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
+
+                    // UIHelper.setImage(complete.transform.GetChild(0), "Images/UIDesigns/ResetButton");
+                    InfoPanelController.genPanel(InfoPanelType.Complete);
+
+                    tryComplete = true;
+
+                    //Run final program
+                   // Scripts.programSection.runFinalProgram();
                 }
             }
+            else
+            {
+                tryComplete = false;
 
-            UIHelper.setText(complete.transform.GetChild(0), UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
+                //Stop all coroutines
+                StopAllCoroutines();
 
-            updateConstraints();
+                Scripts.programSection.StopAllCoroutines();
+
+                //Set all characters to initial position
+                foreach (Transform child in charHolder.transform)
+                {
+                    if (child.GetComponent<CharData>() != null)
+                    {
+                        child.localPosition = child.GetComponent<CharData>().initPos;
+                    }
+                    else
+                    {
+                        //Make interactive appear again
+                        child.gameObject.SetActive(true);
+                    }
+                }
+
+                UIHelper.setImage(complete.transform.GetChild(0), "Images/UIDesigns/CompleteButton");
+
+                updateConstraints();
+            }
+            //If not start running the program
         }
-        //If not start running the program
     }
 
     public void loadLevel()

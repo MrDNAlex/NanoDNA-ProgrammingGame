@@ -34,6 +34,9 @@ public class ProgramSection : MonoBehaviour
     public bool undo;
     bool testRunning;
 
+    int charNum = 0;
+    int completeThread = 0;
+
     //public Scripts allScripts;
 
     PlayLevelWords UIwords = new PlayLevelWords();
@@ -61,10 +64,10 @@ public class ProgramSection : MonoBehaviour
         levelType = Scripts.levelManager.info.levelType;
 
         testBtn.onClick.AddListener(testProgram);
-       // saveBtn.onClick.AddListener(delegate
-      //  {
-       //     selectedCharData.displayProgram(true);
-       // });
+        // saveBtn.onClick.AddListener(delegate
+        //  {
+        //     selectedCharData.displayProgram(true);
+        // });
         //undoBtn.onClick.AddListener(undoProgram);
 
         testRunning = false;
@@ -166,7 +169,8 @@ public class ProgramSection : MonoBehaviour
                 }
             }
         }
-       virtualBox.displayAllVariables();
+        virtualBox.displayAllVariables();
+        completeThread++;
     }
 
     public string getUpdatedMathValue(ProgramAction action, ProgramVirtualBox virtualBox)
@@ -607,15 +611,46 @@ public class ProgramSection : MonoBehaviour
     }
     */
 
-    public void runFinalProgram()
+    public void completeLevel()
     {
+        StartCoroutine(compLevel());
+    }
+
+    public IEnumerator compLevel()
+    {
+        completeThread = 0;
+        yield return StartCoroutine(runFinalProgram());
+
+        //Function that awaits all threads to finish
+        StartCoroutine(awaitProgramFinish());
+    }
+
+    public IEnumerator awaitProgramFinish()
+    {
+        while (completeThread != charNum)
+        {
+            yield return null;
+        }
+
+        //Finish the level here 
+       // Debug.Log("Completed!");
+        Scripts.levelManager.finishLevel();
+    }
+
+    public IEnumerator runFinalProgram()
+    {
+        int chars = 0;
         foreach (Transform child in charHolder.transform)
         {
             if (child.GetComponent<CharData>() != null)
             {
+                chars++;
                 StartCoroutine(runCharProgram(child.GetComponent<CharData>()));
             }
+            yield return null;
         }
+
+        charNum = chars;
     }
 
     public void reload()

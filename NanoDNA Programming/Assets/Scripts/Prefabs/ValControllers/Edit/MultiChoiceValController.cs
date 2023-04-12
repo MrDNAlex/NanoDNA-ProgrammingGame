@@ -63,7 +63,7 @@ public class MultiChoiceValController : EditValController
 
         ParentTrans.localPosition = startPos;
 
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(1f), 1, true));
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(0.75f), 1, true));
 
         
     }

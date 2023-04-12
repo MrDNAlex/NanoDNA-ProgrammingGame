@@ -202,11 +202,11 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     {
         //Sinusoidal movement could be cool
         
-        float slope = (Cam.orthographicSize - (Cam.orthographicSize + Input.mouseScrollDelta.y)) / (50);
+        float slope = (Cam.orthographicSize - (Cam.orthographicSize + Input.mouseScrollDelta.y)) / (10);
 
         float intercept = Cam.orthographicSize;
 
-        for (int i = 0; i < 100; i ++)
+        for (int i = 0; i < 10; i ++)
         {
             orthoSize = slope * i + intercept;
 

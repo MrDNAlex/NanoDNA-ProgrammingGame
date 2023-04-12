@@ -51,6 +51,8 @@ public class Move : ProgramCard, IProgramCard
         program.setSpacingFlex(0.2f, 1);
 
         program.setAllPadSame(0.2f, 1);
+
+        
     }
 
     public void setInfo()
@@ -74,7 +76,7 @@ public class Move : ProgramCard, IProgramCard
 
         Texture2D image = Resources.Load(path) as Texture2D;
 
-        rectTrans.GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+        rectTrans.GetChild(1).GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
         if (action.moveData.refID != 0)
         {

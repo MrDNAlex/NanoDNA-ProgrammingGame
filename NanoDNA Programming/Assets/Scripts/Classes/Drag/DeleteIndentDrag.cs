@@ -18,12 +18,17 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
     bool firstRun = true;
 
     Vector3 mouseStart;
+    Vector3 contentStart;
 
-    
+    Transform contentTrans;
+
+    float contentVelocity;
+    float NewContentPos;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        contentTrans = transform.parent.parent.parent;
     }
 
     // Update is called once per frame
@@ -46,6 +51,7 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
         lastPos = transform.localPosition;
 
         mouseStart = Input.mousePosition;
+        contentStart = contentTrans.localPosition;
         
     }
 
@@ -54,6 +60,12 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
         Vector3 dist = mouseStart - Input.mousePosition;
 
         float NewPosx = lastPos.x - Mathf.Max(0, dist.x);
+
+        contentVelocity = ((contentStart.y - dist.y) - NewContentPos)/Time.deltaTime;
+
+        NewContentPos = contentStart.y - dist.y;
+
+        contentTrans.localPosition  = new Vector3(contentStart.x, NewContentPos, contentStart.y); 
 
         transform.localPosition = new Vector3(NewPosx, lastPos.y, lastPos.z);
 
@@ -86,9 +98,11 @@ public class DeleteIndentDrag : MonoBehaviour,  IDragHandler, IBeginDragHandler,
             {
                 transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.setSize(transform.parent.parent.GetComponent<ProgramLine>().ProgramUI.size);
 
-                StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, DNAMathAnim.getFrameNumber(1f), 0, false));
+                StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(transform, lastPos, DNAMathAnim.getFrameNumber(0.75f), 0, false));
             }
         }
+
+        contentTrans.parent.parent.GetComponent<ScrollRect>().velocity = new Vector2(0, contentVelocity);
     }
 
     public void updateOGPos ()

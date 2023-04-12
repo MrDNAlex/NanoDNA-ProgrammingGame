@@ -25,7 +25,7 @@ namespace DNAMathAnimation
                 return Mathf.FloorToInt(60 * elapsedTime);
             } else
             {
-                return Mathf.FloorToInt(Application.targetFrameRate * elapsedTime);
+                return Mathf.CeilToInt(Application.targetFrameRate * elapsedTime);
             }
            
         }

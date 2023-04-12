@@ -8,6 +8,8 @@ using UnityEngine.UI;
 using DNASaveSystem;
 using UnityEngine.Rendering;
 using DNAStruct;
+using DNAScenes;
+using UnityEngine.SceneManagement;
 
 public class LevelScript : MonoBehaviour
 {
@@ -30,6 +32,10 @@ public class LevelScript : MonoBehaviour
     [SerializeField] RectTransform gridView;
 
     [SerializeField] RectTransform store;
+
+    [SerializeField] Button exitButton;
+
+    [SerializeField] Button infoButton;
 
     [Header("Game Objects")]
 
@@ -55,11 +61,7 @@ public class LevelScript : MonoBehaviour
 
 
     [SerializeField] TileBase tile;
-
-    [SerializeField] Text resize;
     [SerializeField] public Text debug;
-    [SerializeField] Text complete;
-    [SerializeField] Text save;
 
     [SerializeField] Button changeLangBtn;
 
@@ -82,6 +84,9 @@ public class LevelScript : MonoBehaviour
         lang = PlayerSettings.language;
 
         setUI();
+
+        exitButton.onClick.AddListener(exitLevel);
+        infoButton.onClick.AddListener(infoPanel);
     }
 
     //Going to start needing a loading screen I think
@@ -158,6 +163,8 @@ public class LevelScript : MonoBehaviour
 
         Flex CompleteLevel = new Flex(Constraints.getChild(1), 1, Constraints);
 
+        Flex CompleteLevelImg = new Flex(CompleteLevel.getChild(0), 1, CompleteLevel);
+
         //Add Children
         VP.addChild(Scripts.programSection.flex);
 
@@ -216,6 +223,8 @@ public class LevelScript : MonoBehaviour
         InfoButton.setSize(new Vector2(InfoButton.size.y, InfoButton.size.y));
 
         InteracName.setSize(new Vector2(ControlHolder.size.x - (ControlHolder.size.y * 2) + (ControlHolder.size.y - ExitButton.size.y), InteracName.size.y));
+
+        CompleteLevelImg.setSize(new Vector2(CompleteLevel.size.y, CompleteLevel.size.y));
 
 
         //Set Images
@@ -345,7 +354,7 @@ public class LevelScript : MonoBehaviour
 
     public void setUIText()
     {
-        UIHelper.setText(complete.transform, UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
+        //UIHelper.setText(complete.transform, UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
 
       //  UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
 
@@ -355,5 +364,23 @@ public class LevelScript : MonoBehaviour
     {
         debug.text = str;
     }
+
+    void exitLevel ()
+    {
+        Debug.Log("Exit");
+        InfoPanelController.genPanel(InfoPanelType.Quit);
+        //SceneManager.LoadScene(SceneConversion.GetScene(Scenes.Menu));
+    }
+
+    void infoPanel ()
+    {
+        Debug.Log("Info");
+        InfoPanelController.genPanel(InfoPanelType.InfoTips);
+    }
+
+
+
+
+
 
 }

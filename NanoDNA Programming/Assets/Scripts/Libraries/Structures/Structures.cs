@@ -596,6 +596,25 @@ namespace DNAStruct
 
     }
 
+    [System.Serializable]
+    public enum InfoPanelType
+    {
+        Quit, 
+        Complete,
+        InfoTips,
+
+    }
+
+    [System.Serializable]
+    public struct InfoPanelData
+    {
+
+
+
+
+
+    }
+
 
 
 
