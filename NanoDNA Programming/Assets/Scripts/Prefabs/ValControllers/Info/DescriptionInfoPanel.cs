@@ -36,7 +36,6 @@ public class DescriptionInfoPanel : InfoPanelController
 
             this.icon = interacLedger.sprites.Find(c => c.id == info.id).sprite;
 
-
         }
     }
 
@@ -47,7 +46,7 @@ public class DescriptionInfoPanel : InfoPanelController
     int totalPages;
 
     UIWord linesUsed = new UIWord("Lines Used", "Lignes Utiliser");
-    
+
 
     List<CollectibleDesc> collectibles;
 
@@ -130,42 +129,40 @@ public class DescriptionInfoPanel : InfoPanelController
             closePanel();
         });
 
-        //Previous
-        Holder.getChild(1).GetChild(3).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+        if (totalPages > 1)
         {
-            //Sub to page number
-            pageNum--;
+            //Previous
+            Holder.getChild(1).GetChild(3).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
+            {
+                //Sub to page number
+                pageNum--;
 
-            //Clamp page number
-            pageNum = Mathf.Clamp(pageNum, 0, totalPages - 1);
+                //Clamp page number
+                pageNum = Mathf.Clamp(pageNum, 0, totalPages - 1);
 
-            //Set the page
-            setPage();
+                //Set the page
+                setPage();
 
-            //Update the page number
-            setText();
+                //Update the page number
+                setText();
+            });
 
+            //Next
+            Holder.getChild(1).GetChild(3).GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
+            {
+                //Add to page number
+                pageNum++;
 
-        });
+                //Clamp page number
+                pageNum = Mathf.Clamp(pageNum, 0, totalPages - 1);
 
-        //Next
-        Holder.getChild(1).GetChild(3).GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
-        {
-            //Add to page number
-            pageNum++;
+                //Set the page
+                setPage();
 
-            //Clamp page number
-            pageNum = Mathf.Clamp(pageNum, 0, totalPages - 1);
-
-            //Set the page
-            setPage();
-
-            //Update the page number
-            setText();
-
-
-        });
-
+                //Update the page number
+                setText();
+            });
+        }
     }
 
     void setText()
@@ -203,7 +200,7 @@ public class DescriptionInfoPanel : InfoPanelController
 
                 break;
         }
-      
+
     }
 
     void setUI()
@@ -223,17 +220,31 @@ public class DescriptionInfoPanel : InfoPanelController
         Flex Img = new Flex(ImgHolder.getChild(0), 1, ImgHolder);
 
         Flex Description = new Flex(PanelInfo.getChild(2), 2, PanelInfo);
-        Flex PageController = new Flex(PanelInfo.getChild(3), 1.5f, PanelInfo);
 
-        Flex PrevBTN = new Flex(PageController.getChild(0), 1, PageController);
-        Flex PrevBTNImg = new Flex(PrevBTN.getChild(1), 1, PrevBTN);
-        Flex PageNum = new Flex(PageController.getChild(1), 1, PageController);
-        Flex NextBTN = new Flex(PageController.getChild(2), 1, PageController);
-        Flex NextBTNImg = new Flex(NextBTN.getChild(1), 1, NextBTN);
+        Flex PageController = null;
+
+        Flex PrevBTN = null;
+        Flex PrevBTNImg = null;
+        Flex PageNum = null;
+        Flex NextBTN = null;
+        Flex NextBTNImg = null;
+
+        if (totalPages > 1)
+        {
+            PageController = new Flex(PanelInfo.getChild(3), 1.5f, PanelInfo);
+
+            PrevBTN = new Flex(PageController.getChild(0), 1, PageController);
+            PrevBTNImg = new Flex(PrevBTN.getChild(1), 1, PrevBTN);
+            PageNum = new Flex(PageController.getChild(1), 1, PageController);
+            NextBTN = new Flex(PageController.getChild(2), 1, PageController);
+            NextBTNImg = new Flex(NextBTN.getChild(1), 1, NextBTN);
+
+            PrevBTNImg.setSquare();
+            NextBTNImg.setSquare();
+        }
 
         Exit.setSquare();
-        PrevBTNImg.setSquare();
-        NextBTNImg.setSquare();
+
         Img.setSquare();
 
         PanelInfo.setSpacingFlex(0.5f, 1);
@@ -251,9 +262,7 @@ public class DescriptionInfoPanel : InfoPanelController
 
         if (totalPages <= 1)
         {
-            PrevBTN.UI.gameObject.SetActive(false);
-            PageNum.UI.gameObject.SetActive(false);
-            NextBTN.UI.gameObject.SetActive(false);
+            PanelInfo.getChild(3).gameObject.SetActive(false);
         }
 
     }
