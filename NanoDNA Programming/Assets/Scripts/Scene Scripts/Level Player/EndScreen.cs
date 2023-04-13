@@ -114,13 +114,13 @@ public class EndScreen : MonoBehaviour
 
         string lineUsed = LinesUsed.getWord(lang) + ": " + +linesUsed + " / " + maxLines;
 
-        UIHelper.setText(transform.GetChild(0), Result.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(0), Result.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getGiganticText());
 
-        UIHelper.setText(transform.GetChild(1).GetChild(0), itemCollected, PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(1).GetChild(0), itemCollected, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(transform.GetChild(1).GetChild(1), lineUsed, PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(1).GetChild(1), lineUsed, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(transform.GetChild(2).GetChild(0), Finish.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(2).GetChild(0), Finish.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
 
     }

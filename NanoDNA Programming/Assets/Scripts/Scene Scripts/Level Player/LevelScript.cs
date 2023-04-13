@@ -59,11 +59,13 @@ public class LevelScript : MonoBehaviour
     [SerializeField] Tilemap voidMap;
     [SerializeField] Tilemap backgroundMap;
 
-
     [SerializeField] TileBase tile;
     [SerializeField] public Text debug;
 
     [SerializeField] Button changeLangBtn;
+
+    [SerializeField] Button collectible;
+    [SerializeField] Button linesUsed;
 
     public Flex Background;
     public Flex MapView;
@@ -87,6 +89,9 @@ public class LevelScript : MonoBehaviour
 
         exitButton.onClick.AddListener(exitLevel);
         infoButton.onClick.AddListener(infoPanel);
+
+        collectible.onClick.AddListener(collectibleItems);
+        linesUsed.onClick.AddListener(lineUsed);
     }
 
     //Going to start needing a loading screen I think
@@ -376,6 +381,16 @@ public class LevelScript : MonoBehaviour
     {
         Debug.Log("Info");
         InfoPanelController.genPanel(InfoPanelType.InfoTips);
+    }
+
+    void collectibleItems()
+    {
+        InfoPanelController.genPanel(InfoPanelType.CollectibleDescription);
+    }
+
+    void lineUsed()
+    {
+        InfoPanelController.genPanel(InfoPanelType.LinesUsed);
     }
 
 

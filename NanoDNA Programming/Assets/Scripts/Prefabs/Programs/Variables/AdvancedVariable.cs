@@ -80,16 +80,16 @@ public class AdvancedVariable : ProgramCard, IProgramCard
 
         transform.GetChild(0).GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-        UIHelper.setText(transform.GetChild(0).GetChild(1).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(0).GetChild(1).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-        UIHelper.setText(transform.GetChild(1).GetChild(0), action.varActData.name, PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(transform.GetChild(1).GetChild(0), action.varActData.name, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
         //Check if type is bool, set image in that cases
         if (action.varActData.setData.refID != 0)
         {
 
             //Set the value to the name of the reference variable
-            UIHelper.setText(transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.varActData.setData.refID), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(3).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.varActData.setData.refID), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
             path = "unity_builtin_extra/UISprite";
 
@@ -116,7 +116,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
 
                 transform.GetChild(3).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
-                UIHelper.setText(transform.GetChild(3).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(transform.GetChild(3).GetChild(0), "", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
             }
             else
@@ -127,7 +127,7 @@ public class AdvancedVariable : ProgramCard, IProgramCard
 
                 transform.GetChild(3).GetComponent<Button>().image.sprite = null;
 
-                UIHelper.setText(transform.GetChild(3).GetChild(0), action.varActData.setData.value, PlayerSettings.colourScheme.getBlackTextColor());
+                UIHelper.setText(transform.GetChild(3).GetChild(0), action.varActData.setData.value, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
             }
         }
     }

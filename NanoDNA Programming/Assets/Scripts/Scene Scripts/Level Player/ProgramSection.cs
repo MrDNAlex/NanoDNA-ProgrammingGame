@@ -73,7 +73,7 @@ public class ProgramSection : MonoBehaviour
         testRunning = false;
 
 
-        UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor());
+        UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor(), PlayerSettings.getBigText());
 
     }
 
@@ -664,22 +664,22 @@ public class ProgramSection : MonoBehaviour
         {
             case ProgramSpeed.Op1:
                 speed = ProgramSpeed.Op2;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x2", PlayerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x2", PlayerSettings.colourScheme.getMainTextColor(), PlayerSettings.getBigText());
                 speedDivider = 2;
                 break;
             case ProgramSpeed.Op2:
                 speed = ProgramSpeed.Op3;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x4", PlayerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x4", PlayerSettings.colourScheme.getMainTextColor(), PlayerSettings.getBigText());
                 speedDivider = 4;
                 break;
             case ProgramSpeed.Op3:
                 speed = ProgramSpeed.Op4;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x8", PlayerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x8", PlayerSettings.colourScheme.getMainTextColor(), PlayerSettings.getBigText());
                 speedDivider = 8;
                 break;
             case ProgramSpeed.Op4:
                 speed = ProgramSpeed.Op1;
-                UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor());
+                UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor(), PlayerSettings.getBigText());
                 speedDivider = 1;
                 break;
         }

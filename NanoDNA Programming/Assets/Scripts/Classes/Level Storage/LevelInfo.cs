@@ -20,6 +20,8 @@ public class LevelInfo
 
     public List<VariableData> levelVariables = new List<VariableData>();
 
+    public InfoPanelData infoPanel;
+
     [Header("Automatic")]
     public string levelPath;
 

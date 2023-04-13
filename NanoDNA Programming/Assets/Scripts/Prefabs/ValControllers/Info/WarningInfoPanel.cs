@@ -102,11 +102,7 @@ public class WarningInfoPanel : InfoPanelController
         //Exit Button
         Holder.getChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
-            ParentTrans.gameObject.SetActive(false);
-
-            Destroy(this.gameObject);
-
-            Scripts.programManager.updateVariables();
+            closePanel();
         });
 
 
@@ -149,12 +145,12 @@ public class WarningInfoPanel : InfoPanelController
         {
             case InfoPanelType.Quit:
 
-                UIHelper.setText(Holder.getChild(1).GetChild(0), quitMessage.getWord(lang), PlayerSettings.colourScheme.textColorBlack);
+                UIHelper.setText(Holder.getChild(1).GetChild(0), quitMessage.getWord(lang), PlayerSettings.colourScheme.textColorBlack, PlayerSettings.getMediumText());
 
                 break;
             case InfoPanelType.Complete:
 
-                UIHelper.setText(Holder.getChild(1).GetChild(0), completeMessage.getWord(lang), PlayerSettings.colourScheme.textColorBlack);
+                UIHelper.setText(Holder.getChild(1).GetChild(0), completeMessage.getWord(lang), PlayerSettings.colourScheme.textColorBlack, PlayerSettings.getMediumText());
 
                 break;
         }

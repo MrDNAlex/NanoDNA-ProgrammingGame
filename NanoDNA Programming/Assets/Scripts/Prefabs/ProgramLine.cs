@@ -83,7 +83,7 @@ public class ProgramLine : MonoBehaviour
     {
         //Set the text to the correct number
 
-        UIHelper.setText(Line.getChild(0).GetChild(1), (Line.UI.GetSiblingIndex() + 1).ToString(), PlayerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(Line.getChild(0).GetChild(1), (Line.UI.GetSiblingIndex() + 1).ToString(), PlayerSettings.colourScheme.getAccentTextColor(), PlayerSettings.getMediumText());
 
     }
 

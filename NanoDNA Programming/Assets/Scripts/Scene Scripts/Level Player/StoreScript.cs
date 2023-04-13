@@ -58,13 +58,13 @@ public class StoreScript : MonoBehaviour
     {
         Store = new Flex(transform.GetComponent<RectTransform>(), 4f);
 
-        StoreHeader = new Flex(Store.getChild(0), 1, Store);
+        StoreHeader = new Flex(Store.getChild(0), 2, Store);
 
         Flex VP = new Flex(StoreHeader.getChild(0), 1, StoreHeader);
 
         Content = new Flex(VP.getChild(0), 1, VP);
 
-        Flex SV = new Flex(Store.getChild(1), 5, Store);
+        Flex SV = new Flex(Store.getChild(1), 8, Store);
 
         Flex GridVP = new Flex(SV.getChild(0), 1, SV);
 

@@ -91,6 +91,11 @@ public class LevelManager : MonoBehaviour
         complete.onClick.AddListener(completeLevel);
 
         loadLevel();
+
+      
+
+
+
     }
 
     // Update is called once per frame

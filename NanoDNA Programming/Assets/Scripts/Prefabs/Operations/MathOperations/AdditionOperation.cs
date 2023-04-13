@@ -50,21 +50,21 @@ public class AdditionOperation : MathOperations, IMathOperation
         //Set Value of Num 1
         if (operationInfo.refID1 != 0)
         {
-            UIHelper.setText(rectTrans.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(operationInfo.refID1), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(rectTrans.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(operationInfo.refID1), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
         else
         {
-            UIHelper.setText(rectTrans.GetChild(0).GetChild(0), operationInfo.value1, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(rectTrans.GetChild(0).GetChild(0), operationInfo.value1, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
 
         //Set Value of Num 2
         if (operationInfo.refID2 != 0)
         {
-            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(operationInfo.refID2), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(operationInfo.refID2), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
         else
         {
-            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), operationInfo.value2, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), operationInfo.value2, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
     }
 

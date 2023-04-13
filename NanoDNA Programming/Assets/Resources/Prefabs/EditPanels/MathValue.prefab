@@ -614,7 +614,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 60
     m_Alignment: 4
@@ -1065,7 +1065,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 50
     m_Alignment: 4
@@ -1147,7 +1147,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 60
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -1246,15 +1246,25 @@ MonoBehaviour:
     dir: 0
     value: 
     refID: 0
-  varData:
-    isPublic: 0
-    varType: 0
+  varActData:
+    newVar: 0
     name: 
-    value: 
-    charData: {fileID: 0}
-    id: 0
     refID: 0
-    mathType: 0
+    actionType: 0
+    setData:
+      isPublic: 0
+      varType: 0
+      value: 
+      charData: {fileID: 0}
+      id: 0
+      refID: 0
+    mathData:
+      value1: 
+      value2: 
+      refID1: 0
+      refID2: 0
+      varType: 0
+      operationType: 0
   actData:
     actionName: 0
     descriptor: 0
@@ -1276,6 +1286,7 @@ MonoBehaviour:
     type: 0
     varType: 0
   operationCard: {fileID: 0}
+  valueIndex: 0
 --- !u!1 &4722859994481343147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1785,7 +1796,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 4
@@ -1865,7 +1876,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 4
@@ -1947,7 +1958,7 @@ MonoBehaviour:
     m_FontStyle: 2
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 60
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2025,7 +2036,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 60
     m_Alignment: 4
@@ -2369,7 +2380,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 50
     m_Alignment: 4

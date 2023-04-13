@@ -258,7 +258,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 4
@@ -791,7 +791,7 @@ MonoBehaviour:
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
-    m_RichText: 1
+    m_RichText: 0
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
@@ -1127,7 +1127,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 4
@@ -1217,6 +1217,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c07b1d84ab75da46a3e518f82aa42f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentTrans: {fileID: 0}
+  actionInfo:
+    actionType: 0
+    movementName: 0
+    logicName: 0
+    variableName: 0
+    actionName: 0
+  progCard: {fileID: 0}
+  moveData:
+    dir: 0
+    value: 
+    refID: 0
+  varActData:
+    newVar: 0
+    name: 
+    refID: 0
+    actionType: 0
+    setData:
+      isPublic: 0
+      varType: 0
+      value: 
+      charData: {fileID: 0}
+      id: 0
+      refID: 0
+    mathData:
+      value1: 
+      value2: 
+      refID1: 0
+      refID2: 0
+      varType: 0
+      operationType: 0
+  actData:
+    actionName: 0
+    descriptor: 0
+    data: 
+    character: {fileID: 0}
+    refID: 0
+  lang: 0
+  varType: 0
+  value: 
+  isPub: 0
+  globalIndex: 0
+  OriginalPos: {x: 0, y: 0, z: 0}
+  VariableTypes: []
 --- !u!1 &7788111215721639999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1603,7 +1647,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 4

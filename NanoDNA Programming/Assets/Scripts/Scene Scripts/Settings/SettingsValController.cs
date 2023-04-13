@@ -216,7 +216,7 @@ public class SettingsValController : MonoBehaviour
 
         GameObject valDisp = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDispCard") as GameObject, parent.UI.GetChild(rowIndex).transform);
 
-        UIHelper.setText(valDisp.transform.GetChild(1), word.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(valDisp.transform.GetChild(1), word.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
         valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 

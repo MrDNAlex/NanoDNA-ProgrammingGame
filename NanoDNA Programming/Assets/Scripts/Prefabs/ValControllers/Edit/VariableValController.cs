@@ -195,11 +195,11 @@ public class VariableValController : EditValController
 
     void setText()
     {
-        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), LangDictionary.setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0), LangDictionary.variable.getWord(lang) + " (" + getVarType(varType) + ")", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0), LangDictionary.variable.getWord(lang) + " (" + getVarType(varType) + ")", PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), LangDictionary.setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
     }
 
     void setControls()

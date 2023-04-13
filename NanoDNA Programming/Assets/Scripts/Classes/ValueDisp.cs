@@ -80,16 +80,16 @@ public class ValueDisp : MonoBehaviour
     {
         if (singleVal)
         {
-            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
             this.varData = varData;
         } else
         {
-            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
            // Debug.Log(varData.value);
 
-            UIHelper.setText(transform.GetChild(1), varData.value.ToString(), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(1), varData.value.ToString(), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
             this.varData = varData;
         }

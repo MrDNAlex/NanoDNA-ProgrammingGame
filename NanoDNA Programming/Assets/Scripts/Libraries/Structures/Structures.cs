@@ -602,6 +602,9 @@ namespace DNAStruct
         Quit, 
         Complete,
         InfoTips,
+        CollectibleDescription,
+        LinesUsed,
+
 
     }
 

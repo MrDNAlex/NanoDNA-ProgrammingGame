@@ -5,7 +5,6 @@ using DNAStruct;
 using DNAMathAnimation;
 using FlexUI;
 
-
 public class InfoPanelController : MonoBehaviour
 {
     public Flex Parent;
@@ -46,17 +45,33 @@ public class InfoPanelController : MonoBehaviour
                 break;
             case InfoPanelType.InfoTips:
 
-                panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/InfoPanels/InfoPanel") as GameObject, panelParent.transform);
+                panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/InfoPanels/TipsPanel") as GameObject, panelParent.transform);
 
                 panel.GetComponent<ExplainInfoPanel>().setPanel(panelParent.transform, InfoPanelType.InfoTips);
                 break;
+            case InfoPanelType.CollectibleDescription:
+
+                panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/InfoPanels/ShortDescPanel") as GameObject, panelParent.transform);
+
+                panel.GetComponent<DescriptionInfoPanel>().setPanel(panelParent.transform, InfoPanelType.CollectibleDescription);
+                break;
+            case InfoPanelType.LinesUsed:
+                panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/InfoPanels/ShortDescPanel") as GameObject, panelParent.transform);
+
+                panel.GetComponent<DescriptionInfoPanel>().setPanel(panelParent.transform, InfoPanelType.LinesUsed);
+                break;
         }
-
-
 
     }
 
-   
+    public void closePanel()
+    {
+        ParentTrans.gameObject.SetActive(false);
+
+        Destroy(this.gameObject);
+
+        Scripts.programManager.updateVariables();
+    }
 
     private void OnDestroy()
     {

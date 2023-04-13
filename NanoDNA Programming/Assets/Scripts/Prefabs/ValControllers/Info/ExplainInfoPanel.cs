@@ -7,6 +7,7 @@ using FlexUI;
 using UnityEngine.UI;
 using DNAScenes;
 using UnityEngine.SceneManagement;
+using DNASaveSystem;
 
 public class ExplainInfoPanel : InfoPanelController
 {
@@ -20,7 +21,7 @@ public class ExplainInfoPanel : InfoPanelController
     int pageNum;
     int totalPages;
 
-
+    InfoPanelData data;
 
     // Start is called before the first frame update
     void Start()
@@ -36,55 +37,46 @@ public class ExplainInfoPanel : InfoPanelController
 
     public void setPanel(Transform parent, InfoPanelType type)
     {
+        try
+        {
+            this.panelType = type;
 
-        this.panelType = type;
-        //  VariableTypes.Add(LangDictionary.Text);
-        //  VariableTypes.Add(LangDictionary.Number);
-        //  VariableTypes.Add(LangDictionary.Decimal);
-        //  VariableTypes.Add(LangDictionary.Bool);
+            lang = PlayerSettings.language;
 
-        //   this.panelInfo = progCard.panelInfo;
-        //   this.actionInfo = progCard.actionInfo;
+            ParentTrans = parent;
 
-        //allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
+            //Load the info data from the level
+            data = SaveManager.loadJSON<LevelInfo>(CurrentLevelLoader.path, CurrentLevelLoader.name).infoPanel;
 
-        // this.progCard = progCard;
+            //Set Page number
+            totalPages = data.pages.Count;
+            pageNum = 0;
 
-        lang = PlayerSettings.language;
+            //SetUI and panel design
+            setUI();
 
-        ParentTrans = parent;
+            setColours();
 
-        //   varType = progCard.panelInfo.varType;
+            setControls();
 
-        //Copy existing Data
-        //  varActData = progCard.action.varActData;
+            //Handle Animation
 
-        //  moveData = progCard.action.moveData;
+            OriginalPos = ParentTrans.localPosition;
 
-        //  actData = progCard.action.actDa
-        //  ta;
+            Vector3 startPos = OriginalPos + new Vector3(0, -Screen.height, 0);
 
+            ParentTrans.localPosition = startPos;
 
+            StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(0.75f), 1, true));
 
+            //Set the panel
+            setPage();
 
-
-        //Load the info data from the level
-
-
-
-        setUI();
-
-        setColours();
-
-        setControls();
-
-        OriginalPos = ParentTrans.localPosition;
-
-        Vector3 startPos = OriginalPos + new Vector3(0, -Screen.height, 0);
-
-        ParentTrans.localPosition = startPos;
-
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(0.75f), 1, true));
+        } catch
+        {
+            closePanel();
+        }
+       
     }
 
     void setColours()
@@ -95,6 +87,7 @@ public class ExplainInfoPanel : InfoPanelController
         UIHelper.setImage(Holder.getChild(1), PlayerSettings.colourScheme.getMain());
 
         UIHelper.setImage(Holder.getChild(1).GetChild(2).GetChild(0).GetChild(1), "Images/UIDesigns/Last");
+
         UIHelper.setImage(Holder.getChild(1).GetChild(2).GetChild(2).GetChild(1), "Images/UIDesigns/Next");
 
         //UIHelper.setImage(Holder.getChild(1).GetChild(1), PlayerSettings.colourScheme.getSecondary());
@@ -120,25 +113,72 @@ public class ExplainInfoPanel : InfoPanelController
         //Exit Button
         Holder.getChild(0).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
-            ParentTrans.gameObject.SetActive(false);
-
-            Destroy(this.gameObject);
-
-            Scripts.programManager.updateVariables();
+            closePanel();
         });
 
+        //Previous
         Holder.getChild(1).GetChild(2).GetChild(0).GetComponent<Button>().onClick.AddListener(delegate
         {
-            //reload the image and description associated with it
+            //Sub to page number
+            pageNum--;
+
+            //Clamp page number
+            pageNum = Mathf.Clamp(pageNum, 0, data.pages.Count - 1);
+
+            //Set the page
+            setPage();
+
+            //Update the page number
             setText();
+
+            if (pageNum != totalPages - 1)
+            {
+                UIHelper.setImage(Holder.getChild(1).GetChild(2).GetChild(2).GetChild(1), "Images/UIDesigns/Next");
+            }
+        });
+
+        //Next
+        Holder.getChild(1).GetChild(2).GetChild(2).GetComponent<Button>().onClick.AddListener(delegate
+        {
+            //Close if at the end
+            if (pageNum == totalPages - 1)
+            {
+                //Close panel
+                closePanel();
+            }
+
+            //Add to page number
+            pageNum++;
+
+            //Clamp page number
+            pageNum = Mathf.Clamp(pageNum, 0, data.pages.Count - 1);
+
+            //Set the page
+            setPage();
+
+            //Update the page number
+            setText();
+
+            //Update the Next Button
+            if (pageNum == totalPages - 1)
+            {
+                UIHelper.setImage(Holder.getChild(1).GetChild(2).GetChild(2).GetChild(1), "Images/UIDesigns/CompleteButton");
+            } 
         });
 
     }
 
     void setText()
     {
-        string pages = pageNum + "/" + totalPages;
-        UIHelper.setText(Holder.getChild(1).GetChild(2).GetChild(1), pages, PlayerSettings.colourScheme.getBlackTextColor());
+        string pages = (pageNum+1) + "/" + totalPages;
+        UIHelper.setText(Holder.getChild(1).GetChild(2).GetChild(1), pages, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
+    }
+
+    void setPage ()
+    {
+        UIHelper.setImage(Holder.getChild(1).GetChild(0), data.getImagePage(pageNum));
+
+        UIHelper.setText(Holder.getChild(1).GetChild(1), data.getDescription(pageNum), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
     }
 
     void setUI()
@@ -162,12 +202,9 @@ public class ExplainInfoPanel : InfoPanelController
         Flex NextBTN = new Flex(PageController.getChild(2), 1, PageController);
         Flex NextBTNImg = new Flex(NextBTN.getChild(1), 1, NextBTN);
 
-
         Exit.setSquare();
         PrevBTNImg.setSquare();
         NextBTNImg.setSquare();
-
-        
 
         PanelInfo.setSpacingFlex(0.5f, 1);
 
@@ -182,10 +219,13 @@ public class ExplainInfoPanel : InfoPanelController
 
         Parent.setSize(new Vector2(Screen.height * 0.7f * 1.3f, Screen.height * 0.7f));
 
+        if (totalPages <= 1)
+        {
+            PrevBTN.UI.gameObject.SetActive(false);
+            PageNum.UI.gameObject.SetActive(false);
+            NextBTN.UI.gameObject.SetActive(false);
+        }
+
     }
-
-
-
-
 
 }
