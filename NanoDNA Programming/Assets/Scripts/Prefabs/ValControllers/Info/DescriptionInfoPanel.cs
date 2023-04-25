@@ -19,14 +19,14 @@ public class DescriptionInfoPanel : InfoPanelController
         public int count;
         public Sprite icon;
 
-        public void setInfo(InteractableInfo info, List<InteractableInfo> list, InteractableLedger interacLedger)
+        public void setInfo(CollectableInfo info, List<CollectableInfo> list, CollectableLedger interacLedger)
         {
             this.id = info.id;
             this.name = info.data.name;
 
             //Loop through to get count
             this.count = 0;
-            foreach (InteractableInfo collects in list)
+            foreach (CollectableInfo collects in list)
             {
                 if (this.id == collects.id)
                 {
@@ -40,12 +40,13 @@ public class DescriptionInfoPanel : InfoPanelController
     }
 
 
-    [SerializeField] public InteractableLedger interacLedger;
+    [SerializeField] public CollectableLedger interacLedger;
 
     int pageNum;
     int totalPages;
 
     UIWord linesUsed = new UIWord("Lines Used", "Lignes Utiliser");
+    UIWord total = new UIWord("Total", "Total");
 
 
     List<CollectibleDesc> collectibles;
@@ -183,7 +184,7 @@ public class DescriptionInfoPanel : InfoPanelController
                 UIHelper.setText(Holder.getChild(1).GetChild(0), collectibles[pageNum].name, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
                 //Display count
-                string count = "Total Count: " + collectibles[pageNum].count;
+                string count = total.getWord(lang) + ": " + collectibles[pageNum].count;
 
                 UIHelper.setText(Holder.getChild(1).GetChild(2), count, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
                 break;
@@ -194,7 +195,7 @@ public class DescriptionInfoPanel : InfoPanelController
                 UIHelper.setText(Holder.getChild(1).GetChild(0), linesUsed.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
                 //Display count
-                string message = "Lines used : " + Scripts.levelManager.usedLines + " / " + Scripts.levelManager.maxLines;
+                string message = linesUsed.getWord(lang) + ": " + Scripts.levelManager.usedLines + " / " + Scripts.levelManager.maxLines;
 
                 UIHelper.setText(Holder.getChild(1).GetChild(2), message, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
@@ -275,13 +276,13 @@ public class DescriptionInfoPanel : InfoPanelController
         LevelInfo level = SaveManager.loadJSON<LevelInfo>(CurrentLevelLoader.path, CurrentLevelLoader.name);
 
 
-        List<InteractableInfo> interactables = new List<InteractableInfo>();
+        List<CollectableInfo> interactables = new List<CollectableInfo>();
 
         //Filter for all unique
-        foreach (InteractableInfo data in level.interacInfo)
+        foreach (CollectableInfo data in level.collectInfo)
         {
             bool contained = false;
-            foreach (InteractableInfo saved in interactables)
+            foreach (CollectableInfo saved in interactables)
             {
                 if (data.id == saved.id)
                 {
@@ -298,11 +299,11 @@ public class DescriptionInfoPanel : InfoPanelController
         collectibles = new List<CollectibleDesc>();
 
         //Create new list of collectibles
-        foreach (InteractableInfo interacs in interactables)
+        foreach (CollectableInfo interacs in interactables)
         {
             CollectibleDesc collect = new CollectibleDesc();
 
-            collect.setInfo(interacs, level.interacInfo, interacLedger);
+            collect.setInfo(interacs, level.collectInfo, interacLedger);
 
             collectibles.Add(collect);
         }

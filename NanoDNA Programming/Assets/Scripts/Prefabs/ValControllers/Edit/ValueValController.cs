@@ -208,7 +208,7 @@ public class ValueValController : EditValController
             {
                 GameObject variable = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDisp") as GameObject, Content.UI.transform);
 
-                variable.GetComponent<ValueDisp>().setUI();
+                //variable.GetComponent<ValueDisp>().setUI();
 
                 variable.GetComponent<ValueDisp>().setInfo(varData);
 

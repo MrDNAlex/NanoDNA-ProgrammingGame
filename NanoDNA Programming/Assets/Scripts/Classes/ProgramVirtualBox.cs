@@ -5,6 +5,8 @@ using DNAStruct;
 
 public class ProgramVirtualBox : MonoBehaviour
 {
+    //Maybe make this so that it inherits to save a bunch of lines
+
     //Kind of like a virtual box that stores the programs variables
 
     public List<VariableData> allVariables = new List<VariableData>();
@@ -69,12 +71,34 @@ public class ProgramVirtualBox : MonoBehaviour
         }
     }
 
+    public void activateSignal (SensorSignal signal)
+    {
+        //Make collectable items a unique class that inherits from interactable
+        //Loop through all interactables and other object types that will be affected
+
+        foreach (Transform child in Scripts.programSection.charHolder.transform)
+        {
+            if (child.GetComponent<CollectableData>() != null)
+            {
+                child.GetComponent<CollectableData>().receiveSignal(signal);
+            } else if (child.GetComponent<Interactable>() != null)
+            {
+                child.GetComponent<Interactable>().receiveSignal(signal);
+            }
+
+        }
+
+    }
+
+    public void deactivateSignal ()
+    {
+
+    }
+
     public void updateVariables()
     {
         //Delete allVariables
         allVariables = new List<VariableData>();
-
-
 
         foreach (VariableData var in sensorVariables)
         {

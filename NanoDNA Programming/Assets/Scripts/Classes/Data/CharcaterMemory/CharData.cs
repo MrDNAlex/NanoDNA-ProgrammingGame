@@ -123,4 +123,12 @@ public class CharData : MonoBehaviour
         charID = Random.Range(0, 1000000);
     }
 
+    public void setInit ()
+    {
+        transform.localPosition = initPos;
+        this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        this.transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
+
 }

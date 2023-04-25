@@ -17,14 +17,17 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] CharLedger charLedger;
     [SerializeField] TileLedger Tileledger;
-    [SerializeField] InteractableLedger interacLedger;
+    [SerializeField] CollectableLedger collectLedger;
     [SerializeField] EndLedger endLedger;
     [SerializeField] SensorLedger sensorLedger;
+    [SerializeField] InteractableLedger interacLedger;
 
     [SerializeField] GameObject charPrefab;
     [SerializeField] GameObject interacPrefab;
     [SerializeField] GameObject endGoalPrefab;
     [SerializeField] GameObject soundSensorPrefab;
+    [SerializeField] GameObject motionSensorPrefab;
+    [SerializeField] GameObject doorPrefab;
 
     [SerializeField] GameObject constraints;
 
@@ -131,7 +134,7 @@ public class LevelManager : MonoBehaviour
         {
             if (child.gameObject.activeSelf == false)
             {
-                if (child.GetComponent<InteractableData>() != null)
+                if (child.GetComponent<CollectableData>() != null)
                 {
                     itemsCollect++;
                 }
@@ -170,7 +173,6 @@ public class LevelManager : MonoBehaviour
                     StartCoroutine(DNAMathAnim.animateShake(usedLineLength, DNAMathAnim.getFrameNumber(1f)));
 
                     //Spawn Text box
-
                 }
                 else
                 {
@@ -237,6 +239,9 @@ public class LevelManager : MonoBehaviour
         //Set Characters
         setCharacters(info.charInfo);
 
+        //Set Collectables
+        setCollectables(info.collectInfo);
+
         //Set Interactables
         setInteractables(info.interacInfo);
 
@@ -253,7 +258,7 @@ public class LevelManager : MonoBehaviour
         usedProgress.initProgressBar(maxLines + 1);
 
         //Item Icon
-        usedLineLength.parent.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite = interacLedger.sprites.Find(c => c.id == info.interacInfo[0].id).sprite;
+        usedLineLength.parent.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite = collectLedger.sprites.Find(c => c.id == info.collectInfo[0].id).sprite;
 
         Scripts.programManager.addLevelVariables(info.levelVariables);
 
@@ -329,24 +334,45 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void setInteractables(List<InteractableInfo> interac)
+    public void setCollectables(List<CollectableInfo> collect)
     {
 
-        foreach (InteractableInfo info in interac)
+        foreach (CollectableInfo info in collect)
         {
             //Instantiate new Interactable
             GameObject newInterac = Instantiate(interacPrefab, charHolder.transform);
 
-            //Set Interac Data
-            newInterac.GetComponent<InteractableData>().name = info.data.name;
-            newInterac.GetComponent<InteractableData>().initPos = info.data.initPos;
-            newInterac.GetComponent<InteractableData>().collectible = info.data.collectible;
+            //Set info
+            newInterac.GetComponent<CollectableData>().setInfo(info);
+
+            //Set Sprite
+            newInterac.GetComponent<SpriteRenderer>().sprite = collectLedger.sprites.Find(c => c.id == info.id).sprite;
+
+        }
+    }
+
+    public void setInteractables (List<InteractableInfo> interac)
+    {
+        foreach (InteractableInfo info in interac)
+        {
+            GameObject newInterac = null;
+            switch (info.data.type)
+            {
+                case Interactable.InteractableType.Door:
+                    newInterac = Instantiate(doorPrefab, charHolder.transform);
+                    break;
+            }
+
+            Interactable interacRef = newInterac.GetComponent<Interactable>();
+
+            interacRef.setInfo(info, interacLedger);
 
             //Set Sprite
             newInterac.GetComponent<SpriteRenderer>().sprite = interacLedger.sprites.Find(c => c.id == info.id).sprite;
 
-            //Set initial position
-            newInterac.transform.localPosition = info.data.initPos;
+
+
+            // GameObject newInterac = Instantiate
         }
     }
 
@@ -381,9 +407,11 @@ public class LevelManager : MonoBehaviour
                 case LevelSensor.SensorType.SoundSensor:
                     sensor = Instantiate(soundSensorPrefab, charHolder.transform);
                     break;
+                case LevelSensor.SensorType.MotionSensor:
+                    sensor = Instantiate(motionSensorPrefab, charHolder.transform);
+                    break;
             }
-
-            sensor.GetComponent<LevelSensor>().iSensor.setInfo(sens.data);
+            sensor.GetComponent<LevelSensor>().setInfo(sens.data);
 
             sensor.GetComponent<SpriteRenderer>().sprite = sensorLedger.sensors.Find(s => s.id == sens.id).sprite;
         }

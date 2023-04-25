@@ -94,7 +94,7 @@ public class SimpleVariable : ProgramCard, IProgramCard
 
                 image = Resources.Load(path) as Texture2D;
 
-                transform.GetChild(2).GetComponent<Button>().image.sprite = null;
+                UIHelper.setImage(transform.GetChild(2), "Images/Programs/VariableButton");
 
                 UIHelper.setText(transform.GetChild(2).GetChild(0), action.varActData.setData.value, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
             }

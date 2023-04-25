@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e134f9af85fb1949adc82c2984e438e, type: 3}
-  m_Name: Ledger
+  m_Script: {fileID: 11500000, guid: d55eef12ac3819246875fc7672d4e70e, type: 3}
+  m_Name: Doo3 1
   m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 11400000, guid: 3e1f5ae6ef51cf04ead37f1172eb45d8, type: 2}
-  - {fileID: 11400000, guid: 11968753ad9babc49b6463748f3318dd, type: 2}
-  validate: 0
+  sprite: {fileID: -1190108096, guid: 8eb3aeeb57869fa4eb6eba2872263088, type: 3}
+  id: Door_1

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class InteractableDataInfo 
+public class CollectableDataInfo 
 {
 
     public string name;
@@ -12,21 +12,19 @@ public class InteractableDataInfo
 
     public bool collectible;
 
+    public List<int> sensorSignalIDs;
     //Maybe eventuall add List of variables/accessible data
 
     //Maybe add a program that can be edited or not edited
 
-    public InteractableDataInfo (InteractableData data)
+    public CollectableDataInfo (CollectableData data)
     {
 
         this.name = data.name;
         this.initPos = data.initPos;
         this.collectible = data.collectible;
+        this.sensorSignalIDs = data.sensorSignalIDs;
 
     }
     
-
-
-
-
 }

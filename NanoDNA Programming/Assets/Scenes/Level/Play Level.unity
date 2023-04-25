@@ -4407,13 +4407,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charLedger: {fileID: 11400000, guid: 1aa1af6e311111e4ba4bd07d7a0991c9, type: 2}
   Tileledger: {fileID: 11400000, guid: e4aa60f931b4f50408e352c9727dc1ec, type: 2}
-  interacLedger: {fileID: 11400000, guid: eee8f7fbc7f4f6c4e8639a2c6e463002, type: 2}
+  collectLedger: {fileID: 11400000, guid: eee8f7fbc7f4f6c4e8639a2c6e463002, type: 2}
   endLedger: {fileID: 11400000, guid: 7bbd7ba32dad6ab40a6b77f178c16d28, type: 2}
   sensorLedger: {fileID: 11400000, guid: 1989ffced046ec5439fccd7b17e15d3b, type: 2}
+  interacLedger: {fileID: 11400000, guid: fb4cc75f2ca4e2347b36ef05ff07ef27, type: 2}
   charPrefab: {fileID: 8606453985841557872, guid: e4b775ca1e6d23941ad7486a70d6bd5d, type: 3}
   interacPrefab: {fileID: 5035113501127521568, guid: 86126a51968630345bdbd753ce33490d, type: 3}
   endGoalPrefab: {fileID: 6102789913578057497, guid: 428b232344f892b4e8088812b4d8ac56, type: 3}
   soundSensorPrefab: {fileID: 6102789913578057497, guid: 953464001034bb246871e267f613eae7, type: 3}
+  motionSensorPrefab: {fileID: 6102789913578057497, guid: fce432e478729054ebba914b6faf745d, type: 3}
+  doorPrefab: {fileID: 5035113501127521568, guid: db231c81c1115bc4db63c91b1e693813, type: 3}
   constraints: {fileID: 1302882784}
   collectedProgress: {fileID: 8091380737069911189}
   usedProgress: {fileID: 1071756375}
@@ -4444,8 +4447,9 @@ MonoBehaviour:
         name: 
         pos: {x: 0, y: 0, z: 0}
         size: {x: 0, y: 0, z: 0}
-    sensorInfo: []
     interacInfo: []
+    sensorInfo: []
+    collectInfo: []
     charInfo: []
     voidTiles: []
     backgroundTiles: []

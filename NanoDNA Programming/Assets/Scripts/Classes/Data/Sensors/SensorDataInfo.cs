@@ -16,6 +16,8 @@ public class SensorDataInfo
 
     public List<VariableData> variables;
 
+    public List<SensorSignal> signals;
+
     public LevelSensor.SensorType type;
 
     public bool eraseOnExit;
@@ -28,6 +30,7 @@ public class SensorDataInfo
         this.size = data.size;
         this.sensorSize = data.sensorSize;
         this.variables = data.variables;
+        this.signals = data.signals;
         this.type = data.type;
         this.eraseOnExit = data.eraseOnExit;
     }

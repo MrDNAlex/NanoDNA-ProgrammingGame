@@ -273,6 +273,8 @@ public class MultiChoiceValController : EditValController
 
         GameObject valDisp = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDispCard") as GameObject, parent.UI.GetChild(rowIndex).transform);
 
+        valDisp.GetComponent<ValueDisp>().setUI(false);
+
         valDisp.transform.GetChild(1).GetComponent<Text>().text = word.getWord(lang);
 
         valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));

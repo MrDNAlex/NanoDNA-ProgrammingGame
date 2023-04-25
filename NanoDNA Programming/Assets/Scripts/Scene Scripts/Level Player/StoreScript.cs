@@ -77,7 +77,7 @@ public class StoreScript : MonoBehaviour
         //GridView.setSelfHorizontalPadding(0.02f, 1, 0.02f, 1);
        // GridView.setSelfVerticalPadding(0.02f, 1, 0.02f, 1);
 
-        Content.setChildMultiW(400);
+        Content.setChildMultiW(500);
 
         foreach (ActionType tag in System.Enum.GetValues(typeof(ActionType)))
         {
