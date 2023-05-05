@@ -18,6 +18,9 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IScroll
     [SerializeField] Button resize;
     [SerializeField] Tilemap BackAndMap;
 
+    public Transform zoomTrans;
+    public Transform resizeTrans;
+
     Vector3 lastPos;
     Vector3 newPos;
     string type;
@@ -41,6 +44,9 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IScroll
         Scripts.mapDrag = this;
 
         lang = Camera.main.GetComponent<LevelScript>().lang;
+
+        zoomTrans = zoomSlide.transform;
+        resizeTrans = resize.transform;
     }
 
     public void OnScroll(PointerEventData eventData)

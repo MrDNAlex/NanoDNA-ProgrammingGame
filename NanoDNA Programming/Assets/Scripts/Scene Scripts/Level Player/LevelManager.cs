@@ -35,10 +35,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] ProgressBar usedProgress;
 
     [SerializeField] Transform usedLineLength;
+    [SerializeField] Button complete;
 
     public LevelInfo info;
 
-    Button complete;
+    
 
     Text collectedItems;
 
@@ -90,14 +91,10 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         lang = PlayerSettings.language;
-
+        Debug.Log("Set Button");
         complete.onClick.AddListener(completeLevel);
 
         loadLevel();
-
-      
-
-
 
     }
 
@@ -160,8 +157,10 @@ public class LevelManager : MonoBehaviour
 
     public void completeLevel()
     {
+        Debug.Log("Run Function");
         if (noPanelOpen())
         {
+            
             //Check if max line num is exceeded
             if (tryComplete == false)
             {
@@ -178,6 +177,7 @@ public class LevelManager : MonoBehaviour
                 {
                     //complete.transform.GetChild(0).GetComponent<Text>().text = UIwords.reset.getWord(lang);
 
+                    Debug.Log("Try and run");
                     // UIHelper.setImage(complete.transform.GetChild(0), "Images/UIDesigns/ResetButton");
                     InfoPanelController.genPanel(InfoPanelType.Complete);
 
@@ -286,12 +286,10 @@ public class LevelManager : MonoBehaviour
 
         foreach (Transform child in charHolder.transform)
         {
-
             if (child.GetComponent<CharData>() != null)
             {
                 charData.Add(child.GetComponent<CharData>());
             }
-
         }
 
         //Set Other Info
@@ -299,6 +297,25 @@ public class LevelManager : MonoBehaviour
 
         //Reload Program
         Scripts.programSection.renderProgram();
+
+        if (info.showTutorial)
+        {
+            Debug.Log("Show Tutorial");
+            //Show the tutorial
+
+            //Or later make a pop up button to ask to show it
+
+            Camera.main.GetComponent<TutorialManager>().tutorialHolder.gameObject.SetActive(true);
+            Scripts.tutorialManager.StartTutorialDialogue();
+        } else
+        {
+            if (info.levelScript != null)
+            {
+                Scripts.dialogueManager.script = info.levelScript;
+
+                Scripts.dialogueManager.StartDialogue(info.levelScript.dialogue.Count, null);
+            }
+        }
 
     }
 
@@ -425,7 +442,7 @@ public class LevelManager : MonoBehaviour
 
             //transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
 
-            transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(3).gameObject.SetActive(true);
 
         }
     }

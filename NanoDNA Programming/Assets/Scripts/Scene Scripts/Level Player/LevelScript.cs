@@ -69,6 +69,7 @@ public class LevelScript : MonoBehaviour
 
     public Flex Background;
     public Flex MapView;
+    public Flex CompleteLevel;
 
     //public GameObject selected;
 
@@ -166,7 +167,7 @@ public class LevelScript : MonoBehaviour
         Flex UsedIcon = new Flex(UsedBackground.getChild(0), 1, UsedBackground);
         Flex UsedProgressBar = new Flex(UsedHolder.getChild(1), 2f, UsedHolder);
 
-        Flex CompleteLevel = new Flex(Constraints.getChild(1), 1, Constraints);
+        CompleteLevel = new Flex(Constraints.getChild(1), 1, Constraints);
 
         Flex CompleteLevelImg = new Flex(CompleteLevel.getChild(0), 1, CompleteLevel);
 
@@ -225,7 +226,7 @@ public class LevelScript : MonoBehaviour
         Reg3.setSize(new Vector2(Reg3.size.x, Screen.height - MapView.size.y));
 
         Buttons.UI.GetComponent<VerticalLayoutGroup>().spacing = 5;
-        Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
+        Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing));
 
         CollectedBackground.setSize(new Vector2(CollectedBackground.size.x, CollectedBackground.size.x));
         UsedBackground.setSize(new Vector2(UsedBackground.size.x, UsedBackground.size.x));

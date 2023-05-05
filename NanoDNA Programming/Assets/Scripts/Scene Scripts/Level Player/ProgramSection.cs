@@ -20,7 +20,7 @@ public class ProgramSection : MonoBehaviour
     public int maxLineNum = 20;
 
     [SerializeField] GameObject progLine;
-    [SerializeField] Button testBtn;
+    [SerializeField] public Button debug;
     [SerializeField] public GameObject charHolder;
     [SerializeField] Text nameHeader;
     [SerializeField] Button saveBtn;
@@ -28,7 +28,7 @@ public class ProgramSection : MonoBehaviour
     [SerializeField] Tilemap obstacles;
     [SerializeField] Button progSpeed;
 
-    ProgramSpeed speed = ProgramSpeed.Op1;
+   public  ProgramSpeed speed = ProgramSpeed.Op1;
     int speedDivider = 1;
 
     public bool undo;
@@ -65,7 +65,7 @@ public class ProgramSection : MonoBehaviour
 
         levelType = Scripts.levelManager.info.levelType;
 
-        testBtn.onClick.AddListener(testProgram);
+       debug.onClick.AddListener(testProgram);
         // saveBtn.onClick.AddListener(delegate
         //  {
         //     selectedCharData.displayProgram(true);
@@ -130,7 +130,7 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = false;
 
-            testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/Debug");
+            debug.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/Debug");
             //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
 
             Scripts.levelManager.updateConstraints();
@@ -159,7 +159,7 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = true;
 
-            testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/DebugActive");
+           debug.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/DebugActive");
         }
     }
 

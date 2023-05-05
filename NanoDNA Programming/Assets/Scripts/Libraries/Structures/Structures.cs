@@ -211,6 +211,8 @@ namespace DNAStruct
         public static MapDrag mapDrag;
         public static StoreScript storeScript;
         public static ProgramManager programManager;
+        public static DialogueManager dialogueManager;
+        public static TutorialManager tutorialManager;
 
     }
 

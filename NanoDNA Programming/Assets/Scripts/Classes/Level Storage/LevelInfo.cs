@@ -4,19 +4,22 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using DNAStruct;
 
-
 [System.Serializable]
 //For something to be saved it must be public 
 public class LevelInfo 
 {
    [Header("Edit")]
+
+    public bool showTutorial;
+
     public UIWord levelName;
     public UIWord levelDescription;
-    
+
     public int maxLine;
-    public int maxItems;
 
     public LevelType levelType;
+
+    public DialogueScript levelScript;
 
     public List<VariableData> levelVariables = new List<VariableData>();
 
@@ -26,6 +29,8 @@ public class LevelInfo
     public string levelPath;
 
     public LevelIconInfo levelIcon;
+
+    public int maxItems;
 
     public int xMax;
     public int xMin;

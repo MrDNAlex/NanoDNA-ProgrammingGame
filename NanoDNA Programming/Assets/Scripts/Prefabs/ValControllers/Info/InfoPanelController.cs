@@ -19,6 +19,7 @@ public class InfoPanelController : MonoBehaviour
 
     public static void genPanel(InfoPanelType type)
     {
+        Debug.Log("Gen Panel");
         GameObject panelParent = Camera.main.transform.GetChild(0).GetChild(2).gameObject;
 
         panelParent.SetActive(true);
@@ -38,6 +39,7 @@ public class InfoPanelController : MonoBehaviour
                 break;
             case InfoPanelType.Complete:
 
+                Debug.Log("Here");
                 panel = GameObject.Instantiate(Resources.Load("Prefabs/EditPanels/InfoPanels/WarningPanel") as GameObject, panelParent.transform);
 
                 panel.GetComponent<WarningInfoPanel>().setPanel(panelParent.transform, InfoPanelType.Complete);
