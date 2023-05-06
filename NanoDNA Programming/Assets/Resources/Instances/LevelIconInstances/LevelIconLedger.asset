@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: LevelIconLedger
   m_EditorClassIdentifier: 
   icons:
-  - {fileID: 11400000, guid: 13736c3500b6e554b8610251405ec04f, type: 2}
+  - {fileID: 11400000, guid: efbaccd7402668744bbf0606884d61bd, type: 2}
   - {fileID: 11400000, guid: ac1766d444814ee49b57b23fd6a70ae3, type: 2}
+  - {fileID: 11400000, guid: 857bccb45233e954ab6fcbd84c9ec532, type: 2}
+  - {fileID: 11400000, guid: efbaccd7402668744bbf0606884d61bd, type: 2}
   validate: 0

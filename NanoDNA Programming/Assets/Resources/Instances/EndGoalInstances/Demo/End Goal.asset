@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b43b730ec85cfa499d01fe675859968, type: 3}
   m_Name: End Goal
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 77af7be56889e32449c18af9b88f8c5d, type: 3}
-  id: End_Goal
+  sprite: {fileID: 21300000, guid: 14f413266995fc24d9042f9676f3db14, type: 3}
+  id: Village

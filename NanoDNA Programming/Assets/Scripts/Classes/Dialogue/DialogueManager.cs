@@ -136,7 +136,6 @@ public class DialogueManager : MonoBehaviour
         dialogueBox.gameObject.SetActive(true);
     }
 
-
     IEnumerator awaitCondition(int count, MyFunc func, TextAnchor alignment = TextAnchor.LowerCenter)
     {
         //Only run conditions on the last one
@@ -161,7 +160,6 @@ public class DialogueManager : MonoBehaviour
                     yield return null;
                 }
             }
-
             conditions = new List<DialogueCondition>();
         }
 

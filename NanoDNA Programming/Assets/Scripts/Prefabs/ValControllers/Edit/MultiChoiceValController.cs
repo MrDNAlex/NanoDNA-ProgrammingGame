@@ -275,9 +275,13 @@ public class MultiChoiceValController : EditValController
 
         valDisp.GetComponent<ValueDisp>().setUI(false);
 
-        valDisp.transform.GetChild(1).GetComponent<Text>().text = word.getWord(lang);
+        UIHelper.setText(valDisp.transform.GetChild(1), word, Color.black);
 
-        valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+        valDisp.transform.GetChild(1).GetComponent<Text>().fontSize = PlayerSettings.getSmallText();
+
+        UIHelper.setImage(valDisp.transform.GetChild(0), imagePath);
+
+        UIHelper.setImage(valDisp.transform, PlayerSettings.colourScheme.getAccent());
 
      
             //On Listener

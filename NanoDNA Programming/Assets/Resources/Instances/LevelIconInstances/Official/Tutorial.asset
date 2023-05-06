@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87cfbe3768a9b894787674b9c26573ff, type: 3}
-  m_Name: Fish
+  m_Script: {fileID: 11500000, guid: b24930e8b4bf11a4c85a7089a6eb49c6, type: 3}
+  m_Name: Tutorial
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 0751ff09c1d01294aae928f8c11c7504, type: 3}
-  id: Fish
+  sprite: {fileID: 21300000, guid: 76cfe438562846948a20d9c1de9bf024, type: 3}
+  id: TutorialIcon
