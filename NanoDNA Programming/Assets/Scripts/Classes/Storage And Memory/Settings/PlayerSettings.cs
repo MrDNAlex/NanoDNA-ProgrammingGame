@@ -8,11 +8,24 @@ using DNASaveSystem;
 [System.Serializable]
 public class PlayerSettings
 {
+    public enum TextSize
+    {
+        Small, 
+        Medium, 
+        Big
+    }
+
 
     public static Language language;
     public static int volume;
     public static ColourPaletteStorage colourScheme;
     public static bool advancedVariables;
+
+    public static int smallTextSize = 30;
+    public static int mediumTextSize = 50;
+    public static int bigTextSize = 70;
+    public static int giganticTextSize;
+
     
 
     public PlayerSettings ()
@@ -46,6 +59,42 @@ public class PlayerSettings
         save.volume = PlayerSettings.volume;
 
         return save;
+    }
+
+    public static int getBigText ()
+    {
+        return bigTextSize;
+    }
+
+    public static int getMediumText()
+    {
+        return mediumTextSize;
+    }
+    public static int getSmallText()
+    {
+        return smallTextSize;
+    }
+    
+    public static int getGiganticText()
+    {
+        return giganticTextSize;
+    }
+
+
+
+    public static int getTextSize (TextSize size)
+    {
+        switch (size)
+        {
+            case TextSize.Small:
+                return smallTextSize;
+            case TextSize.Medium:
+                return mediumTextSize;
+            case TextSize.Big:
+                return bigTextSize;
+            default:
+                return mediumTextSize;
+        }
     }
 
 }

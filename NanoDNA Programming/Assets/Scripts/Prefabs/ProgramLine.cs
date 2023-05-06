@@ -52,18 +52,21 @@ public class ProgramLine : MonoBehaviour
     {
         //Define all the Flex components
         Line = new Flex(background, 1);
-        Flex LineNumberHolder = new Flex(Line.getChild(0), 1);
-        Flex LineNumber = new Flex(LineNumberHolder.getChild(0), 1);
+        Flex LineNumberHolder = new Flex(Line.getChild(0), 1.25f, Line);
 
-        ProgramUI = new Flex(Line.getChild(1), 6);
-        Flex Drag = new Flex(Line.getChild(2), 1);
+        Flex DragIMG = new Flex(LineNumberHolder.getChild(0), 1, LineNumberHolder);
 
-        //Add children
-        Line.addChild(LineNumberHolder);
-        Line.addChild(ProgramUI);
-        Line.addChild(Drag);
+      //  Flex Background = new Flex(DragIMG.getChild(0), 1, DragIMG);
 
-        LineNumberHolder.addChild(LineNumber);
+        Flex LineNumber = new Flex(LineNumberHolder.getChild(1), 1, LineNumberHolder);
+
+        ProgramUI = new Flex(Line.getChild(1), 6, Line);
+        Flex Drag = new Flex(Line.getChild(2), 1, Line);
+
+        //  DragIMG.setAllPadSame(0.35f, 1);
+
+        LineNumberHolder.setVerticalPadding(1, 1, 1, 1);
+        LineNumberHolder.setHorizontalPadding(0.1f, 1, 0.1f, 1);
 
         //Get extra References
         ProgramObj = Line.getChild(1).gameObject;
@@ -72,13 +75,15 @@ public class ProgramLine : MonoBehaviour
         //Set Images
         UIHelper.setImage(Line.UI, PlayerSettings.colourScheme.getMain(true));
         UIHelper.setImage(LineNumberHolder.UI, PlayerSettings.colourScheme.getSecondary(true));
+        UIHelper.setImage(DragIMG.UI, "Images/UIDesigns/Drag");
+       // UIHelper.setImage(Background.UI, PlayerSettings.colourScheme.getSecondary(true));
     }
 
     public void setNumber()
     {
         //Set the text to the correct number
 
-        UIHelper.setText(Line.getChild(0).GetChild(0), (Line.UI.GetSiblingIndex() + 1).ToString(), PlayerSettings.colourScheme.getAccentTextColor());
+        UIHelper.setText(Line.getChild(0).GetChild(1), (Line.UI.GetSiblingIndex() + 1).ToString(), PlayerSettings.colourScheme.getAccentTextColor(), PlayerSettings.getMediumText());
 
     }
 
@@ -249,7 +254,7 @@ public class ProgramLine : MonoBehaviour
 
         //Animate
 
-        yield return StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(ProgramUI.UI.GetChild(0), new Vector3(-1f * ProgramUI.UI.GetChild(0).GetComponent<RectTransform>().sizeDelta.x, 0, 0), DNAMathAnim.getFrameNumber(1.5f), 0, true));
+        yield return StartCoroutine(DNAMathAnim.animateCosinusoidalRelocationLocal(ProgramUI.UI.GetChild(0), new Vector3(-1f * ProgramUI.UI.GetChild(0).GetComponent<RectTransform>().sizeDelta.x, 0, 0), DNAMathAnim.getFrameNumber(0.33f), 0, true));
 
        // yield return new WaitUntil();
 

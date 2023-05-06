@@ -58,7 +58,7 @@ public class MathVariable : ProgramCard, IProgramCard
 
         if (action.varActData.refID != 0)
         {
-            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
         else
         {
@@ -69,7 +69,7 @@ public class MathVariable : ProgramCard, IProgramCard
 
             action.varActData.refID = varData[0].id;
 
-            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
 
         //Spawn the math block

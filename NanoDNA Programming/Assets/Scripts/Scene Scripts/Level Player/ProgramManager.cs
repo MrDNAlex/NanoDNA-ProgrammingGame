@@ -26,7 +26,10 @@ public class ProgramManager : MonoBehaviour
 
     List<VariableData> levelVariables = new List<VariableData>();
 
+    //Visible variables for players
     List<VariableData> sensorVariables = new List<VariableData>();
+
+    //List for interaction variables
 
     //List<VariableData> defaultVariables = new List<VariableData>();
 
@@ -47,43 +50,6 @@ public class ProgramManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*
-        VariableData var1 = new VariableData();
-        VariableData var2 = new VariableData();
-        VariableData var3 = new VariableData();
-        VariableData var4 = new VariableData();
-        VariableData var5 = new VariableData();
-        VariableData var6 = new VariableData();
-        VariableData var7 = new VariableData();
-
-        var1.setData(true, VariableType.Number, "Var1", 1.ToString());
-        var2.setData(true, VariableType.Number, "Var2", 2.ToString());
-        var3.setData(true, VariableType.Number, "Var3", 3.ToString());
-        var4.setData(true, VariableType.Number, "Var4", 4.ToString());
-        var5.setData(true, VariableType.Number, "Var5", 5.ToString());
-        var6.setData(true, VariableType.Text, "Var6", "Message");
-        var7.setData(true, VariableType.Bool, "Var7", "true");
-
-        var1.setID(genUniqueID());
-        var2.setID(genUniqueID());
-        var3.setID(genUniqueID());
-        var4.setID(genUniqueID());
-        var5.setID(genUniqueID());
-        var6.setID(genUniqueID());
-        var7.setID(genUniqueID());
-
-
-        levelVariables.Add(var1);
-        levelVariables.Add(var2);
-        levelVariables.Add(var3);
-        levelVariables.Add(var4);
-        levelVariables.Add(var5);
-        levelVariables.Add(var6);
-        levelVariables.Add(var7);
-        */
-
-        // allScripts = Camera.main.GetComponent<LevelScript>().allScripts;
-
         updateVariables();
     }
 

@@ -54,7 +54,7 @@ public class MathMultiplication : ProgramCard, IProgramCard
 
         if (action.varActData.refID != 0)
         {
-            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
             action.varActData.mathData.varType = Scripts.programManager.getVariableType(action.varActData.refID);
         }
@@ -69,7 +69,7 @@ public class MathMultiplication : ProgramCard, IProgramCard
                 action.varActData.refID = varData[0].id;
             }
 
-            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0).GetChild(0), Scripts.programManager.getVariableName(action.varActData.refID), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
             action.varActData.mathData.varType = Scripts.programManager.getVariableType(action.varActData.refID);
         }
@@ -78,19 +78,19 @@ public class MathMultiplication : ProgramCard, IProgramCard
 
         if (action.varActData.mathData.refID1 != 0)
         {
-            UIHelper.setText(transform.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(action.varActData.mathData.refID1), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(2).GetChild(0), Scripts.programManager.getVariableName(action.varActData.mathData.refID1), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         } else
         {
-            UIHelper.setText(transform.GetChild(2).GetChild(0), action.varActData.mathData.value1, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(2).GetChild(0), action.varActData.mathData.value1, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
 
         if (action.varActData.mathData.refID2 != 0)
         {
-            UIHelper.setText(transform.GetChild(4).GetChild(0), Scripts.programManager.getVariableName(action.varActData.mathData.refID2), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(4).GetChild(0), Scripts.programManager.getVariableName(action.varActData.mathData.refID2), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
         else
         {
-            UIHelper.setText(transform.GetChild(4).GetChild(0), action.varActData.mathData.value2, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(4).GetChild(0), action.varActData.mathData.value2, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
     }
 

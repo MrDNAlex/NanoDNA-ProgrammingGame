@@ -70,7 +70,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 60
     m_Alignment: 4
@@ -150,7 +150,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 60
     m_Alignment: 4
@@ -282,10 +282,12 @@ MonoBehaviour:
   singleVal: 0
   varData:
     isPublic: 0
+    isLevelVariable: 0
+    isActivated: 0
     varType: 0
     name: 
     value: 
-    character: {fileID: 0}
+    charData: {fileID: 0}
     id: 0
     refID: 0
 --- !u!114 &6923874554727560656

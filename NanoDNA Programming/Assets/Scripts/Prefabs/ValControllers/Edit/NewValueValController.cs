@@ -60,7 +60,7 @@ public class NewValueValController : EditValController
 
         ParentTrans.localPosition = startPos;
 
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(1.5f), 1, true));
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(0.75f), 1, true));
 
 
     }
@@ -124,13 +124,13 @@ public class NewValueValController : EditValController
 
     void setText()
     {
-        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), LangDictionary.newVariable.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), LangDictionary.newVariable.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), LangDictionary.setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), LangDictionary.setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(0), LangDictionary.EntText.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(0), LangDictionary.EntText.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
     }
 
     void setControls(ProgramCard.PanelInfo info)

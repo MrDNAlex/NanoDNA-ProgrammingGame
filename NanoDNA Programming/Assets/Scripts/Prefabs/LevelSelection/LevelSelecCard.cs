@@ -72,8 +72,8 @@ public class LevelSelecCard : MonoBehaviour
 
     public void setText(string title, string desc)
     {
-        UIHelper.setText(flex.getChild(1).GetChild(0), title, PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(flex.getChild(1).GetChild(0), title, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(flex.getChild(1).GetChild(1), desc, PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(flex.getChild(1).GetChild(1), desc, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
     }
 }

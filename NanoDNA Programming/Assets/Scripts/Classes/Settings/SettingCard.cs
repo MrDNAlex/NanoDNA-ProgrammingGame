@@ -89,18 +89,18 @@ public class SettingCard : MonoBehaviour
 
     public void setInfoButton(string name, string value)
     {
-        UIHelper.setText(flex.getChild(0), name, mainColor);
+        UIHelper.setText(flex.getChild(0), name, mainColor, PlayerSettings.getBigText());
 
-        UIHelper.setText(flex.getChild(1).GetChild(0), value, mainColor);
+        UIHelper.setText(flex.getChild(1).GetChild(0), value, mainColor, PlayerSettings.getBigText());
 
     }
 
     public void setInfoSlider(string name, int value)
     {
         //Value is int from 0-100
-        UIHelper.setText(flex.getChild(0), name, mainColor);
+        UIHelper.setText(flex.getChild(0), name, mainColor, PlayerSettings.getBigText());
 
-        UIHelper.setText(flex.getChild(1).GetChild(1), value + "%", mainColor);
+        UIHelper.setText(flex.getChild(1).GetChild(1), value + "%", mainColor, PlayerSettings.getBigText());
 
         flex.getChild(1).GetChild(0).GetComponent<Slider>().value = (float)value / 100;
     }

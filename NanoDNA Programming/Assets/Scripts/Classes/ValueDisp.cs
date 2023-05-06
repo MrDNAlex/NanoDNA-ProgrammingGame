@@ -14,6 +14,7 @@ public class ValueDisp : MonoBehaviour
 
     public bool singleVal;
 
+
     public Flex flex;
 
     public VariableData varData;
@@ -21,7 +22,7 @@ public class ValueDisp : MonoBehaviour
     private void Awake()
     {
        // playSettings = SaveManager.loadPlaySettings();
-        setUI();
+        //setUI();
        
     }
 
@@ -37,11 +38,11 @@ public class ValueDisp : MonoBehaviour
         
     }
 
-    public void setUI ()
+    public void setUI (bool hide)
     {
         if (singleVal)
         {
-           // Debug.Log("Hi");
+           
             flex = new Flex(this.GetComponent<RectTransform>(), 1);
 
             Flex Image = new Flex(flex.getChild(0), 5);
@@ -59,16 +60,21 @@ public class ValueDisp : MonoBehaviour
 
             Flex Name = new Flex(flex.getChild(0), 1);
 
-            Flex Value = new Flex(flex.getChild(1), 1);
+            Flex Value = null;
 
             flex.addChild(Name);
-            flex.addChild(Value);
 
-            flex.setSpacingFlex(0.3f, 1);
+            if (!hide)
+            {
+                Value = new Flex(flex.getChild(1), 1);
+                flex.addChild(Value);
 
-            flex.setHorizontalPadding(0.2f, 1, 0.2f, 1);
+                flex.setSpacingFlex(0.3f, 1);
 
-            flex.setVerticalPadding(0.07f, 1, 0.07f, 1);
+                flex.setHorizontalPadding(0.2f, 1, 0.2f, 1);
+
+                flex.setVerticalPadding(0.07f, 1, 0.07f, 1);
+            }
 
             UIHelper.setImage(flex.UI, PlayerSettings.colourScheme.getSecondary());
 
@@ -78,18 +84,28 @@ public class ValueDisp : MonoBehaviour
 
     public void setInfo (VariableData varData)
     {
+
+        setUI(varData.hideVal);
+
         if (singleVal)
         {
-            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
             this.varData = varData;
         } else
         {
-            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(0), varData.name, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-           // Debug.Log(varData.value);
+            // Debug.Log(varData.value);
 
-            UIHelper.setText(transform.GetChild(1), varData.value.ToString(), PlayerSettings.colourScheme.getBlackTextColor());
+            if (!varData.hideVal)
+            {
+                UIHelper.setText(transform.GetChild(1), varData.value.ToString(), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
+            } else
+            {
+                UIHelper.setText(transform.GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
+            }
+            
 
             this.varData = varData;
         }

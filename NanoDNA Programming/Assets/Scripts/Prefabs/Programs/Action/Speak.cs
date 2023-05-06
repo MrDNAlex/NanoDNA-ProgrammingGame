@@ -65,11 +65,11 @@ public class Speak : ProgramCard, IProgramCard
         if (action.actData.refID != 0)
         {
             //Make it equal to reference
-            UIHelper.setText(transform.GetChild(1).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.actData.refID), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(1).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.actData.refID), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
         else
         {
-            UIHelper.setText(transform.GetChild(1).GetChild(0), action.actData.data, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(transform.GetChild(1).GetChild(0), action.actData.data, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
     }
 

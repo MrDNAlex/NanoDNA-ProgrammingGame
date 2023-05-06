@@ -63,7 +63,7 @@ public class MultiChoiceValController : EditValController
 
         ParentTrans.localPosition = startPos;
 
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(1.5f), 1, true));
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(0.75f), 1, true));
 
         
     }
@@ -273,9 +273,15 @@ public class MultiChoiceValController : EditValController
 
         GameObject valDisp = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDispCard") as GameObject, parent.UI.GetChild(rowIndex).transform);
 
-        valDisp.transform.GetChild(1).GetComponent<Text>().text = word.getWord(lang);
+        valDisp.GetComponent<ValueDisp>().setUI(false);
 
-        valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+        UIHelper.setText(valDisp.transform.GetChild(1), word, Color.black);
+
+        valDisp.transform.GetChild(1).GetComponent<Text>().fontSize = PlayerSettings.getSmallText();
+
+        UIHelper.setImage(valDisp.transform.GetChild(0), imagePath);
+
+        UIHelper.setImage(valDisp.transform, PlayerSettings.colourScheme.getAccent());
 
      
             //On Listener

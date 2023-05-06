@@ -38,19 +38,23 @@ public class Move : ProgramCard, IProgramCard
         //Flex Variable Init
         program = new Flex(this.GetComponent<RectTransform>(), 2);
 
-        Flex Move = new Flex(program.getChild(0), 1f);
-        Flex Direction = new Flex(program.getChild(1), 1);
-        Flex Value = new Flex(program.getChild(2), 1);
+        Flex Move = new Flex(program.getChild(0), 1f, program);
+        Flex Direction = new Flex(program.getChild(1), 1, program);
+
+        Flex DirectionIcon = new Flex(Direction.getChild(0), 1, Direction);
+
+        Flex Value = new Flex(program.getChild(2), 1, program);
 
         //Set Flex Parameters
 
-        program.addChild(Direction);
-        program.addChild(Value);
-        program.addChild(Move);
+       
+        DirectionIcon.setSquare();
 
         program.setSpacingFlex(0.2f, 1);
 
         program.setAllPadSame(0.2f, 1);
+
+        
     }
 
     public void setInfo()
@@ -74,18 +78,18 @@ public class Move : ProgramCard, IProgramCard
 
         Texture2D image = Resources.Load(path) as Texture2D;
 
-        rectTrans.GetChild(1).GetComponent<Button>().image.sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
+        rectTrans.GetChild(1).GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 
         if (action.moveData.refID != 0)
         {
-            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.moveData.refID), PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), Camera.main.GetComponent<ProgramManager>().getVariableName(action.moveData.refID), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
         else
         {
-            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), action.moveData.value, PlayerSettings.colourScheme.getBlackTextColor());
+            UIHelper.setText(rectTrans.GetChild(2).GetChild(0), action.moveData.value, PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
         }
 
-        UIHelper.setText(rectTrans.GetChild(0), cardName, PlayerSettings.colourScheme.getBlackTextColor());
+        setCardName(false);
     }
 
     //Spawn Panel
@@ -127,10 +131,25 @@ public class Move : ProgramCard, IProgramCard
                 EditValController.genPanel(this);
             }
         });
+
+        //Replace text size
+        setCardName(true);
     }
 
     public ProgramAction createAction()
     {
         return new ProgramAction(actionInfo, action.moveData);
+    }
+
+    void setCardName (bool big)
+    {
+        if (big)
+        {
+            UIHelper.setText(rectTrans.GetChild(0), cardName.getWord(PlayerSettings.language), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
+        } else
+        {
+            UIHelper.setText(rectTrans.GetChild(0), cardName.getWord(PlayerSettings.language), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
+        }
+        
     }
 }

@@ -30,10 +30,10 @@ public class SettingsValController : MonoBehaviour
     UIWord Col2 = new UIWord("Colour 2", "Couleur 2");
     UIWord Col3 = new UIWord("Colour 3", "Couleur 3");
     UIWord Col4 = new UIWord("Colour 4", "Couleur 4");
-    UIWord Col5 = new UIWord("Colour 5", "Couleur 5");
-    UIWord Col6 = new UIWord("Colour 6", "Couleur 6");
-    UIWord Col7 = new UIWord("Colour 7", "Couleur 7");
-    UIWord Col8 = new UIWord("Colour 8", "Couleur 8");
+   // UIWord Col5 = new UIWord("Colour 5", "Couleur 5");
+    //UIWord Col6 = new UIWord("Colour 6", "Couleur 6");
+   // UIWord Col7 = new UIWord("Colour 7", "Couleur 7");
+   // UIWord Col8 = new UIWord("Colour 8", "Couleur 8");
 
     // Start is called before the first frame update
     void Start()
@@ -111,7 +111,7 @@ public class SettingsValController : MonoBehaviour
                 Flex Row3 = null;
 
 
-                if (editValue == SettingValueType.Language)
+                if (editValue == SettingValueType.Language || editValue == SettingValueType.AdvancedVariables)
                 {
                     //Do one row only
                     Row1 = new Flex(Grid.getChild(0), 1, Grid);
@@ -137,7 +137,17 @@ public class SettingsValController : MonoBehaviour
 
                 Grid.setSpacingFlex(0.2f, 1);
 
-                Grid.setAllPadSame(0.1f, 1);
+
+                if (editValue == SettingValueType.Language || editValue == SettingValueType.AdvancedVariables)
+                {
+                    Grid.setHorizontalPadding(0.1f, 1, 0.1f, 1);
+                    Grid.setVerticalPadding(0.25f, 1, 0.25f, 1);
+                    //Grid.setAllPadSame(0.5f, 1);
+                } else
+                {
+                    Grid.setAllPadSame(0.1f, 1);
+                }
+                
 
                 //Set gridview
                 setGridView(Grid);
@@ -186,10 +196,10 @@ public class SettingsValController : MonoBehaviour
                 instantiateDisplayCard("Images/SettingsControllerAssets/PalCol3", GridView, Col3, 2, 0);
                 instantiateDisplayCard("Images/SettingsControllerAssets/PalCol4", GridView, Col4, 3, 0);
 
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col5", GridView, Col5, 4, 1);
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col6", GridView, Col6, 5, 1);
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col7", GridView, Col7, 6, 1);
-                instantiateDisplayCard("Images/SettingsControllerAssets/Col8", GridView, Col8, 7, 1);
+            //    instantiateDisplayCard("Images/SettingsControllerAssets/Col5", GridView, Col5, 4, 1);
+             //   instantiateDisplayCard("Images/SettingsControllerAssets/Col6", GridView, Col6, 5, 1);
+             //   instantiateDisplayCard("Images/SettingsControllerAssets/Col7", GridView, Col7, 6, 1);
+              //  instantiateDisplayCard("Images/SettingsControllerAssets/Col8", GridView, Col8, 7, 1);
                 break;
             case SettingValueType.AdvancedVariables:
                 instantiateDisplayCard("Images/SettingsControllerAssets/Advanced", GridView, Advanced, 0, 0);
@@ -216,7 +226,12 @@ public class SettingsValController : MonoBehaviour
 
         GameObject valDisp = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDispCard") as GameObject, parent.UI.GetChild(rowIndex).transform);
 
-        UIHelper.setText(valDisp.transform.GetChild(1), word.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        valDisp.GetComponent<ValueDisp>().setUI(false);
+
+        valDisp.transform.GetChild(1).GetComponent<Text>().text = word.getWord(lang);
+        valDisp.transform.GetChild(1).GetComponent<Text>().color = Color.black;
+        //valDisp.transform.GetChild(1).GetComponent<Text>().fontSize = PlayerSettings.getSmallText();
+
 
         valDisp.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(image, new Rect(new Vector2(0, 0), new Vector2(image.width, image.height)), new Vector2(0, 0));
 

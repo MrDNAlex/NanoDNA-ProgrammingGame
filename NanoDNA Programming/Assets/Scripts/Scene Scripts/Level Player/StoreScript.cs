@@ -58,13 +58,13 @@ public class StoreScript : MonoBehaviour
     {
         Store = new Flex(transform.GetComponent<RectTransform>(), 4f);
 
-        StoreHeader = new Flex(Store.getChild(0), 1, Store);
+        StoreHeader = new Flex(Store.getChild(0), 2, Store);
 
         Flex VP = new Flex(StoreHeader.getChild(0), 1, StoreHeader);
 
         Content = new Flex(VP.getChild(0), 1, VP);
 
-        Flex SV = new Flex(Store.getChild(1), 5, Store);
+        Flex SV = new Flex(Store.getChild(1), 8, Store);
 
         Flex GridVP = new Flex(SV.getChild(0), 1, SV);
 
@@ -77,14 +77,14 @@ public class StoreScript : MonoBehaviour
         //GridView.setSelfHorizontalPadding(0.02f, 1, 0.02f, 1);
        // GridView.setSelfVerticalPadding(0.02f, 1, 0.02f, 1);
 
-        Content.setChildMultiW(400);
+        Content.setChildMultiW(500);
 
         foreach (ActionType tag in System.Enum.GetValues(typeof(ActionType)))
         {
             Content.addChild(storeSecBtn(tag));
         }
 
-        Content.setSpacingFlex(0.1f, 1);
+       // Content.setSpacingFlex(0.1f, 1);
 
         setImage(StoreHeader.UI, PlayerSettings.colourScheme.getSecondary(true));
     }

@@ -85,8 +85,8 @@ namespace FlexUI
         bool layoutGroupVert;
 
         //Solved values for a single Flex Unit to determine the Horizontal Flex Unit and Vertical Flex Unit value
-        float hVal;
-        float wVal;
+        public float hVal;
+        public float wVal;
 
         [Header("Starting Parent Settings")]
         //The size that the flex will start at

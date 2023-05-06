@@ -8,6 +8,8 @@ using UnityEngine.UI;
 using DNASaveSystem;
 using UnityEngine.Rendering;
 using DNAStruct;
+using DNAScenes;
+using UnityEngine.SceneManagement;
 
 public class LevelScript : MonoBehaviour
 {
@@ -31,6 +33,10 @@ public class LevelScript : MonoBehaviour
 
     [SerializeField] RectTransform store;
 
+    [SerializeField] Button exitButton;
+
+    [SerializeField] Button infoButton;
+
     [Header("Game Objects")]
 
     [SerializeField] GameObject prefab;
@@ -53,18 +59,17 @@ public class LevelScript : MonoBehaviour
     [SerializeField] Tilemap voidMap;
     [SerializeField] Tilemap backgroundMap;
 
-
     [SerializeField] TileBase tile;
-
-    [SerializeField] Text resize;
     [SerializeField] public Text debug;
-    [SerializeField] Text complete;
-    [SerializeField] Text save;
 
     [SerializeField] Button changeLangBtn;
 
+    [SerializeField] Button collectible;
+    [SerializeField] Button linesUsed;
+
     public Flex Background;
     public Flex MapView;
+    public Flex CompleteLevel;
 
     //public GameObject selected;
 
@@ -82,6 +87,12 @@ public class LevelScript : MonoBehaviour
         lang = PlayerSettings.language;
 
         setUI();
+
+        exitButton.onClick.AddListener(exitLevel);
+        infoButton.onClick.AddListener(infoPanel);
+
+        collectible.onClick.AddListener(collectibleItems);
+        linesUsed.onClick.AddListener(lineUsed);
     }
 
     //Going to start needing a loading screen I think
@@ -139,7 +150,7 @@ public class LevelScript : MonoBehaviour
         Flex ProgSpeed = new Flex(Buttons.getChild(0), 1, Buttons);
         Flex Resize = new Flex(Buttons.getChild(1), 1, Buttons);
         Flex DebugBTN = new Flex(Buttons.getChild(2), 1, Buttons);
-        
+
         Flex Reg3 = new Flex(Reg2.getChild(1), 1f, Reg2);
 
         Flex Constraints = new Flex(Reg3.getChild(0), 1f, Reg3);
@@ -156,14 +167,25 @@ public class LevelScript : MonoBehaviour
         Flex UsedIcon = new Flex(UsedBackground.getChild(0), 1, UsedBackground);
         Flex UsedProgressBar = new Flex(UsedHolder.getChild(1), 2f, UsedHolder);
 
-        Flex CompleteLevel = new Flex(Constraints.getChild(1), 1, Constraints);
+        CompleteLevel = new Flex(Constraints.getChild(1), 1, Constraints);
+
+        Flex CompleteLevelImg = new Flex(CompleteLevel.getChild(0), 1, CompleteLevel);
 
         //Add Children
         VP.addChild(Scripts.programSection.flex);
 
         Reg3.addChild(store.GetComponent<StoreScript>().Store);
 
-        MapView.setHorizontalPadding(11, 1, 0, 1);
+        if (((float)Screen.width / Screen.height) >= 1.8f)
+        {
+            MapView.setHorizontalPadding(14, 1, 0, 1);
+        }
+        else
+        {
+            MapView.setHorizontalPadding(11, 1, 0, 1);
+        }
+
+
         MapView.setVerticalPadding(0.02f, 1, 0.02f, 1);
 
         UIHolder.setSpacingFlex(0.2f, 1);
@@ -187,7 +209,7 @@ public class LevelScript : MonoBehaviour
         ProgressHolder.setSpacingFlex(0.1f, 1);
 
         //  Controls.setSpacingFlex(0.5f, 1);
-       //Controls.setAllPadSame(0.1f, 1);
+        //Controls.setAllPadSame(0.1f, 1);
         Controls.setHorizontalPadding(0.02f, 1, 0.02f, 1);
         Controls.setVerticalPadding(0.1f, 1, 0.1f, 1);
 
@@ -204,7 +226,7 @@ public class LevelScript : MonoBehaviour
         Reg3.setSize(new Vector2(Reg3.size.x, Screen.height - MapView.size.y));
 
         Buttons.UI.GetComponent<VerticalLayoutGroup>().spacing = 5;
-        Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing - 10));
+        Zoom.setSize(new Vector2(Zoom.size.x, UIHolder.size.y - ProgSpeed.size.y * 3 - UIHolder.UI.GetComponent<VerticalLayoutGroup>().spacing));
 
         CollectedBackground.setSize(new Vector2(CollectedBackground.size.x, CollectedBackground.size.x));
         UsedBackground.setSize(new Vector2(UsedBackground.size.x, UsedBackground.size.x));
@@ -216,6 +238,8 @@ public class LevelScript : MonoBehaviour
         InfoButton.setSize(new Vector2(InfoButton.size.y, InfoButton.size.y));
 
         InteracName.setSize(new Vector2(ControlHolder.size.x - (ControlHolder.size.y * 2) + (ControlHolder.size.y - ExitButton.size.y), InteracName.size.y));
+
+        CompleteLevelImg.setSize(new Vector2(CompleteLevel.size.y, CompleteLevel.size.y));
 
 
         //Set Images
@@ -345,9 +369,9 @@ public class LevelScript : MonoBehaviour
 
     public void setUIText()
     {
-        UIHelper.setText(complete.transform, UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
+        //UIHelper.setText(complete.transform, UIwords.complete, PlayerSettings.colourScheme.getAccentTextColor());
 
-      //  UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
+        //  UIHelper.setText(save.transform, UIwords.save, PlayerSettings.colourScheme.getAccentTextColor());
 
     }
 
@@ -355,5 +379,33 @@ public class LevelScript : MonoBehaviour
     {
         debug.text = str;
     }
+
+    void exitLevel()
+    {
+        Debug.Log("Exit");
+        InfoPanelController.genPanel(InfoPanelType.Quit);
+        //SceneManager.LoadScene(SceneConversion.GetScene(Scenes.Menu));
+    }
+
+    void infoPanel()
+    {
+        Debug.Log("Info");
+        InfoPanelController.genPanel(InfoPanelType.InfoTips);
+    }
+
+    void collectibleItems()
+    {
+        InfoPanelController.genPanel(InfoPanelType.CollectibleDescription);
+    }
+
+    void lineUsed()
+    {
+        InfoPanelController.genPanel(InfoPanelType.LinesUsed);
+    }
+
+
+
+
+
 
 }

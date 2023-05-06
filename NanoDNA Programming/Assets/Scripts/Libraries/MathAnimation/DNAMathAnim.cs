@@ -7,6 +7,7 @@ namespace DNAMathAnimation
 {
     public class DNAMathAnim
     {
+        public delegate void MyFunc(int val);
 
         public enum Axis
         {
@@ -25,7 +26,7 @@ namespace DNAMathAnimation
                 return Mathf.FloorToInt(60 * elapsedTime);
             } else
             {
-                return Mathf.FloorToInt(Application.targetFrameRate * elapsedTime);
+                return Mathf.CeilToInt(Application.targetFrameRate * elapsedTime);
             }
            
         }
@@ -377,6 +378,39 @@ namespace DNAMathAnimation
             }
 
             slider.value = final;
+
+        }
+
+        public static IEnumerator animateLinearFloatCount (MyFunc func, float final, int frameCount)
+        {
+            float change = final - 0;
+
+            float slope = (float)(change) / frameCount;
+
+            float addition = 0;
+            float startVal = 0;
+            float total = startVal;
+
+            for (int i = 0; i < frameCount; i++)
+            {
+                addition = addition + slope;
+                total += addition + slope;
+                int difference = 0;
+
+                if (addition > 1)
+                {
+                    while(addition >= 1)
+                    {
+                        addition--;
+                        difference++;   
+                    }
+                }
+
+                func(difference);
+                yield return null;
+            }
+
+            func(1);
 
         }
 

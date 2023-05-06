@@ -60,7 +60,7 @@ public class ValueValController : EditValController
 
         ParentTrans.localPosition = startPos;
 
-        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(1.5f), 1, true));
+        StartCoroutine(DNAMathAnim.animateReboundRelocationLocal(ParentTrans, OriginalPos, DNAMathAnim.getFrameNumber(0.75f), 1, true));
 
 
     }
@@ -98,7 +98,7 @@ public class ValueValController : EditValController
 
         Flex Background = new Flex(Holder.getChild(1), 9, Holder);
 
-        Flex Tabs = new Flex(Background.getChild(0), 1, Background);
+        Flex Tabs = new Flex(Background.getChild(0), 1.5f, Background);
 
         Flex NewVarBTN = new Flex(Tabs.getChild(0), 1, Tabs);
         Flex GlobalVarBTN = new Flex(Tabs.getChild(1), 1, Tabs);
@@ -208,7 +208,7 @@ public class ValueValController : EditValController
             {
                 GameObject variable = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDisp") as GameObject, Content.UI.transform);
 
-                variable.GetComponent<ValueDisp>().setUI();
+                //variable.GetComponent<ValueDisp>().setUI();
 
                 variable.GetComponent<ValueDisp>().setInfo(varData);
 
@@ -276,19 +276,19 @@ public class ValueValController : EditValController
 
     void setText()
     {
-        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), LangDictionary.customTab.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(0).GetChild(0), LangDictionary.customTab.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(1).GetChild(0), LangDictionary.premadeTab.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(0).GetChild(1).GetChild(0), LangDictionary.premadeTab.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(1).GetChild(0), LangDictionary.variable.getWord(lang) + " (" + getVarType(varType) + ")", PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(1).GetChild(0), LangDictionary.variable.getWord(lang) + " (" + getVarType(varType) + ")", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), LangDictionary.newVariable.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(0), LangDictionary.newVariable.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getBigText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(2).GetChild(0).GetChild(0), LangDictionary.setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(2).GetChild(0).GetChild(0), LangDictionary.setbtn.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1).GetChild(0), LangDictionary.EntText.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1).GetChild(0), LangDictionary.EntText.getWord(lang), PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
 
-        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor());
+        UIHelper.setText(Holder.getChild(1).GetChild(1).GetChild(0).GetChild(1).GetChild(1), "", PlayerSettings.colourScheme.getBlackTextColor(), PlayerSettings.getMediumText());
     }
 
     void setControls(ProgramCard.PanelInfo info)

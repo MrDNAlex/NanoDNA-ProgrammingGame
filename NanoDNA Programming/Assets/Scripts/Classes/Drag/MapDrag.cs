@@ -9,7 +9,7 @@ using DNASaveSystem;
 using UnityEngine.Rendering;
 using DNAStruct;
 
-public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IScrollHandler
+public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IScrollHandler
 {
     [SerializeField] Camera Cam;
     [SerializeField] Tilemap tileMap;
@@ -17,6 +17,9 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     [SerializeField] Slider zoomSlide;
     [SerializeField] Button resize;
     [SerializeField] Tilemap BackAndMap;
+
+    public Transform zoomTrans;
+    public Transform resizeTrans;
 
     Vector3 lastPos;
     Vector3 newPos;
@@ -41,13 +44,34 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         Scripts.mapDrag = this;
 
         lang = Camera.main.GetComponent<LevelScript>().lang;
+
+        zoomTrans = zoomSlide.transform;
+        resizeTrans = resize.transform;
     }
 
     public void OnScroll(PointerEventData eventData)
     {
-       
-        StartCoroutine(smoothZoomMouse());
+        handleScroll(Input.mouseScrollDelta.y);
+    }
 
+    private void Update()
+    {
+        if (Input.touchCount == 2)
+        {
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            Vector2 tZeroPrev = touchZero.position - touchZero.deltaPosition;
+            Vector2 tOnePrev = touchOne.position - touchOne.deltaPosition;
+
+            float prevMag = (tZeroPrev - tOnePrev).magnitude;
+            float currMag = (touchZero.position - touchOne.position).magnitude;
+
+            float dif = currMag - prevMag;
+
+            handleScroll(dif * 0.05f);
+           // StartCoroutine(smoothZoomMouse(dif *0.1f));
+        }
     }
 
     // Start is called before the first frame update
@@ -74,7 +98,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     public void OnPointerDown(PointerEventData eventData)
     {
-       
         newPos = Cam.transform.position;
 
         //Send raycast to collide with a character
@@ -85,8 +108,6 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         if (Physics.Raycast(new Vector3(worldPos.x, worldPos.y, 0), Vector3.forward, out rayHit, Mathf.Infinity))
         {
-           
-
             //Check if there is character data associated
             if (rayHit.collider.GetComponent<CharData>() != null)
             {
@@ -121,14 +142,19 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    void handleScroll (float difference)
     {
+        orthoSize = Cam.orthographicSize - difference;
 
+        orthoSize = Mathf.Clamp(orthoSize, minOrthoSize, maxOrthoSize);
+
+        Cam.orthographicSize = orthoSize;
+
+        zoomSlide.value = sliderValCalc(orthoSize);
     }
 
     public Vector2 BackCalc (Vector2 input)
     {
-
         float x = input.x;
         float y = input.y;
 
@@ -198,15 +224,15 @@ public class MapDrag : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         return (ortho - intercept) / slope;
     }
 
-    public IEnumerator smoothZoomMouse ()
+    public IEnumerator smoothZoomMouse (float difference)
     {
         //Sinusoidal movement could be cool
         
-        float slope = (Cam.orthographicSize - (Cam.orthographicSize + Input.mouseScrollDelta.y)) / (50);
+        float slope = (Cam.orthographicSize - (Cam.orthographicSize + difference)) / (10);
 
         float intercept = Cam.orthographicSize;
 
-        for (int i = 0; i < 100; i ++)
+        for (int i = 0; i < 10; i ++)
         {
             orthoSize = slope * i + intercept;
 
