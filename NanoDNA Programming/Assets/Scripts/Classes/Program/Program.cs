@@ -54,6 +54,16 @@ public class Program
         return length;
     }
 
+    public ActionType getProgramActionType (int index)
+    {
+        return list[index].actionType;
+    }
+
+    public MovementActionNames getMovementActionName (int index)
+    {
+        return list[index].movementName;
+    }
+
     //Put this in a different script later
     public bool viableActionType(ProgramAction action)
     {

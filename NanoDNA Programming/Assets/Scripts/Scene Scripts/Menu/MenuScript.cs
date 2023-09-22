@@ -71,6 +71,7 @@ public class MenuScript : MonoBehaviour
         UIHelper.setImage(Start.UI, PlayerSettings.colourScheme.getAccent());
         UIHelper.setImage(Settings.UI, PlayerSettings.colourScheme.getAccent());
         UIHelper.setImage(Exit.UI, PlayerSettings.colourScheme.getAccent());
+        UIHelper.setImage(Menu.UI, PlayerSettings.colourScheme.getMain(true));
     }
 
     public void setFunctionality ()

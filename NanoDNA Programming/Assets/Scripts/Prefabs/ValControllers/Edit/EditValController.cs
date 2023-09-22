@@ -457,7 +457,6 @@ public class EditValController : MonoBehaviour
         switch (type)
         {
             case ActionType.Movement:
-                Debug.Log("Here");
                 moveData.refID = 0;
                 break;
             case ActionType.Variable:

@@ -211,6 +211,8 @@ namespace DNAStruct
         public static MapDrag mapDrag;
         public static StoreScript storeScript;
         public static ProgramManager programManager;
+        public static DialogueManager dialogueManager;
+        public static TutorialManager tutorialManager;
 
     }
 
@@ -464,6 +466,7 @@ namespace DNAStruct
         public bool isLevelVariable;
         //Determines if the true value can be read/added to all variables
         public bool isActivated;
+        public bool hideVal;
         public VariableType varType;
         public string name;
         public string value;
@@ -612,13 +615,17 @@ namespace DNAStruct
     public struct InfoPanelData
     {
 
-
-
-
-
     }
 
-
+    [System.Serializable]
+    public struct SensorSignal
+    {
+        //We don't need to have is activated, we can just send the signal, and it can read the id
+        //public bool isActivated;
+        public string value;
+        public int id;
+        public VariableType varType;
+    }
 
 
 

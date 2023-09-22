@@ -6,7 +6,6 @@ using DNAStruct;
 [System.Serializable]
 public class InfoPanelData 
 {
-
     [System.Serializable]
     public struct InfoPage
     {
@@ -38,5 +37,4 @@ public class InfoPanelData
             return "";
         }
     }
-
 }

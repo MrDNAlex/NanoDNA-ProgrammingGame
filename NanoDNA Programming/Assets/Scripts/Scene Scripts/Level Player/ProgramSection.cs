@@ -20,7 +20,7 @@ public class ProgramSection : MonoBehaviour
     public int maxLineNum = 20;
 
     [SerializeField] GameObject progLine;
-    [SerializeField] Button testBtn;
+    [SerializeField] public Button debug;
     [SerializeField] public GameObject charHolder;
     [SerializeField] Text nameHeader;
     [SerializeField] Button saveBtn;
@@ -28,7 +28,7 @@ public class ProgramSection : MonoBehaviour
     [SerializeField] Tilemap obstacles;
     [SerializeField] Button progSpeed;
 
-    ProgramSpeed speed = ProgramSpeed.Op1;
+   public  ProgramSpeed speed = ProgramSpeed.Op1;
     int speedDivider = 1;
 
     public bool undo;
@@ -44,6 +44,8 @@ public class ProgramSection : MonoBehaviour
     public ProgramVirtualBox virtualBox;
 
     Language lang;
+
+    List<Interactable> interacCollisions = new List<Interactable>();
 
     private void Awake()
     {
@@ -63,7 +65,7 @@ public class ProgramSection : MonoBehaviour
 
         levelType = Scripts.levelManager.info.levelType;
 
-        testBtn.onClick.AddListener(testProgram);
+       debug.onClick.AddListener(testProgram);
         // saveBtn.onClick.AddListener(delegate
         //  {
         //     selectedCharData.displayProgram(true);
@@ -116,7 +118,8 @@ public class ProgramSection : MonoBehaviour
             {
                 if (child.GetComponent<CharData>() != null)
                 {
-                    child.localPosition = child.GetComponent<CharData>().initPos;
+                    child.GetComponent<CharData>().setInit();
+
                 }
                 else
                 {
@@ -127,13 +130,22 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = false;
 
-            testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/Debug");
+            debug.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/Debug");
             //testBtn.transform.GetChild(0).GetComponent<Text>().text = UIwords.debug.getWord(lang);
 
             Scripts.levelManager.updateConstraints();
         }
         else
         {
+            interacCollisions = new List<Interactable>();
+            foreach (Transform child in charHolder.transform)
+            {
+                if (child.GetComponent<Interactable>() != null)
+                {
+                    interacCollisions.Add(child.GetComponent<Interactable>());
+                }
+            }
+
 
             virtualBox = new ProgramVirtualBox(Scripts.programManager.getVars());
 
@@ -147,7 +159,7 @@ public class ProgramSection : MonoBehaviour
 
             testRunning = true;
 
-            testBtn.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/DebugActive");
+           debug.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UIDesigns/DebugActive");
         }
     }
 
@@ -273,16 +285,13 @@ public class ProgramSection : MonoBehaviour
                         Vector3 nextPos = character.transform.position + actionToMovement(action, virtualBox);
 
                         //Check if the tile in that position exists
-                        if (obstacles.GetTile(obstacles.WorldToCell(nextPos)) == null)
+                        if (noCollision(nextPos))
                         {
-                            //Debug.Log("Clear");
                             character.transform.position = nextPos;
-                        }
-                        else
+                        } else
                         {
-                            //Debug.Log("Not Clear");
+                            //Debug.Log("Not clear");
                         }
-
                         break;
                 }
                 break;
@@ -633,7 +642,7 @@ public class ProgramSection : MonoBehaviour
         }
 
         //Finish the level here 
-       // Debug.Log("Completed!");
+        // Debug.Log("Completed!");
         Scripts.levelManager.finishLevel();
     }
 
@@ -682,6 +691,52 @@ public class ProgramSection : MonoBehaviour
                 UIHelper.setText(progSpeed.transform.GetChild(0), "x1", PlayerSettings.colourScheme.getMainTextColor(), PlayerSettings.getBigText());
                 speedDivider = 1;
                 break;
+        }
+    }
+
+    bool noCollision(Vector3 nextPos)
+    {
+        bool clear = true;
+        if (obstacles.GetTile(obstacles.WorldToCell(nextPos)) == null)
+        {
+            //Check for interactables
+           
+            foreach (Interactable interac in interacCollisions)
+            {
+                if (isCollided(nextPos, interac.GetComponent<BoxCollider>().bounds.center, interac.GetComponent<BoxCollider>().bounds.size))
+                {
+                    Debug.Log("Collided with Interac");
+                    if (interac.solid)
+                    {
+                        clear = false;
+                    }
+                }
+            }
+           // character.transform.position = nextPos;
+        }
+        else
+        {
+            //Debug.Log("Not Clear");
+            clear = false;
+        }
+
+        return clear;
+    }
+
+    bool isCollided (Vector3 pos, Vector3 center, Vector3 size)
+    {
+        if (pos.x >= (center.x - size.x/2) && pos.x <= (center.x + size.x / 2))
+        {
+            if (pos.y >= (center.y - size.y / 2) && pos.y <= (center.y + size.y / 2))
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        } else
+        {
+            return false;
         }
     }
 

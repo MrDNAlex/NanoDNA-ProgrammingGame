@@ -22,8 +22,8 @@ public class PlayerSettings
     public static bool advancedVariables;
 
     public static int smallTextSize = 30;
-    public static int mediumTextSize = 50;
-    public static int bigTextSize = 70;
+    public static int mediumTextSize = 40;
+    public static int bigTextSize = 55;
     public static int giganticTextSize;
 
     

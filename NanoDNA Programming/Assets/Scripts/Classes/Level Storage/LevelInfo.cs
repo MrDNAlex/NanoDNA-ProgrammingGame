@@ -4,19 +4,22 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using DNAStruct;
 
-
 [System.Serializable]
 //For something to be saved it must be public 
 public class LevelInfo 
 {
    [Header("Edit")]
+
+    public bool showTutorial;
+
     public UIWord levelName;
     public UIWord levelDescription;
-    
+
     public int maxLine;
-    public int maxItems;
 
     public LevelType levelType;
+
+    public DialogueScript levelScript;
 
     public List<VariableData> levelVariables = new List<VariableData>();
 
@@ -27,6 +30,8 @@ public class LevelInfo
 
     public LevelIconInfo levelIcon;
 
+    public int maxItems;
+
     public int xMax;
     public int xMin;
     public int yMax;
@@ -35,9 +40,11 @@ public class LevelInfo
     //Convert this to a list for multiple end conditions?
     public EndInfo endGoal;
 
+    public List<InteractableInfo> interacInfo = new List<InteractableInfo>();
+
     public List<SensorInfo> sensorInfo = new List<SensorInfo>();
 
-    public List<InteractableInfo> interacInfo = new List<InteractableInfo>();
+    public List<CollectableInfo> collectInfo = new List<CollectableInfo>();
 
     public List<CharacterInfo> charInfo = new List<CharacterInfo>();
 
@@ -70,6 +77,9 @@ public class LevelInfo
 
         //Save Character Info
         createCharArrayInfo(info.charHolder);
+
+        //Save Collectables
+        createCollectableArrayInfo(info.charHolder);
 
         //Save Interactables
         createInteractableArrayInfo(info.charHolder);
@@ -127,21 +137,52 @@ public class LevelInfo
         }
     }
 
-    public void createInteractableArrayInfo (GameObject charHolder)
+    public void createCollectableArrayInfo (GameObject charHolder)
     {
         foreach (Transform child in charHolder.transform)
         {
-            if (child.GetComponent<InteractableData>() != null)
+            if (child.GetComponent<CollectableData>() != null)
             {
                 //Loop through all children and save their sprite id for their ID and their charData
 
-                interacInfo.Add(new InteractableInfo(new InteractableDataInfo(child.GetComponent<InteractableData>()), child.GetComponent<SpriteRenderer>().sprite.name));
+                //Set Position automatically
+                child.GetComponent<CollectableData>().initPos = getPosition(child);
 
-                if (child.GetComponent<InteractableData>().collectible)
+                collectInfo.Add(new CollectableInfo(new CollectableDataInfo(child.GetComponent<CollectableData>()), child.GetComponent<SpriteRenderer>().sprite.name));
+
+                if (child.GetComponent<CollectableData>().collectible)
                 {
                     //Add one to the max items
                     maxItems++;
                 }
+
+            }
+        }
+    }
+
+    public void createInteractableArrayInfo(GameObject charHolder)
+    {
+        foreach (Transform child in charHolder.transform)
+        {
+            if (child.GetComponent<Interactable>() != null)
+            {
+                //Loop through all children and save their sprite id for their ID and their charData
+
+                Interactable interac = child.GetComponent<Interactable>();
+
+                //Set Position automatically
+                interac.initPos = getPosition(child);
+                interac.size1 = getSize(child);
+                interac.rotation = getRotation(child);
+
+                //Get sprite IDs
+                interac.spriteIDs = new List<string>();
+                foreach (Sprite sprite in interac.sprites)
+                {
+                    interac.spriteIDs.Add(sprite.name);
+                }
+
+                interacInfo.Add(new InteractableInfo(new InteractableDataInfo(child.GetComponent<Interactable>()), child.GetComponent<SpriteRenderer>().sprite.name));
 
             }
         }
@@ -250,6 +291,21 @@ public class LevelInfo
             }
         }
         return min;
+    }
+
+    public Vector3 getPosition (Transform trans)
+    {
+        return trans.localPosition;
+    }
+
+    public Vector3 getRotation(Transform trans)
+    {
+        return trans.rotation.eulerAngles;
+    }
+
+    public Vector3 getSize (Transform trans)
+    {
+        return trans.GetComponent<BoxCollider>().size;
     }
 
 }

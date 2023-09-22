@@ -98,7 +98,7 @@ public class ValueValController : EditValController
 
         Flex Background = new Flex(Holder.getChild(1), 9, Holder);
 
-        Flex Tabs = new Flex(Background.getChild(0), 1, Background);
+        Flex Tabs = new Flex(Background.getChild(0), 1.5f, Background);
 
         Flex NewVarBTN = new Flex(Tabs.getChild(0), 1, Tabs);
         Flex GlobalVarBTN = new Flex(Tabs.getChild(1), 1, Tabs);
@@ -208,7 +208,7 @@ public class ValueValController : EditValController
             {
                 GameObject variable = Instantiate(Resources.Load("Prefabs/EditPanels/ValueDisp") as GameObject, Content.UI.transform);
 
-                variable.GetComponent<ValueDisp>().setUI();
+                //variable.GetComponent<ValueDisp>().setUI();
 
                 variable.GetComponent<ValueDisp>().setInfo(varData);
 
